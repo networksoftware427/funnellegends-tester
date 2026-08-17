@@ -86,7 +86,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onOpenOrderModal }) 
         {/* CTA Card */}
         <div className="p-10 rounded-3xl bg-gradient-to-r from-emerald-950 via-slate-900 to-teal-950 border border-emerald-500/40 text-center space-y-6 shadow-2xl">
           <h2 className="text-2xl sm:text-4xl font-black text-white">Experience All 12 Tools Free For 30 Days</h2>
-          <p className="text-sm text-slate-300 max-w-2xl mx-auto">No upfront commitments. Cancel anytime in 1-click directly from your dashboard.</p>
+          <p className="text-sm text-white font-medium max-w-2xl mx-auto">No upfront commitments. Cancel anytime in 1-click directly from your dashboard.</p>
           <div>
             <button
               onClick={onOpenOrderModal}

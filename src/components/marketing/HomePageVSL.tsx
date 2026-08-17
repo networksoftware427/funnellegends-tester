@@ -229,8 +229,8 @@ export const HomePageVSL: React.FC<HomePageVSLProps> = ({ onOpenOrderModal, onNa
               <HelpCircle className="w-5 h-5" />
             </div>
             <div>
-              <h4 className="text-sm font-bold text-white">Still have questions?</h4>
-              <p className="text-xs text-slate-400">Our 24/7 Funnel Specialist team is ready to help you set up your account.</p>
+              <h4 className="text-sm font-black text-white">Still have questions?</h4>
+              <p className="text-xs text-white font-medium">Our 24/7 Funnel Specialist team is ready to help you set up your account.</p>
             </div>
           </div>
           <button

@@ -15,7 +15,7 @@ export const MarketingFooter: React.FC<FooterProps> = ({ onNavigate, onOpenOrder
         <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-r from-emerald-900/60 via-slate-900 to-teal-900/60 border border-emerald-500/30 text-center space-y-6 shadow-2xl relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl" />
           <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">Ready To Build High-Converting Funnels In Seconds?</h2>
-          <p className="max-w-2xl mx-auto text-sm text-slate-300">Join thousands of entrepreneurs, coaches, and digital agencies scaling their enterprise with FunnelLegends. Try it 100% risk-free for 30 days.</p>
+          <p className="max-w-2xl mx-auto text-sm text-white font-medium">Join thousands of entrepreneurs, coaches, and digital agencies scaling their enterprise with FunnelLegends. Try it 100% risk-free for 30 days.</p>
           <div className="pt-2">
             <button
               onClick={onOpenOrderModal}
@@ -29,7 +29,7 @@ export const MarketingFooter: React.FC<FooterProps> = ({ onNavigate, onOpenOrder
               <span>START YOUR 30-DAY FREE TRIAL NOW</span>
             </button>
           </div>
-          <div className="flex items-center justify-center gap-6 text-xs text-slate-400 pt-2 font-medium">
+          <div className="flex items-center justify-center gap-6 text-xs text-white pt-2 font-bold">
             <span className="flex items-center gap-1.5"><ShieldCheck className="w-4 h-4 text-emerald-400" /> 30-Day Money-Back Guarantee</span>
             <span className="flex items-center gap-1.5"><Lock className="w-4 h-4 text-teal-400" /> 256-Bit SSL Encrypted Checkout</span>
             <span className="flex items-center gap-1.5"><CheckCircle className="w-4 h-4 text-indigo-400" /> Cancel Anytime in 1-Click</span>
