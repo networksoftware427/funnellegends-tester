@@ -65,43 +65,43 @@ export const ClickPopConfigModal: React.FC<ClickPopConfigModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-3xl w-full flex flex-col shadow-2xl overflow-hidden animate-fade-in text-slate-100 max-h-[90vh]">
+    <div className="fixed inset-0 z-50 bg-white/80 backdrop-blur-md flex items-center justify-center p-4">
+      <div className="bg-white border border-slate-200 rounded-2xl max-w-3xl w-full flex flex-col shadow-2xl overflow-hidden animate-fade-in text-slate-900 max-h-[90vh]">
         {/* Header */}
-        <div className="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-950">
+        <div className="p-4 border-b border-slate-200 flex items-center justify-between bg-white">
           <div className="flex items-center gap-2.5">
             <div className="p-2 bg-pink-950/80 text-pink-400 border border-pink-500/30 rounded-xl">
               <Sparkles className="w-5 h-5 animate-pulse" />
             </div>
             <div>
-              <h3 className="font-extrabold text-sm text-white">ClickPop & Exit Intent Manager (10 High-Converting Templates)</h3>
-              <p className="text-[11px] text-slate-400">Select pre-designed popup templates or customize triggers & blog embed codes</p>
+              <h3 className="font-extrabold text-sm text-slate-900">ClickPop & Exit Intent Manager (10 High-Converting Templates)</h3>
+              <p className="text-[11px] text-slate-600">Select pre-designed popup templates or customize triggers & blog embed codes</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-1.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white">
+          <button onClick={onClose} className="p-1.5 hover:bg-slate-50 rounded-lg text-slate-600 hover:text-slate-900">
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Modal Tab Switcher */}
-        <div className="flex border-b border-slate-800 bg-slate-900/60 px-4 pt-2 gap-2 text-xs font-bold">
+        <div className="flex border-b border-slate-200 bg-white/60 px-4 pt-2 gap-2 text-xs font-bold">
           <button 
             onClick={() => setActiveTab('templates')}
-            className={`pb-2 px-3 border-b-2 transition-colors flex items-center gap-1.5 ${activeTab === 'templates' ? 'border-pink-500 text-pink-400' : 'border-transparent text-slate-400 hover:text-white'}`}
+            className={`pb-2 px-3 border-b-2 transition-colors flex items-center gap-1.5 ${activeTab === 'templates' ? 'border-pink-500 text-pink-400' : 'border-transparent text-slate-600 hover:text-slate-900'}`}
           >
             <LayoutGrid className="w-4 h-4" />
             <span>10 ClickPop Templates</span>
           </button>
           <button 
             onClick={() => setActiveTab('settings')}
-            className={`pb-2 px-3 border-b-2 transition-colors flex items-center gap-1.5 ${activeTab === 'settings' ? 'border-pink-500 text-pink-400' : 'border-transparent text-slate-400 hover:text-white'}`}
+            className={`pb-2 px-3 border-b-2 transition-colors flex items-center gap-1.5 ${activeTab === 'settings' ? 'border-pink-500 text-pink-400' : 'border-transparent text-slate-600 hover:text-slate-900'}`}
           >
             <Layers className="w-4 h-4" />
             <span>Popup Customizer & Rules</span>
           </button>
           <button 
             onClick={() => setActiveTab('embed')}
-            className={`pb-2 px-3 border-b-2 transition-colors flex items-center gap-1.5 ${activeTab === 'embed' ? 'border-pink-500 text-pink-400' : 'border-transparent text-slate-400 hover:text-white'}`}
+            className={`pb-2 px-3 border-b-2 transition-colors flex items-center gap-1.5 ${activeTab === 'embed' ? 'border-pink-500 text-pink-400' : 'border-transparent text-slate-600 hover:text-slate-900'}`}
           >
             <Code className="w-4 h-4" />
             <span>External Blog / Site Embed Code</span>
@@ -118,7 +118,7 @@ export const ClickPopConfigModal: React.FC<ClickPopConfigModalProps> = ({
                   <button 
                     key={cat}
                     onClick={() => setSelectedCategory(cat)}
-                    className={`px-3 py-1 rounded-full whitespace-nowrap font-medium transition-all ${selectedCategory === cat ? 'bg-pink-600 text-white shadow' : 'bg-slate-950 border border-slate-800 text-slate-400 hover:text-white'}`}
+                    className={`px-3 py-1 rounded-full whitespace-nowrap font-medium transition-all ${selectedCategory === cat ? 'bg-pink-600 text-white shadow' : 'bg-white border border-slate-200 text-slate-600 hover:text-slate-900'}`}
                   >
                     {cat}
                   </button>
@@ -132,7 +132,7 @@ export const ClickPopConfigModal: React.FC<ClickPopConfigModalProps> = ({
                   return (
                     <div 
                       key={tpl.id}
-                      className="p-4 bg-slate-950 border border-slate-800 hover:border-pink-500/60 rounded-2xl flex flex-col justify-between space-y-3 transition-all group"
+                      className="p-4 bg-white border border-slate-200 hover:border-pink-500/60 rounded-2xl flex flex-col justify-between space-y-3 transition-all group"
                     >
                       <div className="space-y-2">
                         <div className="flex items-center justify-between">
@@ -144,19 +144,19 @@ export const ClickPopConfigModal: React.FC<ClickPopConfigModalProps> = ({
 
                         {/* Title & Description */}
                         <div>
-                          <h4 className="text-xs font-black text-white group-hover:text-pink-300">{tpl.name}</h4>
-                          <p className="text-[11px] text-slate-400 leading-tight mt-1">{tpl.description}</p>
+                          <h4 className="text-xs font-black text-slate-900 group-hover:text-pink-300">{tpl.name}</h4>
+                          <p className="text-[11px] text-slate-600 leading-tight mt-1">{tpl.description}</p>
                         </div>
 
                         {/* Live Mini Preview Box */}
-                        <div className="p-3 bg-slate-900 border border-slate-800 rounded-xl space-y-2 text-left">
+                        <div className="p-3 bg-white border border-slate-200 rounded-xl space-y-2 text-left">
                           <div className="text-[11px] font-extrabold text-amber-300 truncate">{tpl.settings.badgeText}</div>
-                          <div className="text-xs font-black text-slate-100 truncate">{tpl.settings.title}</div>
-                          <div className="text-[10px] text-slate-400 line-clamp-2">{tpl.settings.subtitle}</div>
+                          <div className="text-xs font-black text-slate-900 truncate">{tpl.settings.title}</div>
+                          <div className="text-[10px] text-slate-600 line-clamp-2">{tpl.settings.subtitle}</div>
 
                           {/* Mini Form Input & Button */}
                           <div className="space-y-1.5 pt-1">
-                            <div className="bg-slate-950 border border-slate-800 rounded px-2 py-1 text-[10px] text-slate-500 font-mono">
+                            <div className="bg-white border border-slate-200 rounded px-2 py-1 text-[10px] text-slate-500 font-mono">
                               Email Address Input Form...
                             </div>
                             <div className="bg-pink-600 text-white font-extrabold text-[10px] py-1.5 px-2 rounded text-center truncate">
@@ -168,11 +168,11 @@ export const ClickPopConfigModal: React.FC<ClickPopConfigModalProps> = ({
 
                       <button 
                         onClick={() => handleApplyTemplate(tpl)}
-                        className={`w-full py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${isApplied ? 'bg-emerald-600 text-white' : 'bg-slate-800 hover:bg-pink-600 text-slate-200 hover:text-white'}`}
+                        className={`w-full py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${isApplied ? 'bg-emerald-600 text-white' : 'bg-slate-50 hover:bg-pink-600 text-slate-800 hover:text-slate-900'}`}
                       >
                         {isApplied ? (
                           <>
-                            <CheckCircle className="w-4 h-4 text-white" />
+                            <CheckCircle className="w-4 h-4 text-slate-900" />
                             <span>Template Applied to Canvas!</span>
                           </>
                         ) : (
@@ -190,10 +190,10 @@ export const ClickPopConfigModal: React.FC<ClickPopConfigModalProps> = ({
           ) : activeTab === 'settings' ? (
             <form onSubmit={handleSubmit} className="space-y-4 text-xs">
               {/* Enable Toggle */}
-              <div className="p-3.5 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-between">
+              <div className="p-3.5 bg-white border border-slate-200 rounded-xl flex items-center justify-between">
                 <div>
-                  <div className="font-bold text-white">Enable ClickPop for this Funnel Step</div>
-                  <div className="text-[11px] text-slate-400">When enabled, popups will trigger based on your selected rule</div>
+                  <div className="font-bold text-slate-900">Enable ClickPop for this Funnel Step</div>
+                  <div className="text-[11px] text-slate-600">When enabled, popups will trigger based on your selected rule</div>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input 
@@ -202,17 +202,17 @@ export const ClickPopConfigModal: React.FC<ClickPopConfigModalProps> = ({
                     onChange={(e) => setFormData({ ...formData, enabled: e.target.checked })} 
                     className="sr-only peer" 
                   />
-                  <div className="w-11 h-6 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-pink-600"></div>
+                  <div className="w-11 h-6 bg-slate-50 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-pink-600"></div>
                 </label>
               </div>
 
               {/* Trigger Type Selection */}
               <div className="space-y-2">
-                <label className="block font-bold text-slate-200">Select Popup Trigger Rule:</label>
+                <label className="block font-bold text-slate-800">Select Popup Trigger Rule:</label>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5">
                   <label 
                     onClick={() => setFormData({ ...formData, triggerType: 'button' })}
-                    className={`p-3 rounded-xl border cursor-pointer flex flex-col items-center gap-1.5 text-center transition-all ${formData.triggerType === 'button' ? 'bg-pink-950/60 border-pink-500 text-pink-200 font-bold' : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700'}`}
+                    className={`p-3 rounded-xl border cursor-pointer flex flex-col items-center gap-1.5 text-center transition-all ${formData.triggerType === 'button' ? 'bg-pink-950/60 border-pink-500 text-pink-200 font-bold' : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'}`}
                   >
                     <MousePointerClick className="w-5 h-5 text-pink-400" />
                     <span className="text-xs">On Button Click</span>
@@ -221,7 +221,7 @@ export const ClickPopConfigModal: React.FC<ClickPopConfigModalProps> = ({
 
                   <label 
                     onClick={() => setFormData({ ...formData, triggerType: 'exit_intent' })}
-                    className={`p-3 rounded-xl border cursor-pointer flex flex-col items-center gap-1.5 text-center transition-all ${formData.triggerType === 'exit_intent' ? 'bg-pink-950/60 border-pink-500 text-pink-200 font-bold' : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700'}`}
+                    className={`p-3 rounded-xl border cursor-pointer flex flex-col items-center gap-1.5 text-center transition-all ${formData.triggerType === 'exit_intent' ? 'bg-pink-950/60 border-pink-500 text-pink-200 font-bold' : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'}`}
                   >
                     <DoorOpen className="w-5 h-5 text-amber-400" />
                     <span className="text-xs">Exit Intent</span>
@@ -230,7 +230,7 @@ export const ClickPopConfigModal: React.FC<ClickPopConfigModalProps> = ({
 
                   <label 
                     onClick={() => setFormData({ ...formData, triggerType: 'timed_delay' })}
-                    className={`p-3 rounded-xl border cursor-pointer flex flex-col items-center gap-1.5 text-center transition-all ${formData.triggerType === 'timed_delay' ? 'bg-pink-950/60 border-pink-500 text-pink-200 font-bold' : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700'}`}
+                    className={`p-3 rounded-xl border cursor-pointer flex flex-col items-center gap-1.5 text-center transition-all ${formData.triggerType === 'timed_delay' ? 'bg-pink-950/60 border-pink-500 text-pink-200 font-bold' : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'}`}
                   >
                     <Clock className="w-5 h-5 text-indigo-400" />
                     <span className="text-xs">Timed Delay</span>
@@ -241,67 +241,67 @@ export const ClickPopConfigModal: React.FC<ClickPopConfigModalProps> = ({
 
               {formData.triggerType === 'timed_delay' && (
                 <div>
-                  <label className="block font-semibold text-slate-300 mb-1">Delay Seconds Before Popup Triggers:</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Delay Seconds Before Popup Triggers:</label>
                   <input 
                     type="number" 
                     min="1" 
                     max="60"
                     value={formData.delaySeconds}
                     onChange={(e) => setFormData({ ...formData, delaySeconds: parseInt(e.target.value) || 5 })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-100 font-mono"
+                    className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-slate-900 font-mono"
                   />
                 </div>
               )}
 
               {/* Popup Content Fields */}
-              <div className="space-y-3 pt-1 border-t border-slate-800">
+              <div className="space-y-3 pt-1 border-t border-slate-200">
                 <div>
-                  <label className="block font-semibold text-slate-300 mb-1">Popup Urgency Badge Text:</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Popup Urgency Badge Text:</label>
                   <input 
                     type="text" 
                     value={formData.badgeText}
                     onChange={(e) => setFormData({ ...formData, badgeText: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-amber-300 font-bold"
+                    className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-amber-300 font-bold"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-slate-300 mb-1">Main Popup Headline:</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Main Popup Headline:</label>
                   <input 
                     type="text" 
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-100 font-bold"
+                    className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-slate-900 font-bold"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-slate-300 mb-1">Subheadline Copy:</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Subheadline Copy:</label>
                   <textarea 
                     rows={2}
                     value={formData.subtitle}
                     onChange={(e) => setFormData({ ...formData, subtitle: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200"
+                    className="w-full bg-white border border-slate-200 rounded-xl p-3 text-xs text-slate-800"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-slate-300 mb-1">Button CTA Text:</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Button CTA Text:</label>
                   <input 
                     type="text" 
                     value={formData.buttonText}
                     onChange={(e) => setFormData({ ...formData, buttonText: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-emerald-400 font-bold"
+                    className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-emerald-400 font-bold"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-slate-300 mb-1">Offer Image Graphic URL (Optional):</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Offer Image Graphic URL (Optional):</label>
                   <input 
                     type="text" 
                     value={formData.imageUrl || ''}
                     onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-100 font-mono"
+                    className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-slate-900 font-mono"
                   />
                 </div>
               </div>
@@ -310,14 +310,14 @@ export const ClickPopConfigModal: React.FC<ClickPopConfigModalProps> = ({
             <div className="space-y-4 text-xs">
               <div className="p-3.5 bg-indigo-950/60 border border-indigo-500/40 rounded-xl space-y-1">
                 <div className="font-extrabold text-indigo-300">How External ClickPop Embeds Work:</div>
-                <p className="text-slate-300 text-[11px] leading-relaxed">
+                <p className="text-slate-700 text-[11px] leading-relaxed">
                   Copy the HTML code below and place it on your WordPress blog, Medium articles, or third-party websites. Clicking the button on your blog will launch this LaunchEngine popup dynamically!
                 </p>
               </div>
 
               <div className="space-y-1.5">
-                <label className="block font-semibold text-slate-300">HTML & JavaScript Embed Code:</label>
-                <div className="p-4 bg-slate-950 border border-slate-800 rounded-xl font-mono text-[11px] text-emerald-400 whitespace-pre-wrap relative">
+                <label className="block font-semibold text-slate-700">HTML & JavaScript Embed Code:</label>
+                <div className="p-4 bg-white border border-slate-200 rounded-xl font-mono text-[11px] text-emerald-400 whitespace-pre-wrap relative">
                   {embedCodeSnippet}
                 </div>
               </div>
@@ -338,11 +338,11 @@ export const ClickPopConfigModal: React.FC<ClickPopConfigModalProps> = ({
         </div>
 
         {/* Footer Actions */}
-        <div className="p-4 border-t border-slate-800 bg-slate-950 flex items-center justify-between">
+        <div className="p-4 border-t border-slate-200 bg-white flex items-center justify-between">
           <button 
             type="button"
             onClick={onTestTrigger}
-            className="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-pink-400 font-bold rounded-xl text-xs flex items-center gap-1.5 border border-pink-500/30"
+            className="px-3.5 py-2 bg-slate-50 hover:bg-slate-100 text-pink-400 font-bold rounded-xl text-xs flex items-center gap-1.5 border border-pink-500/30"
           >
             <Eye className="w-4 h-4" />
             <span>Test Trigger ClickPop Now</span>
@@ -352,7 +352,7 @@ export const ClickPopConfigModal: React.FC<ClickPopConfigModalProps> = ({
             <button 
               type="button" 
               onClick={onClose} 
-              className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-semibold"
+              className="px-4 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-xl text-xs font-semibold"
             >
               Cancel
             </button>

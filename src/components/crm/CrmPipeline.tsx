@@ -90,11 +90,11 @@ export const CrmPipeline: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sticky top-0 z-20 shrink-0 bg-green-600 backdrop-blur-md border-b border-green-700 px-6 py-4">
         <div>
-          <div className="flex items-center gap-2 text-white font-extrabold text-xs tracking-wider uppercase mb-1">
-            <Users className="w-4 h-4 text-white" />
-            <span className="bg-white/20 text-white border border-white/30 px-2 py-0.5 rounded-full">DOMAIN E: INTEGRATED CRM & LEAD SCORING PIPELINE</span>
+          <div className="flex items-center gap-2 text-slate-900 font-extrabold text-xs tracking-wider uppercase mb-1">
+            <Users className="w-4 h-4 text-slate-900" />
+            <span className="bg-white/20 text-slate-900 border border-white/30 px-2 py-0.5 rounded-full">DOMAIN E: INTEGRATED CRM & LEAD SCORING PIPELINE</span>
           </div>
-          <h1 className="text-2xl font-black text-white">Funnel Sales Pipeline & Leads</h1>
+          <h1 className="text-2xl font-black text-slate-900">Funnel Sales Pipeline & Leads</h1>
           <p className="text-xs text-green-100 mt-0.5">Track deal stages, lead scoring activity, and customer purchase histories.</p>
         </div>
 
@@ -119,13 +119,13 @@ export const CrmPipeline: React.FC = () => {
 
           <button 
             onClick={() => setActiveView('kanban')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${activeView === 'kanban' ? 'bg-white text-green-700 shadow-lg shadow-green-600/30 border border-green-500' : 'bg-green-700 text-green-100 hover:text-white border border-green-600'}`}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${activeView === 'kanban' ? 'bg-white text-green-700 shadow-lg shadow-green-600/30 border border-green-500' : 'bg-green-700 text-green-100 hover:text-slate-900 border border-green-600'}`}
           >
             Kanban Pipeline Board
           </button>
           <button 
             onClick={() => setActiveView('contacts')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${activeView === 'contacts' ? 'bg-white text-green-700 shadow-lg shadow-green-600/30 border border-green-500' : 'bg-green-700 text-green-100 hover:text-white border border-green-600'}`}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${activeView === 'contacts' ? 'bg-white text-green-700 shadow-lg shadow-green-600/30 border border-green-500' : 'bg-green-700 text-green-100 hover:text-slate-900 border border-green-600'}`}
           >
             Leads Database ({contacts.length})
           </button>
@@ -141,14 +141,14 @@ export const CrmPipeline: React.FC = () => {
             const stageDeals = deals.filter((d) => d.stage === stage);
             const totalVal = calculateStageTotal(stage);
             return (
-              <div key={stage} className="w-80 bg-slate-900 border border-slate-800 rounded-2xl flex flex-col shrink-0 overflow-hidden">
+              <div key={stage} className="w-80 bg-white border border-slate-200 rounded-2xl flex flex-col shrink-0 overflow-hidden">
                 {/* Stage Header */}
-                <div className="p-4 border-b border-slate-800 bg-slate-950/60 flex items-center justify-between">
+                <div className="p-4 border-b border-slate-200 bg-white/60 flex items-center justify-between">
                   <div>
-                    <h3 className="text-xs font-extrabold text-slate-200 uppercase tracking-wider">{stage}</h3>
+                    <h3 className="text-xs font-extrabold text-slate-800 uppercase tracking-wider">{stage}</h3>
                     <span className="text-[10px] text-emerald-400 font-mono font-bold">${totalVal.toLocaleString()}</span>
                   </div>
-                  <span className="w-6 h-6 rounded-full bg-slate-800 text-slate-300 text-xs font-bold flex items-center justify-center">
+                  <span className="w-6 h-6 rounded-full bg-slate-50 text-slate-700 text-xs font-bold flex items-center justify-center">
                     {stageDeals.length}
                   </span>
                 </div>
@@ -156,7 +156,7 @@ export const CrmPipeline: React.FC = () => {
                 {/* Cards Container */}
                 <div className="flex-1 overflow-y-auto p-3 space-y-3">
                   {stageDeals.map((deal) => (
-                    <div key={deal.id} className="p-4 bg-slate-950 border border-slate-800 hover:border-indigo-500/50 rounded-xl space-y-2 shadow-lg group transition-all">
+                    <div key={deal.id} className="p-4 bg-white border border-slate-200 hover:border-indigo-500/50 rounded-xl space-y-2 shadow-lg group transition-all">
                       <div className="flex items-center justify-between">
                         <span className="text-[10px] font-extrabold text-indigo-400 font-mono">${deal.value.toLocaleString()}</span>
                         <div className="flex items-center gap-1.5">
@@ -169,16 +169,16 @@ export const CrmPipeline: React.FC = () => {
                           </button>
                         </div>
                       </div>
-                      <h4 className="text-xs font-bold text-slate-100">{deal.title}</h4>
-                      <p className="text-[11px] text-slate-400">{deal.contactName} ({deal.contactEmail})</p>
+                      <h4 className="text-xs font-bold text-slate-900">{deal.title}</h4>
+                      <p className="text-[11px] text-slate-600">{deal.contactName} ({deal.contactEmail})</p>
 
                       {/* Quick Move Stage Select */}
-                      <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px]">
+                      <div className="pt-2 border-t border-slate-200/80 flex items-center justify-between text-[10px]">
                         <span className="text-slate-500">Move stage:</span>
                         <select 
                           value={deal.stage}
                           onChange={(e) => moveDealStage(deal.id, e.target.value as any)}
-                          className="bg-slate-900 border border-slate-800 rounded px-2 py-0.5 text-slate-300 font-bold"
+                          className="bg-white border border-slate-200 rounded px-2 py-0.5 text-slate-700 font-bold"
                         >
                           {stages.map((s) => (
                             <option key={s} value={s}>{s}</option>
@@ -197,9 +197,9 @@ export const CrmPipeline: React.FC = () => {
       {/* VIEW 2: LEADS DATABASE */}
       {activeView === 'contacts' && (
         <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-6 overflow-hidden">
-          <div className="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl p-4 overflow-y-auto">
+          <div className="lg:col-span-2 bg-white border border-slate-200 rounded-2xl p-4 overflow-y-auto">
             <table className="w-full text-left text-xs">
-              <thead className="border-b border-slate-800 text-slate-400 uppercase text-[10px] font-extrabold">
+              <thead className="border-b border-slate-200 text-slate-600 uppercase text-[10px] font-extrabold">
                 <tr>
                   <th className="p-3">Contact Lead</th>
                   <th className="p-3">Lead Score</th>
@@ -212,11 +212,11 @@ export const CrmPipeline: React.FC = () => {
                   <tr 
                     key={cnt.id}
                     onClick={() => setSelectedContact(cnt)}
-                    className={`cursor-pointer transition-colors ${selectedContact?.id === cnt.id ? 'bg-indigo-900/40 text-indigo-200' : 'hover:bg-slate-850'}`}
+                    className={`cursor-pointer transition-colors ${selectedContact?.id === cnt.id ? 'bg-indigo-900/40 text-indigo-200' : 'hover:bg-slate-50'}`}
                   >
                     <td className="p-3">
-                      <div className="font-bold text-slate-200">{cnt.name}</div>
-                      <div className="text-[11px] text-slate-400 font-mono">{cnt.email}</div>
+                      <div className="font-bold text-slate-800">{cnt.name}</div>
+                      <div className="text-[11px] text-slate-600 font-mono">{cnt.email}</div>
                     </td>
                     <td className="p-3">
                       <span className="px-2.5 py-1 rounded-full text-[10px] font-extrabold bg-amber-950 text-amber-400 border border-amber-800 inline-flex items-center gap-1">
@@ -227,11 +227,11 @@ export const CrmPipeline: React.FC = () => {
                     <td className="p-3">
                       <div className="flex flex-wrap gap-1">
                         {cnt.tags.map((t) => (
-                          <span key={t} className="px-2 py-0.5 bg-slate-800 text-slate-300 text-[10px] rounded font-medium">{t}</span>
+                          <span key={t} className="px-2 py-0.5 bg-slate-50 text-slate-700 text-[10px] rounded font-medium">{t}</span>
                         ))}
                       </div>
                     </td>
-                    <td className="p-3 text-slate-400 text-[11px]">{cnt.lastActive}</td>
+                    <td className="p-3 text-slate-600 text-[11px]">{cnt.lastActive}</td>
                   </tr>
                 ))}
               </tbody>
@@ -240,29 +240,29 @@ export const CrmPipeline: React.FC = () => {
 
           {/* Contact Details Card */}
           {selectedContact && (
-            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6">
-              <div className="pb-4 border-b border-slate-800">
+            <div className="bg-white border border-slate-200 rounded-2xl p-6 space-y-6">
+              <div className="pb-4 border-b border-slate-200">
                 <span className="text-[10px] uppercase font-extrabold text-indigo-400 tracking-wider">CONTACT AUDIT LOG</span>
-                <h3 className="text-lg font-bold text-white mt-1">{selectedContact.name}</h3>
-                <p className="text-xs font-mono text-slate-400">{selectedContact.email}</p>
+                <h3 className="text-lg font-bold text-slate-900 mt-1">{selectedContact.name}</h3>
+                <p className="text-xs font-mono text-slate-600">{selectedContact.email}</p>
               </div>
 
               <div className="space-y-3 text-xs">
-                <div className="flex items-center justify-between p-3 bg-slate-950 rounded-xl border border-slate-800">
-                  <span className="text-slate-400 font-medium">Dynamic Lead Score</span>
+                <div className="flex items-center justify-between p-3 bg-white rounded-xl border border-slate-200">
+                  <span className="text-slate-600 font-medium">Dynamic Lead Score</span>
                   <span className="font-extrabold text-amber-400 text-sm">{selectedContact.score} Points</span>
                 </div>
 
                 <div className="space-y-1">
-                  <label className="block text-slate-400 font-semibold">Activity Timeline:</label>
-                  <div className="space-y-2 pt-1 text-[11px] text-slate-300">
-                    <div className="p-2.5 bg-slate-950 rounded-lg border border-slate-800">
+                  <label className="block text-slate-600 font-semibold">Activity Timeline:</label>
+                  <div className="space-y-2 pt-1 text-[11px] text-slate-700">
+                    <div className="p-2.5 bg-white rounded-lg border border-slate-200">
                       ⚡ Submitted Opt-In Form on VSL Funnel Step (+50 pts)
                     </div>
-                    <div className="p-2.5 bg-slate-950 rounded-lg border border-slate-800">
+                    <div className="p-2.5 bg-white rounded-lg border border-slate-200">
                       🎥 Watched 85% of VSL Video Stream (+40 pts)
                     </div>
-                    <div className="p-2.5 bg-slate-950 rounded-lg border border-slate-800">
+                    <div className="p-2.5 bg-white rounded-lg border border-slate-200">
                       💳 Executed 1-Click Post Purchase Upsell (+100 pts)
                     </div>
                   </div>
@@ -275,26 +275,26 @@ export const CrmPipeline: React.FC = () => {
 
       {/* CREATE DEAL MODAL */}
       {isAddDealOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 text-slate-100 shadow-2xl">
-            <h3 className="text-base font-bold text-white">Create New Pipeline Deal</h3>
+        <div className="fixed inset-0 z-50 bg-white/80 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-md p-6 space-y-4 text-slate-900 shadow-2xl">
+            <h3 className="text-base font-bold text-slate-900">Create New Pipeline Deal</h3>
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-400 mb-1">Deal Title</label>
-                <input type="text" placeholder="e.g. Enterprise License Deal" value={newDealTitle} onChange={(e) => setNewDealTitle(e.target.value)} className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-white" />
+                <label className="block text-slate-600 mb-1">Deal Title</label>
+                <input type="text" placeholder="e.g. Enterprise License Deal" value={newDealTitle} onChange={(e) => setNewDealTitle(e.target.value)} className="w-full bg-white border border-slate-200 rounded px-3 py-2 text-slate-900" />
               </div>
               <div>
-                <label className="block text-slate-400 mb-1">Deal Value ($)</label>
-                <input type="number" placeholder="2997" value={newDealValue} onChange={(e) => setNewDealValue(e.target.value)} className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-white" />
+                <label className="block text-slate-600 mb-1">Deal Value ($)</label>
+                <input type="number" placeholder="2997" value={newDealValue} onChange={(e) => setNewDealValue(e.target.value)} className="w-full bg-white border border-slate-200 rounded px-3 py-2 text-slate-900" />
               </div>
               <div>
-                <label className="block text-slate-400 mb-1">Contact Name</label>
-                <input type="text" placeholder="e.g. Sarah Jenkins" value={newDealContact} onChange={(e) => setNewDealContact(e.target.value)} className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-white" />
+                <label className="block text-slate-600 mb-1">Contact Name</label>
+                <input type="text" placeholder="e.g. Sarah Jenkins" value={newDealContact} onChange={(e) => setNewDealContact(e.target.value)} className="w-full bg-white border border-slate-200 rounded px-3 py-2 text-slate-900" />
               </div>
             </div>
             <div className="flex gap-2">
               <button onClick={handleCreateDeal} className="flex-1 py-2.5 bg-indigo-600 text-white rounded-xl text-xs font-bold">Create Deal</button>
-              <button onClick={() => setIsAddDealOpen(false)} className="px-4 py-2.5 bg-slate-800 text-slate-400 rounded-xl text-xs font-bold">Cancel</button>
+              <button onClick={() => setIsAddDealOpen(false)} className="px-4 py-2.5 bg-slate-50 text-slate-600 rounded-xl text-xs font-bold">Cancel</button>
             </div>
           </div>
         </div>
@@ -302,22 +302,22 @@ export const CrmPipeline: React.FC = () => {
 
       {/* CREATE CONTACT MODAL */}
       {isAddContactOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 text-slate-100 shadow-2xl">
-            <h3 className="text-base font-bold text-white">Create New Lead Contact</h3>
+        <div className="fixed inset-0 z-50 bg-white/80 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-md p-6 space-y-4 text-slate-900 shadow-2xl">
+            <h3 className="text-base font-bold text-slate-900">Create New Lead Contact</h3>
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-400 mb-1">Full Name</label>
-                <input type="text" placeholder="e.g. Alex Rivera" value={newContactName} onChange={(e) => setNewContactName(e.target.value)} className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-white" />
+                <label className="block text-slate-600 mb-1">Full Name</label>
+                <input type="text" placeholder="e.g. Alex Rivera" value={newContactName} onChange={(e) => setNewContactName(e.target.value)} className="w-full bg-white border border-slate-200 rounded px-3 py-2 text-slate-900" />
               </div>
               <div>
-                <label className="block text-slate-400 mb-1">Email Address</label>
-                <input type="email" placeholder="alex@company.io" value={newContactEmail} onChange={(e) => setNewContactEmail(e.target.value)} className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-white" />
+                <label className="block text-slate-600 mb-1">Email Address</label>
+                <input type="email" placeholder="alex@company.io" value={newContactEmail} onChange={(e) => setNewContactEmail(e.target.value)} className="w-full bg-white border border-slate-200 rounded px-3 py-2 text-slate-900" />
               </div>
             </div>
             <div className="flex gap-2">
               <button onClick={handleCreateContact} className="flex-1 py-2.5 bg-indigo-600 text-white rounded-xl text-xs font-bold">Add Lead</button>
-              <button onClick={() => setIsAddContactOpen(false)} className="px-4 py-2.5 bg-slate-800 text-slate-400 rounded-xl text-xs font-bold">Cancel</button>
+              <button onClick={() => setIsAddContactOpen(false)} className="px-4 py-2.5 bg-slate-50 text-slate-600 rounded-xl text-xs font-bold">Cancel</button>
             </div>
           </div>
         </div>

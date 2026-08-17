@@ -332,8 +332,8 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
               style={{ color: style.typography.color || props.textColor || props.color }} 
             />
           ) : (
-            <div className="bg-slate-900 border border-slate-800 p-4 rounded-xl" style={{ color: style.typography.color || props.textColor || props.color }}>
-              <div className="text-xs font-mono text-slate-500 mb-2 border-b border-slate-800 pb-2 flex justify-between">
+            <div className="bg-white border border-slate-200 p-4 rounded-xl" style={{ color: style.typography.color || props.textColor || props.color }}>
+              <div className="text-xs font-mono text-slate-500 mb-2 border-b border-slate-200 pb-2 flex justify-between">
                 <span>&lt;html&gt; / css block</span>
                 <span className="text-indigo-400 font-semibold cursor-pointer">Edit Source</span>
               </div>
@@ -383,7 +383,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
                 <img 
                   src={props.bulletImageUrl || 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=32&h=32&fit=crop'} 
                   alt="bullet" 
-                  className="w-6 h-6 shrink-0 mt-0.5 object-cover border border-slate-700 rounded" 
+                  className="w-6 h-6 shrink-0 mt-0.5 object-cover border border-slate-300 rounded" 
                 />
                 <span style={{ color: style.typography.color || props.textColor || props.color }}>{item}</span>
               </li>
@@ -396,7 +396,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
       return (
         <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${isSelected ? 'is-selected' : ''}`}>
           <blockquote 
-            className="border-l-4 border-indigo-500 pl-4 py-2 italic bg-slate-900/60 rounded-r-lg"
+            className="border-l-4 border-indigo-500 pl-4 py-2 italic bg-white/60 rounded-r-lg"
             style={{ 
               color: style.typography.color || props.textColor || props.color,
               borderColor: props.borderColor || style.borders.borderColor || style.typography.color || '#6366f1'
@@ -453,19 +453,19 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
         <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${isSelected ? 'is-selected' : ''}`}>
           <div 
             onClick={() => setIsImagePopupOpen(true)}
-            className="relative cursor-pointer group  overflow-hidden border border-slate-800 bg-slate-950 shadow-lg hover:border-indigo-500 transition-all"
+            className="relative cursor-pointer group  overflow-hidden border border-slate-200 bg-white shadow-lg hover:border-indigo-500 transition-all"
           >
             <img 
               src={props.thumbnailUrl || props.src || 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&auto=format&fit=crop&q=80'} 
               alt="Thumbnail Preview" 
               className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300 opacity-90 group-hover:opacity-100"
             />
-            <div className="absolute inset-0 bg-slate-950/40 group-hover:bg-slate-950/20 flex items-center justify-center transition-colors">
+            <div className="absolute inset-0 bg-white/40 group-hover:bg-white/20 flex items-center justify-center transition-colors">
               <span className="p-3 bg-indigo-600/90 text-white -full shadow-lg group-hover:scale-110 transition-transform">
                 <Maximize2 className="w-5 h-5" />
               </span>
             </div>
-            <div className="p-2.5 bg-slate-900/90 border-t border-slate-800 text-xs font-semibold text-slate-300 flex items-center justify-between">
+            <div className="p-2.5 bg-white/90 border-t border-slate-200 text-xs font-semibold text-slate-700 flex items-center justify-between">
               <span>{props.caption || 'Click to enlarge full resolution diagram'}</span>
               <span className="text-[10px] text-indigo-400 font-extrabold uppercase">Popup Preview</span>
             </div>
@@ -473,18 +473,18 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
           {/* Full Lightbox Image Modal */}
           {isImagePopupOpen && (
-            <div className="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-6 animate-fade-in">
-              <div className="relative max-w-4xl w-full bg-slate-900 border border-slate-800  overflow-hidden shadow-2xl">
+            <div className="fixed inset-0 z-50 bg-white/90 backdrop-blur-md flex items-center justify-center p-6 animate-fade-in">
+              <div className="relative max-w-4xl w-full bg-white border border-slate-200  overflow-hidden shadow-2xl">
                 <button 
                   onClick={(e) => { e.stopPropagation(); setIsImagePopupOpen(false); }}
-                  className="absolute top-4 right-4 z-20 p-2 bg-slate-950/80 hover:bg-slate-950 text-white -full border border-slate-700 shadow"
+                  className="absolute top-4 right-4 z-20 p-2 bg-white/80 hover:bg-white text-slate-900 -full border border-slate-300 shadow"
                 >
                   <X className="w-5 h-5" />
                 </button>
                 <img 
                   src={props.fullSizeUrl || props.thumbnailUrl || props.src || 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1600&auto=format&fit=crop&q=80'} 
                   alt="Full Lightbox View" 
-                  className="w-full max-h-[80vh] object-contain bg-slate-950"
+                  className="w-full max-h-[80vh] object-contain bg-white"
                 />
               </div>
             </div>
@@ -497,7 +497,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
         <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${isSelected ? 'is-selected' : ''}`}>
           <div 
             onClick={() => setIsVideoPopupOpen(true)}
-            className="relative aspect-video w-full  overflow-hidden border border-indigo-500/40 bg-slate-950 cursor-pointer group shadow-2xl"
+            className="relative aspect-video w-full  overflow-hidden border border-indigo-500/40 bg-white cursor-pointer group shadow-2xl"
           >
             <img 
               src={props.posterUrl || 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=1000&auto=format&fit=crop&q=80'} 
@@ -508,18 +508,18 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
               <div className="w-16 h-16 -full bg-indigo-600 text-white flex items-center justify-center shadow-xl shadow-indigo-600/50 group-hover:scale-110 transition-transform mb-3">
                 <Play className="w-8 h-8 fill-current ml-1" />
               </div>
-              <h4 className="text-sm font-bold text-white max-w-md">{props.title || 'Watch Video Testimonial in Popup Lightbox'}</h4>
+              <h4 className="text-sm font-bold text-slate-900 max-w-md">{props.title || 'Watch Video Testimonial in Popup Lightbox'}</h4>
               <span className="text-[11px] text-indigo-300 font-semibold mt-1">Click to play distraction-free video</span>
             </div>
           </div>
 
           {/* Lightbox Video Player Modal */}
           {isVideoPopupOpen && (
-            <div className="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-lg flex items-center justify-center p-6 animate-fade-in">
-              <div className="relative max-w-4xl w-full aspect-video bg-slate-950 border border-slate-800  overflow-hidden shadow-2xl">
+            <div className="fixed inset-0 z-50 bg-white/95 backdrop-blur-lg flex items-center justify-center p-6 animate-fade-in">
+              <div className="relative max-w-4xl w-full aspect-video bg-white border border-slate-200  overflow-hidden shadow-2xl">
                 <button 
                   onClick={(e) => { e.stopPropagation(); setIsVideoPopupOpen(false); }}
-                  className="absolute top-4 right-4 z-20 p-2.5 bg-slate-900/90 hover:bg-slate-800 text-white -full border border-slate-700 shadow-xl"
+                  className="absolute top-4 right-4 z-20 p-2.5 bg-white/90 hover:bg-slate-50 text-slate-900 -full border border-slate-300 shadow-xl"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -538,7 +538,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
     case 'video_playlist':
       return (
         <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${isSelected ? 'is-selected' : ''}`}>
-          <div className="relative w-full overflow-hidden rounded-xl bg-slate-900 border border-slate-800 shadow-xl" style={{ paddingTop: '56.25%' }}>
+          <div className="relative w-full overflow-hidden rounded-xl bg-white border border-slate-200 shadow-xl" style={{ paddingTop: '56.25%' }}>
             {(() => {
               const url = props.videoUrl || 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
               if (url.includes('youtube.com') || url.includes('youtu.be')) {
@@ -565,17 +565,17 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
           </div>
           {type === 'video_playlist' && (
             <div className="mt-4 space-y-2">
-              <div className="p-3 bg-slate-900 border border-slate-800 rounded-lg flex items-center justify-between shadow-sm cursor-pointer hover:border-indigo-500">
+              <div className="p-3 bg-white border border-slate-200 rounded-lg flex items-center justify-between shadow-sm cursor-pointer hover:border-indigo-500">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-xs">1</div>
-                  <span className="text-sm font-semibold text-white">Introduction & Setup</span>
+                  <span className="text-sm font-semibold text-slate-900">Introduction & Setup</span>
                 </div>
                 <span className="text-xs text-slate-500">5:24</span>
               </div>
-              <div className="p-3 bg-slate-950 border border-slate-800 rounded-lg flex items-center justify-between shadow-sm cursor-pointer hover:border-indigo-500">
+              <div className="p-3 bg-white border border-slate-200 rounded-lg flex items-center justify-between shadow-sm cursor-pointer hover:border-indigo-500">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-slate-800 text-slate-400 flex items-center justify-center font-bold text-xs">2</div>
-                  <span className="text-sm font-medium text-slate-300">Advanced Strategies</span>
+                  <div className="w-8 h-8 rounded-full bg-slate-50 text-slate-600 flex items-center justify-center font-bold text-xs">2</div>
+                  <span className="text-sm font-medium text-slate-700">Advanced Strategies</span>
                 </div>
                 <span className="text-xs text-slate-500">12:15</span>
               </div>
@@ -589,7 +589,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
         <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${isSelected ? 'is-selected' : ''}`}>
           <div className="grid grid-cols-3 gap-3">
             {[1, 2, 3].map((num) => (
-              <div key={num} className="aspect-video bg-slate-800  overflow-hidden border border-slate-700">
+              <div key={num} className="aspect-video bg-slate-50  overflow-hidden border border-slate-300">
                 <img 
                   src={`https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&auto=format&fit=crop&q=80`} 
                   alt="Gallery" 
@@ -603,8 +603,8 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     case 'video_player':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} overflow-hidden  bg-slate-900 border border-indigo-500/40 shadow-2xl ${isSelected ? 'is-selected' : ''}`}>
-          <div className="relative aspect-video w-full bg-slate-950 flex items-center justify-center group">
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} overflow-hidden  bg-white border border-indigo-500/40 shadow-2xl ${isSelected ? 'is-selected' : ''}`}>
+          <div className="relative aspect-video w-full bg-white flex items-center justify-center group">
             {videoPlaying ? (
               <video 
                 src={props.videoUrl || 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4'} 
@@ -627,8 +627,8 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
                     <Play className="w-8 h-8 fill-current ml-1" />
                   </button>
                 </div>
-                <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs font-semibold text-slate-300">
-                  <span className="bg-slate-900/80 backdrop-blur px-2.5 py-1  border border-slate-700">HD VSL Stream (Custom Player)</span>
+                <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs font-semibold text-slate-700">
+                  <span className="bg-white/80 backdrop-blur px-2.5 py-1  border border-slate-300">HD VSL Stream (Custom Player)</span>
                   <span className="bg-indigo-600/90 text-white px-2.5 py-1 ">00:00 / 12:45</span>
                 </div>
               </>
@@ -641,7 +641,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
       return (
         <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${isSelected ? 'is-selected' : ''}`}>
           {isInteractiveMode ? (
-            <div className="w-full bg-slate-950 p-3  border border-slate-800 flex items-center shadow-lg">
+            <div className="w-full bg-white p-3  border border-slate-200 flex items-center shadow-lg">
               <audio 
                 controls 
                 className="w-full"
@@ -651,13 +651,13 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
               </audio>
             </div>
           ) : (
-            <div className="p-4 bg-slate-900  border border-slate-800 flex items-center gap-4">
+            <div className="p-4 bg-white  border border-slate-200 flex items-center gap-4">
               <div className="w-12 h-12 -full bg-indigo-600 flex items-center justify-center text-white shrink-0 shadow-lg shadow-indigo-600/20">
                 <Volume2 className="w-6 h-6" />
               </div>
               <div className="flex-1">
-                <div className="text-sm font-semibold text-slate-100">{props.title || 'Podcast Episode #42: Scaling High Ticket Funnels'}</div>
-                <div className="w-full bg-slate-800 h-2 -full mt-2 overflow-hidden">
+                <div className="text-sm font-semibold text-slate-900">{props.title || 'Podcast Episode #42: Scaling High Ticket Funnels'}</div>
+                <div className="w-full bg-slate-50 h-2 -full mt-2 overflow-hidden">
                   <div className="bg-indigo-500 h-full w-1/3 -full"></div>
                 </div>
               </div>
@@ -691,12 +691,12 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
       const links = (props.menuLinks || 'Home, About, Terms, Privacy').split(',').map((l: string) => l.trim());
       return (
         <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${isSelected ? 'is-selected' : ''}`}>
-          <footer className="w-full bg-slate-950 border-t border-slate-800 py-12 px-6 flex flex-col items-center justify-center space-y-6">
+          <footer className="w-full bg-white border-t border-slate-200 py-12 px-6 flex flex-col items-center justify-center space-y-6">
             
             {props.showMenu !== false && (
               <nav className="flex flex-wrap items-center justify-center gap-6">
                 {links.map((link: string, idx: number) => (
-                  <a key={idx} href="#" className="text-sm font-semibold text-slate-400 hover:text-indigo-400 transition-colors" onClick={(e) => e.preventDefault()}>
+                  <a key={idx} href="#" className="text-sm font-semibold text-slate-600 hover:text-indigo-400 transition-colors" onClick={(e) => e.preventDefault()}>
                     {link}
                   </a>
                 ))}
@@ -705,13 +705,13 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
             {props.showSocials !== false && (
               <div className="flex items-center gap-4">
-                <a href="#" className="w-10 h-10 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-indigo-400 hover:border-indigo-500 transition-colors" onClick={(e) => e.preventDefault()}>
+                <a href="#" className="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:text-indigo-400 hover:border-indigo-500 transition-colors" onClick={(e) => e.preventDefault()}>
                   <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
                 </a>
-                <a href="#" className="w-10 h-10 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-indigo-400 hover:border-indigo-500 transition-colors" onClick={(e) => e.preventDefault()}>
+                <a href="#" className="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:text-indigo-400 hover:border-indigo-500 transition-colors" onClick={(e) => e.preventDefault()}>
                   <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm3 8h-1.35c-.538 0-.65.221-.65.778v1.222h2l-.209 2h-1.791v7h-3v-7h-2v-2h2v-2.308c0-1.769.931-2.692 3.029-2.692h1.971v3z"/></svg>
                 </a>
-                <a href="#" className="w-10 h-10 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-indigo-400 hover:border-indigo-500 transition-colors" onClick={(e) => e.preventDefault()}>
+                <a href="#" className="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:text-indigo-400 hover:border-indigo-500 transition-colors" onClick={(e) => e.preventDefault()}>
                   <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948s-.014-3.667-.072-4.947c-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                 </a>
               </div>
@@ -727,12 +727,12 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     case 'custom_html':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-4 bg-slate-900/80  border border-dashed border-amber-500/50' : ''} ${isSelected ? 'is-selected' : ''}`}>
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-4 bg-white/80  border border-dashed border-amber-500/50' : ''} ${isSelected ? 'is-selected' : ''}`}>
           <div className="flex items-center gap-2 text-xs font-mono text-amber-400 mb-2">
             <FileText className="w-4 h-4" />
             <span>Custom HTML/JS Embed Block</span>
           </div>
-          <div className="text-xs text-slate-400 font-mono bg-slate-950 p-2 ">
+          <div className="text-xs text-slate-600 font-mono bg-white p-2 ">
             {props.code || '&lt;script src="https://analytics.embed.js"&gt;&lt;/script&gt;'}
           </div>
         </div>
@@ -740,7 +740,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     case 'custom_code':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-4 bg-slate-900/80  border border-dashed border-amber-500/50' : ''} ${isSelected ? 'is-selected' : ''}`}>
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-4 bg-white/80  border border-dashed border-amber-500/50' : ''} ${isSelected ? 'is-selected' : ''}`}>
           {isInteractiveMode ? (
             <div dangerouslySetInnerHTML={{ __html: props.code || '' }} />
           ) : (
@@ -749,7 +749,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
                 <Code2 className="w-4 h-4" />
                 <span>Custom Code Block (HTML, CSS, JS)</span>
               </div>
-              <div className="text-xs text-slate-400 font-mono bg-slate-950 p-2  whitespace-pre-wrap">
+              <div className="text-xs text-slate-600 font-mono bg-white p-2  whitespace-pre-wrap">
                 {props.code || '<!-- Enter custom HTML, JS, or CSS here -->'}
               </div>
             </>
@@ -809,7 +809,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
     case 'autowebinar_registration':
       return (
         <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-gradient-to-br from-indigo-950/90 to-slate-900  border border-indigo-500/40 shadow-2xl space-y-4 ${isSelected ? 'is-selected' : ''}`}>
-          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+          <div className="flex items-center justify-between border-b border-slate-200 pb-3">
             <div className="flex items-center gap-2 text-indigo-400 text-xs font-extrabold">
               <CalendarCheck className="w-4 h-4" />
               <span>Automated Webinar Registration Gate</span>
@@ -821,16 +821,16 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
           {!isRegisteredWebinar ? (
             <div className="space-y-3.5">
-              <h3 className="text-lg font-black text-white">{props.title || 'Reserve Your Seat for the Masterclass'}</h3>
+              <h3 className="text-lg font-black text-slate-900">{props.title || 'Reserve Your Seat for the Masterclass'}</h3>
               
               {/* Date & Time Selectors */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[11px] font-semibold text-slate-300 mb-1">Select Date:</label>
+                  <label className="block text-[11px] font-semibold text-slate-700 mb-1">Select Date:</label>
                   <select 
                     value={webinarDateChoice}
                     onChange={(e) => setWebinarDateChoice(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800  px-3 py-2 text-xs text-slate-100 font-semibold"
+                    className="w-full bg-white border border-slate-200  px-3 py-2 text-xs text-slate-900 font-semibold"
                   >
                     <option value="today_15m">⚡ Watch Right Now (In 15 Mins)</option>
                     <option value="today_2pm">📅 Today, Aug 11 at 2:00 PM</option>
@@ -840,11 +840,11 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-semibold text-slate-300 mb-1">Select Session Time:</label>
+                  <label className="block text-[11px] font-semibold text-slate-700 mb-1">Select Session Time:</label>
                   <select 
                     value={webinarTimeChoice}
                     onChange={(e) => setWebinarTimeChoice(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800  px-3 py-2 text-xs text-slate-100 font-semibold"
+                    className="w-full bg-white border border-slate-200  px-3 py-2 text-xs text-slate-900 font-semibold"
                   >
                     <option value="10am">10:00 AM EST (Morning Session)</option>
                     <option value="2pm">2:00 PM EST (Afternoon Session)</option>
@@ -909,10 +909,10 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
               </button>
             </div>
           ) : (
-            <div className="p-6 bg-slate-950  border border-emerald-500/40 text-center space-y-3 animate-fade-in">
+            <div className="p-6 bg-white  border border-emerald-500/40 text-center space-y-3 animate-fade-in">
               <CheckCircle className="w-10 h-10 text-emerald-400 mx-auto" />
-              <h4 className="text-base font-extrabold text-white">Registration Confirmed!</h4>
-              <p className="text-xs text-slate-300">
+              <h4 className="text-base font-extrabold text-slate-900">Registration Confirmed!</h4>
+              <p className="text-xs text-slate-700">
                 Your seat is reserved. SMS and email reminders are scheduled based on your selected date & time.
               </p>
             </div>
@@ -930,14 +930,14 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
           ];
 
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-4 bg-slate-900  border border-slate-800 space-y-3' : 'space-y-3'} ${isSelected ? 'is-selected' : ''}`}>
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-4 bg-white  border border-slate-200 space-y-3' : 'space-y-3'} ${isSelected ? 'is-selected' : ''}`}>
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-200">{props.label || 'Select Webinar Broadcast Date:'}</span>
+            <span className="text-xs font-bold text-slate-800">{props.label || 'Select Webinar Broadcast Date:'}</span>
             <Calendar className="w-4 h-4 text-indigo-400" />
           </div>
           <div className="space-y-2">
             {dateOpts.map((d) => (
-              <label key={d.id} className={`flex items-center justify-between p-3 border text-xs font-medium cursor-pointer transition-all ${webinarDateChoice === d.id ? 'bg-indigo-950/80 border-indigo-500 text-indigo-200' : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700'}`} style={{ color: props.fieldTextColor || undefined }}>
+              <label key={d.id} className={`flex items-center justify-between p-3 border text-xs font-medium cursor-pointer transition-all ${webinarDateChoice === d.id ? 'bg-indigo-950/80 border-indigo-500 text-indigo-200' : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'}`} style={{ color: props.fieldTextColor || undefined }}>
                 <span>{d.label}</span>
                 <input 
                   type="radio" 
@@ -956,9 +956,9 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
       const rawSlots = props.slots ? props.slots.split(',').map((s: string) => s.trim()) : ['10:00 AM EST', '2:00 PM EST', '6:00 PM EST', '9:00 PM EST'];
 
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-4 bg-slate-900  border border-slate-800 space-y-3' : 'space-y-3'} ${isSelected ? 'is-selected' : ''}`}>
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-4 bg-white  border border-slate-200 space-y-3' : 'space-y-3'} ${isSelected ? 'is-selected' : ''}`}>
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-200">{props.label || 'Select Session Time Slot:'}</span>
+            <span className="text-xs font-bold text-slate-800">{props.label || 'Select Session Time Slot:'}</span>
             <Clock className="w-4 h-4 text-indigo-400" />
           </div>
           <div className="grid grid-cols-2 gap-2 text-xs">
@@ -966,14 +966,14 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
               <button 
                 key={idx}
                 onClick={() => setWebinarTimeChoice(slot)}
-                className={`p-2.5 border font-bold text-center transition-all ${webinarTimeChoice === slot ? 'bg-indigo-600 text-white border-indigo-500 shadow' : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-white'}`}
+                className={`p-2.5 border font-bold text-center transition-all ${webinarTimeChoice === slot ? 'bg-indigo-600 text-white border-indigo-500 shadow' : 'bg-white border-slate-200 text-slate-600 hover:text-slate-900'}`}
                 style={{ color: webinarTimeChoice === slot ? '#ffffff' : (props.fieldTextColor || undefined) }}
               >
                 {slot}
               </button>
             ))}
           </div>
-          <div className="text-[10px] text-slate-400 flex items-center gap-1.5 pt-1">
+          <div className="text-[10px] text-slate-600 flex items-center gap-1.5 pt-1">
             <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
             <span>Reminder emails & SMS automatically sync to selected time.</span>
           </div>
@@ -982,13 +982,13 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     case 'add_event':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-5 bg-slate-900  border border-slate-800 space-y-4' : 'space-y-4'} ${isSelected ? 'is-selected' : ''}`}>
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-5 bg-white  border border-slate-200 space-y-4' : 'space-y-4'} ${isSelected ? 'is-selected' : ''}`}>
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-xs font-bold text-slate-200">
+            <div className="flex items-center gap-2 text-xs font-bold text-slate-800">
               <CalendarCheck className="w-4 h-4 text-emerald-400" />
               <span>{props.buttonText || 'Add Webinar Event to Your Calendar'}</span>
             </div>
-            <span className="text-[10px] text-slate-400">1-Click Integration</span>
+            <span className="text-[10px] text-slate-600">1-Click Integration</span>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
@@ -997,7 +997,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
                 setAddedCalendarType('Google');
                 alert('Webinar event added to Google Calendar!');
               }}
-              className="p-3 bg-slate-950 hover:bg-indigo-950/60 border border-slate-800 font-semibold text-slate-200 flex flex-col items-center gap-1 transition-all"
+              className="p-3 bg-white hover:bg-indigo-950/60 border border-slate-200 font-semibold text-slate-800 flex flex-col items-center gap-1 transition-all"
             >
               <Calendar className="w-4 h-4 text-indigo-400" />
               <span>Google Calendar</span>
@@ -1008,7 +1008,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
                 setAddedCalendarType('Apple');
                 alert('Webinar event added to Apple iCal!');
               }}
-              className="p-3 bg-slate-950 hover:bg-indigo-950/60 border border-slate-800 font-semibold text-slate-200 flex flex-col items-center gap-1 transition-all"
+              className="p-3 bg-white hover:bg-indigo-950/60 border border-slate-200 font-semibold text-slate-800 flex flex-col items-center gap-1 transition-all"
             >
               <Calendar className="w-4 h-4 text-pink-400" />
               <span>Apple iCal</span>
@@ -1019,7 +1019,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
                 setAddedCalendarType('Outlook');
                 alert('Webinar event added to Outlook!');
               }}
-              className="p-3 bg-slate-950 hover:bg-indigo-950/60 border border-slate-800 font-semibold text-slate-200 flex flex-col items-center gap-1 transition-all"
+              className="p-3 bg-white hover:bg-indigo-950/60 border border-slate-200 font-semibold text-slate-800 flex flex-col items-center gap-1 transition-all"
             >
               <Calendar className="w-4 h-4 text-blue-400" />
               <span>Outlook</span>
@@ -1030,7 +1030,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
                 setAddedCalendarType('ICS');
                 alert('Downloading .ICS calendar invite file...');
               }}
-              className="p-3 bg-slate-950 hover:bg-indigo-950/60 border border-slate-800 font-semibold text-slate-200 flex flex-col items-center gap-1 transition-all"
+              className="p-3 bg-white hover:bg-indigo-950/60 border border-slate-200 font-semibold text-slate-800 flex flex-col items-center gap-1 transition-all"
             >
               <Upload className="w-4 h-4 text-emerald-400 rotate-180" />
               <span>Download .ICS</span>
@@ -1054,17 +1054,17 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
       ];
 
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-slate-900 border border-indigo-500/40 shadow-2xl space-y-5 ${isSelected ? 'is-selected' : ''}`}>
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-white border border-indigo-500/40 shadow-2xl space-y-5 ${isSelected ? 'is-selected' : ''}`}>
           {/* Header & Progress */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-indigo-400 text-xs font-bold">
               <Workflow className="w-4 h-4" />
               <span>{props.title || 'Interactive Qualification Survey'}</span>
             </div>
-            <span className="text-xs font-bold text-slate-400">Step {surveyStep} of 3</span>
+            <span className="text-xs font-bold text-slate-600">Step {surveyStep} of 3</span>
           </div>
 
-          <div className="w-full bg-slate-950 h-2 overflow-hidden border border-slate-800">
+          <div className="w-full bg-white h-2 overflow-hidden border border-slate-200">
             <div 
               className="bg-gradient-to-r from-indigo-500 to-pink-500 h-full transition-all duration-500"
               style={{ width: `${(surveyStep / 3) * 100}%` }}
@@ -1076,7 +1076,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
             <div className="space-y-4">
               {surveyStep === 1 && (
                 <div className="space-y-3">
-                  <h4 className="text-lg font-bold text-white">{props.questionText || 'Q1: What is your primary sales funnel bottleneck?'}</h4>
+                  <h4 className="text-lg font-bold text-slate-900">{props.questionText || 'Q1: What is your primary sales funnel bottleneck?'}</h4>
                   <div className="space-y-2">
                     {surveyOptions.map((opt: string, i: number) => (
                       <button 
@@ -1085,7 +1085,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
                           setSurveyAnswers({ ...surveyAnswers, 1: opt });
                           setSurveyStep(2);
                         }}
-                        className="w-full p-3.5 bg-slate-950 hover:bg-indigo-950/60 border border-slate-800 hover:border-indigo-500  text-xs font-semibold text-slate-200 transition-all flex items-center justify-between group"
+                        className="w-full p-3.5 bg-white hover:bg-indigo-950/60 border border-slate-200 hover:border-indigo-500  text-xs font-semibold text-slate-800 transition-all flex items-center justify-between group"
                       >
                         <span>{opt}</span>
                         <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-indigo-400" />
@@ -1097,7 +1097,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
               {surveyStep === 2 && (
                 <div className="space-y-3">
-                  <h4 className="text-lg font-bold text-white">Q2: What is your target monthly revenue goal?</h4>
+                  <h4 className="text-lg font-bold text-slate-900">Q2: What is your target monthly revenue goal?</h4>
                   <div className="space-y-2">
                     {['$10,000 / month', '$25,000 / month', '$50,000 / month', '$100,000+ / month'].map((opt, i) => (
                       <button 
@@ -1106,7 +1106,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
                           setSurveyAnswers({ ...surveyAnswers, 2: opt });
                           setSurveyStep(3);
                         }}
-                        className="w-full p-3.5 bg-slate-950 hover:bg-indigo-950/60 border border-slate-800 hover:border-indigo-500  text-xs font-semibold text-slate-200 transition-all flex items-center justify-between group"
+                        className="w-full p-3.5 bg-white hover:bg-indigo-950/60 border border-slate-200 hover:border-indigo-500  text-xs font-semibold text-slate-800 transition-all flex items-center justify-between group"
                       >
                         <span>{opt}</span>
                         <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-indigo-400" />
@@ -1118,7 +1118,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
               {surveyStep === 3 && (
                 <div className="space-y-3">
-                  <h4 className="text-lg font-bold text-white">Q3: How soon are you prepared to deploy your new funnel?</h4>
+                  <h4 className="text-lg font-bold text-slate-900">Q3: How soon are you prepared to deploy your new funnel?</h4>
                   <div className="space-y-2">
                     {['Immediately (Next 24 Hours)', 'Within 7 Days', 'Within 30 Days'].map((opt, i) => (
                       <button 
@@ -1127,7 +1127,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
                           setSurveyAnswers({ ...surveyAnswers, 3: opt });
                           setSurveyCompleted(true);
                         }}
-                        className="w-full p-3.5 bg-slate-950 hover:bg-emerald-950/60 border border-slate-800 hover:border-emerald-500  text-xs font-semibold text-slate-200 transition-all flex items-center justify-between group"
+                        className="w-full p-3.5 bg-white hover:bg-emerald-950/60 border border-slate-200 hover:border-emerald-500  text-xs font-semibold text-slate-800 transition-all flex items-center justify-between group"
                       >
                         <span>{opt}</span>
                         <Check className="w-4 h-4 text-emerald-400" />
@@ -1138,12 +1138,12 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
               )}
             </div>
           ) : (
-            <div className="p-6 bg-slate-950  border border-emerald-500/40 text-center space-y-4 animate-fade-in">
+            <div className="p-6 bg-white  border border-emerald-500/40 text-center space-y-4 animate-fade-in">
               <div className="w-12 h-12 -full bg-emerald-950 border border-emerald-500/50 text-emerald-400 flex items-center justify-center mx-auto">
                 <CheckCircle className="w-6 h-6" />
               </div>
-              <h4 className="text-lg font-extrabold text-white">You Qualify for the LaunchEngine Scale Package!</h4>
-              <p className="text-xs text-slate-300 max-w-md mx-auto">
+              <h4 className="text-lg font-extrabold text-slate-900">You Qualify for the LaunchEngine Scale Package!</h4>
+              <p className="text-xs text-slate-700 max-w-md mx-auto">
                 Based on your answers, your lead profile has been segmented as <strong className="text-emerald-400 font-mono">HIGH TICKET SAAS APPLICANT</strong>.
               </p>
               <button 
@@ -1179,7 +1179,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
           className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} space-y-1.5 p-2.5 rounded-2xl ${isSelected ? 'is-selected' : ''}`}
         >
           {props.label && (
-            <label className="block text-xs font-semibold text-slate-300">
+            <label className="block text-xs font-semibold text-slate-700">
               {props.label}
             </label>
           )}
@@ -1224,7 +1224,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
           className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} space-y-1.5 p-2.5 rounded-2xl ${isSelected ? 'is-selected' : ''}`}
         >
           {props.label && (
-            <label className="block text-xs font-semibold text-slate-300">
+            <label className="block text-xs font-semibold text-slate-700">
               {props.label}
             </label>
           )}
@@ -1268,9 +1268,9 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
           onClick={onSelect} 
           className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} space-y-2 p-2.5 rounded-2xl ${isSelected ? 'is-selected' : ''}`}
         >
-          <label className="block text-xs font-semibold text-slate-300">{props.label || 'Mobile Phone Number (For SMS Alerts)'}</label>
+          <label className="block text-xs font-semibold text-slate-700">{props.label || 'Mobile Phone Number (For SMS Alerts)'}</label>
           <div className="flex relative">
-            <span className="inline-flex items-center px-3 border border-r-0 border-slate-800 bg-slate-950 text-slate-400 sm:text-sm rounded-l-xl">
+            <span className="inline-flex items-center px-3 border border-r-0 border-slate-200 bg-white text-slate-600 sm:text-sm rounded-l-xl">
               +1
             </span>
             <input 
@@ -1321,7 +1321,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
           onClick={onSelect} 
           className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} space-y-1.5 p-2.5 rounded-2xl ${isSelected ? 'is-selected' : ''}`}
         >
-          <label className="block text-xs font-semibold text-slate-300">{props.label || 'Select Business Type'}</label>
+          <label className="block text-xs font-semibold text-slate-700">{props.label || 'Select Business Type'}</label>
           <select 
             disabled={!isInteractiveMode}
             className="w-full px-3.5 py-2.5 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -1346,21 +1346,21 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     case 'multi_step_optin':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-6 bg-slate-900 border border-slate-800 space-y-4' : 'space-y-4'} ${isSelected ? 'is-selected' : ''}`}>
-          <div className="flex items-center justify-between text-xs font-semibold text-slate-400">
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-6 bg-white border border-slate-200 space-y-4' : 'space-y-4'} ${isSelected ? 'is-selected' : ''}`}>
+          <div className="flex items-center justify-between text-xs font-semibold text-slate-600">
             <span>Step {step} of 2</span>
             <span>{step === 1 ? '50% Completed' : '100% Completed'}</span>
           </div>
-          <div className="w-full bg-slate-800 h-2 overflow-hidden rounded-full">
+          <div className="w-full bg-slate-50 h-2 overflow-hidden rounded-full">
             <div className={`bg-indigo-500 h-full transition-all duration-300 ${step === 1 ? 'w-1/2' : 'w-full'}`}></div>
           </div>
           {step === 1 ? (
             <div className="space-y-3 pt-2">
-              <h4 className="text-lg font-bold text-slate-100">{props.title || 'Where should we send your free growth report?'}</h4>
+              <h4 className="text-lg font-bold text-slate-900">{props.title || 'Where should we send your free growth report?'}</h4>
               <input 
                 type="email" 
                 placeholder={props.placeholder || 'Enter your best business email...'} 
-                className="w-full bg-slate-950 border border-slate-700 px-4 py-3 text-slate-100 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none rounded-xl" 
+                className="w-full bg-white border border-slate-300 px-4 py-3 text-slate-900 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none rounded-xl" 
                 style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} 
               />
               <button onClick={() => setStep(2)} className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30 rounded-xl">
@@ -1370,11 +1370,11 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
             </div>
           ) : (
             <div className="space-y-3 pt-2">
-              <h4 className="text-lg font-bold text-slate-100">{props.step2Title || 'Enter your phone number for instant SMS access'}</h4>
+              <h4 className="text-lg font-bold text-slate-900">{props.step2Title || 'Enter your phone number for instant SMS access'}</h4>
               <input 
                 type="tel" 
                 placeholder="+1 (555) 000-0000" 
-                className="w-full bg-slate-950 border border-slate-700 px-4 py-3 text-slate-100 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none rounded-xl" 
+                className="w-full bg-white border border-slate-300 px-4 py-3 text-slate-900 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none rounded-xl" 
                 style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} 
               />
               <button onClick={() => alert('Opt-in submitted successfully!')} className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30 rounded-xl">
@@ -1389,20 +1389,20 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
     // Category 4: E-Commerce & Checkout
     case 'shipping_address':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-5 bg-slate-900  border border-slate-800 space-y-4 ${isSelected ? 'is-selected' : ''}`}>
-          <h3 className="text-sm font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-2">
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-5 bg-white  border border-slate-200 space-y-4 ${isSelected ? 'is-selected' : ''}`}>
+          <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2 border-b border-slate-200 pb-2">
             <MapPin className="w-4 h-4 text-indigo-400" /> Shipping Address
           </h3>
           <div className="space-y-3">
-            <input disabled={!isInteractiveMode} type="text" placeholder="Full Name" className="w-full bg-slate-950 border border-slate-800  px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
-            <input disabled={!isInteractiveMode} type="text" placeholder="Full Address" className="w-full bg-slate-950 border border-slate-800  px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
+            <input disabled={!isInteractiveMode} type="text" placeholder="Full Name" className="w-full bg-white border border-slate-200  px-3 py-2 text-sm text-slate-900 placeholder-slate-500 focus:outline-none" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
+            <input disabled={!isInteractiveMode} type="text" placeholder="Full Address" className="w-full bg-white border border-slate-200  px-3 py-2 text-sm text-slate-900 placeholder-slate-500 focus:outline-none" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
             <div className="grid grid-cols-2 gap-3">
-              <input disabled={!isInteractiveMode} type="text" placeholder="City" className="w-full bg-slate-950 border border-slate-800  px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
-              <input disabled={!isInteractiveMode} type="text" placeholder="State/Province" className="w-full bg-slate-950 border border-slate-800  px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
+              <input disabled={!isInteractiveMode} type="text" placeholder="City" className="w-full bg-white border border-slate-200  px-3 py-2 text-sm text-slate-900 placeholder-slate-500 focus:outline-none" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
+              <input disabled={!isInteractiveMode} type="text" placeholder="State/Province" className="w-full bg-white border border-slate-200  px-3 py-2 text-sm text-slate-900 placeholder-slate-500 focus:outline-none" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
             </div>
             <div className="grid grid-cols-2 gap-3">
-              <input disabled={!isInteractiveMode} type="text" placeholder="Zip/Postal Code" className="w-full bg-slate-950 border border-slate-800  px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
-              <select disabled={!isInteractiveMode} className="w-full bg-slate-950 border border-slate-800  px-3 py-2 text-sm text-slate-500 focus:outline-none" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }}>
+              <input disabled={!isInteractiveMode} type="text" placeholder="Zip/Postal Code" className="w-full bg-white border border-slate-200  px-3 py-2 text-sm text-slate-900 placeholder-slate-500 focus:outline-none" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
+              <select disabled={!isInteractiveMode} className="w-full bg-white border border-slate-200  px-3 py-2 text-sm text-slate-500 focus:outline-none" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }}>
                 <option>United States</option>
                 <option>Canada</option>
                 <option>United Kingdom</option>
@@ -1414,20 +1414,20 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     case 'billing_address':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-5 bg-slate-900  border border-slate-800 space-y-4 ${isSelected ? 'is-selected' : ''}`}>
-          <h3 className="text-sm font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-2">
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-5 bg-white  border border-slate-200 space-y-4 ${isSelected ? 'is-selected' : ''}`}>
+          <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2 border-b border-slate-200 pb-2">
             <MapPin className="w-4 h-4 text-emerald-400" /> Billing Address
           </h3>
           <div className="space-y-3">
-            <input disabled={!isInteractiveMode} type="text" placeholder="Full Name on Card" className="w-full bg-slate-950 border border-slate-800  px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
-            <input disabled={!isInteractiveMode} type="text" placeholder="Billing Address" className="w-full bg-slate-950 border border-slate-800  px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
+            <input disabled={!isInteractiveMode} type="text" placeholder="Full Name on Card" className="w-full bg-white border border-slate-200  px-3 py-2 text-sm text-slate-900 placeholder-slate-500 focus:outline-none" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
+            <input disabled={!isInteractiveMode} type="text" placeholder="Billing Address" className="w-full bg-white border border-slate-200  px-3 py-2 text-sm text-slate-900 placeholder-slate-500 focus:outline-none" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
             <div className="grid grid-cols-2 gap-3">
-              <input disabled={!isInteractiveMode} type="text" placeholder="City" className="w-full bg-slate-950 border border-slate-800  px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
-              <input disabled={!isInteractiveMode} type="text" placeholder="State/Province" className="w-full bg-slate-950 border border-slate-800  px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
+              <input disabled={!isInteractiveMode} type="text" placeholder="City" className="w-full bg-white border border-slate-200  px-3 py-2 text-sm text-slate-900 placeholder-slate-500 focus:outline-none" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
+              <input disabled={!isInteractiveMode} type="text" placeholder="State/Province" className="w-full bg-white border border-slate-200  px-3 py-2 text-sm text-slate-900 placeholder-slate-500 focus:outline-none" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
             </div>
             <div className="grid grid-cols-2 gap-3">
-              <input disabled={!isInteractiveMode} type="text" placeholder="Zip/Postal Code" className="w-full bg-slate-950 border border-slate-800  px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
-              <select disabled={!isInteractiveMode} className="w-full bg-slate-950 border border-slate-800  px-3 py-2 text-sm text-slate-500 focus:outline-none" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }}>
+              <input disabled={!isInteractiveMode} type="text" placeholder="Zip/Postal Code" className="w-full bg-white border border-slate-200  px-3 py-2 text-sm text-slate-900 placeholder-slate-500 focus:outline-none" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
+              <select disabled={!isInteractiveMode} className="w-full bg-white border border-slate-200  px-3 py-2 text-sm text-slate-500 focus:outline-none" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }}>
                 <option>United States</option>
                 <option>Canada</option>
                 <option>United Kingdom</option>
@@ -1439,9 +1439,9 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     case 'credit_card_form':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-slate-900  border border-indigo-500/40 shadow-2xl space-y-4 ${isSelected ? 'is-selected' : ''}`}>
-          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-            <div className="flex items-center gap-2 text-xs font-extrabold text-white">
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-white  border border-indigo-500/40 shadow-2xl space-y-4 ${isSelected ? 'is-selected' : ''}`}>
+          <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+            <div className="flex items-center gap-2 text-xs font-extrabold text-slate-900">
               <CreditCard className="w-4 h-4 text-indigo-400" />
               <span>Secure Credit Card Payment Gate</span>
             </div>
@@ -1454,30 +1454,30 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
           {!cardSuccess ? (
             <div className="space-y-3">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Name on Credit Card</label>
-                <input type="text" placeholder="Johnathan Vance" className="w-full bg-slate-950 border border-slate-800  px-3.5 py-2.5 text-xs text-slate-100 focus:ring-2 focus:ring-indigo-500 focus:outline-none" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Name on Credit Card</label>
+                <input type="text" placeholder="Johnathan Vance" className="w-full bg-white border border-slate-200  px-3.5 py-2.5 text-xs text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Credit Card Number</label>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Credit Card Number</label>
                 <div className="relative">
-                  <input type="text" placeholder="4242 •••• •••• 4242" className="w-full bg-slate-950 border border-slate-800  px-3.5 py-2.5 pl-10 text-xs text-slate-100 font-mono focus:ring-2 focus:ring-indigo-500 focus:outline-none" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
-                  <CreditCard className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+                  <input type="text" placeholder="4242 •••• •••• 4242" className="w-full bg-white border border-slate-200  px-3.5 py-2.5 pl-10 text-xs text-slate-900 font-mono focus:ring-2 focus:ring-indigo-500 focus:outline-none" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
+                  <CreditCard className="w-4 h-4 text-slate-600 absolute left-3.5 top-3" />
                 </div>
               </div>
 
               <div className="grid grid-cols-3 gap-2">
                 <div className="col-span-1">
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">MM / YY</label>
-                  <input type="text" placeholder="12 / 28" className="w-full bg-slate-950 border border-slate-800  px-3 py-2 text-xs text-slate-100 text-center font-mono" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">MM / YY</label>
+                  <input type="text" placeholder="12 / 28" className="w-full bg-white border border-slate-200  px-3 py-2 text-xs text-slate-900 text-center font-mono" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
                 </div>
                 <div className="col-span-1">
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">CVC Code</label>
-                  <input type="text" placeholder="888" className="w-full bg-slate-950 border border-slate-800  px-3 py-2 text-xs text-slate-100 text-center font-mono" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">CVC Code</label>
+                  <input type="text" placeholder="888" className="w-full bg-white border border-slate-200  px-3 py-2 text-xs text-slate-900 text-center font-mono" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
                 </div>
                 <div className="col-span-1">
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">Postal Code</label>
-                  <input type="text" placeholder="90210" className="w-full bg-slate-950 border border-slate-800  px-3 py-2 text-xs text-slate-100 text-center font-mono" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">Postal Code</label>
+                  <input type="text" placeholder="90210" className="w-full bg-white border border-slate-200  px-3 py-2 text-xs text-slate-900 text-center font-mono" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
                 </div>
               </div>
 
@@ -1497,10 +1497,10 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
               </button>
             </div>
           ) : (
-            <div className="p-6 bg-slate-950  border border-emerald-500/40 text-center space-y-3 animate-fade-in">
+            <div className="p-6 bg-white  border border-emerald-500/40 text-center space-y-3 animate-fade-in">
               <CheckCircle className="w-10 h-10 text-emerald-400 mx-auto" />
-              <h4 className="text-base font-extrabold text-white">Payment Successfully Charged!</h4>
-              <p className="text-xs text-slate-300">
+              <h4 className="text-base font-extrabold text-slate-900">Payment Successfully Charged!</h4>
+              <p className="text-xs text-slate-700">
                 Card credentials vaulted safely via Stripe. Redirecting to Post-Purchase 1-Click Upsell step...
               </p>
             </div>
@@ -1516,13 +1516,13 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
       ];
 
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-5 bg-slate-900  border border-slate-800 space-y-4' : 'space-y-4'} ${isSelected ? 'is-selected' : ''}`}>
-          <div className="flex items-center justify-between border-b border-slate-800 pb-2.5">
-            <div className="flex items-center gap-2 text-xs font-extrabold text-slate-200">
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-5 bg-white  border border-slate-200 space-y-4' : 'space-y-4'} ${isSelected ? 'is-selected' : ''}`}>
+          <div className="flex items-center justify-between border-b border-slate-200 pb-2.5">
+            <div className="flex items-center gap-2 text-xs font-extrabold text-slate-800">
               <ShoppingCart className="w-4 h-4 text-indigo-400" />
               <span>Select Product Package / Payment Plan</span>
             </div>
-            <span className="text-[10px] text-slate-400">Step 1 of Checkout</span>
+            <span className="text-[10px] text-slate-600">Step 1 of Checkout</span>
           </div>
 
           <div className="space-y-2.5">
@@ -1530,7 +1530,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
               <label 
                 key={p.id}
                 onClick={() => setSelectedOrderProductId(p.id)}
-                className={`p-3.5  border flex items-center justify-between cursor-pointer transition-all ${selectedOrderProductId === p.id ? 'bg-indigo-950/80 border-indigo-500 text-white shadow-lg' : 'bg-slate-950 border-slate-800 text-slate-300 hover:border-slate-700'}`}
+                className={`p-3.5  border flex items-center justify-between cursor-pointer transition-all ${selectedOrderProductId === p.id ? 'bg-indigo-950/80 border-indigo-500 text-white shadow-lg' : 'bg-white border-slate-200 text-slate-700 hover:border-slate-300'}`}
               >
                 <div className="flex items-center gap-3">
                   <input 
@@ -1563,9 +1563,9 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
       const finalCalculatedTotal = selectedBasePrice + bumpPrice - discount;
 
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-slate-900  border border-indigo-500/40 shadow-2xl space-y-4 ${isSelected ? 'is-selected' : ''}`}>
-          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-            <div className="flex items-center gap-2 text-xs font-extrabold text-white">
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-white  border border-indigo-500/40 shadow-2xl space-y-4 ${isSelected ? 'is-selected' : ''}`}>
+          <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+            <div className="flex items-center gap-2 text-xs font-extrabold text-slate-900">
               <ShoppingCart className="w-4 h-4 text-emerald-400" />
               <span>Order Summary & Items Review</span>
             </div>
@@ -1576,14 +1576,14 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
           <div className="space-y-2.5 text-xs">
             {/* Base item */}
-            <div className="flex items-center justify-between p-2.5 bg-slate-950  border border-slate-800">
+            <div className="flex items-center justify-between p-2.5 bg-white  border border-slate-200">
               <div>
-                <span className="font-bold text-slate-200">
+                <span className="font-bold text-slate-800">
                   {selectedOrderProductId === 'enterprise' ? 'LaunchEngine Enterprise Pass' : selectedOrderProductId === 'starter' ? 'LaunchEngine Starter Pass' : '3-Month Easy Payment Plan'}
                 </span>
                 <div className="text-[10px] text-slate-500">Core Software & Instant License Key</div>
               </div>
-              <span className="font-bold text-white">${selectedBasePrice}.00</span>
+              <span className="font-bold text-slate-900">${selectedBasePrice}.00</span>
             </div>
 
             {/* Order bump item toggle */}
@@ -1592,7 +1592,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
                 type="checkbox" 
                 checked={summaryIncludeBump} 
                 onChange={(e) => setSummaryIncludeBump(e.target.checked)} 
-                className="mt-0.5  bg-slate-950 border-amber-500 text-amber-500 focus:ring-amber-500"
+                className="mt-0.5  bg-white border-amber-500 text-amber-500 focus:ring-amber-500"
               />
               <div className="flex-1 flex items-center justify-between">
                 <div>
@@ -1614,16 +1614,16 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
           </div>
 
           {/* Final Totals Breakdown */}
-          <div className="border-t border-slate-800 pt-3 space-y-1.5 text-xs">
-            <div className="flex items-center justify-between text-slate-400">
+          <div className="border-t border-slate-200 pt-3 space-y-1.5 text-xs">
+            <div className="flex items-center justify-between text-slate-600">
               <span>Subtotal</span>
               <span>${selectedBasePrice + bumpPrice}.00</span>
             </div>
-            <div className="flex items-center justify-between text-slate-400">
+            <div className="flex items-center justify-between text-slate-600">
               <span>Estimated Tax (0%)</span>
               <span>$0.00</span>
             </div>
-            <div className="flex items-center justify-between text-base font-black text-white pt-2 border-t border-slate-800">
+            <div className="flex items-center justify-between text-base font-black text-slate-900 pt-2 border-t border-slate-200">
               <span>Total Due Today:</span>
               <span className="text-emerald-400">${finalCalculatedTotal}.00</span>
             </div>
@@ -1633,30 +1633,30 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     case 'order_confirmation':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-slate-900  border border-emerald-500/40 shadow-2xl space-y-5 ${isSelected ? 'is-selected' : ''}`}>
-          <div className="text-center space-y-2 pb-4 border-b border-slate-800">
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-white  border border-emerald-500/40 shadow-2xl space-y-5 ${isSelected ? 'is-selected' : ''}`}>
+          <div className="text-center space-y-2 pb-4 border-b border-slate-200">
             <div className="w-12 h-12 -full bg-emerald-950 border border-emerald-500/50 flex items-center justify-center mx-auto mb-3">
               <CheckCircle className="w-6 h-6 text-emerald-400" />
             </div>
-            <h3 className="text-xl font-extrabold text-white">Order Successfully Completed!</h3>
-            <p className="text-xs text-slate-300">Here is a summary of your purchases.</p>
+            <h3 className="text-xl font-extrabold text-slate-900">Order Successfully Completed!</h3>
+            <p className="text-xs text-slate-700">Here is a summary of your purchases.</p>
           </div>
 
           <div className="space-y-3 text-xs">
-            <div className="flex items-center justify-between p-3 bg-slate-950  border border-slate-800">
+            <div className="flex items-center justify-between p-3 bg-white  border border-slate-200">
               <div>
-                <span className="font-bold text-slate-200">LaunchEngine Enterprise Pass</span>
+                <span className="font-bold text-slate-800">LaunchEngine Enterprise Pass</span>
                 <div className="text-[10px] text-slate-500">Main Product</div>
               </div>
-              <span className="font-bold text-white">$297.00</span>
+              <span className="font-bold text-slate-900">$297.00</span>
             </div>
 
-            <div className="flex items-center justify-between p-3 bg-slate-950  border border-slate-800">
+            <div className="flex items-center justify-between p-3 bg-white  border border-slate-200">
               <div>
-                <span className="font-bold text-slate-200">Instant AI VSL Copywriter Pro</span>
+                <span className="font-bold text-slate-800">Instant AI VSL Copywriter Pro</span>
                 <div className="text-[10px] text-slate-500">Order Bump Addon</div>
               </div>
-              <span className="font-bold text-white">$27.00</span>
+              <span className="font-bold text-slate-900">$27.00</span>
             </div>
             
             <div className="flex items-center justify-between p-3 bg-indigo-950/40  border border-indigo-500/30">
@@ -1664,11 +1664,11 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
                 <span className="font-bold text-indigo-300">LaunchEngine Agency License Upgrade</span>
                 <div className="text-[10px] text-indigo-400/70">1-Click Upsell Purchase</div>
               </div>
-              <span className="font-bold text-white">$497.00</span>
+              <span className="font-bold text-slate-900">$497.00</span>
             </div>
           </div>
 
-          <div className="border-t border-slate-800 pt-3 flex items-center justify-between text-sm font-black text-white">
+          <div className="border-t border-slate-200 pt-3 flex items-center justify-between text-sm font-black text-slate-900">
             <span>Total Paid:</span>
             <span className="text-emerald-400">$821.00</span>
           </div>
@@ -1718,17 +1718,17 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
       return (
         <div style={formWrapperStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} space-y-4 ${isSelected ? 'is-selected' : ''}`}>
           {/* Step tabs */}
-          <div className="flex border-b border-slate-800" style={{ borderColor: props.fieldBorderColor || undefined }}>
+          <div className="flex border-b border-slate-200" style={{ borderColor: props.fieldBorderColor || undefined }}>
             <button 
               onClick={() => setStep(1)} 
-              className={`flex-1 py-3 font-bold text-center border-b-2 transition-colors ${step === 1 ? 'border-indigo-500 bg-slate-800/40' : 'border-transparent opacity-60'}`}
+              className={`flex-1 py-3 font-bold text-center border-b-2 transition-colors ${step === 1 ? 'border-indigo-500 bg-slate-50/40' : 'border-transparent opacity-60'}`}
               style={{ ...titleStyle, borderBottomColor: step === 1 ? (props.buttonColor || '#6366f1') : 'transparent' }}
             >
               1. Contact Info
             </button>
             <button 
               onClick={() => setStep(2)} 
-              className={`flex-1 py-3 font-bold text-center border-b-2 transition-colors ${step === 2 ? 'border-indigo-500 bg-slate-800/40' : 'border-transparent opacity-60'}`}
+              className={`flex-1 py-3 font-bold text-center border-b-2 transition-colors ${step === 2 ? 'border-indigo-500 bg-slate-50/40' : 'border-transparent opacity-60'}`}
               style={{ ...titleStyle, borderBottomColor: step === 2 ? (props.buttonColor || '#6366f1') : 'transparent' }}
             >
               2. Payment & Complete
@@ -1739,11 +1739,11 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
             <div className="space-y-3">
               <div>
                 <label className="block font-semibold mb-1" style={titleStyle}>Full Name</label>
-                <input type="text" placeholder="John Doe" className="w-full bg-slate-950 border border-slate-800 px-3 py-2 text-slate-200 rounded" style={fieldStyle} />
+                <input type="text" placeholder="John Doe" className="w-full bg-white border border-slate-200 px-3 py-2 text-slate-800 rounded" style={fieldStyle} />
               </div>
               <div>
                 <label className="block font-semibold mb-1" style={titleStyle}>Email Address</label>
-                <input type="email" placeholder="john@example.com" className="w-full bg-slate-950 border border-slate-800 px-3 py-2 text-slate-200 rounded" style={fieldStyle} />
+                <input type="email" placeholder="john@example.com" className="w-full bg-white border border-slate-200 px-3 py-2 text-slate-800 rounded" style={fieldStyle} />
               </div>
               <button 
                 onClick={() => setStep(2)} 
@@ -1759,23 +1759,23 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
           ) : (
             <div className="space-y-3">
               {/* Product summary */}
-              <div className="flex items-center justify-between p-3 bg-slate-950 border border-slate-800 rounded" style={fieldStyle}>
+              <div className="flex items-center justify-between p-3 bg-white border border-slate-200 rounded" style={fieldStyle}>
                 <span className="font-semibold" style={titleStyle}>{props.productName || 'LaunchEngine Enterprise Pass'}</span>
                 <span className="font-bold text-emerald-400" style={titleStyle}>{props.price || '$297.00'}</span>
               </div>
 
               {/* Order Bump Box */}
-              <div className={`p-4 rounded-xl border-2 transition-all cursor-pointer ${isCheckedBump ? 'border-emerald-500 bg-emerald-950/20' : 'border-dashed border-slate-700 bg-slate-900/50 hover:border-slate-500'}`} onClick={() => setIsCheckedBump(!isCheckedBump)}>
+              <div className={`p-4 rounded-xl border-2 transition-all cursor-pointer ${isCheckedBump ? 'border-emerald-500 bg-emerald-950/20' : 'border-dashed border-slate-300 bg-white/50 hover:border-slate-500'}`} onClick={() => setIsCheckedBump(!isCheckedBump)}>
                 <div className="flex gap-3">
-                  <div className={`w-5 h-5 rounded border flex items-center justify-center shrink-0 mt-0.5 ${isCheckedBump ? 'bg-emerald-500 border-emerald-500' : 'border-slate-600 bg-slate-950'}`}>
-                    {isCheckedBump && <Check className="w-3.5 h-3.5 text-white" />}
+                  <div className={`w-5 h-5 rounded border flex items-center justify-center shrink-0 mt-0.5 ${isCheckedBump ? 'bg-emerald-500 border-emerald-500' : 'border-slate-600 bg-white'}`}>
+                    {isCheckedBump && <Check className="w-3.5 h-3.5 text-slate-900" />}
                   </div>
                   <div>
                     <div className="flex items-center gap-2 mb-1">
                       <Sparkles className="w-4 h-4 text-amber-400 animate-pulse" />
                       <span className="text-xs font-extrabold text-amber-400">Yes, add the VIP Coaching Call (+$97)</span>
                     </div>
-                    <p className="text-[10px] text-slate-400 leading-tight">
+                    <p className="text-[10px] text-slate-600 leading-tight">
                       Check this box to get a 1-on-1 implementation call with our experts. Normally $297.
                     </p>
                   </div>
@@ -1786,12 +1786,12 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
               <div className="space-y-2 pt-2">
                 <label className="block font-semibold mb-1" style={titleStyle}>Credit Card Number</label>
                 <div className="relative">
-                  <input type="text" placeholder="0000 0000 0000 0000" className="w-full bg-slate-950 border border-slate-800 px-3 py-2.5 pl-10 text-slate-200 rounded" style={fieldStyle} />
+                  <input type="text" placeholder="0000 0000 0000 0000" className="w-full bg-white border border-slate-200 px-3 py-2.5 pl-10 text-slate-800 rounded" style={fieldStyle} />
                   <CreditCard className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" />
                 </div>
                 <div className="grid grid-cols-2 gap-2">
-                  <input type="text" placeholder="MM/YY" className="w-full bg-slate-950 border border-slate-800 px-3 py-2 text-center text-slate-200 rounded" style={fieldStyle} />
-                  <input type="text" placeholder="CVC" className="w-full bg-slate-950 border border-slate-800 px-3 py-2 text-center text-slate-200 rounded" style={fieldStyle} />
+                  <input type="text" placeholder="MM/YY" className="w-full bg-white border border-slate-200 px-3 py-2 text-center text-slate-800 rounded" style={fieldStyle} />
+                  <input type="text" placeholder="CVC" className="w-full bg-white border border-slate-200 px-3 py-2 text-center text-slate-800 rounded" style={fieldStyle} />
                 </div>
               </div>
 
@@ -1817,9 +1817,9 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
             <div className="flex-1 text-left">
               <div className="flex items-center gap-2">
                 <span className="font-bold text-red-400">?? Yes, I want the {props.bumpName || 'VIP Bonus'}!</span>
-                <span className="text-white font-bold ml-auto">{props.bumpPrice || '+$27.00'}</span>
+                <span className="text-slate-900 font-bold ml-auto">{props.bumpPrice || '+$27.00'}</span>
               </div>
-              <p className="text-sm text-slate-300 mt-1">{props.bumpDescription || 'Add this exclusive bonus to your order right now and get instant access.'}</p>
+              <p className="text-sm text-slate-700 mt-1">{props.bumpDescription || 'Add this exclusive bonus to your order right now and get instant access.'}</p>
             </div>
           </div>
         </div>
@@ -1830,8 +1830,8 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
           <div className="inline-flex items-center gap-2 bg-amber-500/20 text-amber-300 text-xs font-extrabold px-3 py-1 -full border border-amber-500/30">
             ⚠️ WAIT! YOUR ORDER IS NOT QUITE COMPLETE YET
           </div>
-          <h3 className="text-2xl font-black text-white">Upgrade to LaunchEngine Agency Master License (1-Click Addition)</h3>
-          <p className="text-sm text-slate-300 max-w-lg mx-auto">Add client white-labeling, unlimited subdomains, and 10 team seats for just one single payment of $197 (Regularly $997).</p>
+          <h3 className="text-2xl font-black text-slate-900">Upgrade to LaunchEngine Agency Master License (1-Click Addition)</h3>
+          <p className="text-sm text-slate-700 max-w-lg mx-auto">Add client white-labeling, unlimited subdomains, and 10 team seats for just one single payment of $197 (Regularly $997).</p>
           <div className="pt-2 space-y-2">
             <button 
               onClick={() => alert('1-Click Upsell Added to Order via Stripe Vault Token!')} 
@@ -1840,35 +1840,35 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
               <span>YES! Add to My Order with 1-Click ($197)</span>
               <ArrowRight className="w-5 h-5" />
             </button>
-            <button className="text-xs text-slate-400 hover:underline block mx-auto">No thanks, I will pass on this one-time offer</button>
+            <button className="text-xs text-slate-600 hover:underline block mx-auto">No thanks, I will pass on this one-time offer</button>
           </div>
         </div>
       );
 
     case 'member_user_login':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-6 bg-slate-900  border border-slate-800 shadow-2xl space-y-5' : 'shadow-2xl space-y-5'} ${isSelected ? 'is-selected' : ''}`}>
-          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-6 bg-white  border border-slate-200 shadow-2xl space-y-5' : 'shadow-2xl space-y-5'} ${isSelected ? 'is-selected' : ''}`}>
+          <div className="flex items-center justify-between border-b border-slate-200 pb-3">
             <div className="flex items-center gap-2 text-indigo-400 text-xs font-bold">
               <User className="w-4 h-4" />
               <span>Member Access Authentication Gate</span>
             </div>
-            <div className="flex bg-slate-950 p-1  border border-slate-800 text-[10px] font-bold">
+            <div className="flex bg-white p-1  border border-slate-200 text-[10px] font-bold">
               <button 
                 onClick={() => setMemberTab('login')} 
-                className={`px-2.5 py-1  transition-colors ${memberTab === 'login' ? 'bg-indigo-600 text-white' : 'text-slate-400'}`}
+                className={`px-2.5 py-1  transition-colors ${memberTab === 'login' ? 'bg-indigo-600 text-white' : 'text-slate-600'}`}
               >
                 Log In
               </button>
               <button 
                 onClick={() => setMemberTab('register')} 
-                className={`px-2.5 py-1  transition-colors ${memberTab === 'register' ? 'bg-indigo-600 text-white' : 'text-slate-400'}`}
+                className={`px-2.5 py-1  transition-colors ${memberTab === 'register' ? 'bg-indigo-600 text-white' : 'text-slate-600'}`}
               >
                 Register
               </button>
               <button 
                 onClick={() => setMemberTab('forgot')} 
-                className={`px-2.5 py-1  transition-colors ${memberTab === 'forgot' ? 'bg-indigo-600 text-white' : 'text-slate-400'}`}
+                className={`px-2.5 py-1  transition-colors ${memberTab === 'forgot' ? 'bg-indigo-600 text-white' : 'text-slate-600'}`}
               >
                 Reset Password
               </button>
@@ -1878,16 +1878,16 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
           {memberTab === 'login' && (
             <div className="space-y-3">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Member Email</label>
-                <input type="email" placeholder="student@academy.com" className="w-full bg-slate-950 border border-slate-800  px-3.5 py-2.5 text-xs text-slate-100" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Member Email</label>
+                <input type="email" placeholder="student@academy.com" className="w-full bg-white border border-slate-200  px-3.5 py-2.5 text-xs text-slate-900" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Password</label>
-                <input type="password" placeholder="••••••••" className="w-full bg-slate-950 border border-slate-800  px-3.5 py-2.5 text-xs text-slate-100" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Password</label>
+                <input type="password" placeholder="••••••••" className="w-full bg-white border border-slate-200  px-3.5 py-2.5 text-xs text-slate-900" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
               </div>
               <div className="flex items-center justify-between text-xs">
-                <label className="flex items-center gap-2 cursor-pointer text-slate-400">
-                  <input type="checkbox" className=" bg-slate-950 border-slate-800 text-indigo-500" />
+                <label className="flex items-center gap-2 cursor-pointer text-slate-600">
+                  <input type="checkbox" className=" bg-white border-slate-200 text-indigo-500" />
                   <span>Remember me</span>
                 </label>
                 <button onClick={() => setMemberTab('forgot')} className="text-indigo-400 hover:underline">Forgot password?</button>
@@ -1901,16 +1901,16 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
           {memberTab === 'register' && (
             <div className="space-y-3">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Full Name</label>
-                <input type="text" placeholder="Sarah Jenkins" className="w-full bg-slate-950 border border-slate-800  px-3.5 py-2 text-xs text-slate-100" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Full Name</label>
+                <input type="text" placeholder="Sarah Jenkins" className="w-full bg-white border border-slate-200  px-3.5 py-2 text-xs text-slate-900" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Student Email</label>
-                <input type="email" placeholder="sarah@growthlabs.io" className="w-full bg-slate-950 border border-slate-800  px-3.5 py-2 text-xs text-slate-100" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Student Email</label>
+                <input type="email" placeholder="sarah@growthlabs.io" className="w-full bg-white border border-slate-200  px-3.5 py-2 text-xs text-slate-900" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Create Password</label>
-                <input type="password" placeholder="••••••••" className="w-full bg-slate-950 border border-slate-800  px-3.5 py-2 text-xs text-slate-100" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Create Password</label>
+                <input type="password" placeholder="••••••••" className="w-full bg-white border border-slate-200  px-3.5 py-2 text-xs text-slate-900" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
               </div>
               <button onClick={() => alert('Student account registered!')} className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3  text-xs shadow-lg shadow-emerald-600/30">
                 Create Student Account & Access Portal
@@ -1920,10 +1920,10 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
           {memberTab === 'forgot' && (
             <div className="space-y-3">
-              <p className="text-xs text-slate-400">Enter your registered email address and we will send you a password reset link.</p>
+              <p className="text-xs text-slate-600">Enter your registered email address and we will send you a password reset link.</p>
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Registered Email</label>
-                <input type="email" placeholder="student@academy.com" className="w-full bg-slate-950 border border-slate-800  px-3.5 py-2.5 text-xs text-slate-100" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Registered Email</label>
+                <input type="email" placeholder="student@academy.com" className="w-full bg-white border border-slate-200  px-3.5 py-2.5 text-xs text-slate-900" style={{ color: props.fieldTextColor || undefined, textAlign: 'inherit' }} />
               </div>
               <button onClick={() => alert('Password reset link sent to your inbox!')} className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3  text-xs shadow-lg shadow-indigo-600/30">
                 Send Reset Password Link
@@ -1939,35 +1939,35 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
       const filteredSearchLessons = allCourseLessons.filter(l => (l?.title || '').toLowerCase().includes(memberSearchQuery.toLowerCase()) || (l?.moduleTitle || '').toLowerCase().includes(memberSearchQuery.toLowerCase()));
 
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-5 bg-slate-900  border border-slate-800 space-y-4' : 'space-y-4'} ${isSelected ? 'is-selected' : ''}`}>
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-5 bg-white  border border-slate-200 space-y-4' : 'space-y-4'} ${isSelected ? 'is-selected' : ''}`}>
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-xs font-bold text-slate-200">
+            <div className="flex items-center gap-2 text-xs font-bold text-slate-800">
               <Search className="w-4 h-4 text-indigo-400" />
               <span>Member's Area Content Search</span>
             </div>
-            <span className="text-[10px] text-slate-400">Search 12+ Video Masterclasses</span>
+            <span className="text-[10px] text-slate-600">Search 12+ Video Masterclasses</span>
           </div>
 
           <div className="relative">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+            <Search className="w-4 h-4 text-slate-600 absolute left-3.5 top-3" />
             <input 
               type="text" 
               placeholder="Search course lessons (e.g., Opt-in, Upsell, Automation)..."
               value={memberSearchQuery}
               onChange={(e) => setMemberSearchQuery(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800  pl-10 pr-4 py-2.5 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full bg-white border border-slate-200  pl-10 pr-4 py-2.5 text-xs text-slate-900 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
 
           {memberSearchQuery && (
-            <div className="bg-slate-950 border border-slate-800  p-3 max-h-48 overflow-y-auto space-y-2 animate-fade-in">
+            <div className="bg-white border border-slate-200  p-3 max-h-48 overflow-y-auto space-y-2 animate-fade-in">
               {filteredSearchLessons.length === 0 ? (
                 <div className="text-xs text-slate-500 italic p-2 text-center">No lessons match your query.</div>
               ) : (
                 filteredSearchLessons.map((l) => (
-                  <div key={l.id} className="p-2.5 bg-slate-900  flex items-center justify-between text-xs">
+                  <div key={l.id} className="p-2.5 bg-white  flex items-center justify-between text-xs">
                     <div>
-                      <div className="font-bold text-slate-200">{l.title}</div>
+                      <div className="font-bold text-slate-800">{l.title}</div>
                       <div className="text-[10px] text-slate-500">{l.moduleTitle} ({l.duration || '10m'})</div>
                     </div>
                     <button onClick={() => alert(`Resuming lesson: ${l.title}`)} className="px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white  text-[11px] font-bold">
@@ -1985,16 +1985,16 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
       const safeNavModules = (initialCourseData?.modules && Array.isArray(initialCourseData.modules)) ? initialCourseData.modules : [];
 
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-4 bg-slate-900  border border-slate-800 space-y-3' : 'space-y-3'} ${isSelected ? 'is-selected' : ''}`}>
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-4 bg-white  border border-slate-200 space-y-3' : 'space-y-3'} ${isSelected ? 'is-selected' : ''}`}>
           {/* Header & Mobile Toggle */}
-          <div className="flex items-center justify-between pb-2 border-b border-slate-800">
-            <div className="flex items-center gap-2 text-xs font-extrabold text-slate-200">
+          <div className="flex items-center justify-between pb-2 border-b border-slate-200">
+            <div className="flex items-center gap-2 text-xs font-extrabold text-slate-800">
               <BookOpen className="w-4 h-4 text-emerald-400" />
               <span>Membership Area Navigation</span>
             </div>
             <button 
               onClick={() => setMobileNavOpen(!mobileNavOpen)}
-              className="md:hidden p-1.5 bg-slate-800  text-slate-300"
+              className="md:hidden p-1.5 bg-slate-50  text-slate-700"
             >
               <Menu className="w-4 h-4" />
             </button>
@@ -2003,19 +2003,19 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
           {/* Module & Lesson Accordion Tree */}
           <div className={`space-y-2 ${mobileNavOpen ? 'block' : 'block md:block'}`}>
             {safeNavModules.map((mod, mIdx) => (
-              <div key={mod.id} className="bg-slate-950 border border-slate-800  overflow-hidden">
+              <div key={mod.id} className="bg-white border border-slate-200  overflow-hidden">
                 <button 
                   onClick={() => setOpenNavModule(openNavModule === mIdx ? null : mIdx)}
-                  className="w-full p-3 flex items-center justify-between font-bold text-xs text-slate-200 hover:bg-slate-850"
+                  className="w-full p-3 flex items-center justify-between font-bold text-xs text-slate-800 hover:bg-slate-50"
                 >
                   <span className="truncate max-w-[200px]">{mod.title}</span>
                   {openNavModule === mIdx ? <ChevronDown className="w-4 h-4 text-indigo-400" /> : <ChevronRight className="w-4 h-4 text-slate-500" />}
                 </button>
 
                 {openNavModule === mIdx && (
-                  <div className="p-2 bg-slate-900/60 border-t border-slate-800/80 space-y-1">
+                  <div className="p-2 bg-white/60 border-t border-slate-200/80 space-y-1">
                     {(mod?.lessons && Array.isArray(mod.lessons)) && mod.lessons.map((les) => (
-                      <div key={les.id} className="p-2  bg-slate-950 hover:bg-indigo-950/40 text-xs font-semibold text-slate-300 flex items-center justify-between cursor-pointer">
+                      <div key={les.id} className="p-2  bg-white hover:bg-indigo-950/40 text-xs font-semibold text-slate-700 flex items-center justify-between cursor-pointer">
                         <div className="flex items-center gap-2 truncate">
                           <Video className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
                           <span className="truncate">{les.title}</span>
@@ -2048,9 +2048,9 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
       const dynamicEmbedHtml = `<a href="${bountypackSettings.affiliateDomainUrl}?ref=${activePartner.affiliateCode}" target="_blank"><img src="${activeBanner.imageUrl}" alt="${activeBanner.title}" /></a>`;
 
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-5 bg-slate-900 border border-slate-800 space-y-3 rounded-2xl' : 'space-y-3'} ${isSelected ? 'is-selected' : ''}`}>
-          <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-            <div className="flex items-center gap-2 text-xs font-bold text-slate-200">
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-5 bg-white border border-slate-200 space-y-3 rounded-2xl' : 'space-y-3'} ${isSelected ? 'is-selected' : ''}`}>
+          <div className="flex items-center justify-between border-b border-slate-200 pb-2">
+            <div className="flex items-center gap-2 text-xs font-bold text-slate-800">
               <Gift className="w-4 h-4 text-amber-400" />
               <span>BountyPack Promo Banner Asset</span>
             </div>
@@ -2059,7 +2059,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
             </span>
           </div>
 
-          <div className="overflow-hidden border border-slate-800 bg-slate-950 p-2 rounded-xl">
+          <div className="overflow-hidden border border-slate-200 bg-white p-2 rounded-xl">
             <img 
               src={activeBanner.imageUrl} 
               alt="Affiliate Banner" 
@@ -2068,8 +2068,8 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
           </div>
 
           <div className="space-y-1.5">
-            <label className="block text-[11px] font-semibold text-slate-300">HTML Embed Code (Auto-linked to BountyPack):</label>
-            <div className="p-3 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-between font-mono text-[11px] text-emerald-400">
+            <label className="block text-[11px] font-semibold text-slate-700">HTML Embed Code (Auto-linked to BountyPack):</label>
+            <div className="p-3 bg-white border border-slate-200 rounded-xl flex items-center justify-between font-mono text-[11px] text-emerald-400">
               <div className="truncate max-w-[280px]">{dynamicEmbedHtml}</div>
               <button 
                 onClick={() => {
@@ -2100,18 +2100,18 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
         .replace(/\{AFFILIATE_NAME\}/g, activePartner.name);
 
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-5 bg-slate-900 border border-slate-800 space-y-4 rounded-2xl' : 'space-y-4'} ${isSelected ? 'is-selected' : ''}`}>
-          <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-            <div className="flex items-center gap-2 text-xs font-bold text-slate-200">
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-5 bg-white border border-slate-200 space-y-4 rounded-2xl' : 'space-y-4'} ${isSelected ? 'is-selected' : ''}`}>
+          <div className="flex items-center justify-between border-b border-slate-200 pb-2">
+            <div className="flex items-center gap-2 text-xs font-bold text-slate-800">
               <Mail className="w-4 h-4 text-pink-400" />
               <span>BountyPack Email Swipe Asset</span>
             </div>
-            <div className="flex bg-slate-950 p-1 border border-slate-800 text-[10px] font-bold rounded-lg">
+            <div className="flex bg-white p-1 border border-slate-200 text-[10px] font-bold rounded-lg">
               {liveSwipes.map((s: any, idx: number) => (
                 <button 
                   key={idx}
                   onClick={() => setActiveSwipeTab(idx)}
-                  className={`px-2.5 py-1 rounded transition-colors ${activeSwipeTab === idx ? 'bg-indigo-600 text-white' : 'text-slate-400'}`}
+                  className={`px-2.5 py-1 rounded transition-colors ${activeSwipeTab === idx ? 'bg-indigo-600 text-white' : 'text-slate-600'}`}
                 >
                   Swipe #{idx + 1}
                 </button>
@@ -2119,11 +2119,11 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
             </div>
           </div>
 
-          <div className="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-2 text-xs font-sans text-slate-200">
+          <div className="p-4 bg-white border border-slate-200 rounded-xl space-y-2 text-xs font-sans text-slate-800">
             {activeSwipe.subjectLine && (
               <div className="font-bold text-amber-300 font-mono">{activeSwipe.subjectLine}</div>
             )}
-            <pre className="font-sans text-xs text-slate-300 whitespace-pre-wrap leading-relaxed max-h-48 overflow-y-auto">{formattedSwipeBody}</pre>
+            <pre className="font-sans text-xs text-slate-700 whitespace-pre-wrap leading-relaxed max-h-48 overflow-y-auto">{formattedSwipeBody}</pre>
           </div>
 
           <button 
@@ -2134,7 +2134,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
             }}
             className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-extrabold rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30"
           >
-            {copiedTextSwipe ? <Check className="w-4 h-4 text-white" /> : <Copy className="w-4 h-4" />}
+            {copiedTextSwipe ? <Check className="w-4 h-4 text-slate-900" /> : <Copy className="w-4 h-4" />}
             <span>{copiedTextSwipe ? 'Email Swipe Copied to Clipboard!' : 'Copy Auto-Linked Email Swipe'}</span>
           </button>
         </div>
@@ -2144,9 +2144,9 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
       const liveTrackedLink = `${bountypackSettings.affiliateDomainUrl}${builderRouteChoice}?ref=${activePartner.affiliateCode}${subIdInput ? `&subid=${encodeURIComponent(subIdInput)}` : ''}`;
 
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-slate-900 border border-indigo-500/40 shadow-2xl space-y-4 rounded-2xl ${isSelected ? 'is-selected' : ''}`}>
-          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-            <div className="flex items-center gap-2 text-xs font-extrabold text-white">
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-white border border-indigo-500/40 shadow-2xl space-y-4 rounded-2xl ${isSelected ? 'is-selected' : ''}`}>
+          <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+            <div className="flex items-center gap-2 text-xs font-extrabold text-slate-900">
               <Code2 className="w-4 h-4 text-indigo-400" />
               <span>BountyPack Multi-Link & Sub-ID Generator</span>
             </div>
@@ -2157,11 +2157,11 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
             <div>
-              <label className="block text-slate-300 font-semibold mb-1">Target Funnel Offer Page:</label>
+              <label className="block text-slate-700 font-semibold mb-1">Target Funnel Offer Page:</label>
               <select 
                 value={builderRouteChoice}
                 onChange={(e) => setBuilderRouteChoice(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 font-medium"
+                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-slate-900 font-medium"
               >
                 <option value="partner">Main Partner Offer Page (40% Comm)</option>
                 <option value="vsl-launch">VSL Sales Page (40% Comm)</option>
@@ -2171,18 +2171,18 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
             </div>
 
             <div>
-              <label className="block text-slate-300 font-semibold mb-1">Custom Sub-ID Tracking Tag (UTM / Ad Campaign):</label>
+              <label className="block text-slate-700 font-semibold mb-1">Custom Sub-ID Tracking Tag (UTM / Ad Campaign):</label>
               <input 
                 type="text" 
                 placeholder="e.g. facebook_ad_vsl_1"
                 value={subIdInput}
                 onChange={(e) => setSubIdInput(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 font-mono"
+                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-slate-900 font-mono"
               />
             </div>
           </div>
 
-          <div className="p-3.5 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-between">
+          <div className="p-3.5 bg-white border border-slate-200 rounded-xl flex items-center justify-between">
             <div className="font-mono text-xs text-amber-300 truncate max-w-[280px]">
               {liveTrackedLink}
             </div>
@@ -2235,22 +2235,22 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
       };
 
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-slate-900 border border-indigo-500/40 shadow-2xl space-y-4 rounded-2xl ${isSelected ? 'is-selected' : ''}`}>
-          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-white border border-indigo-500/40 shadow-2xl space-y-4 rounded-2xl ${isSelected ? 'is-selected' : ''}`}>
+          <div className="flex items-center justify-between border-b border-slate-200 pb-3">
             <div className="flex items-center gap-2 text-indigo-400 text-xs font-extrabold">
               <Gift className="w-4 h-4 text-amber-400" />
               <span>BountyPack Partner Portal Login & Registration</span>
             </div>
-            <div className="flex bg-slate-950 p-1 border border-slate-800 text-[10px] font-bold rounded-lg">
+            <div className="flex bg-white p-1 border border-slate-200 text-[10px] font-bold rounded-lg">
               <button 
                 onClick={() => setAffiliateTab('login')} 
-                className={`px-2.5 py-1 rounded transition-colors ${affiliateTab === 'login' ? 'bg-indigo-600 text-white' : 'text-slate-400'}`}
+                className={`px-2.5 py-1 rounded transition-colors ${affiliateTab === 'login' ? 'bg-indigo-600 text-white' : 'text-slate-600'}`}
               >
                 Log In
               </button>
               <button 
                 onClick={() => setAffiliateTab('register')} 
-                className={`px-2.5 py-1 rounded transition-colors ${affiliateTab === 'register' ? 'bg-indigo-600 text-white' : 'text-slate-400'}`}
+                className={`px-2.5 py-1 rounded transition-colors ${affiliateTab === 'register' ? 'bg-indigo-600 text-white' : 'text-slate-600'}`}
               >
                 Register
               </button>
@@ -2260,19 +2260,19 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
           {regSuccessMsg && (
             <div className="p-3 bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-xs font-bold rounded-xl flex items-center justify-between">
               <span>{regSuccessMsg}</span>
-              <button onClick={() => setRegSuccessMsg(null)} className="text-emerald-400 hover:text-white"><X className="w-4 h-4" /></button>
+              <button onClick={() => setRegSuccessMsg(null)} className="text-emerald-400 hover:text-slate-900"><X className="w-4 h-4" /></button>
             </div>
           )}
 
           {affiliateTab === 'login' && (
             <div className="space-y-3">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Affiliate Partner Email</label>
-                <input type="email" placeholder="alex@acquisition.demo" className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-100" />
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Affiliate Partner Email</label>
+                <input type="email" placeholder="alex@acquisition.demo" className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900" />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Password</label>
-                <input type="password" placeholder="••••••••" className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-100" />
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Password</label>
+                <input type="password" placeholder="••••••••" className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900" />
               </div>
               <button onClick={() => alert('Authenticated into BountyPack Partner Portal!')} className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold py-3 text-xs rounded-xl shadow-lg shadow-indigo-600/30">
                 Log In to BountyPack Dashboard
@@ -2283,33 +2283,33 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
           {affiliateTab === 'register' && (
             <div className="space-y-3">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Full Legal Name</label>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Full Legal Name</label>
                 <input 
                   type="text" 
                   placeholder="e.g. Alex Hormozi" 
                   value={regName}
                   onChange={(e) => setRegName(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-100" 
+                  className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-slate-900" 
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Partner Email</label>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Partner Email</label>
                 <input 
                   type="email" 
                   placeholder="alex@acquisition.demo" 
                   value={regEmail}
                   onChange={(e) => setRegEmail(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-100" 
+                  className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-slate-900" 
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Payout PayPal / Wise Email</label>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Payout PayPal / Wise Email</label>
                 <input 
                   type="email" 
                   placeholder="payouts@acquisition.demo" 
                   value={regPayoutEmail}
                   onChange={(e) => setRegPayoutEmail(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-100" 
+                  className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-slate-900" 
                 />
               </div>
               <button 
@@ -2327,7 +2327,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
       const activeAffiliateUrl = `${bountypackSettings.affiliateDomainUrl}?ref=${activePartner.affiliateCode}`;
 
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-5 bg-slate-900 border border-slate-800 space-y-4 rounded-2xl' : 'space-y-4'} ${isSelected ? 'is-selected' : ''}`}>
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-5 bg-white border border-slate-200 space-y-4 rounded-2xl' : 'space-y-4'} ${isSelected ? 'is-selected' : ''}`}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-amber-400 text-xs font-bold">
               <Link2 className="w-4 h-4 text-indigo-400" />
@@ -2339,11 +2339,11 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
           </div>
 
           <div className="space-y-2">
-            <label className="block text-xs font-semibold text-slate-300">Select Active BountyPack Partner:</label>
+            <label className="block text-xs font-semibold text-slate-700">Select Active BountyPack Partner:</label>
             <select 
               value={selectedPartnerId}
               onChange={(e) => setSelectedPartnerId(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 font-medium"
+              className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 font-medium"
             >
               {bountypackAffiliates.map((a: any) => (
                 <option key={a.id} value={a.id}>{a.name} ({a.affiliateCode})</option>
@@ -2351,7 +2351,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
             </select>
           </div>
 
-          <div className="p-3 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-between">
+          <div className="p-3 bg-white border border-slate-200 rounded-xl flex items-center justify-between">
             <div className="font-mono text-xs text-indigo-300 truncate max-w-[280px]">
               {activeAffiliateUrl}
             </div>
@@ -2372,9 +2372,9 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     case 'affiliate_stats':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-6 bg-slate-900 border border-slate-800 space-y-4 rounded-2xl' : 'space-y-4'} ${isSelected ? 'is-selected' : ''}`}>
-          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-            <div className="flex items-center gap-2 text-xs font-bold text-slate-200">
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-6 bg-white border border-slate-200 space-y-4 rounded-2xl' : 'space-y-4'} ${isSelected ? 'is-selected' : ''}`}>
+          <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+            <div className="flex items-center gap-2 text-xs font-bold text-slate-800">
               <BarChart3 className="w-4 h-4 text-emerald-400" />
               <span>BountyPack Live Performance Stats</span>
             </div>
@@ -2382,7 +2382,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
             <select 
               value={selectedPartnerId}
               onChange={(e) => setSelectedPartnerId(e.target.value)}
-              className="bg-slate-950 border border-slate-800 text-amber-300 text-xs rounded-lg px-2.5 py-1 font-bold focus:outline-none"
+              className="bg-white border border-slate-200 text-amber-300 text-xs rounded-lg px-2.5 py-1 font-bold focus:outline-none"
             >
               {bountypackAffiliates.map((a: any) => (
                 <option key={a.id} value={a.id}>{a.name} Stats</option>
@@ -2391,19 +2391,19 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
-            <div className="p-3 bg-slate-950 border border-slate-800 rounded-xl">
-              <div className="text-[10px] uppercase text-slate-400 font-semibold">CLICKS</div>
-              <div className="text-xl font-black text-white mt-1">{activePartner.totalClicks.toLocaleString()}</div>
+            <div className="p-3 bg-white border border-slate-200 rounded-xl">
+              <div className="text-[10px] uppercase text-slate-600 font-semibold">CLICKS</div>
+              <div className="text-xl font-black text-slate-900 mt-1">{activePartner.totalClicks.toLocaleString()}</div>
             </div>
-            <div className="p-3 bg-slate-950 border border-slate-800 rounded-xl">
-              <div className="text-[10px] uppercase text-slate-400 font-semibold">SALES</div>
+            <div className="p-3 bg-white border border-slate-200 rounded-xl">
+              <div className="text-[10px] uppercase text-slate-600 font-semibold">SALES</div>
               <div className="text-xl font-black text-emerald-400 mt-1">{activePartner.totalSalesCount}</div>
             </div>
-            <div className="p-3 bg-slate-950 border border-slate-800 rounded-xl">
-              <div className="text-[10px] uppercase text-slate-400 font-semibold">GROSS REVENUE</div>
+            <div className="p-3 bg-white border border-slate-200 rounded-xl">
+              <div className="text-[10px] uppercase text-slate-600 font-semibold">GROSS REVENUE</div>
               <div className="text-xl font-black text-indigo-400 mt-1">${activePartner.grossRevenue.toLocaleString()}</div>
             </div>
-            <div className="p-3 bg-slate-950 border border-indigo-500/40 bg-indigo-950/20 rounded-xl">
+            <div className="p-3 bg-white border border-indigo-500/40 bg-indigo-950/20 rounded-xl">
               <div className="text-[10px] uppercase text-indigo-300 font-semibold">EARNED COMMISSIONS</div>
               <div className="text-xl font-black text-emerald-400 mt-1">${activePartner.commissionEarned.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
             </div>
@@ -2415,9 +2415,9 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
       const defaultPlan = bountypackPlans.find((p: any) => p.isDefault) || bountypackPlans[0];
 
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-slate-900 border border-indigo-500/40 shadow-2xl space-y-4 rounded-2xl ${isSelected ? 'is-selected' : ''}`}>
-          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-            <div className="flex items-center gap-2 text-xs font-extrabold text-white">
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-white border border-indigo-500/40 shadow-2xl space-y-4 rounded-2xl ${isSelected ? 'is-selected' : ''}`}>
+          <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+            <div className="flex items-center gap-2 text-xs font-extrabold text-slate-900">
               <PieChart className="w-4 h-4 text-indigo-400" />
               <span>BountyPack 2-Tier Commission Structure</span>
             </div>
@@ -2427,21 +2427,21 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-2 relative">
+            <div className="p-4 bg-white border border-slate-200 rounded-xl space-y-2 relative">
               <div className="text-[10px] font-extrabold text-indigo-400 uppercase">TIER 1 DIRECT SALES</div>
-              <div className="text-sm font-bold text-white">$2,997 Launch System</div>
+              <div className="text-sm font-bold text-slate-900">$2,997 Launch System</div>
               <div className="text-xs font-black text-emerald-400">Direct Comm: ${(2997 * ((defaultPlan?.tier1Rate || 40) / 100)).toFixed(2)} ({defaultPlan?.tier1Rate}%)</div>
             </div>
 
-            <div className="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-2 relative">
+            <div className="p-4 bg-white border border-slate-200 rounded-xl space-y-2 relative">
               <div className="text-[10px] font-extrabold text-purple-400 uppercase">TIER 2 SUB-AFFILIATE</div>
-              <div className="text-sm font-bold text-white">Sub-Partner Direct Sales</div>
+              <div className="text-sm font-bold text-slate-900">Sub-Partner Direct Sales</div>
               <div className="text-xs font-black text-purple-300">Passive Comm: ${(2997 * ((defaultPlan?.tier2Rate || 10) / 100)).toFixed(2)} ({defaultPlan?.tier2Rate}%)</div>
             </div>
 
-            <div className="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-2 relative">
+            <div className="p-4 bg-white border border-slate-200 rounded-xl space-y-2 relative">
               <div className="text-[10px] font-extrabold text-amber-400 uppercase">STICKY COOKIES</div>
-              <div className="text-sm font-bold text-white">Lifetime Upgrades</div>
+              <div className="text-sm font-bold text-slate-900">Lifetime Upgrades</div>
               <div className="text-xs font-black text-amber-300">{defaultPlan?.stickyCookieDays || 60} Days Cookie Duration</div>
             </div>
           </div>
@@ -2455,12 +2455,12 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     case 'video_lesson_player':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'bg-slate-900  border border-slate-800 p-4 space-y-3' : 'p-4 space-y-3'} ${isSelected ? 'is-selected' : ''}`}>
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'bg-white  border border-slate-200 p-4 space-y-3' : 'p-4 space-y-3'} ${isSelected ? 'is-selected' : ''}`}>
           <div className="flex items-center justify-between">
-            <h4 className="text-sm font-bold text-slate-200">Lesson 1.1: The 2-Step Opt-in & VSL Framework</h4>
+            <h4 className="text-sm font-bold text-slate-800">Lesson 1.1: The 2-Step Opt-in & VSL Framework</h4>
             <span className="text-xs font-semibold text-emerald-400 bg-emerald-950/60 px-2.5 py-1  border border-emerald-800">Module 1</span>
           </div>
-          <div className="aspect-video bg-slate-950  overflow-hidden relative flex items-center justify-center">
+          <div className="aspect-video bg-white  overflow-hidden relative flex items-center justify-center">
             <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&auto=format&fit=crop&q=80" alt="Lesson" className="w-full h-full object-cover opacity-50" />
             <button className="w-14 h-14 bg-indigo-600 text-white -full flex items-center justify-center shadow-lg shadow-indigo-600/50 absolute">
               <Play className="w-6 h-6 fill-current ml-1" />
@@ -2469,12 +2469,12 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
           <div className="flex items-center justify-between pt-2">
             <button 
               onClick={() => setIsCompletedLesson(!isCompletedLesson)} 
-              className={`flex items-center gap-2 px-4 py-2  text-xs font-bold transition-colors ${isCompletedLesson ? 'bg-emerald-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+              className={`flex items-center gap-2 px-4 py-2  text-xs font-bold transition-colors ${isCompletedLesson ? 'bg-emerald-600 text-white' : 'bg-slate-50 text-slate-700 hover:bg-slate-100'}`}
             >
               <Check className="w-4 h-4" />
               <span>{isCompletedLesson ? 'Lesson Completed ✓' : 'Mark as Complete'}</span>
             </button>
-            <span className="text-xs text-slate-400">Duration: 14 mins</span>
+            <span className="text-xs text-slate-600">Duration: 14 mins</span>
           </div>
         </div>
       );
@@ -2485,7 +2485,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
           <Clock className="w-6 h-6 text-indigo-400 shrink-0" />
           <div className="text-xs">
             <span className="font-bold text-indigo-200">Drip Schedule Lock: </span>
-            <span className="text-slate-300">Module 2 unlocks automatically in <strong className="text-white">3 Days</strong> post-enrollment.</span>
+            <span className="text-slate-700">Module 2 unlocks automatically in <strong className="text-slate-900">3 Days</strong> post-enrollment.</span>
           </div>
         </div>
       );
@@ -2493,10 +2493,10 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
     // Category 6: Interactive & Conversion Widgets
     case 'facebook_comments':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-4 bg-slate-900  border border-slate-800' : ''} ${isSelected ? 'is-selected' : ''}`}>
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-4 bg-white  border border-slate-200' : ''} ${isSelected ? 'is-selected' : ''}`}>
           <div className="flex items-center gap-2 mb-3">
             <MessageSquare className="w-5 h-5 text-blue-500" />
-            <span className="text-sm font-bold text-slate-200">Facebook Comments Plugin</span>
+            <span className="text-sm font-bold text-slate-800">Facebook Comments Plugin</span>
           </div>
           <div className="bg-slate-50 border border-slate-200 p-4  text-slate-900">
             <div className="flex items-start gap-3">
@@ -2518,7 +2518,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     case 'social_share':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-4 bg-slate-900  border border-slate-800' : ''} ${isSelected ? 'is-selected' : ''}`}>
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-4 bg-white  border border-slate-200' : ''} ${isSelected ? 'is-selected' : ''}`}>
           <div className="flex justify-center gap-4">
             {props.facebookUrl && (
               <a href={props.facebookUrl} target="_blank" rel="noopener noreferrer" className="text-[#1877F2] hover:opacity-80 transition-opacity">
@@ -2541,7 +2541,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
               </a>
             )}
             {(!props.facebookUrl && !props.twitterUrl && !props.instagramUrl && !props.linkedinUrl) && (
-              <div className="text-slate-400 text-sm flex gap-4">
+              <div className="text-slate-600 text-sm flex gap-4">
                 <Facebook className="w-8 h-8 opacity-50" />
                 <Twitter className="w-8 h-8 opacity-50" />
                 <Instagram className="w-8 h-8 opacity-50" />
@@ -2561,28 +2561,28 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
               { name: 'Pro', price: '$97', features: ['5 Users', '50GB Storage', 'Priority Support', 'Advanced Analytics'], color: 'indigo', popular: true },
               { name: 'Enterprise', price: '$297', features: ['Unlimited Users', '500GB Storage', '24/7 Dedicated Support', 'Custom Integrations'], color: 'slate' }
             ].map((plan, idx) => (
-              <div key={idx} className={`relative flex flex-col p-6  border ${plan.popular ? 'bg-indigo-950/40 border-indigo-500 shadow-2xl shadow-indigo-500/20 transform md:-translate-y-4' : 'bg-slate-900 border-slate-800'}`}>
+              <div key={idx} className={`relative flex flex-col p-6  border ${plan.popular ? 'bg-indigo-950/40 border-indigo-500 shadow-2xl shadow-indigo-500/20 transform md:-translate-y-4' : 'bg-white border-slate-200'}`}>
                 {plan.popular && (
                   <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-indigo-500 text-white text-[10px] font-bold px-3 py-1 -full uppercase tracking-wider">
                     Most Popular
                   </div>
                 )}
                 <div className="text-center mb-6">
-                  <h3 className={`text-lg font-bold mb-2 ${plan.popular ? 'text-indigo-300' : 'text-slate-300'}`}>{plan.name}</h3>
+                  <h3 className={`text-lg font-bold mb-2 ${plan.popular ? 'text-indigo-300' : 'text-slate-700'}`}>{plan.name}</h3>
                   <div className="flex items-center justify-center gap-1">
-                    <span className="text-4xl font-black text-white">{plan.price}</span>
+                    <span className="text-4xl font-black text-slate-900">{plan.price}</span>
                     <span className="text-sm text-slate-500 font-medium">/mo</span>
                   </div>
                 </div>
                 <ul className="flex-1 space-y-4 mb-8">
                   {plan.features.map((feat, fidx) => (
-                    <li key={fidx} className="flex items-center gap-2 text-sm text-slate-300">
+                    <li key={fidx} className="flex items-center gap-2 text-sm text-slate-700">
                       <CheckCircle className={`w-4 h-4 ${plan.popular ? 'text-indigo-400' : 'text-slate-500'}`} />
                       {feat}
                     </li>
                   ))}
                 </ul>
-                <button className={`w-full py-3  font-bold transition-all ${plan.popular ? 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg' : 'bg-slate-800 hover:bg-slate-700 text-slate-200'}`}>
+                <button className={`w-full py-3  font-bold transition-all ${plan.popular ? 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg' : 'bg-slate-50 hover:bg-slate-100 text-slate-800'}`}>
                   Select {plan.name}
                 </button>
               </div>
@@ -2593,20 +2593,20 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     case 'evergreen_timer':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-4 bg-slate-900  border border-slate-800 text-center' : 'text-center'} ${isSelected ? 'is-selected' : ''}`}>
-          <div className="text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wider">{props.label || 'Special Offer Expires In:'}</div>
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-4 bg-white  border border-slate-200 text-center' : 'text-center'} ${isSelected ? 'is-selected' : ''}`}>
+          <div className="text-xs font-semibold text-slate-600 mb-2 uppercase tracking-wider">{props.label || 'Special Offer Expires In:'}</div>
           <div className="flex items-center justify-center gap-3">
-            <div className="bg-slate-950 border border-slate-800 px-3 py-2  min-w-[54px]">
+            <div className="bg-white border border-slate-200 px-3 py-2  min-w-[54px]">
               <div className="text-xl font-black text-indigo-400">{props.hours || '14'}</div>
               <div className="text-[10px] text-slate-500 uppercase">Hours</div>
             </div>
             <span className="text-xl font-bold text-slate-600">:</span>
-            <div className="bg-slate-950 border border-slate-800 px-3 py-2  min-w-[54px]">
+            <div className="bg-white border border-slate-200 px-3 py-2  min-w-[54px]">
               <div className="text-xl font-black text-indigo-400">{props.minutes || '42'}</div>
               <div className="text-[10px] text-slate-500 uppercase">Mins</div>
             </div>
             <span className="text-xl font-bold text-slate-600">:</span>
-            <div className="bg-slate-950 border border-slate-800 px-3 py-2  min-w-[54px]">
+            <div className="bg-white border border-slate-200 px-3 py-2  min-w-[54px]">
               <div className="text-xl font-black text-pink-400 animate-pulse">{props.seconds || '19'}</div>
               <div className="text-[10px] text-slate-500 uppercase">Secs</div>
             </div>
@@ -2622,16 +2622,16 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
             { q: 'Can I connect custom domains and SSL?', a: 'Absolute! Every workspace supports unlimited custom subdomains and custom domains with automated free SSL.' },
             { q: 'How do 1-click upsells work?', a: 'We vault payment credentials via Stripe Billing Contracts during step 1 checkout, allowing instant 1-click upsell charges without secondary entry.' }
           ]).map((item: any, idx: number) => (
-            <div key={idx} className="bg-slate-900 border border-slate-800  overflow-hidden">
+            <div key={idx} className="bg-white border border-slate-200  overflow-hidden">
               <button 
                 onClick={() => setOpenFaq(openFaq === idx ? null : idx)} 
-                className="w-full p-4 flex items-center justify-between font-semibold text-sm text-slate-200 hover:bg-slate-850"
+                className="w-full p-4 flex items-center justify-between font-semibold text-sm text-slate-800 hover:bg-slate-50"
               >
                 <span>{item.q}</span>
                 {openFaq === idx ? <ChevronDown className="w-4 h-4 text-indigo-400" /> : <ChevronRight className="w-4 h-4 text-slate-500" />}
               </button>
               {openFaq === idx && (
-                <div className="px-4 pb-4 text-xs text-slate-400 leading-relaxed border-t border-slate-800/60 pt-3">
+                <div className="px-4 pb-4 text-xs text-slate-600 leading-relaxed border-t border-slate-200/60 pt-3">
                   {item.a}
                 </div>
               )}
@@ -2643,18 +2643,18 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
     case 'tabs':
       return (
         <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} space-y-3 ${isSelected ? 'is-selected' : ''}`}>
-          <div className="flex border-b border-slate-800 gap-2">
+          <div className="flex border-b border-slate-200 gap-2">
             {['Overview', 'Curriculum', 'Testimonials'].map((tabName, idx) => (
               <button 
                 key={idx} 
                 onClick={() => setActiveTab(idx)} 
-                className={`py-2 px-4 text-xs font-bold border-b-2 transition-colors ${activeTab === idx ? 'border-indigo-500 text-indigo-400' : 'border-transparent text-slate-400 hover:text-slate-200'}`}
+                className={`py-2 px-4 text-xs font-bold border-b-2 transition-colors ${activeTab === idx ? 'border-indigo-500 text-indigo-400' : 'border-transparent text-slate-600 hover:text-slate-800'}`}
               >
                 {tabName}
               </button>
             ))}
           </div>
-          <div className="p-4 bg-slate-900  border border-slate-800 text-xs text-slate-300">
+          <div className="p-4 bg-white  border border-slate-200 text-xs text-slate-700">
             {activeTab === 0 && 'The complete all-in-one platform built for speed, high conversions, and seamless automation.'}
             {activeTab === 1 && 'Access 12 comprehensive video modules covering funnel architecture, copy, and traffic.'}
             {activeTab === 2 && 'Over 2,800+ creators and agencies rely on LaunchEngine daily.'}
@@ -2670,7 +2670,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
               <Star key={s} className="w-5 h-5 fill-current" />
             ))}
           </div>
-          <span className="text-xs font-semibold text-slate-300">{props.label || 'Rated 4.9/5 Stars by 2,840+ creators'}</span>
+          <span className="text-xs font-semibold text-slate-700">{props.label || 'Rated 4.9/5 Stars by 2,840+ creators'}</span>
         </div>
       );
 
@@ -2772,15 +2772,15 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
       };
 
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 sm:p-8 bg-slate-900 border border-purple-500/40 shadow-2xl space-y-6 rounded-3xl ${isSelected ? 'is-selected' : ''}`}>
-          <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 sm:p-8 bg-white border border-purple-500/40 shadow-2xl space-y-6 rounded-3xl ${isSelected ? 'is-selected' : ''}`}>
+          <div className="flex items-center justify-between border-b border-slate-200 pb-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center">
                 <CalendarCheck className="w-5 h-5 animate-pulse" />
               </div>
               <div>
-                <h3 className="text-base font-extrabold text-white">{props.title || "Schedule Your 1-on-1 Strategy Call"}</h3>
-                <p className="text-xs text-slate-400">ChronoChimp Automated Calendar & Appointment Engine</p>
+                <h3 className="text-base font-extrabold text-slate-900">{props.title || "Schedule Your 1-on-1 Strategy Call"}</h3>
+                <p className="text-xs text-slate-600">ChronoChimp Automated Calendar & Appointment Engine</p>
               </div>
             </div>
             <span className="text-xs font-mono text-purple-300 font-bold bg-purple-950/60 px-3 py-1 border border-purple-800 rounded-full">
@@ -2795,22 +2795,22 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
                   <button 
                     key={evt.id}
                     onClick={() => setElemSelectedEvtId(evt.id)}
-                    className={`p-3 rounded-xl border text-xs text-left transition-all ${elemSelectedEvtId === evt.id ? 'bg-purple-600 text-white border-purple-500 shadow-md font-bold' : 'bg-slate-950 text-slate-400 border-slate-800'}`}
+                    className={`p-3 rounded-xl border text-xs text-left transition-all ${elemSelectedEvtId === evt.id ? 'bg-purple-600 text-white border-purple-500 shadow-md font-bold' : 'bg-white text-slate-600 border-slate-200'}`}
                   >
-                    <div className="text-slate-100">{evt.title}</div>
+                    <div className="text-slate-900">{evt.title}</div>
                     <div className="text-[10px] opacity-75 mt-0.5">{evt.durationMinutes} mins • {evt.priceAmount > 0 ? `$${evt.priceAmount}` : 'FREE'}</div>
                   </button>
                 ))}
               </div>
 
-              <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-3">
+              <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-3">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="font-bold text-slate-200">Select Date:</span>
+                  <span className="font-bold text-slate-800">Select Date:</span>
                   <input 
                     type="date" 
                     value={elemSelectedDate}
                     onChange={(e) => setElemSelectedDate(e.target.value)}
-                    className="bg-slate-900 border border-slate-800 rounded-lg px-3 py-1 text-slate-100 font-mono"
+                    className="bg-white border border-slate-200 rounded-lg px-3 py-1 text-slate-900 font-mono"
                   />
                 </div>
 
@@ -2819,7 +2819,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
                     <button 
                       key={slot}
                       onClick={() => setElemSelectedSlot(slot)}
-                      className={`py-2 rounded-xl text-xs font-mono font-bold transition-all ${elemSelectedSlot === slot ? 'bg-indigo-600 text-white shadow-md' : 'bg-slate-900 text-slate-300 border border-slate-800 hover:bg-slate-850'}`}
+                      className={`py-2 rounded-xl text-xs font-mono font-bold transition-all ${elemSelectedSlot === slot ? 'bg-indigo-600 text-white shadow-md' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'}`}
                     >
                       {slot}
                     </button>
@@ -2830,36 +2830,36 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
               <div className="space-y-3">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="text-xs font-semibold text-slate-300 block mb-1">Your Name</label>
+                    <label className="text-xs font-semibold text-slate-700 block mb-1">Your Name</label>
                     <input 
                       type="text" 
                       placeholder="Jonathan Hayes"
                       value={elemClientName}
                       onChange={(e) => setElemClientName(e.target.value)}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100" 
+                      className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900" 
                     />
                   </div>
 
                   <div>
-                    <label className="text-xs font-semibold text-slate-300 block mb-1">Your Email</label>
+                    <label className="text-xs font-semibold text-slate-700 block mb-1">Your Email</label>
                     <input 
                       type="email" 
                       placeholder="jhayes@techcorp.demo"
                       value={elemClientEmail}
                       onChange={(e) => setElemClientEmail(e.target.value)}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100" 
+                      className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900" 
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-slate-300 block mb-1">Phone Number (For SMS Alert)</label>
+                  <label className="text-xs font-semibold text-slate-700 block mb-1">Phone Number (For SMS Alert)</label>
                   <input 
                     type="tel" 
                     placeholder="+1 (555) 492-1082"
                     value={elemClientPhone}
                     onChange={(e) => setElemClientPhone(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 font-mono" 
+                    className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 font-mono" 
                   />
                 </div>
               </div>
@@ -2873,21 +2873,21 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
               </button>
             </div>
           ) : (
-            <div className="bg-slate-950 p-6 rounded-2xl border border-emerald-500/40 text-center space-y-4 animate-fade-in">
+            <div className="bg-white p-6 rounded-2xl border border-emerald-500/40 text-center space-y-4 animate-fade-in">
               <div className="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
                 <CheckCircle className="w-6 h-6" />
               </div>
-              <h4 className="text-lg font-black text-white">Your Call is Confirmed!</h4>
-              <p className="text-xs text-slate-300 max-w-md mx-auto">
+              <h4 className="text-lg font-black text-slate-900">Your Call is Confirmed!</h4>
+              <p className="text-xs text-slate-700 max-w-md mx-auto">
                 Scheduled for <strong className="text-purple-300 font-mono">{elemConfirmedAppt?.date} at {elemConfirmedAppt?.timeSlot} (EST)</strong> with <strong className="text-indigo-400">{elemConfirmedAppt?.hostName}</strong>.
               </p>
-              <div className="p-3 bg-slate-900 rounded-xl border border-slate-800 inline-block font-mono text-xs text-emerald-400">
+              <div className="p-3 bg-white rounded-xl border border-slate-200 inline-block font-mono text-xs text-emerald-400">
                 Zoom HD Meeting Link: {elemConfirmedAppt?.meetingLink}
               </div>
               <div>
                 <button 
                   onClick={() => setElemBookingDone(false)}
-                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-bold border border-slate-700"
+                  className="px-4 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-xl text-xs font-bold border border-slate-300"
                 >
                   Book Another Session
                 </button>
@@ -2902,13 +2902,13 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
       const activeHost = chronoHosts.find(h => h.id === selectedHostPickerId) || chronoHosts[0];
 
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-slate-900 border border-slate-800 shadow-xl space-y-4 rounded-2xl ${isSelected ? 'is-selected' : ''}`}>
-          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-            <span className="text-[10px] uppercase font-mono font-bold text-slate-400">ASSIGNED STRATEGIST PROFILE</span>
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-white border border-slate-200 shadow-xl space-y-4 rounded-2xl ${isSelected ? 'is-selected' : ''}`}>
+          <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+            <span className="text-[10px] uppercase font-mono font-bold text-slate-600">ASSIGNED STRATEGIST PROFILE</span>
             <select 
               value={selectedHostPickerId}
               onChange={(e) => setSelectedHostPickerId(e.target.value)}
-              className="bg-slate-950 border border-slate-800 text-indigo-300 text-xs rounded-lg px-2 py-0.5 font-bold focus:outline-none"
+              className="bg-white border border-slate-200 text-indigo-300 text-xs rounded-lg px-2 py-0.5 font-bold focus:outline-none"
             >
               {chronoHosts.map(h => (
                 <option key={h.id} value={h.id}>{h.name}</option>
@@ -2919,13 +2919,13 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
           <div className="flex items-center gap-4">
             <img src={activeHost.avatar} alt={activeHost.name} className="w-14 h-14 rounded-2xl object-cover border-2 border-purple-500 shrink-0" />
             <div>
-              <h4 className="text-base font-bold text-white">{activeHost.name}</h4>
+              <h4 className="text-base font-bold text-slate-900">{activeHost.name}</h4>
               <p className="text-xs text-purple-400 font-mono">{activeHost.role}</p>
               <div className="text-xs text-amber-400 font-bold mt-0.5">★ {activeHost.rating} / 5.0 Rating</div>
             </div>
           </div>
 
-          <p className="text-xs text-slate-300 leading-relaxed">{activeHost.bio}</p>
+          <p className="text-xs text-slate-700 leading-relaxed">{activeHost.bio}</p>
 
           <button 
             onClick={() => alert(`Selected host ${activeHost.name} for round-robin appointment!`)}
@@ -2949,8 +2949,8 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
       };
 
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-slate-900 border border-emerald-500/40 shadow-2xl space-y-4 rounded-2xl ${isSelected ? 'is-selected' : ''}`}>
-          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-white border border-emerald-500/40 shadow-2xl space-y-4 rounded-2xl ${isSelected ? 'is-selected' : ''}`}>
+          <div className="flex items-center justify-between border-b border-slate-200 pb-3">
             <div className="flex items-center gap-2 text-xs font-bold text-emerald-400">
               <CheckCircle className="w-4 h-4" />
               <span>Appointment Booking Receipt</span>
@@ -2961,26 +2961,26 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
           </div>
 
           <div className="space-y-2 text-xs">
-            <div className="flex items-center justify-between text-slate-300">
+            <div className="flex items-center justify-between text-slate-700">
               <span>Client Name:</span>
-              <span className="font-bold text-white">{latestAppt.customerName}</span>
+              <span className="font-bold text-slate-900">{latestAppt.customerName}</span>
             </div>
-            <div className="flex items-center justify-between text-slate-300">
+            <div className="flex items-center justify-between text-slate-700">
               <span>Session Type:</span>
               <span className="font-bold text-purple-300">{latestAppt.eventTitle}</span>
             </div>
-            <div className="flex items-center justify-between text-slate-300">
+            <div className="flex items-center justify-between text-slate-700">
               <span>Scheduled Date & Time:</span>
               <span className="font-bold text-amber-300 font-mono">{latestAppt.date} at {latestAppt.timeSlot} (EST)</span>
             </div>
-            <div className="flex items-center justify-between text-slate-300">
+            <div className="flex items-center justify-between text-slate-700">
               <span>Meeting Host:</span>
               <span className="font-bold text-indigo-400">{latestAppt.hostName}</span>
             </div>
           </div>
 
-          <div className="p-3 bg-slate-950 border border-slate-800 rounded-xl text-center">
-            <span className="text-[11px] text-slate-400 block mb-1">Zoom Meeting Link:</span>
+          <div className="p-3 bg-white border border-slate-200 rounded-xl text-center">
+            <span className="text-[11px] text-slate-600 block mb-1">Zoom Meeting Link:</span>
             <a href={latestAppt.meetingLink} target="_blank" rel="noreferrer" className="text-xs font-mono font-bold text-indigo-400 hover:underline">
               {latestAppt.meetingLink}
             </a>
@@ -2988,7 +2988,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
           <button 
             onClick={() => alert('iCal Calendar (.ics) file generated and downloaded!')}
-            className="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl border border-slate-700 flex items-center justify-center gap-2"
+            className="w-full py-2.5 bg-slate-50 hover:bg-slate-100 text-slate-800 text-xs font-bold rounded-xl border border-slate-300 flex items-center justify-center gap-2"
           >
             <Calendar className="w-4 h-4 text-purple-400" />
             <span>Add Event to Google / iCal Calendar</span>
@@ -2999,9 +2999,9 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     case 'team_schedule_picker': {
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-slate-900 border border-indigo-500/40 shadow-2xl space-y-4 rounded-2xl ${isSelected ? 'is-selected' : ''}`}>
-          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-            <div className="flex items-center gap-2 text-xs font-extrabold text-white">
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-white border border-indigo-500/40 shadow-2xl space-y-4 rounded-2xl ${isSelected ? 'is-selected' : ''}`}>
+          <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+            <div className="flex items-center gap-2 text-xs font-extrabold text-slate-900">
               <Workflow className="w-4 h-4 text-purple-400" />
               <span>Team Round-Robin Schedule Selector</span>
             </div>
@@ -3012,11 +3012,11 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {chronoHosts.map(host => (
-              <div key={host.id} className="p-4 bg-slate-950 rounded-xl border border-slate-800 text-center space-y-2 hover:border-purple-500/50 transition-all">
+              <div key={host.id} className="p-4 bg-white rounded-xl border border-slate-200 text-center space-y-2 hover:border-purple-500/50 transition-all">
                 <img src={host.avatar} alt={host.name} className="w-12 h-12 rounded-full object-cover mx-auto border-2 border-indigo-500" />
                 <div>
-                  <div className="font-bold text-xs text-white">{host.name}</div>
-                  <div className="text-[10px] text-slate-400">{host.role}</div>
+                  <div className="font-bold text-xs text-slate-900">{host.name}</div>
+                  <div className="text-[10px] text-slate-600">{host.role}</div>
                 </div>
                 <button 
                   onClick={() => alert(`Selected ${host.name} for 1-on-1 strategy call!`)}
@@ -3054,7 +3054,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
                   🚀
                 </div>
               )}
-              <span className="font-black text-lg text-white tracking-tight font-sans">{props.brandLogoText || 'Brand'}</span>
+              <span className="font-black text-lg text-slate-900 tracking-tight font-sans">{props.brandLogoText || 'Brand'}</span>
             </div>
 
             {/* Desktop Menu Navigation Items */}
@@ -3067,7 +3067,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
                 <div key={item.id} className="relative group/menu py-2">
                   <a 
                     href={item.linkUrl || '#'} 
-                    className="text-xs font-bold text-slate-300 hover:text-indigo-400 transition-colors flex items-center gap-1"
+                    className="text-xs font-bold text-slate-700 hover:text-indigo-400 transition-colors flex items-center gap-1"
                   >
                     {item.label}
                   </a>
@@ -3120,8 +3120,8 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
               <span className="text-[10px] uppercase font-mono font-extrabold text-amber-400 bg-amber-950/80 px-2.5 py-1 rounded border border-amber-800">
                 ⚠️ URGENT DISCOUNT CLOSING SOON
               </span>
-              <h3 className="text-xl font-black text-white">{props.title || "CLAIM YOUR 80% DISCOUNT BEFORE MIDNIGHT"}</h3>
-              <p className="text-xs text-slate-300">Lock in your lifetime agency access before the pricing increases to $997.</p>
+              <h3 className="text-xl font-black text-slate-900">{props.title || "CLAIM YOUR 80% DISCOUNT BEFORE MIDNIGHT"}</h3>
+              <p className="text-xs text-slate-700">Lock in your lifetime agency access before the pricing increases to $997.</p>
             </div>
             <button className="px-6 py-3.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl shadow-xl shadow-amber-500/20 shrink-0">
               CLAIM 80% DISCOUNT NOW
@@ -3132,7 +3132,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     case 'testimonial_card_widget':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-slate-900 border border-slate-800 rounded-2xl space-y-4 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-white border border-slate-200 rounded-2xl space-y-4 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
           <div className="flex items-center justify-between">
             <div className="flex text-amber-400 gap-1">
               {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-amber-400" />)}
@@ -3141,12 +3141,12 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
               VERIFIED BUYER
             </span>
           </div>
-          <p className="text-xs text-slate-200 italic leading-relaxed">"{props.quote || 'This funnel stack generated $2.4M in 30 days. The 1-click upsells alone doubled our average order value.'}"</p>
-          <div className="flex items-center gap-3 border-t border-slate-800 pt-3">
+          <p className="text-xs text-slate-800 italic leading-relaxed">"{props.quote || 'This funnel stack generated $2.4M in 30 days. The 1-click upsells alone doubled our average order value.'}"</p>
+          <div className="flex items-center gap-3 border-t border-slate-200 pt-3">
             <img src={props.avatarUrl || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80"} alt="User Avatar" className="w-10 h-10 rounded-full object-cover border-2 border-indigo-500" />
             <div>
-              <div className="font-bold text-xs text-white">{props.name || "Alex Hormozi"}</div>
-              <div className="text-[10px] text-slate-400">{props.role || "Founder, Acquisition.com"}</div>
+              <div className="font-bold text-xs text-slate-900">{props.name || "Alex Hormozi"}</div>
+              <div className="text-[10px] text-slate-600">{props.role || "Founder, Acquisition.com"}</div>
             </div>
           </div>
         </div>
@@ -3161,25 +3161,25 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
       const activeSlide = slides[widgetSlideIdx % slides.length];
 
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 sm:p-8 bg-slate-900 border border-slate-800 rounded-3xl space-y-4 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 sm:p-8 bg-white border border-slate-200 rounded-3xl space-y-4 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-mono font-bold text-indigo-400 uppercase">FEATURE HIGHLIGHT SLIDER</span>
             <div className="flex gap-1.5">
-              <button onClick={() => setWidgetSlideIdx((widgetSlideIdx - 1 + slides.length) % slides.length)} className="p-1.5 bg-slate-950 border border-slate-800 rounded-lg text-slate-300 hover:text-white">
+              <button onClick={() => setWidgetSlideIdx((widgetSlideIdx - 1 + slides.length) % slides.length)} className="p-1.5 bg-white border border-slate-200 rounded-lg text-slate-700 hover:text-slate-900">
                 <ChevronLeft className="w-4 h-4" />
               </button>
-              <button onClick={() => setWidgetSlideIdx((widgetSlideIdx + 1) % slides.length)} className="p-1.5 bg-slate-950 border border-slate-800 rounded-lg text-slate-300 hover:text-white">
+              <button onClick={() => setWidgetSlideIdx((widgetSlideIdx + 1) % slides.length)} className="p-1.5 bg-white border border-slate-200 rounded-lg text-slate-700 hover:text-slate-900">
                 <ChevronRight className="w-4 h-4" />
               </button>
             </div>
           </div>
-          <div className="p-5 bg-slate-950 rounded-2xl border border-slate-800 space-y-2 animate-fade-in">
-            <h4 className="text-base font-bold text-white">{activeSlide.title}</h4>
-            <p className="text-xs text-slate-300">{activeSlide.desc}</p>
+          <div className="p-5 bg-white rounded-2xl border border-slate-200 space-y-2 animate-fade-in">
+            <h4 className="text-base font-bold text-slate-900">{activeSlide.title}</h4>
+            <p className="text-xs text-slate-700">{activeSlide.desc}</p>
           </div>
           <div className="flex justify-center gap-1.5 pt-1">
             {slides.map((_, i) => (
-              <span key={i} onClick={() => setWidgetSlideIdx(i)} className={`w-2.5 h-2.5 rounded-full cursor-pointer transition-all ${widgetSlideIdx === i ? 'bg-indigo-500 w-6' : 'bg-slate-800'}`} />
+              <span key={i} onClick={() => setWidgetSlideIdx(i)} className={`w-2.5 h-2.5 rounded-full cursor-pointer transition-all ${widgetSlideIdx === i ? 'bg-indigo-500 w-6' : 'bg-slate-50'}`} />
             ))}
           </div>
         </div>
@@ -3197,11 +3197,11 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     case 'image_carousel_widget':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-4 bg-slate-900 border border-slate-800 rounded-2xl space-y-3 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
-          <div className="relative overflow-hidden rounded-xl h-48 border border-slate-800 bg-slate-950">
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-4 bg-white border border-slate-200 rounded-2xl space-y-3 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
+          <div className="relative overflow-hidden rounded-xl h-48 border border-slate-200 bg-white">
             <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&auto=format&fit=crop&q=80" alt="Carousel Banner" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent flex items-end p-4">
-              <span className="text-xs font-bold text-white">Dynamic Marketing Gallery Banner</span>
+              <span className="text-xs font-bold text-slate-900">Dynamic Marketing Gallery Banner</span>
             </div>
           </div>
         </div>
@@ -3209,18 +3209,18 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     case 'interactive_gallery_widget':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-slate-900 border border-slate-800 rounded-3xl space-y-4 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
-          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-            <span className="text-xs font-bold text-white flex items-center gap-2">
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-white border border-slate-200 rounded-3xl space-y-4 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
+          <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+            <span className="text-xs font-bold text-slate-900 flex items-center gap-2">
               <Grid className="w-4 h-4 text-indigo-400" />
               Interactive Portfolio & Funnel Showcase
             </span>
-            <div className="flex bg-slate-950 p-1 rounded-lg border border-slate-800 text-[10px] font-bold">
+            <div className="flex bg-white p-1 rounded-lg border border-slate-200 text-[10px] font-bold">
               {['all', 'funnels', 'vsls', 'results'].map(tab => (
                 <button 
                   key={tab} 
                   onClick={() => setWidgetGalleryFilter(tab)}
-                  className={`px-2.5 py-1 rounded transition-colors uppercase ${widgetGalleryFilter === tab ? 'bg-indigo-600 text-white' : 'text-slate-400'}`}
+                  className={`px-2.5 py-1 rounded transition-colors uppercase ${widgetGalleryFilter === tab ? 'bg-indigo-600 text-white' : 'text-slate-600'}`}
                 >
                   {tab}
                 </button>
@@ -3229,10 +3229,10 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {[1, 2, 3].map((num) => (
-              <div key={num} className="overflow-hidden rounded-xl border border-slate-800 bg-slate-950 group relative cursor-pointer">
+              <div key={num} className="overflow-hidden rounded-xl border border-slate-200 bg-white group relative cursor-pointer">
                 <img src={`https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=250&fit=crop`} alt="Gallery" className="w-full h-24 object-cover group-hover:scale-105 transition-transform" />
                 <div className="absolute inset-0 bg-indigo-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <Maximize2 className="w-5 h-5 text-white" />
+                  <Maximize2 className="w-5 h-5 text-slate-900" />
                 </div>
               </div>
             ))}
@@ -3253,14 +3253,14 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     case 'sidebar_widget':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-slate-900 border border-slate-800 rounded-3xl space-y-4 shadow-2xl ${isSelected ? 'is-selected' : ''}`}>
-          <div className="border-b border-slate-800 pb-3">
-            <span className="text-xs font-bold text-slate-200">Conversion Sidebar Widget</span>
-            <p className="text-[11px] text-slate-400 mt-0.5">Sticky lead capture & quick links.</p>
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-white border border-slate-200 rounded-3xl space-y-4 shadow-2xl ${isSelected ? 'is-selected' : ''}`}>
+          <div className="border-b border-slate-200 pb-3">
+            <span className="text-xs font-bold text-slate-800">Conversion Sidebar Widget</span>
+            <p className="text-[11px] text-slate-600 mt-0.5">Sticky lead capture & quick links.</p>
           </div>
-          <div className="p-4 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
-            <label className="text-[11px] font-bold text-slate-300 block">Download Free Funnel Blueprint</label>
-            <input type="email" placeholder="enter email address..." className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-200" />
+          <div className="p-4 bg-white rounded-xl border border-slate-200 space-y-2">
+            <label className="text-[11px] font-bold text-slate-700 block">Download Free Funnel Blueprint</label>
+            <input type="email" placeholder="enter email address..." className="w-full bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs text-slate-800" />
             <button className="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-bold shadow">INSTANT DOWNLOAD</button>
           </div>
         </div>
@@ -3268,16 +3268,16 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     case 'spacer_widget':
       return (
-        <div style={{ ...containerStyle, height: props.height || '48px' }} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} border border-dashed border-slate-800 flex items-center justify-center ${isSelected ? 'is-selected' : ''}`}>
+        <div style={{ ...containerStyle, height: props.height || '48px' }} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} border border-dashed border-slate-200 flex items-center justify-center ${isSelected ? 'is-selected' : ''}`}>
           {!isInteractiveMode && <span className="text-[10px] font-mono text-slate-600">Vertical Spacer Gap ({props.height || '48px'})</span>}
         </div>
       );
 
     case 'read_more_widget':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-slate-900 border border-slate-800 rounded-2xl space-y-3 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
-          <h4 className="text-sm font-bold text-white">{props.title || "Full Terms & Offer Guarantee Breakdown"}</h4>
-          <p className={`text-xs text-slate-300 leading-relaxed ${!widgetReadMoreOpen ? 'line-clamp-2' : ''}`}>
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-white border border-slate-200 rounded-2xl space-y-3 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
+          <h4 className="text-sm font-bold text-slate-900">{props.title || "Full Terms & Offer Guarantee Breakdown"}</h4>
+          <p className={`text-xs text-slate-700 leading-relaxed ${!widgetReadMoreOpen ? 'line-clamp-2' : ''}`}>
             Our 30-Day 100% Risk-Free Guarantee ensures that if you are not wowed by the sales funnel performance or order bump conversion lifts, our team will issue a 100% full refund with no questions asked.
           </p>
           <button onClick={() => setWidgetReadMoreOpen(!widgetReadMoreOpen)} className="text-xs font-bold text-indigo-400 hover:underline flex items-center gap-1">
@@ -3289,19 +3289,19 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     case 'login_register_widget':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-slate-900 border border-slate-800 rounded-3xl space-y-4 shadow-2xl ${isSelected ? 'is-selected' : ''}`}>
-          <div className="flex bg-slate-950 p-1 rounded-xl border border-slate-800 text-xs font-bold">
-            <button onClick={() => setWidgetAuthTab('login')} className={`flex-1 py-1.5 rounded-lg transition-all ${widgetAuthTab === 'login' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400'}`}>Log In</button>
-            <button onClick={() => setWidgetAuthTab('register')} className={`flex-1 py-1.5 rounded-lg transition-all ${widgetAuthTab === 'register' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400'}`}>Create Account</button>
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-white border border-slate-200 rounded-3xl space-y-4 shadow-2xl ${isSelected ? 'is-selected' : ''}`}>
+          <div className="flex bg-white p-1 rounded-xl border border-slate-200 text-xs font-bold">
+            <button onClick={() => setWidgetAuthTab('login')} className={`flex-1 py-1.5 rounded-lg transition-all ${widgetAuthTab === 'login' ? 'bg-indigo-600 text-white shadow' : 'text-slate-600'}`}>Log In</button>
+            <button onClick={() => setWidgetAuthTab('register')} className={`flex-1 py-1.5 rounded-lg transition-all ${widgetAuthTab === 'register' ? 'bg-indigo-600 text-white shadow' : 'text-slate-600'}`}>Create Account</button>
           </div>
           <div className="space-y-3">
             <div>
-              <label className="text-xs font-semibold text-slate-300 block mb-1">Email Address</label>
-              <input type="email" placeholder="user@company.com" className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100" />
+              <label className="text-xs font-semibold text-slate-700 block mb-1">Email Address</label>
+              <input type="email" placeholder="user@company.com" className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900" />
             </div>
             <div>
-              <label className="text-xs font-semibold text-slate-300 block mb-1">Password</label>
-              <input type="password" placeholder="••••••••" className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100" />
+              <label className="text-xs font-semibold text-slate-700 block mb-1">Password</label>
+              <input type="password" placeholder="••••••••" className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900" />
             </div>
             <button className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold shadow">{widgetAuthTab === 'login' ? 'Log In to Account' : 'Register Account'}</button>
           </div>
@@ -3310,9 +3310,9 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     case 'price_list_widget':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-slate-900 border border-slate-800 rounded-2xl space-y-3 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
-          <div className="border-b border-slate-800 pb-2 flex items-center justify-between">
-            <span className="text-xs font-bold text-white">Itemized Services & Pricing Menu</span>
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-white border border-slate-200 rounded-2xl space-y-3 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
+          <div className="border-b border-slate-200 pb-2 flex items-center justify-between">
+            <span className="text-xs font-bold text-slate-900">Itemized Services & Pricing Menu</span>
             <span className="text-[10px] text-indigo-400 font-mono">2026 RATES</span>
           </div>
           <div className="space-y-3">
@@ -3321,10 +3321,10 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
               { item: "2-Tier Affiliate Engine Setup", desc: "Custom referral portal + payout setup", price: "$897" },
               { item: "ChronoChimp Calendar Integration", desc: "Automated Round-Robin host scheduling", price: "$297" }
             ].map((p, idx) => (
-              <div key={idx} className="flex items-start justify-between border-b border-slate-800/60 pb-2 text-xs">
+              <div key={idx} className="flex items-start justify-between border-b border-slate-200/60 pb-2 text-xs">
                 <div>
-                  <div className="font-bold text-slate-200">{p.item}</div>
-                  <div className="text-[11px] text-slate-400">{p.desc}</div>
+                  <div className="font-bold text-slate-800">{p.item}</div>
+                  <div className="text-[11px] text-slate-600">{p.desc}</div>
                 </div>
                 <span className="font-mono font-bold text-emerald-400">{p.price}</span>
               </div>
@@ -3335,18 +3335,18 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     case 'video_playlist_widget':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-slate-900 border border-slate-800 rounded-3xl space-y-4 shadow-2xl ${isSelected ? 'is-selected' : ''}`}>
-          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-            <span className="text-xs font-bold text-white flex items-center gap-2">
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-white border border-slate-200 rounded-3xl space-y-4 shadow-2xl ${isSelected ? 'is-selected' : ''}`}>
+          <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+            <span className="text-xs font-bold text-slate-900 flex items-center gap-2">
               <Video className="w-4 h-4 text-purple-400" />
               Masterclass Video Playlist Player
             </span>
-            <span className="text-[10px] text-slate-400 font-mono">3 EPISODES</span>
+            <span className="text-[10px] text-slate-600 font-mono">3 EPISODES</span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="md:col-span-2 overflow-hidden rounded-xl border border-slate-800 bg-slate-950 relative h-48">
+            <div className="md:col-span-2 overflow-hidden rounded-xl border border-slate-200 bg-white relative h-48">
               <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&auto=format&fit=crop&q=80" alt="Video Playlist" className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-slate-950/40 flex items-center justify-center">
+              <div className="absolute inset-0 bg-white/40 flex items-center justify-center">
                 <div className="w-12 h-12 rounded-full bg-purple-600 text-white flex items-center justify-center shadow-lg">
                   <Play className="w-6 h-6 ml-1" />
                 </div>
@@ -3354,7 +3354,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
             </div>
             <div className="space-y-2 text-xs">
               {['Ep 1: Funnel Architecture', 'Ep 2: 1-Click Upsells', 'Ep 3: Affiliate Scale'].map((ep, idx) => (
-                <div key={idx} onClick={() => setWidgetVideoPlaylistIdx(idx)} className={`p-2.5 rounded-xl border cursor-pointer ${widgetVideoPlaylistIdx === idx ? 'bg-purple-950 border-purple-800 text-purple-200 font-bold' : 'bg-slate-950 border-slate-800 text-slate-400'}`}>
+                <div key={idx} onClick={() => setWidgetVideoPlaylistIdx(idx)} className={`p-2.5 rounded-xl border cursor-pointer ${widgetVideoPlaylistIdx === idx ? 'bg-purple-950 border-purple-800 text-purple-200 font-bold' : 'bg-white border-slate-200 text-slate-600'}`}>
                   {ep}
                 </div>
               ))}
@@ -3365,8 +3365,8 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     case 'table_of_contents_widget':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-5 bg-slate-950 border border-slate-800 rounded-2xl space-y-3 text-xs ${isSelected ? 'is-selected' : ''}`}>
-          <div className="flex items-center gap-2 text-xs font-bold text-slate-200 border-b border-slate-800 pb-2">
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-5 bg-white border border-slate-200 rounded-2xl space-y-3 text-xs ${isSelected ? 'is-selected' : ''}`}>
+          <div className="flex items-center gap-2 text-xs font-bold text-slate-800 border-b border-slate-200 pb-2">
             <List className="w-4 h-4 text-indigo-400" />
             <span>Table of Contents</span>
           </div>
@@ -3381,11 +3381,11 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     case 'reviews_widget':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-slate-900 border border-slate-800 rounded-3xl space-y-4 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
-          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-white border border-slate-200 rounded-3xl space-y-4 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
+          <div className="flex items-center justify-between border-b border-slate-200 pb-3">
             <div>
-              <h4 className="text-xl font-black text-white">4.9 / 5.0 Rating</h4>
-              <p className="text-xs text-slate-400">Based on 1,420+ Verified Client Reviews</p>
+              <h4 className="text-xl font-black text-slate-900">4.9 / 5.0 Rating</h4>
+              <p className="text-xs text-slate-600">Based on 1,420+ Verified Client Reviews</p>
             </div>
             <div className="flex text-amber-400 gap-1">
               {[...Array(5)].map((_, i) => <Star key={i} className="w-5 h-5 fill-amber-400" />)}
@@ -3396,12 +3396,12 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     case 'comparison_slider_widget':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-4 bg-slate-900 border border-slate-800 rounded-2xl space-y-3 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
-          <div className="flex items-center justify-between text-xs font-bold text-slate-200">
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-4 bg-white border border-slate-200 rounded-2xl space-y-3 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
+          <div className="flex items-center justify-between text-xs font-bold text-slate-800">
             <span>Before vs After Conversion Lift</span>
             <span className="text-emerald-400 font-mono">+142% AOV Increase</span>
           </div>
-          <div className="relative overflow-hidden rounded-xl h-44 border border-slate-800 bg-slate-950">
+          <div className="relative overflow-hidden rounded-xl h-44 border border-slate-200 bg-white">
             <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&auto=format&fit=crop&q=80" alt="Comparison" className="w-full h-full object-cover" />
             <div className="absolute inset-y-0 left-1/2 w-1 bg-white shadow-2xl flex items-center justify-center">
               <div className="w-6 h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center text-[10px] font-bold">VS</div>
@@ -3412,23 +3412,23 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     case 'stats_counter_widget':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-slate-900 border border-slate-800 rounded-3xl space-y-4 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-white border border-slate-200 rounded-3xl space-y-4 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
             <div>
               <div className="text-2xl sm:text-3xl font-black text-indigo-400">$10M+</div>
-              <div className="text-[11px] text-slate-400">Processed Sales</div>
+              <div className="text-[11px] text-slate-600">Processed Sales</div>
             </div>
             <div>
               <div className="text-2xl sm:text-3xl font-black text-purple-400">14.2k</div>
-              <div className="text-[11px] text-slate-400">Active Funnels</div>
+              <div className="text-[11px] text-slate-600">Active Funnels</div>
             </div>
             <div>
               <div className="text-2xl sm:text-3xl font-black text-emerald-400">99.9%</div>
-              <div className="text-[11px] text-slate-400">Uptime Rate</div>
+              <div className="text-[11px] text-slate-600">Uptime Rate</div>
             </div>
             <div>
               <div className="text-2xl sm:text-3xl font-black text-amber-400">2-Tier</div>
-              <div className="text-[11px] text-slate-400">Affiliate Payouts</div>
+              <div className="text-[11px] text-slate-600">Affiliate Payouts</div>
             </div>
           </div>
         </div>
@@ -3439,9 +3439,9 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
         <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-3.5 bg-gradient-to-r from-rose-950 via-slate-900 to-indigo-950 border border-rose-500/40 rounded-2xl flex items-center justify-between text-xs shadow-xl ${isSelected ? 'is-selected' : ''}`}>
           <div className="flex items-center gap-2">
             <Clock className="w-4 h-4 text-rose-400 animate-pulse" />
-            <span className="font-extrabold text-white">LIMITED TIME COUPON: Use code <strong className="text-amber-300 font-mono font-bold">LAUNCH80</strong></span>
+            <span className="font-extrabold text-slate-900">LIMITED TIME COUPON: Use code <strong className="text-amber-300 font-mono font-bold">LAUNCH80</strong></span>
           </div>
-          <button className="px-3 py-1 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-lg text-xs">Apply Coupon</button>
+          <button className="px-3 py-1 bg-rose-600 hover:bg-rose-500 text-slate-900 font-bold rounded-lg text-xs">Apply Coupon</button>
         </div>
       );
 
@@ -3453,7 +3453,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
               <MessageCircle className="w-5 h-5 fill-current" />
             </div>
             <div>
-              <div className="font-bold text-white">Live WhatsApp Chat Support</div>
+              <div className="font-bold text-slate-900">Live WhatsApp Chat Support</div>
               <div className="text-[10px] text-emerald-400">Typically replies in under 2 minutes</div>
             </div>
           </div>
@@ -3462,14 +3462,14 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     case 'team_grid_widget':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-slate-900 border border-slate-800 rounded-3xl space-y-4 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
-          <div className="text-xs font-bold text-white border-b border-slate-800 pb-2">Leadership & Strategist Team</div>
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-white border border-slate-200 rounded-3xl space-y-4 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
+          <div className="text-xs font-bold text-slate-900 border-b border-slate-200 pb-2">Leadership & Strategist Team</div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-center text-xs">
             {['Marcus Vance', 'Sarah Jenkins', 'David Sterling'].map((name, idx) => (
-              <div key={idx} className="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
+              <div key={idx} className="p-3 bg-white rounded-xl border border-slate-200 space-y-1">
                 <img src={`https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80`} alt={name} className="w-10 h-10 rounded-full object-cover mx-auto border-2 border-indigo-500" />
-                <div className="font-bold text-white">{name}</div>
-                <div className="text-[10px] text-slate-400">Funnel Strategist</div>
+                <div className="font-bold text-slate-900">{name}</div>
+                <div className="text-[10px] text-slate-600">Funnel Strategist</div>
               </div>
             ))}
           </div>
@@ -3478,8 +3478,8 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     case 'logo_cloud_widget':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-slate-900 border border-slate-800 rounded-3xl space-y-3 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
-          <span className="text-[10px] uppercase font-mono font-bold text-slate-400 text-center block">AS FEATURED IN TOP PUBLICATIONS</span>
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-white border border-slate-200 rounded-3xl space-y-3 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
+          <span className="text-[10px] uppercase font-mono font-bold text-slate-600 text-center block">AS FEATURED IN TOP PUBLICATIONS</span>
           <div className="flex flex-wrap items-center justify-around gap-4 text-xs font-bold text-slate-500 font-mono">
             <span>FORBES</span>
             <span>BLOOMBERG</span>
@@ -3491,24 +3491,24 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     case 'guarantee_badge_widget':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-slate-900 border border-amber-500/40 rounded-3xl text-center space-y-3 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-white border border-amber-500/40 rounded-3xl text-center space-y-3 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
           <div className="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center mx-auto border border-amber-500/30">
             <ShieldCheck className="w-6 h-6" />
           </div>
-          <h4 className="text-base font-black text-white">30-Day 100% Money-Back Guarantee</h4>
-          <p className="text-xs text-slate-300 max-w-md mx-auto">Try LaunchEngine completely risk-free for 30 days. If you are not wowed, we will issue a full 100% refund immediately.</p>
+          <h4 className="text-base font-black text-slate-900">30-Day 100% Money-Back Guarantee</h4>
+          <p className="text-xs text-slate-700 max-w-md mx-auto">Try LaunchEngine completely risk-free for 30 days. If you are not wowed, we will issue a full 100% refund immediately.</p>
         </div>
       );
 
     case 'progress_step_widget':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-4 bg-slate-900 border border-slate-800 rounded-2xl space-y-2 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
-          <div className="flex justify-between text-xs font-bold text-slate-300">
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-4 bg-white border border-slate-200 rounded-2xl space-y-2 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
+          <div className="flex justify-between text-xs font-bold text-slate-700">
             <span className="text-indigo-400">Step 1: Choose Offer</span>
             <span>Step 2: Shipping</span>
             <span>Step 3: Instant Access</span>
           </div>
-          <div className="w-full bg-slate-950 h-2 rounded-full overflow-hidden border border-slate-800">
+          <div className="w-full bg-white h-2 rounded-full overflow-hidden border border-slate-200">
             <div className="bg-gradient-to-r from-indigo-500 to-purple-500 h-full w-1/3" />
           </div>
         </div>
@@ -3516,15 +3516,15 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     case 'audio_podcast_widget':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-5 bg-slate-900 border border-slate-800 rounded-2xl space-y-3 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-5 bg-white border border-slate-200 rounded-2xl space-y-3 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
           <div className="flex items-center justify-between text-xs">
             <div className="flex items-center gap-3">
               <button onClick={() => setWidgetAudioPlaying(!widgetAudioPlaying)} className="w-9 h-9 rounded-full bg-purple-600 text-white flex items-center justify-center shadow">
                 {widgetAudioPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 ml-0.5" />}
               </button>
               <div>
-                <div className="font-bold text-white">Podcast Ep #14: 1-Click Upsell Secrets</div>
-                <div className="text-[10px] text-slate-400">14:22 mins • LaunchEngine Radio</div>
+                <div className="font-bold text-slate-900">Podcast Ep #14: 1-Click Upsell Secrets</div>
+                <div className="text-[10px] text-slate-600">14:22 mins • LaunchEngine Radio</div>
               </div>
             </div>
             <Headphones className="w-4 h-4 text-purple-400" />
@@ -3534,41 +3534,41 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     case 'map_location_widget':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-5 bg-slate-900 border border-slate-800 rounded-2xl space-y-3 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
-          <div className="flex items-center justify-between border-b border-slate-800 pb-2 text-xs">
-            <div className="flex items-center gap-2 font-bold text-white">
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-5 bg-white border border-slate-200 rounded-2xl space-y-3 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
+          <div className="flex items-center justify-between border-b border-slate-200 pb-2 text-xs">
+            <div className="flex items-center gap-2 font-bold text-slate-900">
               <MapPin className="w-4 h-4 text-rose-400" />
               <span>Headquarters & VIP Studio</span>
             </div>
-            <span className="text-[10px] text-slate-400 font-mono">BEVERLY HILLS, CA</span>
+            <span className="text-[10px] text-slate-600 font-mono">BEVERLY HILLS, CA</span>
           </div>
-          <p className="text-xs text-slate-300">9450 Wilshire Blvd, Beverly Hills, CA 90212</p>
+          <p className="text-xs text-slate-700">9450 Wilshire Blvd, Beverly Hills, CA 90212</p>
         </div>
       );
 
     case 'notification_popup_widget':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-4 bg-slate-900 border border-emerald-500/40 rounded-2xl flex items-center gap-3 shadow-2xl ${isSelected ? 'is-selected' : ''}`}>
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-4 bg-white border border-emerald-500/40 rounded-2xl flex items-center gap-3 shadow-2xl ${isSelected ? 'is-selected' : ''}`}>
           <div className="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs shrink-0">
             <Check className="w-4 h-4" />
           </div>
           <div className="text-xs">
-            <div className="font-bold text-white">Sarah M. from Austin, TX</div>
-            <div className="text-[11px] text-slate-400">Just purchased LaunchEngine Enterprise Pass (2 mins ago)</div>
+            <div className="font-bold text-slate-900">Sarah M. from Austin, TX</div>
+            <div className="text-[11px] text-slate-600">Just purchased LaunchEngine Enterprise Pass (2 mins ago)</div>
           </div>
         </div>
       );
 
     case 'social_feed_widget':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-5 bg-slate-900 border border-slate-800 rounded-3xl space-y-3 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
-          <div className="flex items-center justify-between border-b border-slate-800 pb-2 text-xs font-bold text-white">
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-5 bg-white border border-slate-200 rounded-3xl space-y-3 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
+          <div className="flex items-center justify-between border-b border-slate-200 pb-2 text-xs font-bold text-slate-900">
             <span>Instagram @LaunchEngine.io Feed</span>
             <span className="text-[10px] text-indigo-400">FOLLOW US</span>
           </div>
           <div className="grid grid-cols-3 gap-2">
             {[1, 2, 3].map(n => (
-              <div key={n} className="overflow-hidden rounded-xl border border-slate-800 bg-slate-950 h-20">
+              <div key={n} className="overflow-hidden rounded-xl border border-slate-200 bg-white h-20">
                 <img src={`https://images.unsplash.com/photo-1551434678-e076c223a692?w=200&h=200&fit=crop`} alt="Feed" className="w-full h-full object-cover" />
               </div>
             ))}
@@ -3578,17 +3578,17 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     case 'feature_comparison_widget':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-slate-900 border border-slate-800 rounded-3xl space-y-3 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
-          <div className="text-xs font-bold text-white border-b border-slate-800 pb-2">Plan Feature Comparison Matrix</div>
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-white border border-slate-200 rounded-3xl space-y-3 shadow-xl ${isSelected ? 'is-selected' : ''}`}>
+          <div className="text-xs font-bold text-slate-900 border-b border-slate-200 pb-2">Plan Feature Comparison Matrix</div>
           <table className="w-full text-left text-xs">
             <thead>
-              <tr className="border-b border-slate-800 text-slate-400">
+              <tr className="border-b border-slate-200 text-slate-600">
                 <th className="py-2">Feature</th>
                 <th className="py-2 text-center">Starter</th>
                 <th className="py-2 text-center text-indigo-400">Agency Pro</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/60 text-slate-300">
+            <tbody className="divide-y divide-slate-800/60 text-slate-700">
               <tr><td className="py-2">1-Click Upsells</td><td className="text-center">✓</td><td className="text-center text-emerald-400 font-bold">✓ Unlimited</td></tr>
               <tr><td className="py-2">ChronoChimp Calendar</td><td className="text-center">-</td><td className="text-center text-emerald-400 font-bold">✓ Included</td></tr>
             </tbody>
@@ -3598,15 +3598,15 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     case 'search_bar_widget':
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-3 bg-slate-900 border border-slate-800 rounded-2xl shadow-xl ${isSelected ? 'is-selected' : ''}`}>
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-3 bg-white border border-slate-200 rounded-2xl shadow-xl ${isSelected ? 'is-selected' : ''}`}>
           <div className="relative">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+            <Search className="w-4 h-4 text-slate-600 absolute left-3.5 top-3" />
             <input 
               type="text" 
               placeholder="Search offer catalog, courses, or knowledgebase..."
               value={widgetSearchQuery}
               onChange={(e) => setWidgetSearchQuery(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+              className="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-4 py-2 text-xs text-slate-900 placeholder-slate-500 focus:outline-none focus:border-indigo-500"
             />
           </div>
         </div>
@@ -3614,9 +3614,9 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     case 'community_feed_widget': {
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} bg-slate-900 border border-slate-800 rounded-2xl shadow-lg overflow-hidden ${isSelected ? 'is-selected' : ''}`}>
-          <div className="p-4 bg-slate-800 border-b border-slate-700 flex justify-between items-center">
-            <h3 className="text-white font-bold text-sm flex items-center gap-2">
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} bg-white border border-slate-200 rounded-2xl shadow-lg overflow-hidden ${isSelected ? 'is-selected' : ''}`}>
+          <div className="p-4 bg-slate-50 border-b border-slate-300 flex justify-between items-center">
+            <h3 className="text-slate-900 font-bold text-sm flex items-center gap-2">
               <MessageSquare className="w-4 h-4 text-emerald-400" />
               TribeNexus Feed (Space: {props.spaceSlug || 'all'})
             </h3>
@@ -3680,16 +3680,16 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
             backgroundPosition: 'center'
           }} 
           onClick={onSelect} 
-          className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} rounded-3xl overflow-hidden border border-slate-800 shadow-2xl ${isSelected ? 'is-selected' : ''}`}
+          className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} rounded-3xl overflow-hidden border border-slate-200 shadow-2xl ${isSelected ? 'is-selected' : ''}`}
         >
           {/* TOP NAVIGATION BAR */}
-          <nav className="px-6 py-4 border-b border-slate-800/60 backdrop-blur-md flex items-center relative z-20 w-full">
+          <nav className="px-6 py-4 border-b border-slate-200/60 backdrop-blur-md flex items-center relative z-20 w-full">
             {/* Brand Logo */}
             <div className="flex items-center gap-2 shrink-0">
               <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-white font-extrabold text-sm shadow-md">
                 🚀
               </div>
-              <span className="font-black text-lg text-white tracking-tight font-sans">{logoText}</span>
+              <span className="font-black text-lg text-slate-900 tracking-tight font-sans">{logoText}</span>
             </div>
 
             {/* Desktop Menu Navigation Items with Responsive Dropdown Submenus */}
@@ -3702,19 +3702,19 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
                 <div key={item.id} className="relative group/menu py-2">
                   <a 
                     href={item.linkUrl || '#'} 
-                    className="text-xs font-bold text-slate-300 hover:text-indigo-400 transition-colors flex items-center gap-1"
+                    className="text-xs font-bold text-slate-700 hover:text-indigo-400 transition-colors flex items-center gap-1"
                   >
                     {item.label}
                   </a>
 
                   {/* Dropdown Sub-menu on Hover/Focus */}
                   {item.subItems && item.subItems.length > 0 && (
-                    <div className="absolute top-full left-0 hidden group-hover/menu:block min-w-[200px] p-2 bg-slate-900/95 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl space-y-1 z-50">
+                    <div className="absolute top-full left-0 hidden group-hover/menu:block min-w-[200px] p-2 bg-white/95 backdrop-blur-xl border border-slate-200 rounded-2xl shadow-2xl space-y-1 z-50">
                       {item.subItems.map((sub: any) => (
                         <a
                           key={sub.id}
                           href={sub.linkUrl || '#'}
-                          className="block px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-indigo-600/80 transition-all flex items-center gap-2"
+                          className="block px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:text-slate-900 hover:bg-indigo-600/80 transition-all flex items-center gap-2"
                         >
                           <ChevronRight className="w-3.5 h-3.5 text-indigo-400" />
                           <span>{sub.label}</span>
@@ -3738,7 +3738,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
                   e.stopPropagation();
                   setVideoPlaying(!videoPlaying);
                 }}
-                className="md:hidden p-2 text-slate-300 hover:text-white bg-slate-800 rounded-xl"
+                className="md:hidden p-2 text-slate-700 hover:text-slate-900 bg-slate-50 rounded-xl"
               >
                 <Menu className="w-5 h-5" />
               </button>
@@ -3747,14 +3747,14 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
           {/* Mobile Navigation Accordion Drawer */}
           {videoPlaying && (
-            <div className="md:hidden bg-slate-900 border-b border-slate-800 p-4 space-y-3 relative z-30">
+            <div className="md:hidden bg-white border-b border-slate-200 p-4 space-y-3 relative z-30">
               {navItems.map((item: any) => (
                 <div key={item.id} className="space-y-1">
-                  <div className="text-xs font-extrabold text-white py-1">{item.label}</div>
+                  <div className="text-xs font-extrabold text-slate-900 py-1">{item.label}</div>
                   {item.subItems && (
-                    <div className="pl-3 space-y-1 border-l border-slate-800">
+                    <div className="pl-3 space-y-1 border-l border-slate-200">
                       {item.subItems.map((sub: any) => (
-                        <a key={sub.id} href={sub.linkUrl || '#'} className="block text-[11px] text-slate-400 hover:text-indigo-400 py-1">
+                        <a key={sub.id} href={sub.linkUrl || '#'} className="block text-[11px] text-slate-600 hover:text-indigo-400 py-1">
                           ↳ {sub.label}
                         </a>
                       ))}
@@ -3817,13 +3817,13 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
       const navLinks = props.links || props.menuItems || defaultLinks;
 
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-4 bg-slate-900 border border-slate-800 rounded-2xl shadow-lg ${isSelected ? 'is-selected' : ''}`}>
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-4 bg-white border border-slate-200 rounded-2xl shadow-lg ${isSelected ? 'is-selected' : ''}`}>
           <div className="flex items-center w-full relative">
             <div className="flex items-center gap-2 shrink-0">
               {!props.hideBrandImage && (
                 <>
                   <div className="w-6 h-6 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold text-xs">🚀</div>
-                  <span className="font-bold text-sm text-white">{props.brandName || 'Brand'}</span>
+                  <span className="font-bold text-sm text-slate-900">{props.brandName || 'Brand'}</span>
                 </>
               )}
             </div>
@@ -3835,14 +3835,14 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
             }`}>
               {navLinks.map((link: any, idx: number) => (
                 <div key={link.id || idx} className="relative group/sub py-1">
-                  <a href={link.url || link.linkUrl || '#'} className="text-xs font-bold text-slate-300 hover:text-indigo-400 transition-colors flex items-center gap-1">
+                  <a href={link.url || link.linkUrl || '#'} className="text-xs font-bold text-slate-700 hover:text-indigo-400 transition-colors flex items-center gap-1">
                     {link.label}
                   </a>
 
                   {link.subItems && link.subItems.length > 0 && (
-                    <div className="absolute top-full left-0 hidden group-hover/sub:block min-w-[160px] p-2 bg-slate-950 border border-slate-800 rounded-xl shadow-2xl space-y-1 z-50">
+                    <div className="absolute top-full left-0 hidden group-hover/sub:block min-w-[160px] p-2 bg-white border border-slate-200 rounded-xl shadow-2xl space-y-1 z-50">
                       {link.subItems.map((sub: any) => (
-                        <a key={sub.id} href={sub.linkUrl || '#'} className="block px-2.5 py-1.5 rounded-lg text-[11px] text-slate-300 hover:text-white hover:bg-indigo-600/80 transition-colors">
+                        <a key={sub.id} href={sub.linkUrl || '#'} className="block px-2.5 py-1.5 rounded-lg text-[11px] text-slate-700 hover:text-slate-900 hover:bg-indigo-600/80 transition-colors">
                           {sub.label}
                         </a>
                       ))}
@@ -3859,7 +3859,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
     default:
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-4 bg-slate-900 border border-slate-800  text-xs text-slate-300' : ' text-xs text-slate-300'} ${isSelected ? 'is-selected' : ''}`}>
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} ${!isInteractiveMode ? 'p-4 bg-white border border-slate-200  text-xs text-slate-700' : ' text-xs text-slate-700'} ${isSelected ? 'is-selected' : ''}`}>
           <div className="font-semibold text-indigo-400 capitalize mb-1">{type.replace('_', ' ')} Component</div>
           <p className="opacity-80">{props.text || props.title || 'Interactive element block'}</p>
         </div>
@@ -3885,7 +3885,7 @@ class ElementErrorBoundary extends React.Component<{ children: React.ReactNode; 
   render() {
     if (this.state.hasError) {
       return (
-        <div className="p-3 bg-slate-900 border border-rose-500/50 rounded-xl text-rose-300 text-xs font-mono my-2 space-y-1">
+        <div className="p-3 bg-white border border-rose-500/50 rounded-xl text-rose-300 text-xs font-mono my-2 space-y-1">
           <div className="font-bold flex items-center gap-1.5 text-rose-400">
             <AlertCircle className="w-4 h-4" />
             <span>Element Render Safeguard ({this.props.typeName || 'Component'})</span>

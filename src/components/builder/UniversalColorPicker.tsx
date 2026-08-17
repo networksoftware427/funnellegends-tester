@@ -35,7 +35,7 @@ export const UniversalColorPicker: React.FC<UniversalColorPickerProps> = ({
 
   return (
     <div className={`space-y-1.5 ${className}`}>
-      {label && <label className="block text-xs font-semibold text-slate-300">{label}</label>}
+      {label && <label className="block text-xs font-semibold text-slate-700">{label}</label>}
       <div className="flex gap-2 items-center">
         {/* Color Wheel Swatch */}
         <div className="relative shrink-0 flex items-center justify-center">
@@ -43,7 +43,7 @@ export const UniversalColorPicker: React.FC<UniversalColorPickerProps> = ({
             type="color" 
             value={currentHex}
             onChange={(e) => onChange(e.target.value)}
-            className="w-8 h-8 rounded-lg border border-slate-700 bg-transparent cursor-pointer overflow-hidden p-0 shadow-sm"
+            className="w-8 h-8 rounded-lg border border-slate-300 bg-transparent cursor-pointer overflow-hidden p-0 shadow-sm"
             title="Click to open color wheel"
           />
         </div>
@@ -54,16 +54,16 @@ export const UniversalColorPicker: React.FC<UniversalColorPickerProps> = ({
           value={value || ''}
           placeholder={placeholder}
           onChange={(e) => onChange(e.target.value)}
-          className="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-2.5 py-1.5 text-slate-100 font-mono text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500"
+          className="flex-1 bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 text-slate-900 font-mono text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500"
         />
 
         {/* Quick Format Conversion Pills */}
         {showFormatButtons && (
-          <div className="flex gap-0.5 bg-slate-900 border border-slate-800 p-0.5 rounded-lg text-[9px] font-mono shrink-0">
+          <div className="flex gap-0.5 bg-white border border-slate-200 p-0.5 rounded-lg text-[9px] font-mono shrink-0">
             <button
               type="button"
               onClick={() => handleFormatConvert('hex')}
-              className="px-1.5 py-0.5 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              className="px-1.5 py-0.5 rounded text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors"
               title="Convert format to HEX (#FF6A00)"
             >
               HEX
@@ -71,7 +71,7 @@ export const UniversalColorPicker: React.FC<UniversalColorPickerProps> = ({
             <button
               type="button"
               onClick={() => handleFormatConvert('rgb')}
-              className="px-1.5 py-0.5 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              className="px-1.5 py-0.5 rounded text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors"
               title="Convert format to RGB rgb(255,106,0)"
             >
               RGB
@@ -79,7 +79,7 @@ export const UniversalColorPicker: React.FC<UniversalColorPickerProps> = ({
             <button
               type="button"
               onClick={() => handleFormatConvert('rgba')}
-              className="px-1.5 py-0.5 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              className="px-1.5 py-0.5 rounded text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors"
               title="Convert format to RGBA rgba(255,106,0,0.95)"
             >
               RGBA
@@ -87,7 +87,7 @@ export const UniversalColorPicker: React.FC<UniversalColorPickerProps> = ({
             <button
               type="button"
               onClick={() => handleFormatConvert('hsl')}
-              className="px-1.5 py-0.5 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              className="px-1.5 py-0.5 rounded text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors"
               title="Convert format to HSL hsl(24,100%,50%)"
             >
               HSL

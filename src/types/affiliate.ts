@@ -1,4 +1,4 @@
-// BountyPack (ClickFunnels Backpack Replica) Types Definition
+// BountyPack (Backpack Replica) Types Definition
 export type AffiliateStatus = 'Approved' | 'Pending' | 'Denied' | 'VIP';
 export type PayoutMethod = 'PayPal' | 'Stripe' | 'Direct Wire' | 'Wise';
 export type TransactionStatus = 'Pending' | 'Approved' | 'Paid' | 'ClawedBack';

@@ -650,7 +650,7 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
           {/* AI Copilot — Green gradient */}
           <button 
             onClick={onOpenAiCopilot} 
-            className="px-3 py-1.5 text-white rounded-lg text-xs font-bold flex items-center gap-1.5"
+            className="px-3 py-1.5 text-slate-900 rounded-lg text-xs font-bold flex items-center gap-1.5"
             style={{ background: 'linear-gradient(135deg,#22c55e,#0d9488)', boxShadow: '0 4px 14px rgba(34,197,94,0.3)' }}
           >
             <Sparkles className="w-4 h-4 animate-pulse" />
@@ -730,7 +730,7 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
           <div className="p-2 border-t border-green-100 bg-white">
             <button
               onClick={() => setIsAddStepModalOpen(true)}
-              className="w-full py-2 px-3 text-white rounded-lg text-xs font-extrabold flex items-center justify-center gap-1.5 shadow-md transition-all hover:brightness-110"
+              className="w-full py-2 px-3 text-slate-900 rounded-lg text-xs font-extrabold flex items-center justify-center gap-1.5 shadow-md transition-all hover:brightness-110"
               style={{ background: 'linear-gradient(135deg, #22c55e, #16a34a)', boxShadow: '0 4px 12px rgba(34,197,94,0.25)' }}
             >
               <Plus className="w-4 h-4" />
@@ -801,23 +801,23 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
 
       {/* Global Design Tokens & Theme Palette Manager Modal */}
       {isGlobalTokensOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-2xl p-6 sm:p-8 space-y-6 text-slate-100 shadow-2xl relative my-8">
+        <div className="fixed inset-0 z-50 bg-white/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-white border border-slate-200 rounded-3xl w-full max-w-2xl p-6 sm:p-8 space-y-6 text-slate-900 shadow-2xl relative my-8">
             <button 
               onClick={() => setIsGlobalTokensOpen(false)} 
-              className="text-slate-400 hover:text-white absolute right-6 top-6"
+              className="text-slate-600 hover:text-slate-900 absolute right-6 top-6"
             >
               <X className="w-5 h-5" />
             </button>
 
             {/* Header */}
-            <div className="flex items-center gap-3 border-b border-slate-800 pb-4">
+            <div className="flex items-center gap-3 border-b border-slate-200 pb-4">
               <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-500 via-purple-600 to-pink-600 flex items-center justify-center text-white shadow-lg shadow-purple-600/30">
                 <Palette className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="text-lg font-black text-white">Global Theme & Brand Typography System</h3>
-                <p className="text-xs text-slate-400">Manage global font families, brand colors, and auto-syncing reusable sections.</p>
+                <h3 className="text-lg font-black text-slate-900">Global Theme & Brand Typography System</h3>
+                <p className="text-xs text-slate-600">Manage global font families, brand colors, and auto-syncing reusable sections.</p>
               </div>
             </div>
 
@@ -841,10 +841,10 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
             )}
 
             {/* Modal Sub-Tabs */}
-            <div className="flex bg-slate-950 p-1 rounded-xl border border-slate-800 text-xs font-bold gap-1">
+            <div className="flex bg-white p-1 rounded-xl border border-slate-200 text-xs font-bold gap-1">
               <button 
                 onClick={() => setThemeTab('palette')}
-                className={`flex-1 py-2 rounded-lg transition-all flex items-center justify-center gap-1.5 ${themeTab === 'palette' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-slate-200'}`}
+                className={`flex-1 py-2 rounded-lg transition-all flex items-center justify-center gap-1.5 ${themeTab === 'palette' ? 'bg-indigo-600 text-white shadow' : 'text-slate-600 hover:text-slate-800'}`}
               >
                 <Palette className="w-4 h-4" />
                 <span>Fonts & Palette</span>
@@ -852,7 +852,7 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
 
               <button 
                 onClick={() => setThemeTab('custom_branding')}
-                className={`flex-1 py-2 rounded-lg transition-all flex items-center justify-center gap-1.5 ${themeTab === 'custom_branding' ? 'bg-purple-600 text-white shadow' : 'text-slate-400 hover:text-slate-200'}`}
+                className={`flex-1 py-2 rounded-lg transition-all flex items-center justify-center gap-1.5 ${themeTab === 'custom_branding' ? 'bg-purple-600 text-white shadow' : 'text-slate-600 hover:text-slate-800'}`}
               >
                 <Sparkles className="w-4 h-4" />
                 <span>My Custom Themes ({customThemes.length})</span>
@@ -860,7 +860,7 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
 
               <button 
                 onClick={() => setThemeTab('reusable_sections')}
-                className={`flex-1 py-2 rounded-lg transition-all flex items-center justify-center gap-1.5 ${themeTab === 'reusable_sections' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-slate-200'}`}
+                className={`flex-1 py-2 rounded-lg transition-all flex items-center justify-center gap-1.5 ${themeTab === 'reusable_sections' ? 'bg-indigo-600 text-white shadow' : 'text-slate-600 hover:text-slate-800'}`}
               >
                 <Layers className="w-4 h-4" />
                 <span>Reusable Sections</span>
@@ -872,7 +872,7 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
               <div className="space-y-5">
                 {/* 1-Click Designer Presets */}
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-300 block">Quick Designer Palette Presets:</label>
+                  <label className="text-xs font-bold text-slate-700 block">Quick Designer Palette Presets:</label>
                   <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
                     {[
                       { name: 'Indigo Midnight', headingFont: 'Montserrat', bodyFont: 'Open Sans', primaryColor: '#6366f1', secondaryColor: '#ec4899', accentColor: '#10b981', backgroundColor: '#0f172a', textColor: '#f8fafc', borderRadiusPreset: '12px' },
@@ -884,9 +884,9 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
                       <button 
                         key={idx}
                         onClick={() => handleUpdateGlobalTokens(p, true)}
-                        className="p-2.5 bg-slate-950 hover:bg-slate-850 border border-slate-800 rounded-xl text-left space-y-1.5 transition-all hover:border-indigo-500/50"
+                        className="p-2.5 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl text-left space-y-1.5 transition-all hover:border-indigo-500/50"
                       >
-                        <div className="text-[11px] font-bold text-slate-200 truncate">{p.name}</div>
+                        <div className="text-[11px] font-bold text-slate-800 truncate">{p.name}</div>
                         <div className="flex gap-1">
                           <span className="w-3 h-3 rounded-full" style={{ backgroundColor: p.primaryColor }} />
                           <span className="w-3 h-3 rounded-full" style={{ backgroundColor: p.secondaryColor }} />
@@ -900,11 +900,11 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
                 {/* Font Selector Rows */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                   <div>
-                    <label className="block text-slate-300 mb-1 font-bold">Headline Font Family</label>
+                    <label className="block text-slate-700 mb-1 font-bold">Headline Font Family</label>
                     <select 
                       value={canvasState.globalTokens.headingFont} 
                       onChange={(e) => handleUpdateGlobalTokens({ ...canvasState.globalTokens, headingFont: e.target.value }, true)}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-medium"
+                      className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-slate-900 font-medium"
                     >
                       <option value="Outfit">Outfit</option>
                       <option value="Montserrat">Montserrat</option>
@@ -918,11 +918,11 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
                   </div>
 
                   <div>
-                    <label className="block text-slate-300 mb-1 font-bold">Body & Input Font Family</label>
+                    <label className="block text-slate-700 mb-1 font-bold">Body & Input Font Family</label>
                     <select 
                       value={canvasState.globalTokens.bodyFont} 
                       onChange={(e) => handleUpdateGlobalTokens({ ...canvasState.globalTokens, bodyFont: e.target.value }, true)}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-medium"
+                      className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-slate-900 font-medium"
                     >
                       <option value="Open Sans">Open Sans</option>
                       <option value="Inter">Inter</option>
@@ -966,8 +966,8 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
                 </div>
 
                 {/* Global Background Settings */}
-                <div className="space-y-3 pt-3 border-t border-slate-800">
-                  <h4 className="text-sm font-bold text-white mb-2">Global Canvas Background</h4>
+                <div className="space-y-3 pt-3 border-t border-slate-200">
+                  <h4 className="text-sm font-bold text-slate-900 mb-2">Global Canvas Background</h4>
                   <div className="grid grid-cols-2 gap-3 text-xs">
                     <UniversalColorPicker
                       label="Background Color"
@@ -976,16 +976,16 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
                       showFormatButtons={false}
                     />
                     <div>
-                      <label className="block text-slate-400 mb-1 font-semibold">Background Image URL</label>
-                      <div className="flex items-center gap-2 bg-slate-950 p-1.5 rounded-xl border border-slate-800">
+                      <label className="block text-slate-600 mb-1 font-semibold">Background Image URL</label>
+                      <div className="flex items-center gap-2 bg-white p-1.5 rounded-xl border border-slate-200">
                         <input 
                           type="text" 
                           placeholder="https://..."
                           value={canvasState.globalTokens.backgroundImage || ''}
                           onChange={(e) => handleUpdateGlobalTokens({ ...canvasState.globalTokens, backgroundImage: e.target.value }, true)}
-                          className="w-full bg-transparent border-none px-1 py-1 text-slate-200 text-xs focus:outline-none"
+                          className="w-full bg-transparent border-none px-1 py-1 text-slate-800 text-xs focus:outline-none"
                         />
-                        <label className="p-1 bg-slate-800 hover:bg-slate-700 rounded text-emerald-400 cursor-pointer shrink-0" title="Upload from Desktop">
+                        <label className="p-1 bg-slate-50 hover:bg-slate-100 rounded text-emerald-400 cursor-pointer shrink-0" title="Upload from Desktop">
                           <input 
                             type="file" 
                             accept="image/*" 
@@ -1011,11 +1011,11 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
                   
                   <div className="grid grid-cols-3 gap-3 text-xs">
                     <div>
-                      <label className="block text-slate-400 mb-1 font-semibold">Image Size</label>
+                      <label className="block text-slate-600 mb-1 font-semibold">Image Size</label>
                       <select 
                         value={canvasState.globalTokens.backgroundSize || 'cover'}
                         onChange={(e) => handleUpdateGlobalTokens({ ...canvasState.globalTokens, backgroundSize: e.target.value as any }, true)}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-lg px-2 py-2 text-slate-200 outline-none"
+                        className="w-full bg-white border border-slate-200 rounded-lg px-2 py-2 text-slate-800 outline-none"
                       >
                         <option value="cover">Cover</option>
                         <option value="contain">Contain</option>
@@ -1023,11 +1023,11 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
                       </select>
                     </div>
                     <div>
-                      <label className="block text-slate-400 mb-1 font-semibold">Position</label>
+                      <label className="block text-slate-600 mb-1 font-semibold">Position</label>
                       <select 
                         value={canvasState.globalTokens.backgroundPosition || 'center center'}
                         onChange={(e) => handleUpdateGlobalTokens({ ...canvasState.globalTokens, backgroundPosition: e.target.value }, true)}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-lg px-2 py-2 text-slate-200 outline-none"
+                        className="w-full bg-white border border-slate-200 rounded-lg px-2 py-2 text-slate-800 outline-none"
                       >
                         <option value="center center">Center</option>
                         <option value="top center">Top</option>
@@ -1037,13 +1037,13 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
                       </select>
                     </div>
                     <div>
-                      <label className="block text-slate-400 mb-1 font-semibold">Overlay Color</label>
+                      <label className="block text-slate-600 mb-1 font-semibold">Overlay Color</label>
                       <input 
                         type="text" 
                         placeholder="rgba(0,0,0,0.5)"
                         value={canvasState.globalTokens.backgroundOverlayColor || ''}
                         onChange={(e) => handleUpdateGlobalTokens({ ...canvasState.globalTokens, backgroundOverlayColor: e.target.value }, true)}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-lg px-2 py-2 text-slate-200 outline-none"
+                        className="w-full bg-white border border-slate-200 rounded-lg px-2 py-2 text-slate-800 outline-none"
                       />
                     </div>
                   </div>
@@ -1051,13 +1051,13 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
 
                 {/* Border Radius Preset Selector */}
                 <div>
-                  <label className="block text-slate-400 mb-1 font-semibold text-xs">Border Radius Rounding Preset</label>
+                  <label className="block text-slate-600 mb-1 font-semibold text-xs">Border Radius Rounding Preset</label>
                   <div className="grid grid-cols-4 gap-2 text-xs">
                     {['0px', '8px', '12px', '9999px'].map(r => (
                       <button 
                         key={r}
                         onClick={() => handleUpdateGlobalTokens({ ...canvasState.globalTokens, borderRadiusPreset: r }, true)}
-                        className={`py-2 rounded-xl border font-mono font-bold transition-all ${canvasState.globalTokens.borderRadiusPreset === r ? 'bg-indigo-600 text-white border-indigo-500' : 'bg-slate-950 text-slate-400 border-slate-800 hover:text-slate-200'}`}
+                        className={`py-2 rounded-xl border font-mono font-bold transition-all ${canvasState.globalTokens.borderRadiusPreset === r ? 'bg-indigo-600 text-white border-indigo-500' : 'bg-white text-slate-600 border-slate-200 hover:text-slate-800'}`}
                       >
                         {r === '0px' ? 'Sharp (0px)' : r === '8px' ? 'Clean (8px)' : r === '12px' ? 'Soft (12px)' : 'Pill (Full)'}
                       </button>
@@ -1081,13 +1081,13 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
             {themeTab === 'custom_branding' && (
               <div className="space-y-5">
                 {/* Save Current Theme Box */}
-                <div className="p-4 bg-slate-950 rounded-2xl border border-purple-500/40 space-y-3 shadow-xl">
+                <div className="p-4 bg-white rounded-2xl border border-purple-500/40 space-y-3 shadow-xl">
                   <div className="flex items-center justify-between">
                     <span className="font-extrabold text-xs text-purple-300 flex items-center gap-2">
                       <Sparkles className="w-4 h-4 text-amber-300" />
                       Save Current Active Styling as Custom Theme
                     </span>
-                    <span className="text-[10px] font-mono text-slate-400">Heading: {canvasState.globalTokens.headingFont}</span>
+                    <span className="text-[10px] font-mono text-slate-600">Heading: {canvasState.globalTokens.headingFont}</span>
                   </div>
 
                   <div className="flex gap-2">
@@ -1096,7 +1096,7 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
                       placeholder="e.g. Acme Corp Dark Luxury Palette..." 
                       value={newThemeName}
                       onChange={(e) => setNewThemeName(e.target.value)}
-                      className="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-purple-500"
+                      className="flex-1 bg-white border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-slate-900 placeholder-slate-500 focus:outline-none focus:border-purple-500"
                     />
                     <button 
                       onClick={handleSaveCurrentAsCustomTheme}
@@ -1110,39 +1110,39 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
 
                 {/* Saved Custom Themes Roster */}
                 <div className="space-y-3">
-                  <label className="text-xs font-bold text-slate-300 block">Your Saved Brand Palettes & Themes ({customThemes.length}):</label>
+                  <label className="text-xs font-bold text-slate-700 block">Your Saved Brand Palettes & Themes ({customThemes.length}):</label>
                   
                   {customThemes.length === 0 ? (
-                    <div className="p-6 text-center bg-slate-950 border border-slate-800 rounded-2xl text-xs text-slate-500">
+                    <div className="p-6 text-center bg-white border border-slate-200 rounded-2xl text-xs text-slate-500">
                       No custom themes saved yet. Customize your fonts & colors and click "Save Branding Theme" above.
                     </div>
                   ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[300px] overflow-y-auto pr-1">
                       {customThemes.map(ct => (
-                        <div key={ct.id} className="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-3 hover:border-purple-500/50 transition-all flex flex-col justify-between shadow">
+                        <div key={ct.id} className="p-4 bg-white border border-slate-200 rounded-2xl space-y-3 hover:border-purple-500/50 transition-all flex flex-col justify-between shadow">
                           <div className="space-y-2">
                             <div className="flex items-center justify-between">
-                              <span className="font-bold text-xs text-slate-100">{ct.name}</span>
+                              <span className="font-bold text-xs text-slate-900">{ct.name}</span>
                               <span className="text-[10px] text-slate-500 font-mono">{ct.createdAt}</span>
                             </div>
 
                             <div className="flex items-center gap-1.5 text-[10px] font-mono text-purple-300">
                               <span className="bg-purple-950/80 px-2 py-0.5 rounded border border-purple-800">{ct.headingFont}</span>
-                              <span className="bg-slate-900 px-2 py-0.5 rounded text-slate-400">{ct.bodyFont}</span>
+                              <span className="bg-white px-2 py-0.5 rounded text-slate-600">{ct.bodyFont}</span>
                             </div>
 
                             {/* Color Swatch Bar */}
                             <div className="flex items-center gap-1.5 pt-1">
-                              <span className="w-4 h-4 rounded-full border border-slate-700 shadow" style={{ backgroundColor: ct.primaryColor }} title="Primary Color" />
-                              <span className="w-4 h-4 rounded-full border border-slate-700 shadow" style={{ backgroundColor: ct.secondaryColor }} title="Secondary Color" />
-                              <span className="w-4 h-4 rounded-full border border-slate-700 shadow" style={{ backgroundColor: ct.accentColor }} title="Accent Color" />
-                              <span className="w-4 h-4 rounded-full border border-slate-700 shadow" style={{ backgroundColor: ct.backgroundColor }} title="Background Color" />
-                              <span className="w-4 h-4 rounded-full border border-slate-700 shadow" style={{ backgroundColor: ct.textColor }} title="Text Color" />
-                              <span className="ml-auto text-[10px] text-slate-400 font-mono">{ct.borderRadiusPreset}</span>
+                              <span className="w-4 h-4 rounded-full border border-slate-300 shadow" style={{ backgroundColor: ct.primaryColor }} title="Primary Color" />
+                              <span className="w-4 h-4 rounded-full border border-slate-300 shadow" style={{ backgroundColor: ct.secondaryColor }} title="Secondary Color" />
+                              <span className="w-4 h-4 rounded-full border border-slate-300 shadow" style={{ backgroundColor: ct.accentColor }} title="Accent Color" />
+                              <span className="w-4 h-4 rounded-full border border-slate-300 shadow" style={{ backgroundColor: ct.backgroundColor }} title="Background Color" />
+                              <span className="w-4 h-4 rounded-full border border-slate-300 shadow" style={{ backgroundColor: ct.textColor }} title="Text Color" />
+                              <span className="ml-auto text-[10px] text-slate-600 font-mono">{ct.borderRadiusPreset}</span>
                             </div>
                           </div>
 
-                          <div className="flex items-center gap-2 pt-2 border-t border-slate-800/80">
+                          <div className="flex items-center gap-2 pt-2 border-t border-slate-200/80">
                             <button 
                               onClick={() => handleUpdateGlobalTokens(ct, true)}
                               className="flex-1 py-1.5 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-[11px] font-extrabold flex items-center justify-center gap-1 shadow"
@@ -1152,7 +1152,7 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
                             </button>
                             <button 
                               onClick={() => handleDeleteCustomTheme(ct.id)}
-                              className="p-1.5 bg-slate-900 hover:bg-rose-950 text-slate-400 hover:text-rose-400 rounded-lg text-xs border border-slate-800"
+                              className="p-1.5 bg-white hover:bg-rose-950 text-slate-600 hover:text-rose-400 rounded-lg text-xs border border-slate-200"
                               title="Delete custom theme"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
@@ -1169,9 +1169,9 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
             {/* TAB 3: REUSABLE SECTIONS (HEADERS, FOOTERS, CONTENT BLOCKS) */}
             {themeTab === 'reusable_sections' && (
               <div className="space-y-4 text-xs">
-                <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-2">
+                <div className="p-4 bg-white rounded-2xl border border-slate-200 space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-slate-100 flex items-center gap-2">
+                    <span className="font-bold text-slate-900 flex items-center gap-2">
                       <Layers className="w-4 h-4 text-indigo-400" />
                       Universal Global Header Navigation
                     </span>
@@ -1179,12 +1179,12 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
                       AUTO-SYNCED
                     </span>
                   </div>
-                  <p className="text-slate-400">Edits to the top menu bar, logo, and links automatically sync across all funnel steps.</p>
+                  <p className="text-slate-600">Edits to the top menu bar, logo, and links automatically sync across all funnel steps.</p>
                 </div>
 
-                <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-2">
+                <div className="p-4 bg-white rounded-2xl border border-slate-200 space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-slate-100 flex items-center gap-2">
+                    <span className="font-bold text-slate-900 flex items-center gap-2">
                       <Layers className="w-4 h-4 text-pink-400" />
                       Universal Global Footer Block
                     </span>
@@ -1192,12 +1192,12 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
                       AUTO-SYNCED
                     </span>
                   </div>
-                  <p className="text-slate-400">Copyright, privacy terms, and social links update across all pages simultaneously.</p>
+                  <p className="text-slate-600">Copyright, privacy terms, and social links update across all pages simultaneously.</p>
                 </div>
 
-                <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-2">
+                <div className="p-4 bg-white rounded-2xl border border-slate-200 space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-slate-100 flex items-center gap-2">
+                    <span className="font-bold text-slate-900 flex items-center gap-2">
                       <Layers className="w-4 h-4 text-amber-400" />
                       Reusable Content Blocks & Testimonial Sliders
                     </span>
@@ -1205,7 +1205,7 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
                       GLOBAL ASSET VAULT
                     </span>
                   </div>
-                  <p className="text-slate-400">Save any custom section as a reusable global block and drop it anywhere with 1-click.</p>
+                  <p className="text-slate-600">Save any custom section as a reusable global block and drop it anywhere with 1-click.</p>
                 </div>
 
                 <div className="pt-2">
@@ -1228,9 +1228,9 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
 
       {/* JSON Import Modal */}
       {isImportModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-lg p-6 space-y-4 text-slate-100 shadow-2xl">
-            <h3 className="text-base font-bold text-white flex items-center gap-2">
+        <div className="fixed inset-0 z-50 bg-white/80 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-lg p-6 space-y-4 text-slate-900 shadow-2xl">
+            <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
               <Upload className="w-5 h-5 text-indigo-400" />
               <span>Import Canvas JSON Data</span>
             </h3>
@@ -1239,11 +1239,11 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
               placeholder="Paste raw canvas JSON string here..."
               value={importJsonText}
               onChange={(e) => setImportJsonText(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 font-mono text-xs text-emerald-400 focus:outline-none"
+              className="w-full bg-white border border-slate-200 rounded-xl p-3 font-mono text-xs text-emerald-400 focus:outline-none"
             />
             <div className="flex gap-2">
               <button onClick={handleImportJson} className="flex-1 py-2.5 bg-indigo-600 text-white rounded-xl text-xs font-bold">Import JSON</button>
-              <button onClick={() => setIsImportModalOpen(false)} className="px-4 py-2.5 bg-slate-800 text-slate-400 rounded-xl text-xs font-bold">Cancel</button>
+              <button onClick={() => setIsImportModalOpen(false)} className="px-4 py-2.5 bg-slate-50 text-slate-600 rounded-xl text-xs font-bold">Cancel</button>
             </div>
           </div>
         </div>
@@ -1251,37 +1251,37 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
 
       {/* Add Funnel Step Modal */}
       {isAddStepModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 text-slate-100 shadow-2xl animate-fade-in">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <h3 className="text-base font-bold text-white flex items-center gap-2">
+        <div className="fixed inset-0 z-50 bg-white/85 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-md p-6 space-y-4 text-slate-900 shadow-2xl animate-fade-in">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+              <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
                 <Plus className="w-5 h-5 text-emerald-400" />
                 <span>Add New Funnel Step</span>
               </h3>
-              <button onClick={() => setIsAddStepModalOpen(false)} className="p-1 hover:bg-slate-800 rounded-lg text-slate-400">
+              <button onClick={() => setIsAddStepModalOpen(false)} className="p-1 hover:bg-slate-50 rounded-lg text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Step Name *</label>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Step Name *</label>
                 <input 
                   type="text" 
                   placeholder="e.g., 1-Click Upsell #2, Order Form..." 
                   value={newStepName} 
                   onChange={(e) => setNewStepName(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
+                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">Step Type</label>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">Step Type</label>
                   <select 
                     value={newStepType} 
                     onChange={(e) => setNewStepType(e.target.value as StepType)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 font-medium focus:outline-none"
+                    className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 font-medium focus:outline-none"
                   >
                     <option value="OptIn">OptIn / Squeeze</option>
                     <option value="Sales">Sales Page</option>
@@ -1305,11 +1305,11 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">Starter Template</label>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">Starter Template</label>
                   <select 
                     value={newStepPreset} 
                     onChange={(e) => setNewStepPreset(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 font-medium focus:outline-none"
+                    className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 font-medium focus:outline-none"
                   >
                     <option value="squeeze">Squeeze Lead Gate</option>
                     <option value="reverse_squeeze">Reverse Squeeze VSL</option>
@@ -1326,13 +1326,13 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Custom Page Slug (Optional)</label>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Custom Page Slug (Optional)</label>
                 <input 
                   type="text" 
                   placeholder="e.g. oto-special-discount" 
                   value={newStepSlug} 
                   onChange={(e) => setNewStepSlug(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-emerald-400 font-mono focus:outline-none font-medium"
+                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-emerald-400 font-mono focus:outline-none font-medium"
                 />
               </div>
             </div>
@@ -1340,14 +1340,14 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
             <div className="flex gap-2 pt-2">
               <button 
                 onClick={handleCreateStepSubmit} 
-                className="flex-1 py-2.5 text-white rounded-xl text-xs font-extrabold shadow-lg transition-all hover:brightness-110"
+                className="flex-1 py-2.5 text-slate-900 rounded-xl text-xs font-extrabold shadow-lg transition-all hover:brightness-110"
                 style={{ background: 'linear-gradient(135deg, #22c55e, #16a34a)' }}
               >
                 + Create Funnel Step
               </button>
               <button 
                 onClick={() => setIsAddStepModalOpen(false)} 
-                className="px-4 py-2.5 bg-slate-800 text-slate-400 rounded-xl text-xs font-bold hover:text-white"
+                className="px-4 py-2.5 bg-slate-50 text-slate-600 rounded-xl text-xs font-bold hover:text-slate-900"
               >
                 Cancel
               </button>

@@ -258,11 +258,11 @@ export const AutomationWorkflowBuilder: React.FC = () => {
       {/* Top Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sticky top-0 z-20 shrink-0 bg-green-600 backdrop-blur-md border-b border-green-700 px-6 py-4">
         <div>
-          <div className="flex items-center gap-2 text-white font-extrabold text-xs tracking-wider uppercase mb-1">
-            <GitBranch className="w-4 h-4 text-white" />
-            <span className="bg-white/20 text-white border border-white/30 px-2 py-0.5 rounded-full">BEHAVIORAL AUTOMATIONS APP</span>
+          <div className="flex items-center gap-2 text-slate-900 font-extrabold text-xs tracking-wider uppercase mb-1">
+            <GitBranch className="w-4 h-4 text-slate-900" />
+            <span className="bg-white/20 text-slate-900 border border-white/30 px-2 py-0.5 rounded-full">BEHAVIORAL AUTOMATIONS APP</span>
           </div>
-          <h1 className="text-2xl font-black text-white">Visual Workflow Automations Engine</h1>
+          <h1 className="text-2xl font-black text-slate-900">Visual Workflow Automations Engine</h1>
           <p className="text-xs text-green-100 mt-0.5">Automate messaging, course enrollment, and personalized sequences based on visitor behavior.</p>
         </div>
 
@@ -333,7 +333,7 @@ export const AutomationWorkflowBuilder: React.FC = () => {
       {activeSubTab === 'canvas' && (
         <div className="flex-1 grid grid-cols-1 lg:grid-cols-4 gap-6 overflow-hidden">
         {/* Visual Node Flow View */}
-        <div className="lg:col-span-3 bg-slate-900 border border-slate-800 rounded-2xl p-6 relative overflow-auto flex items-center justify-center">
+        <div className="lg:col-span-3 bg-white border border-slate-200 rounded-2xl p-6 relative overflow-auto flex items-center justify-center">
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-30"></div>
 
           {/* Render Flow Nodes */}
@@ -348,7 +348,7 @@ export const AutomationWorkflowBuilder: React.FC = () => {
                 <React.Fragment key={node.id}>
                   <div 
                     onClick={() => setSelectedNode(node)}
-                    className={`w-64 bg-slate-950 border rounded-2xl p-4 cursor-pointer transition-all shadow-xl hover:scale-105 ${isSelected ? 'border-indigo-500 ring-2 ring-indigo-500/40' : 'border-slate-800 hover:border-slate-700'}`}
+                    className={`w-64 bg-white border rounded-2xl p-4 cursor-pointer transition-all shadow-xl hover:scale-105 ${isSelected ? 'border-indigo-500 ring-2 ring-indigo-500/40' : 'border-slate-200 hover:border-slate-300'}`}
                   >
                     <div className="flex items-center justify-between mb-2">
                       <span className={`text-[9px] uppercase font-extrabold px-2 py-0.5 rounded border ${badgeColor}`}>
@@ -358,8 +358,8 @@ export const AutomationWorkflowBuilder: React.FC = () => {
                         <Trash2 className="w-3.5 h-3.5 text-slate-500" />
                       </button>
                     </div>
-                    <h3 className="text-xs font-bold text-slate-100">{node.label}</h3>
-                    <p className="text-[11px] text-slate-400 mt-0.5">{node.subtitle}</p>
+                    <h3 className="text-xs font-bold text-slate-900">{node.label}</h3>
+                    <p className="text-[11px] text-slate-600 mt-0.5">{node.subtitle}</p>
                   </div>
 
                   {idx < nodes.length - 1 && (
@@ -374,17 +374,17 @@ export const AutomationWorkflowBuilder: React.FC = () => {
         </div>
 
         {/* Right Panel: Selected Node Inspector & Test Log */}
-        <div className="lg:col-span-1 bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between overflow-y-auto">
+        <div className="lg:col-span-1 bg-white border border-slate-200 rounded-2xl p-4 flex flex-col justify-between overflow-y-auto">
           <div>
-            <div className="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
-              <span className="text-xs font-extrabold uppercase text-slate-400">Node Properties</span>
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200 mb-4">
+              <span className="text-xs font-extrabold uppercase text-slate-600">Node Properties</span>
               <Settings className="w-4 h-4 text-slate-500" />
             </div>
 
             {selectedNode ? (
               <div className="space-y-4 text-xs">
                 <div>
-                  <label className="block font-semibold text-slate-300 mb-1">Node Title</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Node Title</label>
                   <input 
                     type="text" 
                     value={selectedNode.label} 
@@ -393,11 +393,11 @@ export const AutomationWorkflowBuilder: React.FC = () => {
                       setNodes(updated);
                       setSelectedNode({ ...selectedNode, label: e.target.value });
                     }}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-slate-100"
+                    className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-slate-900"
                   />
                 </div>
                 <div>
-                  <label className="block font-semibold text-slate-300 mb-1">Event Subtitle / Action</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Event Subtitle / Action</label>
                   <input 
                     type="text" 
                     value={selectedNode.subtitle || ''} 
@@ -406,7 +406,7 @@ export const AutomationWorkflowBuilder: React.FC = () => {
                       setNodes(updated);
                       setSelectedNode({ ...selectedNode, subtitle: e.target.value });
                     }}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-slate-100"
+                    className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-slate-900"
                   />
                 </div>
               </div>
@@ -416,9 +416,9 @@ export const AutomationWorkflowBuilder: React.FC = () => {
           </div>
 
           {/* Execution Log Console */}
-          <div className="pt-4 border-t border-slate-800 mt-6">
-            <span className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider mb-2 block">REAL-TIME TEST LOG</span>
-            <div className="bg-slate-950 border border-slate-800 rounded-xl p-3 h-44 overflow-y-auto space-y-1.5 font-mono text-[10px]">
+          <div className="pt-4 border-t border-slate-200 mt-6">
+            <span className="text-[10px] font-extrabold uppercase text-slate-600 tracking-wider mb-2 block">REAL-TIME TEST LOG</span>
+            <div className="bg-white border border-slate-200 rounded-xl p-3 h-44 overflow-y-auto space-y-1.5 font-mono text-[10px]">
               {testLog.length === 0 ? (
                 <div className="text-slate-600 italic">Click "Test Workflow Execution" to simulate live events...</div>
               ) : (
@@ -435,41 +435,41 @@ export const AutomationWorkflowBuilder: React.FC = () => {
       {/* SUB-VIEW 2: 10 PROVEN AUTOMATION MESSAGE TEMPLATES */}
       {activeSubTab === 'message_templates' && (
         <div className="flex-1 overflow-y-auto space-y-4 pr-1">
-          <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+          <div className="flex items-center justify-between pb-2 border-b border-slate-200">
             <div>
-              <h2 className="text-base font-bold text-white flex items-center gap-2">
+              <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
                 <MessageSquare className="w-4 h-4 text-purple-400" />
                 <span>Automation Template Messages & Sequences (10)</span>
               </h2>
-              <p className="text-xs text-slate-400">Pre-written email & SMS sequences ready to drop into your automation workflows.</p>
+              <p className="text-xs text-slate-600">Pre-written email & SMS sequences ready to drop into your automation workflows.</p>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-12">
             {automationMessageTemplates.map((msg) => (
-              <div key={msg.id} className="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3.5 shadow-xl flex flex-col justify-between hover:border-purple-500/50 transition-all">
+              <div key={msg.id} className="bg-white border border-slate-200 rounded-2xl p-5 space-y-3.5 shadow-xl flex flex-col justify-between hover:border-purple-500/50 transition-all">
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="text-[10px] font-mono font-extrabold uppercase px-2.5 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-800">
                       {msg.badge}
                     </span>
-                    <span className="text-[10px] font-mono text-slate-400 bg-slate-950 px-2 py-0.5 rounded border border-slate-800 uppercase">
+                    <span className="text-[10px] font-mono text-slate-600 bg-white px-2 py-0.5 rounded border border-slate-200 uppercase">
                       {msg.channel === 'email_sms' ? '✉️ Email + 📱 SMS' : msg.channel === 'email' ? '✉️ Email' : '📱 SMS'}
                     </span>
                   </div>
 
-                  <h3 className="text-sm font-bold text-white">{msg.title}</h3>
-                  <div className="p-2.5 bg-slate-950 rounded-xl border border-slate-800 text-xs text-slate-300 font-medium">
+                  <h3 className="text-sm font-bold text-slate-900">{msg.title}</h3>
+                  <div className="p-2.5 bg-white rounded-xl border border-slate-200 text-xs text-slate-700 font-medium">
                     <span className="text-slate-500 font-bold block text-[10px] uppercase">Subject Line:</span>
                     {msg.subject}
                   </div>
 
-                  <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 text-[11px] text-slate-300 font-mono whitespace-pre-wrap leading-relaxed max-h-40 overflow-y-auto">
+                  <div className="p-3 bg-white rounded-xl border border-slate-200 text-[11px] text-slate-700 font-mono whitespace-pre-wrap leading-relaxed max-h-40 overflow-y-auto">
                     {msg.body}
                   </div>
                 </div>
 
-                <div className="pt-2 border-t border-slate-800 flex items-center justify-between gap-2">
+                <div className="pt-2 border-t border-slate-200 flex items-center justify-between gap-2">
                   <span className="text-[10px] text-slate-500">Category: {msg.category}</span>
                   <button 
                     onClick={() => {

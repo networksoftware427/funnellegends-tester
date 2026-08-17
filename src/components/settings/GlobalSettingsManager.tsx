@@ -46,7 +46,7 @@ export const loadStoredGlobalSettings = (): GlobalPlatformSettings => {
     currency: 'USD',
     timezone: 'America/New_York',
     defaultMetaTitle: 'High-Converting Sales & Lead Capture Funnels',
-    defaultMetaDescription: 'Scale your online enterprise with high-converting ClickFunnels 2.0 styled templates.',
+    defaultMetaDescription: 'Scale your online enterprise with high-converting FunnelLegends templates.',
     googleAnalyticsId: 'G-FL98240293',
     facebookPixelId: '109283749102938',
     headerScript: '<!-- Universal Analytics Header Script -->',
@@ -109,7 +109,7 @@ export const GlobalSettingsManager: React.FC = () => {
           </div>
           <button
             onClick={handleSave}
-            className="px-5 py-2.5 text-white rounded-xl text-xs font-extrabold flex items-center gap-2 shadow-lg transition-all hover:brightness-110"
+            className="px-5 py-2.5 text-slate-900 rounded-xl text-xs font-extrabold flex items-center gap-2 shadow-lg transition-all hover:brightness-110"
             style={{ background: 'linear-gradient(135deg, #22c55e, #16a34a)', boxShadow: '0 4px 14px rgba(34,197,94,0.25)' }}
           >
             <Save className="w-4 h-4" />
@@ -286,7 +286,7 @@ export const GlobalSettingsManager: React.FC = () => {
                   rows={3}
                   value={settings.headerScript} 
                   onChange={(e) => setSettings({ ...settings, headerScript: e.target.value })}
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl p-3 text-emerald-400 font-mono text-xs focus:outline-none"
+                  className="w-full bg-white border border-slate-200 rounded-xl p-3 text-emerald-400 font-mono text-xs focus:outline-none"
                 />
               </div>
 
@@ -296,7 +296,7 @@ export const GlobalSettingsManager: React.FC = () => {
                   rows={3}
                   value={settings.footerScript} 
                   onChange={(e) => setSettings({ ...settings, footerScript: e.target.value })}
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl p-3 text-emerald-400 font-mono text-xs focus:outline-none"
+                  className="w-full bg-white border border-slate-200 rounded-xl p-3 text-emerald-400 font-mono text-xs focus:outline-none"
                 />
               </div>
             </div>

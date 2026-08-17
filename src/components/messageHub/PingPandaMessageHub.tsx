@@ -130,7 +130,7 @@ export const PingPandaMessageHub: React.FC = () => {
       case 'custom_api':
         return { label: 'Custom API', icon: Code, color: 'bg-purple-500/20 text-purple-400 border-purple-500/30' };
       default:
-        return { label: 'Web', icon: Globe, color: 'bg-slate-500/20 text-slate-400 border-slate-500/30' };
+        return { label: 'Web', icon: Globe, color: 'bg-slate-500/20 text-slate-600 border-slate-500/30' };
     }
   };
 
@@ -317,8 +317,8 @@ export const PingPandaMessageHub: React.FC = () => {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-xl font-extrabold text-white tracking-tight">PingPanda</h1>
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-white/20 text-white border border-white/30 tracking-wider">
+              <h1 className="text-xl font-extrabold text-slate-900 tracking-tight">PingPanda</h1>
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-white/20 text-slate-900 border border-white/30 tracking-wider">
                 Omnichannel Message Hub
               </span>
             </div>
@@ -400,7 +400,7 @@ export const PingPandaMessageHub: React.FC = () => {
             onClick={() => setIsEmbedWidgetModalOpen(true)}
             className="px-3.5 py-2 bg-green-700 hover:bg-green-800 text-white rounded-xl text-xs font-bold flex items-center gap-2 border border-green-600 shadow-sm transition-colors"
           >
-            <Code className="w-4 h-4 text-white" />
+            <Code className="w-4 h-4 text-slate-900" />
             <span className="hidden sm:inline">Webchat Embed Code</span>
           </button>
 
@@ -443,7 +443,7 @@ export const PingPandaMessageHub: React.FC = () => {
                   <button
                     onClick={() => setChannelFilter('all')}
                     className={`px-2.5 py-1 rounded-lg font-bold shrink-0 transition-colors ${
-                      channelFilter === 'all' ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-400 hover:text-white'
+                      channelFilter === 'all' ? 'bg-indigo-600 text-white' : 'bg-slate-50 text-slate-600 hover:text-slate-900'
                     }`}
                   >
                     All
@@ -455,7 +455,7 @@ export const PingPandaMessageHub: React.FC = () => {
                         key={ch}
                         onClick={() => setChannelFilter(ch)}
                         className={`px-2 py-1 rounded-lg font-bold shrink-0 flex items-center gap-1 border text-[11px] transition-colors ${
-                          channelFilter === ch ? 'bg-slate-800 text-white border-indigo-500' : 'bg-slate-950 text-slate-400 border-slate-800 hover:text-slate-200'
+                          channelFilter === ch ? 'bg-slate-50 text-white border-indigo-500' : 'bg-white text-slate-600 border-slate-200 hover:text-slate-800'
                         }`}
                       >
                         <badge.icon className="w-3 h-3" />
@@ -466,12 +466,12 @@ export const PingPandaMessageHub: React.FC = () => {
                 </div>
 
                 {/* Quick Filters (Status & VIP toggle) */}
-                <div className="flex items-center justify-between text-[11px] font-bold text-slate-400 pt-1">
+                <div className="flex items-center justify-between text-[11px] font-bold text-slate-600 pt-1">
                   <div className="flex items-center gap-2">
                     <select
                       value={statusFilter}
                       onChange={(e) => setStatusFilter(e.target.value as any)}
-                      className="bg-slate-950 border border-slate-800 text-slate-300 rounded-lg px-2 py-1 focus:outline-none"
+                      className="bg-white border border-slate-200 text-slate-700 rounded-lg px-2 py-1 focus:outline-none"
                     >
                       <option value="all">All Statuses</option>
                       <option value="open">Open</option>
@@ -483,7 +483,7 @@ export const PingPandaMessageHub: React.FC = () => {
                     <button
                       onClick={() => setVipFilterOnly(!vipFilterOnly)}
                       className={`px-2 py-1 rounded-lg flex items-center gap-1 border transition-colors ${
-                        vipFilterOnly ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' : 'bg-slate-950 text-slate-400 border-slate-800'
+                        vipFilterOnly ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' : 'bg-white text-slate-600 border-slate-200'
                       }`}
                     >
                       <Star className="w-3 h-3 text-amber-400 fill-amber-400" />
@@ -511,7 +511,7 @@ export const PingPandaMessageHub: React.FC = () => {
                       <div
                         key={conv.id}
                         onClick={() => setSelectedConvId(conv.id)}
-                        className={`p-3.5 cursor-pointer transition-all hover:bg-slate-800/40 flex items-start gap-3 relative ${
+                        className={`p-3.5 cursor-pointer transition-all hover:bg-slate-50/40 flex items-start gap-3 relative ${
                           isSelected ? 'bg-indigo-950/40 border-l-4 border-indigo-500' : ''
                         }`}
                       >
@@ -520,7 +520,7 @@ export const PingPandaMessageHub: React.FC = () => {
                           <img
                             src={conv.contactAvatar}
                             alt={conv.contactName}
-                            className="w-10 h-10 rounded-full object-cover border border-slate-700"
+                            className="w-10 h-10 rounded-full object-cover border border-slate-300"
                           />
                           <div className={`absolute -bottom-1 -right-1 p-1 rounded-full border border-slate-900 ${badge.color}`}>
                             <badge.icon className="w-2.5 h-2.5" />
@@ -531,17 +531,17 @@ export const PingPandaMessageHub: React.FC = () => {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-1.5 min-w-0">
-                              <h4 className={`text-xs font-bold truncate ${conv.unread ? 'text-white font-extrabold' : 'text-slate-200'}`}>
+                              <h4 className={`text-xs font-bold truncate ${conv.unread ? 'text-white font-extrabold' : 'text-slate-800'}`}>
                                 {conv.contactName}
                               </h4>
                               {conv.isVip && (
                                 <span title="VIP Customer"><Star className="w-3 h-3 text-amber-400 fill-amber-400 shrink-0" /></span>
                               )}
                             </div>
-                            <span className="text-[10px] text-slate-400 shrink-0 font-medium">{conv.lastMessageTime}</span>
+                            <span className="text-[10px] text-slate-600 shrink-0 font-medium">{conv.lastMessageTime}</span>
                           </div>
 
-                          <p className={`text-[11px] truncate mt-0.5 ${conv.unread ? 'text-indigo-200 font-semibold' : 'text-slate-400'}`}>
+                          <p className={`text-[11px] truncate mt-0.5 ${conv.unread ? 'text-indigo-200 font-semibold' : 'text-slate-600'}`}>
                             {conv.lastMessage}
                           </p>
 
@@ -556,13 +556,13 @@ export const PingPandaMessageHub: React.FC = () => {
                                   src={assignedAgent.avatar}
                                   alt={assignedAgent.name}
                                   title={`Assigned to ${assignedAgent.name}`}
-                                  className="w-4 h-4 rounded-full border border-slate-700"
+                                  className="w-4 h-4 rounded-full border border-slate-300"
                                 />
                               )}
                               <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${
                                 conv.status === 'open' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
                                 conv.status === 'pending' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' :
-                                conv.status === 'resolved' ? 'bg-slate-800 text-slate-400' : 'bg-indigo-500/10 text-indigo-400'
+                                conv.status === 'resolved' ? 'bg-slate-50 text-slate-600' : 'bg-indigo-500/10 text-indigo-400'
                               }`}>
                                 {conv.status}
                               </span>
@@ -769,7 +769,7 @@ export const PingPandaMessageHub: React.FC = () => {
                         </button>
                       </div>
 
-                      <button onClick={() => setIsAiSuggestOpen(false)} className="text-slate-400 hover:text-white p-1">
+                      <button onClick={() => setIsAiSuggestOpen(false)} className="text-slate-600 hover:text-slate-900 p-1">
                         <X className="w-4 h-4" />
                       </button>
                     </div>
@@ -951,7 +951,7 @@ export const PingPandaMessageHub: React.FC = () => {
 
                   <button 
                     onClick={() => alert(`Created $${selectedConv.leadValue} deal for ${selectedConv.contactName} in CRM Pipeline!`)}
-                    className="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-2 border border-slate-700"
+                    className="w-full py-2 bg-slate-50 hover:bg-slate-100 text-slate-800 rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-2 border border-slate-300"
                   >
                     <DollarSign className="w-3.5 h-3.5 text-emerald-400" />
                     <span>Create CRM Deal</span>
@@ -972,7 +972,7 @@ export const PingPandaMessageHub: React.FC = () => {
               <div>
                 <div className="flex items-center gap-2">
                   <Zap className="w-6 h-6 text-amber-400 animate-pulse" />
-                  <h2 className="text-lg font-black text-white">Smart Auto-Responders & Drip Sequences</h2>
+                  <h2 className="text-lg font-black text-slate-900">Smart Auto-Responders & Drip Sequences</h2>
                 </div>
                 <p className="text-xs text-green-100 mt-1 max-w-xl">
                   Set up keyword triggers, after-hours auto replies, and multi-channel follow-up sequences that turn every lead interaction into sale opportunities.
@@ -1077,7 +1077,7 @@ export const PingPandaMessageHub: React.FC = () => {
             {/* Team Roster Header */}
             <div className="flex items-center justify-between flex-wrap gap-4 p-6 rounded-3xl bg-green-600 border border-green-500 shadow-2xl">
               <div>
-                <h2 className="text-lg font-black text-white flex items-center gap-2">
+                <h2 className="text-lg font-black text-slate-900 flex items-center gap-2">
                   <Users className="w-5 h-5 text-amber-400 animate-pulse" />
                   <span>Team Roster & Role Permissions</span>
                 </h2>
@@ -1214,8 +1214,8 @@ export const PingPandaMessageHub: React.FC = () => {
 
               <div className="p-5 rounded-2xl bg-green-600 border border-green-500 space-y-2 shadow-sm hover:shadow-md transition-shadow">
                 <span className="text-xs text-green-100 font-medium">Chat Revenue Attributed</span>
-                <div className="text-2xl font-black text-white font-mono">${analytics.revenueAttributed.toLocaleString()}</div>
-                <span className="text-[10px] text-white font-bold">54 Deals Converted</span>
+                <div className="text-2xl font-black text-slate-900 font-mono">${analytics.revenueAttributed.toLocaleString()}</div>
+                <span className="text-[10px] text-slate-900 font-bold">54 Deals Converted</span>
               </div>
             </div>
 
@@ -1256,7 +1256,7 @@ export const PingPandaMessageHub: React.FC = () => {
             
             <div className="p-6 rounded-3xl bg-green-600 border border-green-500 shadow-xl flex items-center justify-between flex-wrap gap-4">
               <div>
-                <h2 className="text-lg font-black text-white flex items-center gap-2">
+                <h2 className="text-lg font-black text-slate-900 flex items-center gap-2">
                   <Globe className="w-5 h-5 text-amber-400" />
                   <span>Omnichannel Integrations & API Suite</span>
                 </h2>
@@ -1322,61 +1322,61 @@ export const PingPandaMessageHub: React.FC = () => {
 
       {/* 1. New Conversation Modal */}
       {isNewConvModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl animate-scale-in">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+        <div className="fixed inset-0 z-50 bg-white/80 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-200 rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl animate-scale-in">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
                 <Plus className="w-4 h-4 text-indigo-400" />
                 <span>Start New Customer Conversation</span>
               </h3>
-              <button onClick={() => setIsNewConvModalOpen(false)} className="text-slate-400 hover:text-white">
+              <button onClick={() => setIsNewConvModalOpen(false)} className="text-slate-600 hover:text-slate-900">
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             <form onSubmit={handleCreateConversation} className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-300 font-bold mb-1">Contact Name *</label>
+                <label className="block text-slate-700 font-bold mb-1">Contact Name *</label>
                 <input
                   type="text"
                   required
                   value={newContactName}
                   onChange={(e) => setNewContactName(e.target.value)}
                   placeholder="e.g. Rachel Adams"
-                  className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-indigo-500"
+                  className="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-500"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-300 font-bold mb-1">Email Address</label>
+                  <label className="block text-slate-700 font-bold mb-1">Email Address</label>
                   <input
                     type="email"
                     value={newContactEmail}
                     onChange={(e) => setNewContactEmail(e.target.value)}
                     placeholder="rachel@tech.com"
-                    className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-indigo-500"
+                    className="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-500"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-slate-300 font-bold mb-1">Phone Number</label>
+                  <label className="block text-slate-700 font-bold mb-1">Phone Number</label>
                   <input
                     type="text"
                     value={newContactPhone}
                     onChange={(e) => setNewContactPhone(e.target.value)}
                     placeholder="+1 (555) 000-1122"
-                    className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-indigo-500"
+                    className="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-500"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-slate-300 font-bold mb-1">Communication Channel</label>
+                <label className="block text-slate-700 font-bold mb-1">Communication Channel</label>
                 <select
                   value={newContactChannel}
                   onChange={(e) => setNewContactChannel(e.target.value as ChannelType)}
-                  className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
+                  className="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-500 cursor-pointer"
                 >
                   <option value="webchat">Live Website Chat</option>
                   <option value="sms">SMS Text Message</option>
@@ -1389,13 +1389,13 @@ export const PingPandaMessageHub: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-slate-300 font-bold mb-1">Initial Outbound Message</label>
+                <label className="block text-slate-700 font-bold mb-1">Initial Outbound Message</label>
                 <textarea
                   value={initialMsg}
                   onChange={(e) => setInitialMsg(e.target.value)}
                   rows={3}
                   placeholder="Hi Rachel! Welcome to LaunchEngine. How can we support your rollout?"
-                  className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-indigo-500 resize-none"
+                  className="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-500 resize-none"
                 />
               </div>
 
@@ -1403,7 +1403,7 @@ export const PingPandaMessageHub: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsNewConvModalOpen(false)}
-                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl font-bold"
+                  className="px-4 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-xl font-bold"
                 >
                   Cancel
                 </button>
@@ -1422,23 +1422,23 @@ export const PingPandaMessageHub: React.FC = () => {
 
       {/* 2. Webchat Embed Code Modal */}
       {isEmbedWidgetModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-2xl animate-scale-in">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+        <div className="fixed inset-0 z-50 bg-white/80 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-200 rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-2xl animate-scale-in">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
                 <Code className="w-4 h-4 text-indigo-400" />
                 <span>Webchat Widget 1-Click Embed Snippet</span>
               </h3>
-              <button onClick={() => setIsEmbedWidgetModalOpen(false)} className="text-slate-400 hover:text-white">
+              <button onClick={() => setIsEmbedWidgetModalOpen(false)} className="text-slate-600 hover:text-slate-900">
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <p className="text-xs text-slate-300 leading-relaxed">
+            <p className="text-xs text-slate-700 leading-relaxed">
               Copy and paste this script tag right before the closing <code className="text-indigo-300 font-mono">&lt;/head&gt;</code> tag on any website or funnel page.
             </p>
 
-            <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 font-mono text-xs text-indigo-300 leading-relaxed relative">
+            <div className="p-4 rounded-2xl bg-white border border-slate-200 font-mono text-xs text-indigo-300 leading-relaxed relative">
               <pre className="whitespace-pre-wrap break-all">
 {`<!-- PingPanda Omnichannel Live Chat Widget -->
 <script 
@@ -1466,48 +1466,48 @@ export const PingPandaMessageHub: React.FC = () => {
 
       {/* 3. New Auto-Response Rule Modal */}
       {isNewRuleModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl animate-scale-in">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+        <div className="fixed inset-0 z-50 bg-white/80 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-200 rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl animate-scale-in">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
                 <Zap className="w-4 h-4 text-amber-400" />
                 <span>Create Auto-Responder Rule</span>
               </h3>
-              <button onClick={() => setIsNewRuleModalOpen(false)} className="text-slate-400 hover:text-white">
+              <button onClick={() => setIsNewRuleModalOpen(false)} className="text-slate-600 hover:text-slate-900">
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             <form onSubmit={handleAddRule} className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-300 font-bold mb-1">Rule Name *</label>
+                <label className="block text-slate-700 font-bold mb-1">Rule Name *</label>
                 <input
                   type="text"
                   required
                   value={newRuleName}
                   onChange={(e) => setNewRuleName(e.target.value)}
                   placeholder="e.g. VIP Demo Request Auto-Quote"
-                  className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-indigo-500"
+                  className="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-500"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-300 font-bold mb-1">Trigger Keyword</label>
+                <label className="block text-slate-700 font-bold mb-1">Trigger Keyword</label>
                 <input
                   type="text"
                   value={newRuleKeyword}
                   onChange={(e) => setNewRuleKeyword(e.target.value)}
                   placeholder="e.g. demo, pricing, support"
-                  className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-indigo-500"
+                  className="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-500"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-300 font-bold mb-1">Target Channel</label>
+                <label className="block text-slate-700 font-bold mb-1">Target Channel</label>
                 <select
                   value={newRuleChannel}
                   onChange={(e) => setNewRuleChannel(e.target.value as any)}
-                  className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
+                  className="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-500 cursor-pointer"
                 >
                   <option value="all">All Channels</option>
                   <option value="webchat">Live Chat</option>
@@ -1518,13 +1518,13 @@ export const PingPandaMessageHub: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-slate-300 font-bold mb-1">Auto-Response Message</label>
+                <label className="block text-slate-700 font-bold mb-1">Auto-Response Message</label>
                 <textarea
                   value={newRuleResponse}
                   onChange={(e) => setNewRuleResponse(e.target.value)}
                   rows={3}
                   placeholder="Thanks for reaching out to PingPanda 🐼! We received your request..."
-                  className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-indigo-500 resize-none"
+                  className="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-500 resize-none"
                 />
               </div>
 
@@ -1532,7 +1532,7 @@ export const PingPandaMessageHub: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsNewRuleModalOpen(false)}
-                  className="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl font-bold"
+                  className="px-4 py-2 bg-slate-50 text-slate-700 rounded-xl font-bold"
                 >
                   Cancel
                 </button>
@@ -1550,48 +1550,48 @@ export const PingPandaMessageHub: React.FC = () => {
 
       {/* 4. Add Team Member Modal */}
       {isNewTeamModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl animate-scale-in">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+        <div className="fixed inset-0 z-50 bg-white/80 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-200 rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl animate-scale-in">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
                 <UserPlus className="w-4 h-4 text-indigo-400" />
                 <span>Add Team Member & Assign Role</span>
               </h3>
-              <button onClick={() => setIsNewTeamModalOpen(false)} className="text-slate-400 hover:text-white">
+              <button onClick={() => setIsNewTeamModalOpen(false)} className="text-slate-600 hover:text-slate-900">
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             <form onSubmit={handleAddTeamMember} className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-300 font-bold mb-1">Full Name *</label>
+                <label className="block text-slate-700 font-bold mb-1">Full Name *</label>
                 <input
                   type="text"
                   required
                   value={newMemberName}
                   onChange={(e) => setNewMemberName(e.target.value)}
                   placeholder="e.g. Jason Thorne"
-                  className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-indigo-500"
+                  className="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-500"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-300 font-bold mb-1">Work Email</label>
+                <label className="block text-slate-700 font-bold mb-1">Work Email</label>
                 <input
                   type="email"
                   value={newMemberEmail}
                   onChange={(e) => setNewMemberEmail(e.target.value)}
                   placeholder="jason@growthlabs.io"
-                  className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-indigo-500"
+                  className="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-500"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-300 font-bold mb-1">Role & Permission Tier</label>
+                <label className="block text-slate-700 font-bold mb-1">Role & Permission Tier</label>
                 <select
                   value={newMemberRole}
                   onChange={(e) => setNewMemberRole(e.target.value as TeamRole)}
-                  className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
+                  className="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-indigo-500 cursor-pointer"
                 >
                   <option value="Agent">Agent (Respond to assigned chats)</option>
                   <option value="Manager">Manager (Assign chats & view analytics)</option>
@@ -1603,7 +1603,7 @@ export const PingPandaMessageHub: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsNewTeamModalOpen(false)}
-                  className="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl font-bold"
+                  className="px-4 py-2 bg-slate-50 text-slate-700 rounded-xl font-bold"
                 >
                   Cancel
                 </button>

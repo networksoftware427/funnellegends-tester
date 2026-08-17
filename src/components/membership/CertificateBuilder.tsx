@@ -114,19 +114,19 @@ export const CertificateBuilder: React.FC<CertificateBuilderProps> = ({ initialC
   const selectedElement = cert.elements.find(el => el.id === selectedElementId);
 
   return (
-    <div className="fixed inset-0 bg-slate-950 z-[100] flex flex-col font-sans">
+    <div className="fixed inset-0 bg-white z-[100] flex flex-col font-sans">
       {/* Top Header */}
-      <div className="h-16 border-b border-slate-800 bg-slate-900 flex items-center justify-between px-6 shrink-0">
+      <div className="h-16 border-b border-slate-200 bg-white flex items-center justify-between px-6 shrink-0">
         <div className="flex items-center gap-4">
-          <button onClick={onCancel} className="p-2 hover:bg-slate-800 rounded-lg text-slate-400 transition-colors">
+          <button onClick={onCancel} className="p-2 hover:bg-slate-50 rounded-lg text-slate-600 transition-colors">
             <X className="w-5 h-5" />
           </button>
-          <div className="h-6 w-px bg-slate-800"></div>
+          <div className="h-6 w-px bg-slate-50"></div>
           <input 
             type="text" 
             value={cert.title}
             onChange={(e) => setCert({...cert, title: e.target.value})}
-            className="bg-transparent border-none text-white font-bold text-lg focus:ring-0 w-64"
+            className="bg-transparent border-none text-slate-900 font-bold text-lg focus:ring-0 w-64"
             placeholder="Certificate Title"
           />
         </div>
@@ -141,21 +141,21 @@ export const CertificateBuilder: React.FC<CertificateBuilderProps> = ({ initialC
 
       <div className="flex flex-1 overflow-hidden">
         {/* Left Sidebar: Element Catalog */}
-        <div className="w-64 border-r border-slate-800 bg-slate-900 p-4 space-y-6 overflow-y-auto shrink-0">
+        <div className="w-64 border-r border-slate-200 bg-white p-4 space-y-6 overflow-y-auto shrink-0">
           <div>
-            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Add Elements</h3>
+            <h3 className="text-xs font-bold text-slate-600 uppercase tracking-wider mb-3">Add Elements</h3>
             <div className="grid grid-cols-2 gap-2">
               <button 
                 onClick={() => addElement('text', 'New Text Block')}
-                className="flex flex-col items-center gap-2 p-4 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-xl transition-colors"
+                className="flex flex-col items-center gap-2 p-4 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl transition-colors"
               >
-                <Type className="w-6 h-6 text-slate-300" />
-                <span className="text-[10px] font-bold text-slate-300">Text</span>
+                <Type className="w-6 h-6 text-slate-700" />
+                <span className="text-[10px] font-bold text-slate-700">Text</span>
               </button>
               
               <button 
                 onClick={() => addElement('variable', '{{Student Name}}')}
-                className="flex flex-col items-center gap-2 p-4 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-xl transition-colors"
+                className="flex flex-col items-center gap-2 p-4 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl transition-colors"
               >
                 <Layout className="w-6 h-6 text-amber-400" />
                 <span className="text-[10px] font-bold text-amber-400">Student</span>
@@ -163,23 +163,23 @@ export const CertificateBuilder: React.FC<CertificateBuilderProps> = ({ initialC
 
               <button 
                 onClick={() => addElement('badge', '🏆')}
-                className="flex flex-col items-center gap-2 p-4 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-xl transition-colors"
+                className="flex flex-col items-center gap-2 p-4 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl transition-colors"
               >
                 <Stamp className="w-6 h-6 text-orange-400" />
-                <span className="text-[10px] font-bold text-slate-300">Badge</span>
+                <span className="text-[10px] font-bold text-slate-700">Badge</span>
               </button>
               
               <button 
                 onClick={() => addElement('signature', '_________________')}
-                className="flex flex-col items-center gap-2 p-4 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-xl transition-colors"
+                className="flex flex-col items-center gap-2 p-4 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl transition-colors"
               >
-                <PenTool className="w-6 h-6 text-slate-300" />
-                <span className="text-[10px] font-bold text-slate-300">Signature</span>
+                <PenTool className="w-6 h-6 text-slate-700" />
+                <span className="text-[10px] font-bold text-slate-700">Signature</span>
               </button>
 
-              <label className="flex flex-col items-center justify-center gap-2 p-4 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-xl transition-colors cursor-pointer text-center">
+              <label className="flex flex-col items-center justify-center gap-2 p-4 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl transition-colors cursor-pointer text-center">
                 <ImageIcon className="w-6 h-6 text-indigo-400" />
-                <span className="text-[10px] font-bold text-slate-300">Image/Logo</span>
+                <span className="text-[10px] font-bold text-slate-700">Image/Logo</span>
                 <input 
                   type="file" 
                   accept="image/*" 
@@ -200,7 +200,7 @@ export const CertificateBuilder: React.FC<CertificateBuilderProps> = ({ initialC
 
         {/* Center: Canvas Workspace */}
         <div 
-          className="flex-1 bg-slate-950 overflow-auto flex items-center justify-center p-8 relative"
+          className="flex-1 bg-white overflow-auto flex items-center justify-center p-8 relative"
           onMouseMove={handleMouseMove}
         >
           {/* Certificate Canvas Container (A4 Landscape Aspect Ratio approx 1.414) */}
@@ -266,25 +266,25 @@ export const CertificateBuilder: React.FC<CertificateBuilderProps> = ({ initialC
         </div>
 
         {/* Right Sidebar: Properties */}
-        <div className="w-80 border-l border-slate-800 bg-slate-900 p-6 overflow-y-auto shrink-0 space-y-8">
+        <div className="w-80 border-l border-slate-200 bg-white p-6 overflow-y-auto shrink-0 space-y-8">
           {selectedElement ? (
             <div className="space-y-6">
               <div>
-                <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
                   <Layout className="w-4 h-4 text-green-400" />
                   Element Properties
                 </h3>
-                <p className="text-xs text-slate-400 mt-1">Editing selected {selectedElement.type}</p>
+                <p className="text-xs text-slate-600 mt-1">Editing selected {selectedElement.type}</p>
               </div>
 
               {selectedElement.type !== 'image' && (
                 <div>
-                  <label className="text-[10px] font-bold text-slate-400 uppercase block mb-1.5">Content</label>
+                  <label className="text-[10px] font-bold text-slate-600 uppercase block mb-1.5">Content</label>
                   {selectedElement.type === 'variable' ? (
                     <select
                       value={selectedElement.content}
                       onChange={(e) => updateSelectedElement({ content: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:border-green-500"
+                      className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-900 focus:border-green-500"
                     >
                       <option value="{{Student Name}}">Student Name</option>
                       <option value="{{Course Title}}">Course Title</option>
@@ -294,7 +294,7 @@ export const CertificateBuilder: React.FC<CertificateBuilderProps> = ({ initialC
                     <textarea 
                       value={selectedElement.content}
                       onChange={(e) => updateSelectedElement({ content: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:border-green-500"
+                      className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-900 focus:border-green-500"
                       rows={3}
                     />
                   )}
@@ -303,33 +303,33 @@ export const CertificateBuilder: React.FC<CertificateBuilderProps> = ({ initialC
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-[10px] font-bold text-slate-400 uppercase block mb-1.5">Font Size</label>
+                  <label className="text-[10px] font-bold text-slate-600 uppercase block mb-1.5">Font Size</label>
                   <input 
                     type="number" 
                     value={selectedElement.fontSize || 16}
                     onChange={(e) => updateSelectedElement({ fontSize: parseInt(e.target.value) || 16 })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:border-green-500"
+                    className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-900 focus:border-green-500"
                   />
                 </div>
                 <div>
-                  <label className="text-[10px] font-bold text-slate-400 uppercase block mb-1.5">Color</label>
+                  <label className="text-[10px] font-bold text-slate-600 uppercase block mb-1.5">Color</label>
                   <div className="flex items-center gap-2">
                     <input 
                       type="color" 
                       value={selectedElement.color || '#000000'}
                       onChange={(e) => updateSelectedElement({ color: e.target.value })}
-                      className="w-8 h-8 rounded cursor-pointer bg-slate-950 border border-slate-800 p-0"
+                      className="w-8 h-8 rounded cursor-pointer bg-white border border-slate-200 p-0"
                     />
                   </div>
                 </div>
               </div>
               
               <div>
-                <label className="text-[10px] font-bold text-slate-400 uppercase block mb-1.5">Font Family</label>
+                <label className="text-[10px] font-bold text-slate-600 uppercase block mb-1.5">Font Family</label>
                 <select
                   value={selectedElement.fontFamily || 'Inter'}
                   onChange={(e) => updateSelectedElement({ fontFamily: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:border-green-500"
+                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-900 focus:border-green-500"
                 >
                   <option value="Inter">Inter (Sans)</option>
                   <option value="serif">Serif (Classic)</option>
@@ -339,23 +339,23 @@ export const CertificateBuilder: React.FC<CertificateBuilderProps> = ({ initialC
               </div>
 
               <div>
-                <label className="text-[10px] font-bold text-slate-400 uppercase block mb-1.5">Alignment</label>
-                <div className="flex items-center bg-slate-950 border border-slate-800 rounded-xl p-1">
+                <label className="text-[10px] font-bold text-slate-600 uppercase block mb-1.5">Alignment</label>
+                <div className="flex items-center bg-white border border-slate-200 rounded-xl p-1">
                   <button 
                     onClick={() => updateSelectedElement({ textAlign: 'left' })}
-                    className={`flex-1 flex justify-center py-1.5 rounded-lg ${selectedElement.textAlign === 'left' ? 'bg-slate-800 text-white' : 'text-slate-400 hover:text-white'}`}
+                    className={`flex-1 flex justify-center py-1.5 rounded-lg ${selectedElement.textAlign === 'left' ? 'bg-slate-50 text-white' : 'text-slate-600 hover:text-slate-900'}`}
                   >
                     <AlignLeft className="w-4 h-4" />
                   </button>
                   <button 
                     onClick={() => updateSelectedElement({ textAlign: 'center' })}
-                    className={`flex-1 flex justify-center py-1.5 rounded-lg ${selectedElement.textAlign === 'center' ? 'bg-slate-800 text-white' : 'text-slate-400 hover:text-white'}`}
+                    className={`flex-1 flex justify-center py-1.5 rounded-lg ${selectedElement.textAlign === 'center' ? 'bg-slate-50 text-white' : 'text-slate-600 hover:text-slate-900'}`}
                   >
                     <AlignCenter className="w-4 h-4" />
                   </button>
                   <button 
                     onClick={() => updateSelectedElement({ textAlign: 'right' })}
-                    className={`flex-1 flex justify-center py-1.5 rounded-lg ${selectedElement.textAlign === 'right' ? 'bg-slate-800 text-white' : 'text-slate-400 hover:text-white'}`}
+                    className={`flex-1 flex justify-center py-1.5 rounded-lg ${selectedElement.textAlign === 'right' ? 'bg-slate-50 text-white' : 'text-slate-600 hover:text-slate-900'}`}
                   >
                     <AlignRight className="w-4 h-4" />
                   </button>
@@ -366,39 +366,39 @@ export const CertificateBuilder: React.FC<CertificateBuilderProps> = ({ initialC
           ) : (
             <div className="space-y-6">
               <div>
-                <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                  <ImageIcon className="w-4 h-4 text-slate-400" />
+                <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                  <ImageIcon className="w-4 h-4 text-slate-600" />
                   Canvas Settings
                 </h3>
-                <p className="text-xs text-slate-400 mt-1">Select an element on the canvas to edit it, or adjust global settings here.</p>
+                <p className="text-xs text-slate-600 mt-1">Select an element on the canvas to edit it, or adjust global settings here.</p>
               </div>
 
               <div>
-                <label className="text-[10px] font-bold text-slate-400 uppercase block mb-1.5">Background Color</label>
+                <label className="text-[10px] font-bold text-slate-600 uppercase block mb-1.5">Background Color</label>
                 <div className="flex items-center gap-2">
                   <input 
                     type="color" 
                     value={cert.bgColor}
                     onChange={(e) => setCert({ ...cert, bgColor: e.target.value })}
-                    className="w-8 h-8 rounded cursor-pointer bg-slate-950 border border-slate-800 p-0"
+                    className="w-8 h-8 rounded cursor-pointer bg-white border border-slate-200 p-0"
                   />
                   <input 
                     type="text" 
                     value={cert.bgColor}
                     onChange={(e) => setCert({ ...cert, bgColor: e.target.value })}
-                    className="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white uppercase font-mono"
+                    className="flex-1 bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-900 uppercase font-mono"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="text-[10px] font-bold text-slate-400 uppercase block mb-1.5">Background Image URL</label>
+                <label className="text-[10px] font-bold text-slate-600 uppercase block mb-1.5">Background Image URL</label>
                 <input 
                   type="text" 
                   value={cert.bgImageUrl || ''}
                   onChange={(e) => setCert({ ...cert, bgImageUrl: e.target.value })}
                   placeholder="https://..."
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:border-green-500"
+                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-900 focus:border-green-500"
                 />
               </div>
             </div>

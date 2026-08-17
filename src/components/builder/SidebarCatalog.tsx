@@ -259,40 +259,40 @@ export const SidebarCatalog: React.FC<SidebarCatalogProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex justify-start">
-      <div className="w-96 bg-slate-900 border-r border-slate-800 h-full flex flex-col shadow-2xl animate-fade-in text-slate-100">
+    <div className="fixed inset-0 z-50 bg-white/70 backdrop-blur-sm flex justify-start">
+      <div className="w-96 bg-white border-r border-slate-200 h-full flex flex-col shadow-2xl animate-fade-in text-slate-900">
         {/* Top Header */}
-        <div className="p-4 border-b border-slate-800 flex items-center justify-between">
+        <div className="p-4 border-b border-slate-200 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-orange-400" />
-            <h3 className="font-bold text-sm text-slate-100">Add Canvas Element</h3>
+            <h3 className="font-bold text-sm text-slate-900">Add Canvas Element</h3>
           </div>
-          <button onClick={onClose} className="p-1 hover:bg-slate-800 rounded text-slate-400 hover:text-white">
+          <button onClick={onClose} className="p-1 hover:bg-slate-50 rounded text-slate-600 hover:text-slate-900">
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Search Input */}
-        <div className="p-3 border-b border-slate-800">
+        <div className="p-3 border-b border-slate-200">
           <div className="relative">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+            <Search className="w-4 h-4 text-slate-600 absolute left-3 top-2.5" />
             <input 
               type="text" 
               placeholder="Search elements (e.g., ClickPop, Credit Card, Order Select)..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800 rounded-lg pl-9 pr-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="w-full bg-white border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-xs text-slate-900 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
           </div>
         </div>
 
         {/* Category Pills */}
-        <div className="p-3 border-b border-slate-800 flex gap-1.5 overflow-x-auto no-scrollbar text-xs">
+        <div className="p-3 border-b border-slate-200 flex gap-1.5 overflow-x-auto no-scrollbar text-xs">
           {categories.map((cat) => (
             <button 
               key={cat.id} 
               onClick={() => setSelectedCategory(cat.id)}
-              className={`px-3 py-1 rounded-full whitespace-nowrap font-medium transition-all ${selectedCategory === cat.id ? 'bg-orange-600 text-white shadow' : 'bg-slate-800 text-slate-400 hover:text-white'}`}
+              className={`px-3 py-1 rounded-full whitespace-nowrap font-medium transition-all ${selectedCategory === cat.id ? 'bg-orange-600 text-white shadow' : 'bg-slate-50 text-slate-600 hover:text-slate-900'}`}
             >
               {cat.label}
             </button>
@@ -307,14 +307,14 @@ export const SidebarCatalog: React.FC<SidebarCatalogProps> = ({
               <button 
                 key={item.type}
                 onClick={() => handleSelect(item)}
-                className="w-full p-3 bg-slate-950 hover:bg-slate-850 border border-slate-800 hover:border-orange-500/60 rounded-xl flex items-start gap-3 text-left transition-all group"
+                className="w-full p-3 bg-white hover:bg-slate-50 border border-slate-200 hover:border-orange-500/60 rounded-xl flex items-start gap-3 text-left transition-all group"
               >
                 <div className="w-9 h-9 rounded-lg bg-orange-950/60 border border-orange-500/30 flex items-center justify-center text-orange-400 shrink-0 group-hover:scale-110 transition-transform">
                   <IconComp className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-xs font-bold text-slate-200 group-hover:text-orange-300">{item.name}</div>
-                  <div className="text-[11px] text-slate-400 leading-tight mt-0.5">{item.description}</div>
+                  <div className="text-xs font-bold text-slate-800 group-hover:text-orange-300">{item.name}</div>
+                  <div className="text-[11px] text-slate-600 leading-tight mt-0.5">{item.description}</div>
                 </div>
               </button>
             );

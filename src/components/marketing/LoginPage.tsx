@@ -126,13 +126,13 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-4 rounded-2xl font-black text-xs text-white shadow-xl flex items-center justify-center gap-2 transition-all hover:scale-[1.02]"
+            className="w-full py-4 rounded-2xl font-black text-xs text-slate-900 shadow-xl flex items-center justify-center gap-2 transition-all hover:scale-[1.02]"
             style={{ background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)' }}
           >
             {isLoading ? (
               <span>AUTHENTICATING STEPHEN TOFIELD...</span>
             ) : authSuccess ? (
-              <span className="flex items-center gap-2 text-white font-bold"><CheckCircle2 className="w-4 h-4" /> LOGIN SUCCESSFUL! REDIRECTING...</span>
+              <span className="flex items-center gap-2 text-slate-900 font-bold"><CheckCircle2 className="w-4 h-4" /> LOGIN SUCCESSFUL! REDIRECTING...</span>
             ) : (
               <>
                 <Lock className="w-4 h-4" />

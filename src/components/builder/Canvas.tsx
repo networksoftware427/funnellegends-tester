@@ -374,7 +374,7 @@ export const Canvas: React.FC<CanvasProps> = ({
                 };
                 onUpdateCanvasState({ ...canvasState, sections: [newSec] });
               }}
-              className="px-4 py-2.5 text-white rounded-lg text-xs font-bold flex items-center gap-2 mx-auto shadow-lg"
+              className="px-4 py-2.5 text-slate-900 rounded-lg text-xs font-bold flex items-center gap-2 mx-auto shadow-lg"
               style={{ background: 'linear-gradient(135deg, #22c55e, #0d9488)', boxShadow: '0 4px 14px rgba(34,197,94,0.3)' }}
             >
               <Plus className="w-4 h-4" />
@@ -395,7 +395,7 @@ export const Canvas: React.FC<CanvasProps> = ({
                 }}
               >
                 {/* SECTION toolbar badge — FunnelLegends Green */}
-                <div className="absolute top-0 left-4 -translate-y-1/2 z-20 hidden group-hover:flex items-center gap-1.5 text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded shadow-lg" style={{ background: 'linear-gradient(135deg,#22c55e,#16a34a)' }}>
+                <div className="absolute top-0 left-4 -translate-y-1/2 z-20 hidden group-hover:flex items-center gap-1.5 text-slate-900 text-[10px] font-extrabold px-2.5 py-0.5 rounded shadow-lg" style={{ background: 'linear-gradient(135deg,#22c55e,#16a34a)' }}>
                   <span className="uppercase tracking-wider">SECTION</span>
                   <div className="h-3 w-px bg-green-300"></div>
                   <button onClick={() => handleMoveSection(secIdx, 'up')} disabled={secIdx === 0} title="Move Section Up" className="hover:text-emerald-200 disabled:opacity-30">
@@ -459,7 +459,7 @@ export const Canvas: React.FC<CanvasProps> = ({
                         }}
                       >
                         {/* ROW toolbar badge — FunnelLegends Teal */}
-                        <div className="absolute top-0 left-4 -translate-y-1/2 z-20 hidden group-hover/row:flex items-center gap-1.5 text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded shadow-md" style={{ background: 'linear-gradient(135deg,#0d9488,#0d7270)' }}>
+                        <div className="absolute top-0 left-4 -translate-y-1/2 z-20 hidden group-hover/row:flex items-center gap-1.5 text-slate-900 text-[10px] font-extrabold px-2.5 py-0.5 rounded shadow-md" style={{ background: 'linear-gradient(135deg,#0d9488,#0d7270)' }}>
                           <span className="uppercase tracking-wider">ROW</span>
                           <div className="h-3 w-px bg-teal-300"></div>
                           {/* Column count switcher 1-6 */}
@@ -514,7 +514,7 @@ export const Canvas: React.FC<CanvasProps> = ({
                                   </div>
                                 )}
                                 {/* COLUMN badge — FunnelLegends Green */}
-                                <div className="absolute top-0 left-3 -translate-y-1/2 z-20 hidden group-hover/col:flex items-center gap-1 text-white text-[9px] font-bold px-2 py-0.5 rounded shadow-sm" style={{ backgroundColor: '#16a34a' }}>
+                                <div className="absolute top-0 left-3 -translate-y-1/2 z-20 hidden group-hover/col:flex items-center gap-1 text-slate-900 text-[9px] font-bold px-2 py-0.5 rounded shadow-sm" style={{ backgroundColor: '#16a34a' }}>
                                   <span>COL ({widthPercent}%)</span>
                                   <button onClick={() => onSelectNode(column.id, 'column')} className="ml-1 hover:text-green-200" title="Column Settings">
                                     <Settings className="w-3 h-3" />
@@ -527,7 +527,7 @@ export const Canvas: React.FC<CanvasProps> = ({
                                     <p className="text-[11px] text-gray-400 mb-2">Drop elements here</p>
                                     <button 
                                       onClick={() => onOpenElementCatalog(column.id)}
-                                      className="px-3 py-1.5 text-white rounded text-[11px] font-bold flex items-center gap-1"
+                                      className="px-3 py-1.5 text-slate-900 rounded text-[11px] font-bold flex items-center gap-1"
                                       style={{ background: 'linear-gradient(135deg,#22c55e,#0d9488)' }}
                                     >
                                       <Plus className="w-3 h-3" />
@@ -540,7 +540,7 @@ export const Canvas: React.FC<CanvasProps> = ({
                                     return (
                                       <div key={element.id} className="relative group/el">
                                         {/* ELEMENT toolbar badge — FunnelLegends Teal/Dark */}
-                                        <div className="absolute -top-2 right-2 z-30 hidden group-hover/el:flex items-center gap-1 text-white text-[9px] font-bold px-2 py-0.5 rounded shadow" style={{ background: 'linear-gradient(135deg,#0d9488,#0d7270)' }}>
+                                        <div className="absolute -top-2 right-2 z-30 hidden group-hover/el:flex items-center gap-1 text-slate-900 text-[9px] font-bold px-2 py-0.5 rounded shadow" style={{ background: 'linear-gradient(135deg,#0d9488,#0d7270)' }}>
                                           <span>{element.type}</span>
                                           <button onClick={() => handleMoveElement(section.id, row.id, column.id, elIdx, 'up')} disabled={elIdx === 0} className="hover:text-green-200 disabled:opacity-30">
                                             <ArrowUp className="w-3 h-3" />
@@ -623,7 +623,7 @@ export const Canvas: React.FC<CanvasProps> = ({
                                 {column.elements.length > 0 && (
                                   <button 
                                     onClick={() => onOpenElementCatalog(column.id)}
-                                    className="mt-2 w-full py-1.5 text-white rounded border border-dashed text-[11px] font-semibold flex items-center justify-center gap-1 transition-all opacity-0 group-hover/col:opacity-100"
+                                    className="mt-2 w-full py-1.5 text-slate-900 rounded border border-dashed text-[11px] font-semibold flex items-center justify-center gap-1 transition-all opacity-0 group-hover/col:opacity-100"
                                     style={{ borderColor: '#22c55e', background: 'rgba(34,197,94,0.08)', color: '#16a34a' }}
                                     onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background='linear-gradient(135deg,#22c55e,#0d9488)'; (e.currentTarget as HTMLButtonElement).style.color='#fff'; }}
                                     onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background='rgba(34,197,94,0.08)'; (e.currentTarget as HTMLButtonElement).style.color='#16a34a'; }}
@@ -644,7 +644,7 @@ export const Canvas: React.FC<CanvasProps> = ({
                   <div className="mt-4 text-center">
                     <button 
                       onClick={() => handleAddRow(section.id, 2)}
-                      className="px-4 py-2 rounded-lg text-xs font-bold border border-dashed inline-flex items-center gap-1.5 transition-all text-white"
+                      className="px-4 py-2 rounded-lg text-xs font-bold border border-dashed inline-flex items-center gap-1.5 transition-all text-slate-900"
                       style={{ borderColor: '#0d9488', background: 'linear-gradient(135deg,#0d9488,#0d7270)', boxShadow: '0 2px 8px rgba(13,148,136,0.2)' }}
                     >
                       <Plus className="w-3.5 h-3.5" />
@@ -685,7 +685,7 @@ export const Canvas: React.FC<CanvasProps> = ({
                 };
                 onUpdateCanvasState({ ...canvasState, sections: [...canvasState.sections, newSec] });
               }}
-              className="px-6 py-3 text-white font-extrabold rounded-xl text-xs inline-flex items-center gap-2 transition-transform hover:scale-105"
+              className="px-6 py-3 text-slate-900 font-extrabold rounded-xl text-xs inline-flex items-center gap-2 transition-transform hover:scale-105"
               style={{ background: 'linear-gradient(135deg,#22c55e,#0d9488)', boxShadow: '0 6px 20px rgba(34,197,94,0.3)' }}
             >
               <Plus className="w-4 h-4" />

@@ -165,39 +165,39 @@ export const IntegrationDiagnosticModal: React.FC<IntegrationDiagnosticModalProp
   const successCount = diagnostics.filter(d => d.status === 'success').length;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/85 backdrop-blur-md p-4">
-      <div className="bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl w-full max-w-5xl h-[88vh] flex flex-col overflow-hidden animate-scale-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/85 backdrop-blur-md p-4">
+      <div className="bg-white border border-slate-200 rounded-3xl shadow-2xl w-full max-w-5xl h-[88vh] flex flex-col overflow-hidden animate-scale-in">
         
         {/* Modal Header */}
-        <div className="flex items-center justify-between p-6 border-b border-slate-800 shrink-0 bg-slate-900/90 backdrop-blur-md">
+        <div className="flex items-center justify-between p-6 border-b border-slate-200 shrink-0 bg-white/90 backdrop-blur-md">
           <div className="flex items-center gap-3">
             <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-emerald-500 flex items-center justify-center text-white shadow-lg shadow-purple-600/30 font-black">
               <Activity className="w-6 h-6 animate-pulse" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-xl font-black text-white tracking-tight">System 3rd-Party Integration Diagnostic Suite</h2>
+                <h2 className="text-xl font-black text-slate-900 tracking-tight">System 3rd-Party Integration Diagnostic Suite</h2>
                 <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
                   Live API Engine
                 </span>
               </div>
-              <p className="text-xs text-slate-400 font-medium">Verify end-to-end integration health across SMS, Email, Stripe, Zoom, Calendars & Webhooks.</p>
+              <p className="text-xs text-slate-600 font-medium">Verify end-to-end integration health across SMS, Email, Stripe, Zoom, Calendars & Webhooks.</p>
             </div>
           </div>
 
-          <button onClick={onClose} className="p-2 text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-xl transition-colors">
+          <button onClick={onClose} className="p-2 text-slate-600 hover:text-slate-900 bg-slate-50 hover:bg-slate-100 rounded-xl transition-colors">
             <X className="w-5 h-5" />
           </button>
         </div>
 
 
         {/* Sub Navigation Bar */}
-        <div className="flex items-center justify-between px-6 py-3 bg-slate-950 border-b border-slate-800 shrink-0">
+        <div className="flex items-center justify-between px-6 py-3 bg-white border-b border-slate-200 shrink-0">
           <div className="flex items-center gap-2">
             <button
               onClick={() => setActiveTab('suite')}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
-                activeTab === 'suite' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30' : 'text-slate-400 hover:text-white hover:bg-slate-900'
+                activeTab === 'suite' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30' : 'text-slate-600 hover:text-slate-900 hover:bg-white'
               }`}
             >
               <Cpu className="w-4 h-4" />
@@ -207,7 +207,7 @@ export const IntegrationDiagnosticModal: React.FC<IntegrationDiagnosticModalProp
             <button
               onClick={() => setActiveTab('keys')}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
-                activeTab === 'keys' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30' : 'text-slate-400 hover:text-white hover:bg-slate-900'
+                activeTab === 'keys' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30' : 'text-slate-600 hover:text-slate-900 hover:bg-white'
               }`}
             >
               <Lock className="w-4 h-4 text-emerald-400" />
@@ -217,7 +217,7 @@ export const IntegrationDiagnosticModal: React.FC<IntegrationDiagnosticModalProp
             <button
               onClick={() => setActiveTab('test_payload')}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
-                activeTab === 'test_payload' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30' : 'text-slate-400 hover:text-white hover:bg-slate-900'
+                activeTab === 'test_payload' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30' : 'text-slate-600 hover:text-slate-900 hover:bg-white'
               }`}
             >
               <Send className="w-4 h-4 text-purple-400" />
@@ -227,7 +227,7 @@ export const IntegrationDiagnosticModal: React.FC<IntegrationDiagnosticModalProp
             <button
               onClick={() => setActiveTab('purge')}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
-                activeTab === 'purge' ? 'bg-gradient-to-r from-red-600 to-pink-600 text-white shadow-lg shadow-red-600/30' : 'text-rose-400 hover:text-rose-300 hover:bg-slate-900'
+                activeTab === 'purge' ? 'bg-gradient-to-r from-red-600 to-pink-600 text-white shadow-lg shadow-red-600/30' : 'text-rose-400 hover:text-rose-300 hover:bg-white'
               }`}
             >
               <Trash2 className="w-4 h-4" />
@@ -236,7 +236,7 @@ export const IntegrationDiagnosticModal: React.FC<IntegrationDiagnosticModalProp
           </div>
 
           <div className="flex items-center gap-3 text-xs font-mono">
-            <span className="text-slate-400">Integration Health:</span>
+            <span className="text-slate-600">Integration Health:</span>
             <span className="font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-lg">
               {successCount > 0 ? `${Math.round((successCount / 25) * 100)}% Ready (${successCount}/25)` : 'Ready to Run'}
             </span>
@@ -245,20 +245,20 @@ export const IntegrationDiagnosticModal: React.FC<IntegrationDiagnosticModalProp
 
 
         {/* Content Body */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-slate-950/40">
+        <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-white/40">
           
           {/* TAB 1: DIAGNOSTIC SUITE */}
           {activeTab === 'suite' && (
             <div className="space-y-6">
               
               {/* Scan Control Header */}
-              <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-between flex-wrap gap-4 shadow-xl">
+              <div className="p-5 rounded-2xl bg-white border border-slate-200 flex items-center justify-between flex-wrap gap-4 shadow-xl">
                 <div>
-                  <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                  <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
                     <ShieldCheck className="w-4 h-4 text-emerald-400" />
                     <span>Automated Integration Diagnostic Runner</span>
                   </h3>
-                  <p className="text-xs text-slate-400 mt-0.5">Scans all 3rd-party REST API endpoints, webhooks, and SSL handshakes across SMS, Email, Stripe, Zoom, and Calendars.</p>
+                  <p className="text-xs text-slate-600 mt-0.5">Scans all 3rd-party REST API endpoints, webhooks, and SSL handshakes across SMS, Email, Stripe, Zoom, and Calendars.</p>
                 </div>
 
                 <button
@@ -274,11 +274,11 @@ export const IntegrationDiagnosticModal: React.FC<IntegrationDiagnosticModalProp
               {/* Progress Bar */}
               {isScanning && (
                 <div className="space-y-2">
-                  <div className="flex justify-between text-xs font-bold text-slate-300">
+                  <div className="flex justify-between text-xs font-bold text-slate-700">
                     <span>Testing Integration Endpoints...</span>
                     <span className="font-mono text-emerald-400">{scanProgress}%</span>
                   </div>
-                  <div className="w-full bg-slate-900 rounded-full h-3 border border-slate-800 overflow-hidden">
+                  <div className="w-full bg-white rounded-full h-3 border border-slate-200 overflow-hidden">
                     <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-emerald-400 h-full transition-all duration-150" style={{ width: `${scanProgress}%` }}></div>
                   </div>
                 </div>
@@ -292,14 +292,14 @@ export const IntegrationDiagnosticModal: React.FC<IntegrationDiagnosticModalProp
                     key={item.id}
                     className={`p-3.5 rounded-2xl border transition-all space-y-2 ${
                       item.status === 'success' 
-                        ? 'bg-slate-900/90 border-emerald-500/40 shadow-sm' 
+                        ? 'bg-white/90 border-emerald-500/40 shadow-sm' 
                         : item.status === 'testing' 
                         ? 'bg-indigo-950/30 border-indigo-500/50 animate-pulse' 
-                        : 'bg-slate-900/40 border-slate-800'
+                        : 'bg-white/40 border-slate-200'
                     }`}
                   >
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded bg-slate-950 text-indigo-300 border border-slate-800">
+                      <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded bg-white text-indigo-300 border border-slate-200">
                         {item.category}
                       </span>
                       
@@ -321,11 +321,11 @@ export const IntegrationDiagnosticModal: React.FC<IntegrationDiagnosticModalProp
                     </div>
 
                     <div>
-                      <h4 className="text-xs font-bold text-white">{item.name}</h4>
-                      <p className="text-[10px] text-slate-400 font-mono truncate mt-0.5">{item.endpoint}</p>
+                      <h4 className="text-xs font-bold text-slate-900">{item.name}</h4>
+                      <p className="text-[10px] text-slate-600 font-mono truncate mt-0.5">{item.endpoint}</p>
                     </div>
 
-                    <p className="text-[11px] text-slate-300 font-medium leading-tight">{item.message}</p>
+                    <p className="text-[11px] text-slate-700 font-medium leading-tight">{item.message}</p>
                   </div>
                 ))}
               </div>
@@ -333,17 +333,17 @@ export const IntegrationDiagnosticModal: React.FC<IntegrationDiagnosticModalProp
 
               {/* Live Terminal Log */}
               {terminalLogs.length > 0 && (
-                <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2 font-mono text-xs shadow-inner">
-                  <div className="flex items-center justify-between text-slate-400 text-[11px] font-bold border-b border-slate-900 pb-2">
+                <div className="p-4 rounded-2xl bg-white border border-slate-200 space-y-2 font-mono text-xs shadow-inner">
+                  <div className="flex items-center justify-between text-slate-600 text-[11px] font-bold border-b border-slate-900 pb-2">
                     <span className="flex items-center gap-2">
                       <Terminal className="w-3.5 h-3.5 text-emerald-400" /> Live Integration Console Log
                     </span>
                     <span>{terminalLogs.length} events logged</span>
                   </div>
 
-                  <div className="max-h-40 overflow-y-auto space-y-1 text-[11px] text-slate-300">
+                  <div className="max-h-40 overflow-y-auto space-y-1 text-[11px] text-slate-700">
                     {terminalLogs.map((log, idx) => (
-                      <div key={idx} className={log.includes('[PASS]') ? 'text-emerald-400' : log.includes('[COMPLETED]') ? 'text-indigo-300 font-bold' : 'text-slate-400'}>
+                      <div key={idx} className={log.includes('[PASS]') ? 'text-emerald-400' : log.includes('[COMPLETED]') ? 'text-indigo-300 font-bold' : 'text-slate-600'}>
                         {log}
                       </div>
                     ))}
@@ -356,73 +356,73 @@ export const IntegrationDiagnosticModal: React.FC<IntegrationDiagnosticModalProp
 
           {/* TAB 2: API CREDENTIALS FORM */}
           {activeTab === 'keys' && (
-            <form onSubmit={handleSaveApiKeys} className="p-6 rounded-3xl bg-slate-900 border border-slate-800 space-y-6 shadow-xl max-w-3xl mx-auto">
+            <form onSubmit={handleSaveApiKeys} className="p-6 rounded-3xl bg-white border border-slate-200 space-y-6 shadow-xl max-w-3xl mx-auto">
               <div>
-                <h3 className="text-base font-extrabold text-white flex items-center gap-2">
+                <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
                   <Lock className="w-4 h-4 text-emerald-400" />
                   <span>3rd-Party Integration API Credentials</span>
                 </h3>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="text-xs text-slate-600 mt-1">
                   Enter your production API keys to activate live 3rd-party communication and payment processing across all LaunchEngine software tools.
                 </p>
               </div>
 
               <div className="space-y-4 text-xs">
                 <div>
-                  <label className="block font-bold text-slate-300 mb-1">Stripe Secret Key (Payments & Payouts)</label>
+                  <label className="block font-bold text-slate-700 mb-1">Stripe Secret Key (Payments & Payouts)</label>
                   <input
                     type="password"
                     value={stripeSecretKey}
                     onChange={(e) => setStripeSecretKey(e.target.value)}
                     placeholder="sk_live_..."
-                    className="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-white font-mono focus:outline-none focus:border-indigo-500"
+                    className="w-full p-3 bg-white border border-slate-200 rounded-xl text-slate-900 font-mono focus:outline-none focus:border-indigo-500"
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block font-bold text-slate-300 mb-1">Twilio Account SID (SMS Gateway)</label>
+                    <label className="block font-bold text-slate-700 mb-1">Twilio Account SID (SMS Gateway)</label>
                     <input
                       type="text"
                       value={twilioAccountSid}
                       onChange={(e) => setTwilioAccountSid(e.target.value)}
                       placeholder="AC..."
-                      className="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-white font-mono focus:outline-none focus:border-indigo-500"
+                      className="w-full p-3 bg-white border border-slate-200 rounded-xl text-slate-900 font-mono focus:outline-none focus:border-indigo-500"
                     />
                   </div>
 
                   <div>
-                    <label className="block font-bold text-slate-300 mb-1">Resend / SendGrid API Key (Email)</label>
+                    <label className="block font-bold text-slate-700 mb-1">Resend / SendGrid API Key (Email)</label>
                     <input
                       type="password"
                       value={resendApiKey}
                       onChange={(e) => setResendApiKey(e.target.value)}
                       placeholder="re_..."
-                      className="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-white font-mono focus:outline-none focus:border-indigo-500"
+                      className="w-full p-3 bg-white border border-slate-200 rounded-xl text-slate-900 font-mono focus:outline-none focus:border-indigo-500"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block font-bold text-slate-300 mb-1">Zoom OAuth Token (ChronoChimp Meetings)</label>
+                    <label className="block font-bold text-slate-700 mb-1">Zoom OAuth Token (ChronoChimp Meetings)</label>
                     <input
                       type="password"
                       value={zoomToken}
                       onChange={(e) => setZoomToken(e.target.value)}
                       placeholder="ey..."
-                      className="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-white font-mono focus:outline-none focus:border-indigo-500"
+                      className="w-full p-3 bg-white border border-slate-200 rounded-xl text-slate-900 font-mono focus:outline-none focus:border-indigo-500"
                     />
                   </div>
 
                   <div>
-                    <label className="block font-bold text-slate-300 mb-1">Cloudflare API Token (Custom Domains)</label>
+                    <label className="block font-bold text-slate-700 mb-1">Cloudflare API Token (Custom Domains)</label>
                     <input
                       type="password"
                       value={cloudflareToken}
                       onChange={(e) => setCloudflareToken(e.target.value)}
                       placeholder="cf_..."
-                      className="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-white font-mono focus:outline-none focus:border-indigo-500"
+                      className="w-full p-3 bg-white border border-slate-200 rounded-xl text-slate-900 font-mono focus:outline-none focus:border-indigo-500"
                     />
                   </div>
                 </div>
@@ -443,69 +443,69 @@ export const IntegrationDiagnosticModal: React.FC<IntegrationDiagnosticModalProp
 
           {/* TAB 3: SEND TEST PAYLOAD */}
           {activeTab === 'test_payload' && (
-            <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 space-y-6 shadow-xl max-w-3xl mx-auto">
+            <div className="p-6 rounded-3xl bg-white border border-slate-200 space-y-6 shadow-xl max-w-3xl mx-auto">
               <div>
-                <h3 className="text-base font-extrabold text-white flex items-center gap-2">
+                <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
                   <Send className="w-4 h-4 text-purple-400" />
                   <span>Live 3rd-Party Integration Test Dispatcher</span>
                 </h3>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="text-xs text-slate-600 mt-1">
                   Dispatch real-time test webhooks and messages to verify end-to-end delivery performance.
                 </p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
-                  <h4 className="text-xs font-bold text-white flex items-center gap-2">
+                <div className="p-4 rounded-2xl bg-white border border-slate-200 space-y-3">
+                  <h4 className="text-xs font-bold text-slate-900 flex items-center gap-2">
                     <Phone className="w-4 h-4 text-emerald-400" />
                     <span>Test Twilio SMS Gateway</span>
                   </h4>
-                  <p className="text-[11px] text-slate-400">Sends test outbound SMS payload via configured Twilio SID.</p>
+                  <p className="text-[11px] text-slate-600">Sends test outbound SMS payload via configured Twilio SID.</p>
                   <button
                     onClick={() => handleSendTestPayload('SMS')}
-                    className="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold border border-slate-700"
+                    className="w-full py-2 bg-slate-50 hover:bg-slate-100 text-slate-800 rounded-xl text-xs font-bold border border-slate-300"
                   >
                     Send Test SMS Payload
                   </button>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
-                  <h4 className="text-xs font-bold text-white flex items-center gap-2">
+                <div className="p-4 rounded-2xl bg-white border border-slate-200 space-y-3">
+                  <h4 className="text-xs font-bold text-slate-900 flex items-center gap-2">
                     <Mail className="w-4 h-4 text-cyan-400" />
                     <span>Test Resend Email Engine</span>
                   </h4>
-                  <p className="text-[11px] text-slate-400">Dispatches test HTML email payload to verify SMTP configuration.</p>
+                  <p className="text-[11px] text-slate-600">Dispatches test HTML email payload to verify SMTP configuration.</p>
                   <button
                     onClick={() => handleSendTestPayload('Email')}
-                    className="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold border border-slate-700"
+                    className="w-full py-2 bg-slate-50 hover:bg-slate-100 text-slate-800 rounded-xl text-xs font-bold border border-slate-300"
                   >
                     Send Test Email Payload
                   </button>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
-                  <h4 className="text-xs font-bold text-white flex items-center gap-2">
+                <div className="p-4 rounded-2xl bg-white border border-slate-200 space-y-3">
+                  <h4 className="text-xs font-bold text-slate-900 flex items-center gap-2">
                     <Code className="w-4 h-4 text-purple-400" />
                     <span>Test Zapier / Make Webhook</span>
                   </h4>
-                  <p className="text-[11px] text-slate-400">Triggers outbound HTTP POST webhook to registered endpoint.</p>
+                  <p className="text-[11px] text-slate-600">Triggers outbound HTTP POST webhook to registered endpoint.</p>
                   <button
                     onClick={() => handleSendTestPayload('Outbound Webhook')}
-                    className="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold border border-slate-700"
+                    className="w-full py-2 bg-slate-50 hover:bg-slate-100 text-slate-800 rounded-xl text-xs font-bold border border-slate-300"
                   >
                     Trigger Outbound Webhook
                   </button>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
-                  <h4 className="text-xs font-bold text-white flex items-center gap-2">
+                <div className="p-4 rounded-2xl bg-white border border-slate-200 space-y-3">
+                  <h4 className="text-xs font-bold text-slate-900 flex items-center gap-2">
                     <DollarSign className="w-4 h-4 text-indigo-400" />
                     <span>Test Stripe Webhook Receiver</span>
                   </h4>
-                  <p className="text-[11px] text-slate-400">Simulates Stripe charge.succeeded webhook payload.</p>
+                  <p className="text-[11px] text-slate-600">Simulates Stripe charge.succeeded webhook payload.</p>
                   <button
                     onClick={() => handleSendTestPayload('Stripe Webhook')}
-                    className="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold border border-slate-700"
+                    className="w-full py-2 bg-slate-50 hover:bg-slate-100 text-slate-800 rounded-xl text-xs font-bold border border-slate-300"
                   >
                     Simulate Stripe Webhook
                   </button>
@@ -524,20 +524,20 @@ export const IntegrationDiagnosticModal: React.FC<IntegrationDiagnosticModalProp
 
           {/* TAB 4: DELETE MOCK DATA */}
           {activeTab === 'purge' && (
-            <div className="p-8 rounded-3xl bg-slate-900 border border-slate-800 space-y-6 shadow-xl max-w-2xl mx-auto text-center">
+            <div className="p-8 rounded-3xl bg-white border border-slate-200 space-y-6 shadow-xl max-w-2xl mx-auto text-center">
               <div className="w-16 h-16 rounded-full bg-rose-500/20 text-rose-400 border border-rose-500/30 flex items-center justify-center mx-auto shadow-lg">
                 <Trash2 className="w-8 h-8" />
               </div>
 
               <div>
-                <h3 className="text-lg font-black text-white">Purge All Mock & Demo Data</h3>
-                <p className="text-xs text-slate-400 mt-1 leading-relaxed max-w-md mx-auto">
+                <h3 className="text-lg font-black text-slate-900">Purge All Mock & Demo Data</h3>
+                <p className="text-xs text-slate-600 mt-1 leading-relaxed max-w-md mx-auto">
                   This action will permanently delete demo contacts, dummy chat conversations, sample ChronoChimp strategy appointments, and test affiliate payouts from the software tools.
                 </p>
               </div>
 
-              <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-xs text-left space-y-2 font-mono">
-                <div className="flex items-center justify-between text-slate-300">
+              <div className="p-4 rounded-2xl bg-white border border-slate-200 text-xs text-left space-y-2 font-mono">
+                <div className="flex items-center justify-between text-slate-700">
                   <span>Current Operating Mode:</span>
                   <span className={`font-bold px-2 py-0.5 rounded ${purgedState ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-300'}`}>
                     {purgedState ? 'PRODUCTION LIVE (Clean State)' : 'DEMO / MOCK DATA MODE'}

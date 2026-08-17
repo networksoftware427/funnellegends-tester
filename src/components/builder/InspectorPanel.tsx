@@ -42,35 +42,35 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
     const bg = selectedRow.background || { bgType: 'none', backgroundColor: '#ffffff', gradient: '', bgImage: '', bgImageSize: 'cover', bgImagePosition: 'center center', bgOverlayColor: 'transparent', bgOverlayOpacity: 0, isParallax: false, bgVideoUrl: '' };
 
     return (
-      <div className="w-80 bg-slate-900 border-l border-slate-800 flex flex-col h-full text-slate-100 shrink-0">
-        <div className="p-4 border-b border-slate-800 flex items-center justify-between">
+      <div className="w-80 bg-white border-l border-slate-200 flex flex-col h-full text-slate-900 shrink-0">
+        <div className="p-4 border-b border-slate-200 flex items-center justify-between">
           <div className="flex items-center gap-2 text-indigo-400 font-bold text-sm">
             <Layout className="w-4 h-4" />
             <span>Row Inspector</span>
           </div>
-          <button onClick={onClose} className="text-slate-400 hover:text-white text-xs">Close</button>
+          <button onClick={onClose} className="text-slate-600 hover:text-slate-900 text-xs">Close</button>
         </div>
 
         <div className="flex-1 overflow-y-auto p-4 space-y-4 text-xs pb-32">
           <div>
-            <label className="block font-semibold text-slate-300 mb-1">Gap</label>
+            <label className="block font-semibold text-slate-700 mb-1">Gap</label>
             <input 
               type="text" 
               value={selectedRow.gap} 
               onChange={(e) => onUpdateRow({ ...selectedRow, gap: e.target.value })}
-              className="w-full bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-100"
+              className="w-full bg-white border border-slate-200 rounded px-2.5 py-1.5 text-slate-900"
             />
           </div>
 
           <div>
-            <label className="block font-semibold text-slate-300 mb-1">Background Type</label>
+            <label className="block font-semibold text-slate-700 mb-1">Background Type</label>
             <select 
               value={bg.bgType}
               onChange={(e) => onUpdateRow({
                 ...selectedRow,
                 background: { ...bg, bgType: e.target.value as any }
               })}
-              className="w-full bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-100"
+              className="w-full bg-white border border-slate-200 rounded px-2.5 py-1.5 text-slate-900"
             >
               <option value="none">None (Transparent)</option>
               <option value="color">Solid Color</option>
@@ -92,7 +92,7 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
 
           {bg.bgType === 'gradient' && (
             <div>
-              <label className="block font-semibold text-slate-300 mb-1">Gradient CSS</label>
+              <label className="block font-semibold text-slate-700 mb-1">Gradient CSS</label>
               <input 
                 type="text" 
                 value={bg.gradient}
@@ -100,15 +100,15 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                   ...selectedRow,
                   background: { ...bg, gradient: e.target.value }
                 })}
-                className="w-full bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-100"
+                className="w-full bg-white border border-slate-200 rounded px-2.5 py-1.5 text-slate-900"
               />
             </div>
           )}
 
           {bg.bgType === 'image' && (
-            <div className="space-y-4 border-t border-slate-800 pt-3">
+            <div className="space-y-4 border-t border-slate-200 pt-3">
               <div>
-                <label className="block font-semibold text-slate-300 mb-1">Background Image URL</label>
+                <label className="block font-semibold text-slate-700 mb-1">Background Image URL</label>
                 <div className="flex gap-2">
                   <input 
                     type="text" 
@@ -118,19 +118,19 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                       ...selectedRow,
                       background: { ...bg, bgImage: e.target.value }
                     })}
-                    className="flex-1 bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-100"
+                    className="flex-1 bg-white border border-slate-200 rounded px-2.5 py-1.5 text-slate-900"
                   />
                   <button 
                     onClick={() => setShowImageLibrary({ 
                       isOpen: true, 
                       onSelect: (url) => onUpdateRow({ ...selectedRow, background: { ...bg, bgImage: url }}) 
                     })}
-                    className="p-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded text-indigo-400 shrink-0"
+                    className="p-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-300 rounded text-indigo-400 shrink-0"
                     title="Browse SVG Library"
                   >
                     <ImageIcon className="w-4 h-4" />
                   </button>
-                  <label className="p-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded text-emerald-400 shrink-0 cursor-pointer" title="Upload from Desktop">
+                  <label className="p-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-300 rounded text-emerald-400 shrink-0 cursor-pointer" title="Upload from Desktop">
                     <input 
                       type="file" 
                       accept="image/*" 
@@ -154,14 +154,14 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block font-semibold text-slate-300 mb-1">Size</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Size</label>
                   <select 
                     value={bg.bgImageSize || 'cover'}
                     onChange={(e) => onUpdateRow({
                       ...selectedRow,
                       background: { ...bg, bgImageSize: e.target.value as any }
                     })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded px-2 py-1.5"
+                    className="w-full bg-white border border-slate-200 rounded px-2 py-1.5"
                   >
                     <option value="cover">Cover</option>
                     <option value="contain">Contain</option>
@@ -169,14 +169,14 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                   </select>
                 </div>
                 <div>
-                  <label className="block font-semibold text-slate-300 mb-1">Position</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Position</label>
                   <select 
                     value={bg.bgImagePosition || 'center center'}
                     onChange={(e) => onUpdateRow({
                       ...selectedRow,
                       background: { ...bg, bgImagePosition: e.target.value }
                     })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded px-2 py-1.5"
+                    className="w-full bg-white border border-slate-200 rounded px-2 py-1.5"
                   >
                     <option value="center center">Center</option>
                     <option value="top center">Top</option>
@@ -188,7 +188,7 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-300 mb-1">Overlay Color (Hex/RGBA)</label>
+                <label className="block font-semibold text-slate-700 mb-1">Overlay Color (Hex/RGBA)</label>
                 <div className="flex gap-2 items-center mb-3">
                   <input 
                     type="color" 
@@ -207,11 +207,11 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                       ...selectedRow,
                       background: { ...bg, bgOverlayColor: e.target.value }
                     })}
-                    className="flex-1 bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-100 text-xs font-mono"
+                    className="flex-1 bg-white border border-slate-200 rounded px-2.5 py-1.5 text-slate-900 text-xs font-mono"
                   />
                 </div>
                 
-                <label className="block font-semibold text-slate-300 mb-1">Overlay Transparency: {bg.bgOverlayOpacity || 0}%</label>
+                <label className="block font-semibold text-slate-700 mb-1">Overlay Transparency: {bg.bgOverlayOpacity || 0}%</label>
                 <input 
                   type="range"
                   min="0"
@@ -235,25 +235,25 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
     const bg = selectedColumn.background || { bgType: 'none', backgroundColor: '#ffffff', gradient: '', bgImage: '', bgImageSize: 'cover', bgImagePosition: 'center center', bgOverlayColor: 'transparent', bgOverlayOpacity: 0, isParallax: false, bgVideoUrl: '' };
 
     return (
-      <div className="w-80 bg-slate-900 border-l border-slate-800 flex flex-col h-full text-slate-100 shrink-0">
-        <div className="p-4 border-b border-slate-800 flex items-center justify-between">
+      <div className="w-80 bg-white border-l border-slate-200 flex flex-col h-full text-slate-900 shrink-0">
+        <div className="p-4 border-b border-slate-200 flex items-center justify-between">
           <div className="flex items-center gap-2 text-green-400 font-bold text-sm">
             <Layout className="w-4 h-4" />
             <span>Column Inspector</span>
           </div>
-          <button onClick={onClose} className="text-slate-400 hover:text-white text-xs">Close</button>
+          <button onClick={onClose} className="text-slate-600 hover:text-slate-900 text-xs">Close</button>
         </div>
 
         <div className="flex-1 overflow-y-auto p-4 space-y-4 text-xs pb-32">
           <div>
-            <label className="block font-semibold text-slate-300 mb-1">Background Type</label>
+            <label className="block font-semibold text-slate-700 mb-1">Background Type</label>
             <select 
               value={bg.bgType}
               onChange={(e) => onUpdateColumn({
                 ...selectedColumn,
                 background: { ...bg, bgType: e.target.value as any }
               })}
-              className="w-full bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-100"
+              className="w-full bg-white border border-slate-200 rounded px-2.5 py-1.5 text-slate-900"
             >
               <option value="none">None (Transparent)</option>
               <option value="color">Solid Color</option>
@@ -275,7 +275,7 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
 
           {bg.bgType === 'gradient' && (
             <div>
-              <label className="block font-semibold text-slate-300 mb-1">Gradient CSS</label>
+              <label className="block font-semibold text-slate-700 mb-1">Gradient CSS</label>
               <input 
                 type="text" 
                 value={bg.gradient}
@@ -283,15 +283,15 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                   ...selectedColumn,
                   background: { ...bg, gradient: e.target.value }
                 })}
-                className="w-full bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-100"
+                className="w-full bg-white border border-slate-200 rounded px-2.5 py-1.5 text-slate-900"
               />
             </div>
           )}
 
           {bg.bgType === 'image' && (
-            <div className="space-y-4 border-t border-slate-800 pt-3">
+            <div className="space-y-4 border-t border-slate-200 pt-3">
               <div>
-                <label className="block font-semibold text-slate-300 mb-1">Background Image URL</label>
+                <label className="block font-semibold text-slate-700 mb-1">Background Image URL</label>
                 <div className="flex gap-2">
                   <input 
                     type="text" 
@@ -301,19 +301,19 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                       ...selectedColumn,
                       background: { ...bg, bgImage: e.target.value }
                     })}
-                    className="flex-1 bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-100"
+                    className="flex-1 bg-white border border-slate-200 rounded px-2.5 py-1.5 text-slate-900"
                   />
                   <button 
                     onClick={() => setShowImageLibrary({ 
                       isOpen: true, 
                       onSelect: (url) => onUpdateColumn({ ...selectedColumn, background: { ...bg, bgImage: url }}) 
                     })}
-                    className="p-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded text-indigo-400 shrink-0"
+                    className="p-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-300 rounded text-indigo-400 shrink-0"
                     title="Browse SVG Library"
                   >
                     <ImageIcon className="w-4 h-4" />
                   </button>
-                  <label className="p-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded text-emerald-400 shrink-0 cursor-pointer" title="Upload from Desktop">
+                  <label className="p-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-300 rounded text-emerald-400 shrink-0 cursor-pointer" title="Upload from Desktop">
                     <input 
                       type="file" 
                       accept="image/*" 
@@ -337,14 +337,14 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block font-semibold text-slate-300 mb-1">Size</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Size</label>
                   <select 
                     value={bg.bgImageSize || 'cover'}
                     onChange={(e) => onUpdateColumn({
                       ...selectedColumn,
                       background: { ...bg, bgImageSize: e.target.value as any }
                     })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded px-2 py-1.5"
+                    className="w-full bg-white border border-slate-200 rounded px-2 py-1.5"
                   >
                     <option value="cover">Cover</option>
                     <option value="contain">Contain</option>
@@ -352,14 +352,14 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                   </select>
                 </div>
                 <div>
-                  <label className="block font-semibold text-slate-300 mb-1">Position</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Position</label>
                   <select 
                     value={bg.bgImagePosition || 'center center'}
                     onChange={(e) => onUpdateColumn({
                       ...selectedColumn,
                       background: { ...bg, bgImagePosition: e.target.value }
                     })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded px-2 py-1.5"
+                    className="w-full bg-white border border-slate-200 rounded px-2 py-1.5"
                   >
                     <option value="center center">Center</option>
                     <option value="top center">Top</option>
@@ -371,7 +371,7 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-300 mb-1">Overlay Color (Hex/RGBA)</label>
+                <label className="block font-semibold text-slate-700 mb-1">Overlay Color (Hex/RGBA)</label>
                 <div className="flex gap-2 items-center mb-3">
                   <input 
                     type="color" 
@@ -390,11 +390,11 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                       ...selectedColumn,
                       background: { ...bg, bgOverlayColor: e.target.value }
                     })}
-                    className="flex-1 bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-100 text-xs font-mono"
+                    className="flex-1 bg-white border border-slate-200 rounded px-2.5 py-1.5 text-slate-900 text-xs font-mono"
                   />
                 </div>
                 
-                <label className="block font-semibold text-slate-300 mb-1">Overlay Transparency: {bg.bgOverlayOpacity || 0}%</label>
+                <label className="block font-semibold text-slate-700 mb-1">Overlay Transparency: {bg.bgOverlayOpacity || 0}%</label>
                 <input 
                   type="range"
                   min="0"
@@ -416,65 +416,65 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
 
   if (selectedSection && !selectedElement && !selectedRow && !selectedColumn) {
     return (
-      <div className="w-80 bg-slate-900 border-l border-slate-800 flex flex-col h-full text-slate-100 shrink-0">
-        <div className="p-4 border-b border-slate-800 flex items-center justify-between">
+      <div className="w-80 bg-white border-l border-slate-200 flex flex-col h-full text-slate-900 shrink-0">
+        <div className="p-4 border-b border-slate-200 flex items-center justify-between">
           <div className="flex items-center gap-2 text-emerald-400 font-bold text-sm">
             <Layers className="w-4 h-4" />
             <span>Section Inspector</span>
           </div>
-          <button onClick={onClose} className="text-slate-400 hover:text-white text-xs">Close</button>
+          <button onClick={onClose} className="text-slate-600 hover:text-slate-900 text-xs">Close</button>
         </div>
 
         <div className="flex-1 overflow-y-auto p-4 space-y-4 text-xs pb-32">
           <div>
-            <label className="block font-semibold text-slate-300 mb-1">Section Name</label>
+            <label className="block font-semibold text-slate-700 mb-1">Section Name</label>
             <input 
               type="text" 
               value={selectedSection.name} 
               onChange={(e) => onUpdateSection({ ...selectedSection, name: e.target.value })}
-              className="w-full bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-100"
+              className="w-full bg-white border border-slate-200 rounded px-2.5 py-1.5 text-slate-900"
             />
           </div>
 
           <div className="flex items-center justify-between">
-            <span className="font-semibold text-slate-300">Full Width Container</span>
+            <span className="font-semibold text-slate-700">Full Width Container</span>
             <input 
               type="checkbox" 
               checked={selectedSection.isFullWidth}
               onChange={(e) => onUpdateSection({ ...selectedSection, isFullWidth: e.target.checked })}
-              className="rounded bg-slate-950 border-slate-800 text-indigo-500"
+              className="rounded bg-white border-slate-200 text-indigo-500"
             />
           </div>
 
           <div>
-            <label className="block font-semibold text-slate-300 mb-1">Top Padding</label>
+            <label className="block font-semibold text-slate-700 mb-1">Top Padding</label>
             <input 
               type="text" 
               value={selectedSection.paddingTop}
               onChange={(e) => onUpdateSection({ ...selectedSection, paddingTop: e.target.value })}
-              className="w-full bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-100"
+              className="w-full bg-white border border-slate-200 rounded px-2.5 py-1.5 text-slate-900"
             />
           </div>
 
           <div>
-            <label className="block font-semibold text-slate-300 mb-1">Bottom Padding</label>
+            <label className="block font-semibold text-slate-700 mb-1">Bottom Padding</label>
             <input 
               type="text" 
               value={selectedSection.paddingBottom}
               onChange={(e) => onUpdateSection({ ...selectedSection, paddingBottom: e.target.value })}
-              className="w-full bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-100"
+              className="w-full bg-white border border-slate-200 rounded px-2.5 py-1.5 text-slate-900"
             />
           </div>
 
           <div>
-            <label className="block font-semibold text-slate-300 mb-1">Background Type</label>
+            <label className="block font-semibold text-slate-700 mb-1">Background Type</label>
             <select 
               value={selectedSection.background.bgType}
               onChange={(e) => onUpdateSection({
                 ...selectedSection,
                 background: { ...selectedSection.background, bgType: e.target.value as any }
               })}
-              className="w-full bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-100"
+              className="w-full bg-white border border-slate-200 rounded px-2.5 py-1.5 text-slate-900"
             >
               <option value="none">None (Transparent)</option>
               <option value="color">Solid Color</option>
@@ -496,7 +496,7 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
 
           {selectedSection.background.bgType === 'gradient' && (
             <div>
-              <label className="block font-semibold text-slate-300 mb-1">Gradient CSS</label>
+              <label className="block font-semibold text-slate-700 mb-1">Gradient CSS</label>
               <input 
                 type="text" 
                 value={selectedSection.background.gradient}
@@ -504,15 +504,15 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                   ...selectedSection,
                   background: { ...selectedSection.background, gradient: e.target.value }
                 })}
-                className="w-full bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-100"
+                className="w-full bg-white border border-slate-200 rounded px-2.5 py-1.5 text-slate-900"
               />
             </div>
           )}
 
           {selectedSection.background.bgType === 'image' && (
-            <div className="space-y-4 border-t border-slate-800 pt-3">
+            <div className="space-y-4 border-t border-slate-200 pt-3">
               <div>
-                <label className="block font-semibold text-slate-300 mb-1">Background Image URL</label>
+                <label className="block font-semibold text-slate-700 mb-1">Background Image URL</label>
                 <div className="flex gap-2">
                   <input 
                     type="text" 
@@ -522,19 +522,19 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                       ...selectedSection, 
                       background: { ...selectedSection.background, bgImage: e.target.value }
                     })}
-                    className="flex-1 bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-100"
+                    className="flex-1 bg-white border border-slate-200 rounded px-2.5 py-1.5 text-slate-900"
                   />
                   <button 
                     onClick={() => setShowImageLibrary({ 
                       isOpen: true, 
                       onSelect: (url) => onUpdateSection({ ...selectedSection, background: { ...selectedSection.background, bgImage: url }}) 
                     })}
-                    className="p-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded text-indigo-400 shrink-0"
+                    className="p-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-300 rounded text-indigo-400 shrink-0"
                     title="Browse SVG Library"
                   >
                     <ImageIcon className="w-4 h-4" />
                   </button>
-                  <label className="p-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded text-emerald-400 shrink-0 cursor-pointer" title="Upload from Desktop">
+                  <label className="p-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-300 rounded text-emerald-400 shrink-0 cursor-pointer" title="Upload from Desktop">
                     <input 
                       type="file" 
                       accept="image/*" 
@@ -558,14 +558,14 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block font-semibold text-slate-300 mb-1">Size</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Size</label>
                   <select 
                     value={selectedSection.background.bgImageSize || 'cover'}
                     onChange={(e) => onUpdateSection({
                       ...selectedSection,
                       background: { ...selectedSection.background, bgImageSize: e.target.value as any }
                     })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded px-2 py-1.5"
+                    className="w-full bg-white border border-slate-200 rounded px-2 py-1.5"
                   >
                     <option value="cover">Cover</option>
                     <option value="contain">Contain</option>
@@ -573,14 +573,14 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                   </select>
                 </div>
                 <div>
-                  <label className="block font-semibold text-slate-300 mb-1">Position</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Position</label>
                   <select 
                     value={selectedSection.background.bgImagePosition || 'center center'}
                     onChange={(e) => onUpdateSection({
                       ...selectedSection,
                       background: { ...selectedSection.background, bgImagePosition: e.target.value }
                     })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded px-2 py-1.5"
+                    className="w-full bg-white border border-slate-200 rounded px-2 py-1.5"
                   >
                     <option value="center center">Center</option>
                     <option value="top center">Top</option>
@@ -591,7 +591,7 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                 </div>
               </div>
               <div>
-                <label className="block font-semibold text-slate-300 mb-1">Overlay Color (Hex/RGBA)</label>
+                <label className="block font-semibold text-slate-700 mb-1">Overlay Color (Hex/RGBA)</label>
                 <div className="flex gap-2 items-center mb-3">
                   <input 
                     type="color" 
@@ -610,11 +610,11 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                       ...selectedSection,
                       background: { ...selectedSection.background, bgOverlayColor: e.target.value }
                     })}
-                    className="flex-1 bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-100 text-xs font-mono"
+                    className="flex-1 bg-white border border-slate-200 rounded px-2.5 py-1.5 text-slate-900 text-xs font-mono"
                   />
                 </div>
                 
-                <label className="block font-semibold text-slate-300 mb-1">Overlay Transparency: {selectedSection.background.bgOverlayOpacity || 0}%</label>
+                <label className="block font-semibold text-slate-700 mb-1">Overlay Transparency: {selectedSection.background.bgOverlayOpacity || 0}%</label>
                 <input 
                   type="range"
                   min="0"
@@ -690,28 +690,28 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
   };
 
   return (
-    <div className="w-80 bg-slate-900 border-l border-slate-800 flex flex-col h-full text-slate-100 shrink-0">
+    <div className="w-80 bg-white border-l border-slate-200 flex flex-col h-full text-slate-900 shrink-0">
       {/* Header */}
-      <div className="p-4 border-b border-slate-800 flex items-center justify-between">
+      <div className="p-4 border-b border-slate-200 flex items-center justify-between">
         <div>
           <span className="text-[10px] uppercase tracking-wider text-orange-400 font-extrabold">ELEMENT INSPECTOR</span>
-          <h3 className="text-sm font-bold text-slate-100 capitalize">{selectedElement.name || selectedElement.type.replace('_', ' ')}</h3>
+          <h3 className="text-sm font-bold text-slate-900 capitalize">{selectedElement.name || selectedElement.type.replace('_', ' ')}</h3>
         </div>
-        <button onClick={onClose} className="text-slate-400 hover:text-white text-xs">Close</button>
+        <button onClick={onClose} className="text-slate-600 hover:text-slate-900 text-xs">Close</button>
       </div>
 
-      {/* Inspector Tabs - ClickFunnels 2-Tab Model */}
-      <div className="flex border-b border-slate-800 text-xs">
+      {/* Inspector Tabs - 2-Tab Model */}
+      <div className="flex border-b border-slate-200 text-xs">
         <button 
           onClick={() => setActiveTab('settings')}
-          className={`flex-1 py-2.5 font-bold transition-colors border-b-2 flex items-center justify-center gap-1.5 ${activeTab === 'settings' ? 'border-orange-500 text-orange-400 bg-slate-850' : 'border-transparent text-slate-400 hover:text-slate-200'}`}
+          className={`flex-1 py-2.5 font-bold transition-colors border-b-2 flex items-center justify-center gap-1.5 ${activeTab === 'settings' ? 'border-orange-500 text-orange-400 bg-slate-50' : 'border-transparent text-slate-600 hover:text-slate-800'}`}
         >
           <Sliders className="w-3.5 h-3.5" />
           <span>Settings</span>
         </button>
         <button 
           onClick={() => setActiveTab('advanced')}
-          className={`flex-1 py-2.5 font-bold transition-colors border-b-2 flex items-center justify-center gap-1.5 ${activeTab === 'advanced' ? 'border-orange-500 text-orange-400 bg-slate-850' : 'border-transparent text-slate-400 hover:text-slate-200'}`}
+          className={`flex-1 py-2.5 font-bold transition-colors border-b-2 flex items-center justify-center gap-1.5 ${activeTab === 'advanced' ? 'border-orange-500 text-orange-400 bg-slate-50' : 'border-transparent text-slate-600 hover:text-slate-800'}`}
         >
           <Sparkles className="w-3.5 h-3.5" />
           <span>Advanced</span>
@@ -725,8 +725,8 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
             <div className="space-y-4">
             {/* SPECIAL NAVIGATION MENU & SUB-MENU CONFIGURATOR */}
             {['header_navigation', 'menu_navigation'].includes(selectedElement.type) && (
-              <div className="p-3.5 bg-slate-950 rounded-2xl border border-indigo-500/40 space-y-3 mb-4">
-                <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+              <div className="p-3.5 bg-white rounded-2xl border border-indigo-500/40 space-y-3 mb-4">
+                <div className="flex items-center justify-between pb-2 border-b border-slate-200">
                   <span className="text-xs font-extrabold text-indigo-400">Navigation & Dropdown Sub-Menus</span>
                   <button 
                     onClick={() => {
@@ -740,21 +740,21 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                   </button>
                 </div>
 
-                <div className="flex items-center justify-between mb-4 bg-slate-900 p-2 rounded-lg border border-slate-800">
-                  <span className="text-xs font-bold text-slate-300">Hide Brand Area</span>
+                <div className="flex items-center justify-between mb-4 bg-white p-2 rounded-lg border border-slate-200">
+                  <span className="text-xs font-bold text-slate-700">Hide Brand Area</span>
                   <input
                     type="checkbox"
                     checked={props.hideBrandImage || false}
                     onChange={(e) => onUpdateElementProps({ ...props, hideBrandImage: e.target.checked })}
-                    className="w-4 h-4 rounded border-slate-700 bg-slate-800 text-indigo-600 focus:ring-indigo-600"
+                    className="w-4 h-4 rounded border-slate-300 bg-slate-50 text-indigo-600 focus:ring-indigo-600"
                   />
                 </div>
 
                 <div className="space-y-3">
                   {((props.menuItems || props.links || []) as any[]).map((item: any, mIdx: number) => (
-                    <div key={item.id || mIdx} className="p-2.5 bg-slate-900 border border-slate-800 rounded-xl space-y-2">
+                    <div key={item.id || mIdx} className="p-2.5 bg-white border border-slate-200 rounded-xl space-y-2">
                       <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-bold text-slate-400 uppercase">Item {mIdx + 1}</span>
+                        <span className="text-[10px] font-bold text-slate-600 uppercase">Item {mIdx + 1}</span>
                         <button 
                           onClick={() => {
                             const items = [...(props.menuItems || props.links || [])];
@@ -777,7 +777,7 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                             items[mIdx].label = e.target.value;
                             onUpdateElementProps({ ...props, menuItems: items, links: items });
                           }}
-                          className="bg-slate-950 border border-slate-800 rounded px-2 py-1 text-[11px] text-white"
+                          className="bg-white border border-slate-200 rounded px-2 py-1 text-[11px] text-slate-900"
                         />
                         <input 
                           type="text" 
@@ -789,12 +789,12 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                             items[mIdx].url = e.target.value;
                             onUpdateElementProps({ ...props, menuItems: items, links: items });
                           }}
-                          className="bg-slate-950 border border-slate-800 rounded px-2 py-1 text-[11px] text-white font-mono"
+                          className="bg-white border border-slate-200 rounded px-2 py-1 text-[11px] text-slate-900 font-mono"
                         />
                       </div>
 
                       {/* Dropdown Sub-Items */}
-                      <div className="pt-1.5 border-t border-slate-800 space-y-1.5">
+                      <div className="pt-1.5 border-t border-slate-200 space-y-1.5">
                         <div className="flex items-center justify-between">
                           <span className="text-[9px] font-bold text-indigo-400 uppercase tracking-wider">Dropdown Sub-Items</span>
                           <button 
@@ -821,7 +821,7 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                                 items[mIdx].subItems[sIdx].label = e.target.value;
                                 onUpdateElementProps({ ...props, menuItems: items, links: items });
                               }}
-                              className="bg-slate-950 border border-slate-800 rounded px-1.5 py-0.5 text-[10px] text-slate-200 flex-1"
+                              className="bg-white border border-slate-200 rounded px-1.5 py-0.5 text-[10px] text-slate-800 flex-1"
                             />
                             <input 
                               type="text" 
@@ -832,7 +832,7 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                                 items[mIdx].subItems[sIdx].linkUrl = e.target.value;
                                 onUpdateElementProps({ ...props, menuItems: items, links: items });
                               }}
-                              className="bg-slate-950 border border-slate-800 rounded px-1.5 py-0.5 text-[10px] text-slate-200 font-mono w-20"
+                              className="bg-white border border-slate-200 rounded px-1.5 py-0.5 text-[10px] text-slate-800 font-mono w-20"
                             />
                             <button 
                               onClick={() => {
@@ -855,8 +855,8 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
 
             {/* Special Form, Webinar, Ecommerce & LMS Styling Box */}
             {['text_input', 'textarea', 'sms_signup', 'select_dropdown', 'multi_step_optin', 'survey', 'autowebinar_registration', 'webinar_date', 'webinar_time', 'add_event', 'button', 'clickpop_button', 'credit_card_form', 'order_select', 'pricing_table', 'checkout_bump', 'upsell_button', 'course_curriculum_widget', 'lesson_video_player', 'certificate_badge_widget', 'drip_schedule_widget', 'hero_banner_widget', 'cta_box_widget', 'testimonial_card_widget', 'appointment_calendar', 'appointment_host_card', 'appointment_summary_receipt'].includes(selectedElement.type) && (
-              <div className="p-3 bg-slate-950 rounded-2xl border border-indigo-500/40 space-y-3 mb-4">
-                <div className="flex items-center gap-1.5 text-indigo-400 font-bold text-xs pb-2 border-b border-slate-800">
+              <div className="p-3 bg-white rounded-2xl border border-indigo-500/40 space-y-3 mb-4">
+                <div className="flex items-center gap-1.5 text-indigo-400 font-bold text-xs pb-2 border-b border-slate-200">
                   <Paintbrush className="w-3.5 h-3.5" />
                   <span>Element Background, Border & Shadow Styling</span>
                 </div>
@@ -885,22 +885,22 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                 {/* 4. Border Width & Radius */}
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="block text-[10px] text-slate-400 mb-1">Border Width</label>
+                    <label className="block text-[10px] text-slate-600 mb-1">Border Width</label>
                     <input 
                       type="text" 
                       value={props.borderWidth || '1px'}
                       onChange={(e) => onUpdateElementProps({ ...props, borderWidth: e.target.value })}
-                      className="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-xs"
+                      className="w-full bg-white border border-slate-200 rounded px-2 py-1 text-xs"
                       placeholder="1px"
                     />
                   </div>
                   <div>
-                    <label className="block text-[10px] text-slate-400 mb-1">Corner Radius</label>
+                    <label className="block text-[10px] text-slate-600 mb-1">Corner Radius</label>
                     <input 
                       type="text" 
                       value={props.borderRadius || '12px'}
                       onChange={(e) => onUpdateElementProps({ ...props, borderRadius: e.target.value })}
-                      className="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-xs"
+                      className="w-full bg-white border border-slate-200 rounded px-2 py-1 text-xs"
                       placeholder="12px"
                     />
                   </div>
@@ -908,11 +908,11 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
 
                 {/* 5. Input Shadow */}
                 <div>
-                  <label className="block text-[11px] font-semibold text-slate-300 mb-1">Input Box Shadow</label>
+                  <label className="block text-[11px] font-semibold text-slate-700 mb-1">Input Box Shadow</label>
                   <select 
                     value={props.shadow || props.inputShadow || 'none'}
                     onChange={(e) => onUpdateElementProps({ ...props, shadow: e.target.value, inputShadow: e.target.value })}
-                    className="w-full bg-slate-900 border border-slate-800 rounded px-2.5 py-1 text-slate-100 text-xs"
+                    className="w-full bg-white border border-slate-200 rounded px-2.5 py-1 text-slate-900 text-xs"
                   >
                     <option value="none">None (Flat)</option>
                     <option value="sm">Soft Small (SM)</option>
@@ -931,20 +931,20 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
               .filter(propKey => !['formBgColor', 'inputBgColor', 'borderColor', 'borderWidth', 'borderRadius', 'shadow', 'inputShadow', 'formShadow'].includes(propKey))
               .map((propKey) => (
               <div key={propKey}>
-                <label className="block font-semibold text-slate-300 mb-1 capitalize">{propKey.replace(/([A-Z])/g, ' $1')}</label>
+                <label className="block font-semibold text-slate-700 mb-1 capitalize">{propKey.replace(/([A-Z])/g, ' $1')}</label>
                 {typeof props[propKey] === 'boolean' ? (
                   <input 
                     type="checkbox" 
                     checked={props[propKey]}
                     onChange={(e) => onUpdateElementProps({ ...props, [propKey]: e.target.checked })}
-                    className="rounded bg-slate-950 border-slate-800 text-orange-500"
+                    className="rounded bg-white border-slate-200 text-orange-500"
                   />
                 
                   ) : propKey === 'buttonAction' ? (
                     <select
                       value={props[propKey]}
                       onChange={(e) => onUpdateElementProps({ ...props, [propKey]: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-100"
+                      className="w-full bg-white border border-slate-200 rounded px-2.5 py-1.5 text-slate-900"
                     >
                       <option value="next_step">Move to Next Step in Funnel</option>
                       <option value="submit_form">Submit Form Data</option>
@@ -956,7 +956,7 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                       type="text" 
                       value={props[propKey]} 
                       onChange={(e) => onUpdateElementProps({ ...props, [propKey]: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-100"
+                      className="w-full bg-white border border-slate-200 rounded px-2.5 py-1.5 text-slate-900"
                       placeholder="https://..."
                     />
                   ) : propKey === 'buttonLink' && props['buttonAction'] !== 'external_link' ? null : propKey.toLowerCase().includes('color') ? (
@@ -968,7 +968,7 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                   <select 
                     value={props[propKey] || 'none'}
                     onChange={(e) => onUpdateElementProps({ ...props, [propKey]: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-100"
+                    className="w-full bg-white border border-slate-200 rounded px-2.5 py-1.5 text-slate-900"
                   >
                     <option value="none">None (Flat)</option>
                     <option value="sm">Soft Small (SM)</option>
@@ -986,7 +986,7 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                     placeholder="e.g. ArrowRight, CheckCircle"
                     value={props[propKey]}
                     onChange={(e) => onUpdateElementProps({ ...props, [propKey]: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-100 font-mono text-[11px]"
+                    className="w-full bg-white border border-slate-200 rounded px-2.5 py-1.5 text-slate-900 font-mono text-[11px]"
                   />
                 ) : typeof props[propKey] === 'string' ? (
                   ['code', 'text', 'quote', 'description', 'options', 'slots', 'items'].includes(propKey) ? (
@@ -994,7 +994,7 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                       rows={3}
                       value={props[propKey] || ''}
                       onChange={(e) => onUpdateElementProps({ ...props, [propKey]: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-100 text-xs font-mono"
+                      className="w-full bg-white border border-slate-200 rounded px-2.5 py-1.5 text-slate-900 text-xs font-mono"
                     />
                   ) : ['src', 'imageUrl', 'image', 'logo', 'favicon'].some(k => propKey.toLowerCase().includes(k.toLowerCase())) ? (
                     <div className="space-y-2">
@@ -1003,19 +1003,19 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                           type="text"
                           value={props[propKey] || ''}
                           onChange={(e) => onUpdateElementProps({ ...props, [propKey]: e.target.value })}
-                          className="flex-1 bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-100 text-xs"
+                          className="flex-1 bg-white border border-slate-200 rounded px-2.5 py-1.5 text-slate-900 text-xs"
                         />
                         <button 
                           onClick={() => setShowImageLibrary({ 
                             isOpen: true, 
                             onSelect: (url) => onUpdateElementProps({ ...props, [propKey]: url }) 
                           })}
-                          className="p-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded text-indigo-400 shrink-0"
+                          className="p-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-300 rounded text-indigo-400 shrink-0"
                           title="Browse SVG Library"
                         >
                           <ImageIcon className="w-4 h-4" />
                         </button>
-                        <label className="p-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded text-emerald-400 shrink-0 cursor-pointer" title="Upload from Desktop">
+                        <label className="p-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-300 rounded text-emerald-400 shrink-0 cursor-pointer" title="Upload from Desktop">
                           <input 
                             type="file" 
                             accept="image/*" 
@@ -1037,8 +1037,8 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                         </label>
                       </div>
                       {typeof props[propKey] === 'string' && props[propKey].startsWith('data:image/svg+xml') && (
-                        <div className="flex gap-2 items-center bg-slate-900/50 p-2 rounded border border-slate-800">
-                          <label className="block text-slate-400 text-[10px] font-bold uppercase tracking-wider">SVG Color:</label>
+                        <div className="flex gap-2 items-center bg-white/50 p-2 rounded border border-slate-200">
+                          <label className="block text-slate-600 text-[10px] font-bold uppercase tracking-wider">SVG Color:</label>
                           <input 
                             type="color"
                             value={props[propKey].match(/%23([a-fA-F0-9]{6})/)?.[0]?.replace('%23', '#') || '#3b82f6'}
@@ -1057,7 +1057,7 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                       type="text"
                       value={props[propKey] || ''}
                       onChange={(e) => onUpdateElementProps({ ...props, [propKey]: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-100 text-xs"
+                      className="w-full bg-white border border-slate-200 rounded px-2.5 py-1.5 text-slate-900 text-xs"
                     />
                   )
                 ) : typeof props[propKey] === 'number' ? (
@@ -1065,7 +1065,7 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                     type="number"
                     value={props[propKey] ?? 0}
                     onChange={(e) => onUpdateElementProps({ ...props, [propKey]: Number(e.target.value) })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-100 text-xs"
+                    className="w-full bg-white border border-slate-200 rounded px-2.5 py-1.5 text-slate-900 text-xs"
                   />
                 ) : (
                   <textarea 
@@ -1078,7 +1078,7 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                       }
                       onUpdateElementProps({ ...props, [propKey]: val });
                     }}
-                    className="w-full bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-100 font-mono text-[11px]"
+                    className="w-full bg-white border border-slate-200 rounded px-2.5 py-1.5 text-slate-900 font-mono text-[11px]"
                   />
                 )}
               </div>
@@ -1087,13 +1087,13 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
 
             {/* CONTENT ALIGNMENT (For elements without full typography) */}
             {['image', 'logo_image', 'video', 'icon', 'button', 'social_share'].includes(selectedElement.type) && (
-              <div className="space-y-3 pt-3 pb-3 border-t border-b border-slate-800">
+              <div className="space-y-3 pt-3 pb-3 border-t border-b border-slate-200">
                 <div>
-                  <label className="block text-slate-400 mb-1">Content Alignment</label>
+                  <label className="block text-slate-600 mb-1">Content Alignment</label>
                   <select 
                     value={style.typography.textAlign || 'center'}
                     onChange={(e) => handleTypoChange('textAlign', e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded px-2 py-1.5"
+                    className="w-full bg-white border border-slate-200 rounded px-2 py-1.5"
                   >
                     <option value="left">Left</option>
                     <option value="center">Center</option>
@@ -1105,18 +1105,18 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
 
             {/* TYPOGRAPHY */}
             {!['image', 'logo_image', 'video', 'spacer', 'divider', 'html_code', 'audio', 'icon'].includes(selectedElement.type) && (
-            <div className="space-y-3 pt-3 border-t border-slate-800">
-              <div className="flex items-center gap-1.5 text-slate-300 font-bold text-xs pb-1 border-b border-slate-800">
+            <div className="space-y-3 pt-3 border-t border-slate-200">
+              <div className="flex items-center gap-1.5 text-slate-700 font-bold text-xs pb-1 border-b border-slate-200">
                 <Type className="w-3.5 h-3.5 text-orange-400" />
                 <span>Typography</span>
               </div>
               
               <div>
-                <label className="block text-slate-400 mb-1">Font Family</label>
+                <label className="block text-slate-600 mb-1">Font Family</label>
                 <select 
                   value={style.typography.fontFamily}
                   onChange={(e) => handleTypoChange('fontFamily', e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded px-2 py-1.5"
+                  className="w-full bg-white border border-slate-200 rounded px-2 py-1.5"
                 >
                     <option value="Outfit">Outfit (Modern Heading)</option>
                     <option value="Inter">Inter (Clean Body)</option>
@@ -1158,7 +1158,7 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
 
               <div className="grid grid-cols-2 gap-2">
                 <div className="col-span-2">
-                  <label className="block text-slate-400 mb-2 flex justify-between">
+                  <label className="block text-slate-600 mb-2 flex justify-between">
                     <span>Desktop Font Size</span>
                     <span className="text-slate-500 font-mono text-xs">{style.typography.fontSize}</span>
                   </label>
@@ -1175,13 +1175,13 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                       type="text" 
                       value={style.typography.fontSize}
                       onChange={(e) => handleTypoChange('fontSize', e.target.value)}
-                      className="w-16 bg-slate-950 border border-slate-800 rounded px-1.5 py-1 text-center font-mono text-xs"
+                      className="w-16 bg-white border border-slate-200 rounded px-1.5 py-1 text-center font-mono text-xs"
                     />
                   </div>
                 </div>
 
                 <div className="col-span-2">
-                  <label className="block text-slate-400 mb-2 flex justify-between">
+                  <label className="block text-slate-600 mb-2 flex justify-between">
                     <span>Mobile Font Size Override</span>
                     <span className="text-slate-500 font-mono text-xs">{style.typography.mobileFontSize || style.typography.fontSize}</span>
                   </label>
@@ -1199,17 +1199,17 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                       value={style.typography.mobileFontSize || ''}
                       placeholder={style.typography.fontSize}
                       onChange={(e) => handleTypoChange('mobileFontSize', e.target.value)}
-                      className="w-16 bg-slate-950 border border-slate-800 rounded px-1.5 py-1 text-center font-mono text-xs"
+                      className="w-16 bg-white border border-slate-200 rounded px-1.5 py-1 text-center font-mono text-xs"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-slate-400 mb-1">Font Weight</label>
+                  <label className="block text-slate-600 mb-1">Font Weight</label>
                   <select 
                     value={style.typography.fontWeight}
                     onChange={(e) => handleTypoChange('fontWeight', e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded px-2 py-1.5"
+                    className="w-full bg-white border border-slate-200 rounded px-2 py-1.5"
                   >
                     <option value="300">Light (300)</option>
                     <option value="400">Regular (400)</option>
@@ -1222,11 +1222,11 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-slate-400 mb-1">Font Style</label>
+                  <label className="block text-slate-600 mb-1">Font Style</label>
                   <select 
                     value={style.typography.fontStyle || 'normal'}
                     onChange={(e) => handleTypoChange('fontStyle', e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded px-2 py-1.5"
+                    className="w-full bg-white border border-slate-200 rounded px-2 py-1.5"
                   >
                     <option value="normal">Normal</option>
                     <option value="italic">Italic</option>
@@ -1235,11 +1235,11 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-slate-400 mb-1">Text Transform</label>
+                  <label className="block text-slate-600 mb-1">Text Transform</label>
                   <select 
                     value={style.typography.textTransform || 'none'}
                     onChange={(e) => handleTypoChange('textTransform', e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded px-2 py-1.5"
+                    className="w-full bg-white border border-slate-200 rounded px-2 py-1.5"
                   >
                     <option value="none">Normal</option>
                     <option value="uppercase">UPPERCASE</option>
@@ -1249,12 +1249,12 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-slate-400 mb-1">Line Height</label>
+                  <label className="block text-slate-600 mb-1">Line Height</label>
                   <input 
                     type="text" 
                     value={style.typography.lineHeight}
                     onChange={(e) => handleTypoChange('lineHeight', e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded px-2 py-1.5 font-mono text-xs"
+                    className="w-full bg-white border border-slate-200 rounded px-2 py-1.5 font-mono text-xs"
                   />
                 </div>
               </div>
@@ -1268,27 +1268,27 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
             )}
 
             {/* MARGIN & PADDING */}
-            <div className="space-y-3 pt-3 border-t border-slate-800">
-              <div className="flex items-center gap-1.5 text-slate-300 font-bold text-xs pb-1 border-b border-slate-800">
+            <div className="space-y-3 pt-3 border-t border-slate-200">
+              <div className="flex items-center gap-1.5 text-slate-700 font-bold text-xs pb-1 border-b border-slate-200">
                 <Box className="w-3.5 h-3.5 text-orange-400" />
                 <span>Box Model (Spacing)</span>
               </div>
 
               <div className="space-y-2">
-                <label className="block text-[11px] text-slate-400 font-medium">Margin (Top / Bottom)</label>
+                <label className="block text-[11px] text-slate-600 font-medium">Margin (Top / Bottom)</label>
                 <div className="grid grid-cols-2 gap-2">
-                  <input type="text" placeholder="Top (0px)" value={style.boxModel.marginTop} onChange={(e) => handleBoxChange('marginTop', e.target.value)} className="bg-slate-950 border border-slate-800 rounded px-2 py-1" />
-                  <input type="text" placeholder="Bottom (16px)" value={style.boxModel.marginBottom} onChange={(e) => handleBoxChange('marginBottom', e.target.value)} className="bg-slate-950 border border-slate-800 rounded px-2 py-1" />
+                  <input type="text" placeholder="Top (0px)" value={style.boxModel.marginTop} onChange={(e) => handleBoxChange('marginTop', e.target.value)} className="bg-white border border-slate-200 rounded px-2 py-1" />
+                  <input type="text" placeholder="Bottom (16px)" value={style.boxModel.marginBottom} onChange={(e) => handleBoxChange('marginBottom', e.target.value)} className="bg-white border border-slate-200 rounded px-2 py-1" />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label className="block text-[11px] text-slate-400 font-medium">Padding (Top / Right / Bottom / Left)</label>
+                <label className="block text-[11px] text-slate-600 font-medium">Padding (Top / Right / Bottom / Left)</label>
                 <div className="grid grid-cols-4 gap-1 text-[10px]">
-                  <input type="text" placeholder="T" value={style.boxModel.paddingTop} onChange={(e) => handleBoxChange('paddingTop', e.target.value)} className="bg-slate-950 border border-slate-800 rounded px-1.5 py-1" />
-                  <input type="text" placeholder="R" value={style.boxModel.paddingRight} onChange={(e) => handleBoxChange('paddingRight', e.target.value)} className="bg-slate-950 border border-slate-800 rounded px-1.5 py-1" />
-                  <input type="text" placeholder="B" value={style.boxModel.paddingBottom} onChange={(e) => handleBoxChange('paddingBottom', e.target.value)} className="bg-slate-950 border border-slate-800 rounded px-1.5 py-1" />
-                  <input type="text" placeholder="L" value={style.boxModel.paddingLeft} onChange={(e) => handleBoxChange('paddingLeft', e.target.value)} className="bg-slate-950 border border-slate-800 rounded px-1.5 py-1" />
+                  <input type="text" placeholder="T" value={style.boxModel.paddingTop} onChange={(e) => handleBoxChange('paddingTop', e.target.value)} className="bg-white border border-slate-200 rounded px-1.5 py-1" />
+                  <input type="text" placeholder="R" value={style.boxModel.paddingRight} onChange={(e) => handleBoxChange('paddingRight', e.target.value)} className="bg-white border border-slate-200 rounded px-1.5 py-1" />
+                  <input type="text" placeholder="B" value={style.boxModel.paddingBottom} onChange={(e) => handleBoxChange('paddingBottom', e.target.value)} className="bg-white border border-slate-200 rounded px-1.5 py-1" />
+                  <input type="text" placeholder="L" value={style.boxModel.paddingLeft} onChange={(e) => handleBoxChange('paddingLeft', e.target.value)} className="bg-white border border-slate-200 rounded px-1.5 py-1" />
                 </div>
               </div>
             </div>
@@ -1299,14 +1299,14 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
         {activeTab === 'advanced' && (
           <div className="space-y-5">
             <div className="space-y-3">
-              <div className="flex items-center gap-1.5 text-slate-300 font-bold text-xs pb-1 border-b border-slate-800">
+              <div className="flex items-center gap-1.5 text-slate-700 font-bold text-xs pb-1 border-b border-slate-200">
                 <Layout className="w-3.5 h-3.5 text-orange-400" />
                 <span>Borders & Radius</span>
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-slate-400 mb-1">Border Style</label>
-                  <select value={style.borders.borderStyle} onChange={(e) => handleBorderChange('borderStyle', e.target.value as any)} className="w-full bg-slate-950 border border-slate-800 rounded px-2 py-1">
+                  <label className="block text-slate-600 mb-1">Border Style</label>
+                  <select value={style.borders.borderStyle} onChange={(e) => handleBorderChange('borderStyle', e.target.value as any)} className="w-full bg-white border border-slate-200 rounded px-2 py-1">
                     <option value="none">None</option>
                     <option value="solid">Solid</option>
                     <option value="dashed">Dashed</option>
@@ -1314,13 +1314,13 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                   </select>
                 </div>
                 <div>
-                  <label className="block text-slate-400 mb-1">Thickness (Width)</label>
+                  <label className="block text-slate-600 mb-1">Thickness (Width)</label>
                   <input 
                     type="text" 
                     placeholder="1px"
                     value={style.borders.borderWidth} 
                     onChange={(e) => handleBorderChange('borderWidth', e.target.value)} 
-                    className="w-full bg-slate-950 border border-slate-800 rounded px-2 py-1 text-xs font-mono" 
+                    className="w-full bg-white border border-slate-200 rounded px-2 py-1 text-xs font-mono" 
                   />
                 </div>
               </div>
@@ -1335,26 +1335,26 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                 />
               </div>
                 <div>
-                  <label className="block text-slate-400 mb-1">Corner Radius</label>
+                  <label className="block text-slate-600 mb-1">Corner Radius</label>
                   <input type="text" placeholder="12px" value={style.borders.borderRadiusTopLeft} onChange={(e) => {
                     handleBorderChange('borderRadiusTopLeft', e.target.value);
                     handleBorderChange('borderRadiusTopRight', e.target.value);
                     handleBorderChange('borderRadiusBottomRight', e.target.value);
                     handleBorderChange('borderRadiusBottomLeft', e.target.value);
-                  }} className="w-full bg-slate-950 border border-slate-800 rounded px-2 py-1 text-xs font-mono" />
+                  }} className="w-full bg-white border border-slate-200 rounded px-2 py-1 text-xs font-mono" />
                 </div>
               </div>
             </div>
 
             {/* ANIMATION & ENTRANCE EFFECTS */}
             <div className="space-y-3">
-              <div className="flex items-center gap-1.5 text-slate-300 font-bold text-xs pb-1 border-b border-slate-800">
+              <div className="flex items-center gap-1.5 text-slate-700 font-bold text-xs pb-1 border-b border-slate-200">
                 <Zap className="w-3.5 h-3.5 text-orange-400" />
                 <span>Scroll Animations</span>
               </div>
               <div>
-                <label className="block text-slate-400 mb-1">Entrance Effect</label>
-                <select value={style.layoutAnim.entranceAnimation} onChange={(e) => handleAnimChange('entranceAnimation', e.target.value as any)} className="w-full bg-slate-950 border border-slate-800 rounded px-2 py-1">
+                <label className="block text-slate-600 mb-1">Entrance Effect</label>
+                <select value={style.layoutAnim.entranceAnimation} onChange={(e) => handleAnimChange('entranceAnimation', e.target.value as any)} className="w-full bg-white border border-slate-200 rounded px-2 py-1">
                   <option value="none">None</option>
                   <option value="fade-in">Fade In</option>
                   <option value="slide-up">Slide Up</option>
@@ -1371,13 +1371,13 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
           <div className="space-y-5">
             {/* CUSTOM CSS CLASS */}
             <div className="space-y-3">
-              <div className="flex items-center gap-1.5 text-slate-300 font-bold text-xs pb-1 border-b border-slate-800">
+              <div className="flex items-center gap-1.5 text-slate-700 font-bold text-xs pb-1 border-b border-slate-200">
                 <Code className="w-3.5 h-3.5 text-orange-400" />
                 <span>Custom CSS</span>
               </div>
               
               <div>
-                <label className="block text-slate-400 mb-1">CSS Class Overrides</label>
+                <label className="block text-slate-600 mb-1">CSS Class Overrides</label>
                 <input 
                   type="text" 
                   placeholder="e.g. animate-bounce custom-shadow"
@@ -1386,13 +1386,13 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                     ...style, 
                     customCode: { ...style.customCode, customClasses: e.target.value } 
                   })}
-                  className="w-full bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-100 font-mono text-xs"
+                  className="w-full bg-white border border-slate-200 rounded px-2.5 py-1.5 text-slate-900 font-mono text-xs"
                 />
                 <p className="text-[10px] text-slate-500 mt-1">Add Tailwind classes to override element styles.</p>
               </div>
 
               <div>
-                <label className="block text-slate-400 mb-1">Scoped CSS Block</label>
+                <label className="block text-slate-600 mb-1">Scoped CSS Block</label>
                 <textarea 
                   placeholder={`& {\n  transform: scale(1.05);\n  transition: all 0.3s ease;\n}\n&:hover {\n  opacity: 0.8;\n}`}
                   value={style.customCode?.scopedCss || ''}
@@ -1400,7 +1400,7 @@ export const InspectorPanel: React.FC<InspectorPanelProps> = ({
                     ...style, 
                     customCode: { ...style.customCode, scopedCss: e.target.value } 
                   })}
-                  className="w-full h-32 bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-100 font-mono text-xs whitespace-pre"
+                  className="w-full h-32 bg-white border border-slate-200 rounded px-2.5 py-1.5 text-slate-900 font-mono text-xs whitespace-pre"
                 />
                 <p className="text-[10px] text-slate-500 mt-1">Use <code>&</code> to target this element specifically.</p>
               </div>

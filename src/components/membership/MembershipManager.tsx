@@ -283,7 +283,7 @@ export const certificateTemplates: CertificateTemplate[] = [
     id: 'cert_nordic_minimal',
     title: 'Nordic Scandinavian Minimalist Award',
     styleTag: 'Geometric Scandinavian',
-    borderStyle: 'border border-slate-700 p-6',
+    borderStyle: 'border border-slate-300 p-6',
     sealIcon: '❄️',
     accentColor: '#38bdf8',
     bgGradient: 'from-slate-950 via-sky-950/40 to-slate-900',
@@ -334,25 +334,25 @@ export const CertificateFrameRenderer: React.FC<CertificateFrameRendererProps> =
               👑
             </div>
             <div className="text-[10px] uppercase font-mono tracking-widest font-extrabold text-amber-400">OFFICIAL CERTIFICATE OF DISTINCTION</div>
-            <h2 className="text-2xl sm:text-3xl font-black text-white tracking-wide font-serif">
+            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-wide font-serif">
               ROYAL DIPLOMA OF EXCELLENCE
             </h2>
           </div>
 
           <div className="py-2 border-y border-amber-500/30 max-w-lg mx-auto space-y-1">
-            <p className="text-xs text-slate-300 italic">This Imperial Distinction is hereby conferred upon</p>
+            <p className="text-xs text-slate-700 italic">This Imperial Distinction is hereby conferred upon</p>
             <h3 className="text-2xl sm:text-4xl font-black text-amber-300 tracking-wider">
               {displayName}
             </h3>
           </div>
 
-          <p className="text-xs text-slate-300 max-w-md mx-auto leading-relaxed">
+          <p className="text-xs text-slate-700 max-w-md mx-auto leading-relaxed">
             For outstanding mastery, honorable dedication, and successful completion of all curriculum modules for <strong>{courseTitle}</strong>.
           </p>
 
-          <div className="flex items-center justify-between border-t border-amber-500/40 pt-6 text-[10px] font-mono text-slate-400 max-w-md mx-auto">
+          <div className="flex items-center justify-between border-t border-amber-500/40 pt-6 text-[10px] font-mono text-slate-600 max-w-md mx-auto">
             <div className="text-left">
-              <div className="text-white font-bold">{issueDate}</div>
+              <div className="text-slate-900 font-bold">{issueDate}</div>
               <div>DATE OF CONFERRAL</div>
             </div>
             <div className="w-14 h-14 rounded-full border-2 border-amber-400 bg-amber-950/80 flex flex-col items-center justify-center text-[9px] font-bold text-amber-300 shadow-xl">
@@ -360,7 +360,7 @@ export const CertificateFrameRenderer: React.FC<CertificateFrameRendererProps> =
               <span>SEAL</span>
             </div>
             <div className="text-right">
-              <div className="text-white font-bold">CERT-2026-X948</div>
+              <div className="text-slate-900 font-bold">CERT-2026-X948</div>
               <div>REGISTRY ID</div>
             </div>
           </div>
@@ -370,38 +370,38 @@ export const CertificateFrameRenderer: React.FC<CertificateFrameRendererProps> =
     // LAYOUT 2: Cyber Modern Tech (2-Column Horizontal Split-Screen with Live QR Block)
     case 'cert_cyber_tech':
       return (
-        <div className="rounded-3xl bg-slate-950 border-2 border-cyan-500/80 shadow-[0_0_40px_rgba(6,182,212,0.3)] grid grid-cols-1 md:grid-cols-3 overflow-hidden text-left">
+        <div className="rounded-3xl bg-white border-2 border-cyan-500/80 shadow-[0_0_40px_rgba(6,182,212,0.3)] grid grid-cols-1 md:grid-cols-3 overflow-hidden text-left">
           {/* Left Column: Dark Cyan Tech Sidebar with QR Block */}
-          <div className="p-6 bg-slate-900/90 border-r border-cyan-500/40 flex flex-col justify-between space-y-6">
+          <div className="p-6 bg-white/90 border-r border-cyan-500/40 flex flex-col justify-between space-y-6">
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-cyan-400 text-xs font-mono font-bold">
                 <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
                 <span>CYBER VERIFIED CREDENTIAL</span>
               </div>
               <div className="text-3xl">⚡</div>
-              <h4 className="text-sm font-extrabold text-white font-mono uppercase">HIGH-TECH DIPLOMA</h4>
+              <h4 className="text-sm font-extrabold text-slate-900 font-mono uppercase">HIGH-TECH DIPLOMA</h4>
             </div>
 
             {/* Simulated Holographic QR Box */}
-            <div className="p-3 bg-slate-950 rounded-2xl border border-cyan-500/50 space-y-2 text-center">
+            <div className="p-3 bg-white rounded-2xl border border-cyan-500/50 space-y-2 text-center">
               <div className="w-20 h-20 mx-auto bg-cyan-950/60 rounded-xl border border-cyan-400/50 p-2 flex flex-col items-center justify-center space-y-1">
                 <div className="grid grid-cols-3 gap-1 w-full h-full opacity-80">
                   <div className="bg-cyan-400 rounded-sm"></div>
-                  <div className="bg-slate-950 rounded-sm"></div>
+                  <div className="bg-white rounded-sm"></div>
                   <div className="bg-cyan-400 rounded-sm"></div>
-                  <div className="bg-slate-950 rounded-sm"></div>
-                  <div className="bg-cyan-400 rounded-sm"></div>
-                  <div className="bg-cyan-400 rounded-sm"></div>
+                  <div className="bg-white rounded-sm"></div>
                   <div className="bg-cyan-400 rounded-sm"></div>
                   <div className="bg-cyan-400 rounded-sm"></div>
-                  <div className="bg-slate-950 rounded-sm"></div>
+                  <div className="bg-cyan-400 rounded-sm"></div>
+                  <div className="bg-cyan-400 rounded-sm"></div>
+                  <div className="bg-white rounded-sm"></div>
                 </div>
               </div>
               <div className="text-[9px] font-mono text-cyan-300 font-bold">SCAN QR TO VERIFY</div>
               <div className="text-[8px] font-mono text-slate-500">ID: CERT-2026-X948</div>
             </div>
 
-            <div className="text-[10px] font-mono text-slate-400 space-y-1">
+            <div className="text-[10px] font-mono text-slate-600 space-y-1">
               <div>ISSUED: {issueDate}</div>
               <div>BLOCK: #8492049</div>
             </div>
@@ -413,21 +413,21 @@ export const CertificateFrameRenderer: React.FC<CertificateFrameRendererProps> =
               <span className="text-[10px] font-mono font-bold text-cyan-400 uppercase bg-cyan-950 px-2.5 py-1 rounded border border-cyan-800">
                 FULL-STACK DEVELOPER ACCREDITATION
               </span>
-              <h2 className="text-2xl sm:text-3xl font-black text-white font-mono mt-3">
+              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 font-mono mt-3">
                 CERTIFICATE OF MASTERY
               </h2>
             </div>
 
             <div className="space-y-1 border-l-2 border-cyan-400 pl-4">
-              <span className="text-xs text-slate-400">Awarded to Software Engineer:</span>
+              <span className="text-xs text-slate-600">Awarded to Software Engineer:</span>
               <h3 className="text-2xl font-black text-cyan-300 font-mono">{displayName}</h3>
             </div>
 
-            <p className="text-xs text-slate-300 font-mono leading-relaxed">
+            <p className="text-xs text-slate-700 font-mono leading-relaxed">
               Has completed 100% of code repositories, API architecture builds, and production deployments for <strong>{courseTitle}</strong>.
             </p>
 
-            <div className="pt-4 border-t border-cyan-500/30 flex items-center justify-between text-[10px] font-mono text-slate-400">
+            <div className="pt-4 border-t border-cyan-500/30 flex items-center justify-between text-[10px] font-mono text-slate-600">
               <div>SIGNATURE: <em>Apex Tech Board</em></div>
               <div className="text-cyan-400 font-bold">STATUS: VERIFIED ON-CHAIN</div>
             </div>
@@ -438,39 +438,39 @@ export const CertificateFrameRenderer: React.FC<CertificateFrameRendererProps> =
     // LAYOUT 3: Executive Platinum Diploma (Corporate Minimalist Plaque with Horizontal Header)
     case 'cert_executive_monochrome':
       return (
-        <div className="rounded-3xl bg-slate-950 border-2 border-slate-700 shadow-2xl overflow-hidden text-left">
-          <div className="bg-slate-900 border-b border-slate-800 p-6 flex items-center justify-between">
+        <div className="rounded-3xl bg-white border-2 border-slate-300 shadow-2xl overflow-hidden text-left">
+          <div className="bg-white border-b border-slate-200 p-6 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-200 text-xl font-bold">
+              <div className="w-10 h-10 rounded-xl bg-slate-50 border border-slate-300 flex items-center justify-center text-slate-800 text-xl font-bold">
                 💎
               </div>
               <div>
-                <h4 className="text-sm font-extrabold text-white uppercase tracking-wider font-sans">EXECUTIVE DIPLOMA OF MASTERY</h4>
-                <span className="text-[10px] font-mono text-slate-400">ACADEMIC MASTERY SERIES</span>
+                <h4 className="text-sm font-extrabold text-slate-900 uppercase tracking-wider font-sans">EXECUTIVE DIPLOMA OF MASTERY</h4>
+                <span className="text-[10px] font-mono text-slate-600">ACADEMIC MASTERY SERIES</span>
               </div>
             </div>
-            <span className="text-[10px] font-mono bg-slate-800 text-slate-300 px-3 py-1 rounded-full border border-slate-700 font-bold">
+            <span className="text-[10px] font-mono bg-slate-50 text-slate-700 px-3 py-1 rounded-full border border-slate-300 font-bold">
               PLATINUM GRADE
             </span>
           </div>
 
           <div className="p-8 space-y-6">
             <div className="space-y-1">
-              <p className="text-xs text-slate-400 font-medium">This Executive Certification verifies that</p>
-              <h3 className="text-3xl font-black text-white tracking-wide font-sans">{displayName}</h3>
+              <p className="text-xs text-slate-600 font-medium">This Executive Certification verifies that</p>
+              <h3 className="text-3xl font-black text-slate-900 tracking-wide font-sans">{displayName}</h3>
             </div>
 
-            <p className="text-xs text-slate-300 leading-relaxed border-l-4 border-slate-500 pl-4 py-1">
+            <p className="text-xs text-slate-700 leading-relaxed border-l-4 border-slate-500 pl-4 py-1">
               Has demonstrated executive-level strategic leadership, financial modeling, and operational excellence in <strong>{courseTitle}</strong>.
             </p>
 
-            <div className="grid grid-cols-2 gap-6 pt-6 border-t border-slate-800 text-[10px] font-mono text-slate-400">
+            <div className="grid grid-cols-2 gap-6 pt-6 border-t border-slate-200 text-[10px] font-mono text-slate-600">
               <div>
-                <div className="text-slate-200 font-bold">BOARD OF DIRECTORS</div>
+                <div className="text-slate-800 font-bold">BOARD OF DIRECTORS</div>
                 <div>EXECUTIVE CERTIFICATION COMMITTEE</div>
               </div>
               <div className="text-right">
-                <div className="text-slate-200 font-bold">{issueDate}</div>
+                <div className="text-slate-800 font-bold">{issueDate}</div>
                 <div>ID: CERT-2026-X948</div>
               </div>
             </div>
@@ -490,7 +490,7 @@ export const CertificateFrameRenderer: React.FC<CertificateFrameRendererProps> =
           <div className="space-y-1">
             <span className="text-3xl">🎨</span>
             <div className="text-[10px] font-mono uppercase tracking-widest text-rose-400 font-bold">HANDCRAFTED ARTISAN ACADEMY</div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white font-serif italic">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-serif italic">
               Artisan Certificate of Completion
             </h2>
           </div>
@@ -502,7 +502,7 @@ export const CertificateFrameRenderer: React.FC<CertificateFrameRendererProps> =
             </h3>
           </div>
 
-          <p className="text-xs text-slate-300 max-w-md mx-auto leading-relaxed">
+          <p className="text-xs text-slate-700 max-w-md mx-auto leading-relaxed">
             For completing all studio workshops, design portfolio reviews, and creative masterclasses in <strong>{courseTitle}</strong>.
           </p>
 
@@ -519,7 +519,7 @@ export const CertificateFrameRenderer: React.FC<CertificateFrameRendererProps> =
     // LAYOUT 5: Diamond Mastermind Honors Award (Luxury Centered Diamond Crest Frame)
     case 'cert_diamond_obsidian':
       return (
-        <div className="p-8 sm:p-12 rounded-3xl bg-slate-950 border-2 border-amber-400/90 shadow-[0_0_50px_rgba(245,158,11,0.3)] text-center space-y-6 relative overflow-hidden">
+        <div className="p-8 sm:p-12 rounded-3xl bg-white border-2 border-amber-400/90 shadow-[0_0_50px_rgba(245,158,11,0.3)] text-center space-y-6 relative overflow-hidden">
           <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-500 to-yellow-300 mx-auto flex items-center justify-center text-slate-950 text-3xl font-black shadow-xl shadow-amber-500/50">
             🏆
           </div>
@@ -528,25 +528,25 @@ export const CertificateFrameRenderer: React.FC<CertificateFrameRendererProps> =
             <span className="text-[10px] font-mono uppercase font-bold text-amber-400 tracking-widest bg-amber-950 px-3 py-1 rounded-full border border-amber-800">
               DIAMOND MASTERMIND FELLOW
             </span>
-            <h2 className="text-2xl sm:text-3xl font-black text-white font-serif tracking-wide pt-2">
+            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 font-serif tracking-wide pt-2">
               HONORS DIPLOMA OF ACHIEVEMENT
             </h2>
           </div>
 
           <div className="space-y-1 py-2">
-            <p className="text-xs text-slate-400 italic">This VIP honor is awarded to Mastermind Leader</p>
+            <p className="text-xs text-slate-600 italic">This VIP honor is awarded to Mastermind Leader</p>
             <h3 className="text-3xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-200">
               {displayName}
             </h3>
           </div>
 
-          <p className="text-xs text-slate-300 max-w-md mx-auto leading-relaxed">
+          <p className="text-xs text-slate-700 max-w-md mx-auto leading-relaxed">
             For scaling high-ticket offers, mastering 1-on-1 strategy calls, and completing <strong>{courseTitle}</strong>.
           </p>
 
           <div className="flex items-center justify-between border-t border-amber-500/40 pt-6 text-[10px] font-mono text-amber-400 max-w-md mx-auto">
             <div>DATE: {issueDate}</div>
-            <div className="font-bold text-slate-200">DIAMOND FELLOWSHIP BOARD</div>
+            <div className="font-bold text-slate-800">DIAMOND FELLOWSHIP BOARD</div>
             <div>ID: CERT-2026-X948</div>
           </div>
         </div>
@@ -555,7 +555,7 @@ export const CertificateFrameRenderer: React.FC<CertificateFrameRendererProps> =
     // LAYOUT 6: Eco Emerald Sustainability (Asymmetric Left Vertical Emerald Sidebar)
     case 'cert_eco_emerald':
       return (
-        <div className="rounded-3xl bg-slate-950 border-4 border-emerald-500/70 grid grid-cols-1 md:grid-cols-4 overflow-hidden text-left shadow-2xl">
+        <div className="rounded-3xl bg-white border-4 border-emerald-500/70 grid grid-cols-1 md:grid-cols-4 overflow-hidden text-left shadow-2xl">
           <div className="p-6 bg-emerald-950 border-r border-emerald-500/40 flex flex-col justify-between text-center space-y-6">
             <div className="text-4xl">🌿</div>
             <div className="text-[10px] font-mono font-bold uppercase text-emerald-300 tracking-widest [writing-mode:vertical-lr] rotate-180 mx-auto hidden md:block">
@@ -571,21 +571,21 @@ export const CertificateFrameRenderer: React.FC<CertificateFrameRendererProps> =
               <span className="text-[10px] font-mono font-bold uppercase px-2.5 py-1 rounded bg-emerald-900 text-emerald-200 border border-emerald-700">
                 CERTIFIED SUSTAINABILITY SPECIALIST
               </span>
-              <h2 className="text-2xl font-black text-white mt-2 font-sans">
+              <h2 className="text-2xl font-black text-slate-900 mt-2 font-sans">
                 ENVIRONMENTAL FELLOWSHIP DIPLOMA
               </h2>
             </div>
 
             <div className="space-y-1">
-              <p className="text-xs text-slate-400">Awarded to Eco Ambassador:</p>
+              <p className="text-xs text-slate-600">Awarded to Eco Ambassador:</p>
               <h3 className="text-3xl font-extrabold text-emerald-300">{displayName}</h3>
             </div>
 
-            <p className="text-xs text-slate-300 leading-relaxed">
+            <p className="text-xs text-slate-700 leading-relaxed">
               For completing all holistic wellness modules, sustainability frameworks, and environmental audits for <strong>{courseTitle}</strong>.
             </p>
 
-            <div className="pt-4 border-t border-emerald-500/30 flex items-center justify-between text-[10px] font-mono text-slate-400">
+            <div className="pt-4 border-t border-emerald-500/30 flex items-center justify-between text-[10px] font-mono text-slate-600">
               <div>ISSUED: {issueDate}</div>
               <div className="text-emerald-400 font-bold">VERIFICATION ID: CERT-2026-X948</div>
             </div>
@@ -597,23 +597,23 @@ export const CertificateFrameRenderer: React.FC<CertificateFrameRendererProps> =
     case 'cert_apex_sprint':
       return (
         <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-slate-950 via-rose-950/80 to-slate-900 border-4 border-rose-500/80 text-center space-y-5 shadow-2xl relative overflow-hidden transform -skew-x-1">
-          <div className="bg-rose-600 text-white font-black text-xs font-mono uppercase tracking-widest py-1 px-6 rounded-full inline-block shadow-lg shadow-rose-600/50">
+          <div className="bg-rose-600 text-slate-900 font-black text-xs font-mono uppercase tracking-widest py-1 px-6 rounded-full inline-block shadow-lg shadow-rose-600/50">
             ⚡ APEX SPRINT CHAMPION CERTIFICATE ⚡
           </div>
 
           <div className="space-y-1">
             <span className="text-3xl">🔥</span>
-            <h2 className="text-3xl sm:text-4xl font-black text-white uppercase tracking-tighter font-mono">
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 uppercase tracking-tighter font-mono">
               HIGH-PERFORMANCE AWARD
             </h2>
           </div>
 
-          <div className="p-4 bg-slate-950/80 rounded-2xl border border-rose-500/50 max-w-md mx-auto space-y-1">
+          <div className="p-4 bg-white/80 rounded-2xl border border-rose-500/50 max-w-md mx-auto space-y-1">
             <p className="text-xs text-rose-300 font-mono">CHAMPION ATHLETE:</p>
             <h3 className="text-3xl font-black text-amber-400 uppercase tracking-wide">{displayName}</h3>
           </div>
 
-          <p className="text-xs text-slate-300 max-w-md mx-auto font-mono">
+          <p className="text-xs text-slate-700 max-w-md mx-auto font-mono">
             Finished 100% of high-intensity athletic routines and transformation sprints for <strong>{courseTitle}</strong>.
           </p>
 
@@ -643,13 +643,13 @@ export const CertificateFrameRenderer: React.FC<CertificateFrameRendererProps> =
           </div>
 
           <div className="space-y-1">
-            <p className="text-xs text-slate-300 italic">Know all scholars by these presents that</p>
+            <p className="text-xs text-slate-700 italic">Know all scholars by these presents that</p>
             <h3 className="text-3xl font-black text-amber-400 underline decoration-amber-600 underline-offset-8">
               {displayName}
             </h3>
           </div>
 
-          <p className="text-xs text-slate-300 max-w-md mx-auto leading-relaxed">
+          <p className="text-xs text-slate-700 max-w-md mx-auto leading-relaxed">
             Hath fulfilled all ancient traditions, guild apprenticeships, and rigorous evaluations for <strong>{courseTitle}</strong>.
           </p>
 
@@ -672,29 +672,29 @@ export const CertificateFrameRenderer: React.FC<CertificateFrameRendererProps> =
     // LAYOUT 9: Nordic Minimalist Award (Scandinavian Ultra-Clean Asymmetric Grid)
     case 'cert_nordic_minimal':
       return (
-        <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-slate-950 via-sky-950/40 to-slate-900 border border-slate-700 text-left space-y-6 shadow-xl relative font-sans">
-          <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-slate-950 via-sky-950/40 to-slate-900 border border-slate-300 text-left space-y-6 shadow-xl relative font-sans">
+          <div className="flex items-center justify-between border-b border-slate-200 pb-4">
             <div>
               <span className="text-[10px] font-mono font-bold text-sky-400 uppercase tracking-widest block">SCANDINAVIAN ACADEMY</span>
-              <h2 className="text-2xl font-light text-white tracking-wider">CERTIFICATE OF COMPLETION</h2>
+              <h2 className="text-2xl font-light text-slate-900 tracking-wider">CERTIFICATE OF COMPLETION</h2>
             </div>
-            <div className="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-sky-300 text-xl">
+            <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-sky-300 text-xl">
               ❄️
             </div>
           </div>
 
           <div className="border-l-2 border-sky-400 pl-6 space-y-1 py-2">
-            <span className="text-xs text-slate-400">Awarded to Candidate:</span>
-            <h3 className="text-3xl font-extrabold text-white tracking-tight">{displayName}</h3>
+            <span className="text-xs text-slate-600">Awarded to Candidate:</span>
+            <h3 className="text-3xl font-extrabold text-slate-900 tracking-tight">{displayName}</h3>
           </div>
 
-          <p className="text-xs text-slate-300 max-w-lg leading-relaxed font-light">
+          <p className="text-xs text-slate-700 max-w-lg leading-relaxed font-light">
             In recognition of successful participation and comprehensive mastery of course requirements for <strong>{courseTitle}</strong>.
           </p>
 
-          <div className="pt-6 border-t border-slate-800 flex items-center justify-between text-[10px] font-mono text-slate-400">
+          <div className="pt-6 border-t border-slate-200 flex items-center justify-between text-[10px] font-mono text-slate-600">
             <div>ISSUED: {issueDate}</div>
-            <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-sky-300 font-bold shadow">
+            <div className="p-3 rounded-xl bg-white/80 border border-slate-200 text-sky-300 font-bold shadow">
               FROST SEAL VERIFIED: CERT-2026-X948
             </div>
           </div>
@@ -712,21 +712,21 @@ export const CertificateFrameRenderer: React.FC<CertificateFrameRendererProps> =
 
           <div className="space-y-1 pt-2">
             <div className="text-[10px] font-mono uppercase font-black text-amber-300 tracking-widest">PRESTIGE FELLOWSHIP AWARD</div>
-            <h2 className="text-2xl sm:text-3xl font-black text-white tracking-wide font-sans">
+            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-wide font-sans">
               PRESTIGE CERTIFICATE OF HONOR
             </h2>
           </div>
 
-          <div className="bg-slate-950/80 border border-red-500/40 rounded-2xl p-4 max-w-lg mx-auto space-y-1">
-            <p className="text-xs text-slate-300 italic">With high distinction, awarded to Fellow</p>
+          <div className="bg-white/80 border border-red-500/40 rounded-2xl p-4 max-w-lg mx-auto space-y-1">
+            <p className="text-xs text-slate-700 italic">With high distinction, awarded to Fellow</p>
             <h3 className="text-3xl font-black text-amber-400 tracking-wide">{displayName}</h3>
           </div>
 
-          <p className="text-xs text-slate-300 max-w-md mx-auto leading-relaxed">
+          <p className="text-xs text-slate-700 max-w-md mx-auto leading-relaxed">
             For demonstrating top-tier excellence, fellowship contributions, and completion of <strong>{courseTitle}</strong>.
           </p>
 
-          <div className="flex items-center justify-between pt-6 border-t border-red-500/40 text-[10px] font-mono text-slate-300 max-w-md mx-auto">
+          <div className="flex items-center justify-between pt-6 border-t border-red-500/40 text-[10px] font-mono text-slate-700 max-w-md mx-auto">
             <div>DATE: {issueDate}</div>
             <div className="w-12 h-12 rounded-full border-2 border-amber-400 bg-red-950 flex items-center justify-center text-amber-300 font-bold shadow-xl">
               ⭐ FELLOW
@@ -1001,42 +1001,42 @@ export const MembershipManager: React.FC = () => {
       {/* Top Header */}
       <div className="bg-green-600 backdrop-blur-md border-b border-green-700 px-6 py-4 flex flex-col md:flex-row md:items-center justify-between gap-4 sticky top-0 z-20 shrink-0">
         <div>
-          <div className="flex items-center gap-2 text-white font-extrabold text-xs tracking-wider uppercase mb-1">
-            <GraduationCap className="w-4 h-4 text-white" />
-            <span className="bg-white/20 text-white border border-white/30 px-2 py-0.5 rounded-full">ACADEMY LMS & COURSE ENGINE</span>
+          <div className="flex items-center gap-2 text-slate-900 font-extrabold text-xs tracking-wider uppercase mb-1">
+            <GraduationCap className="w-4 h-4 text-slate-900" />
+            <span className="bg-white/20 text-slate-900 border border-white/30 px-2 py-0.5 rounded-full">ACADEMY LMS & COURSE ENGINE</span>
           </div>
-          <h1 className="text-2xl font-black text-white" style={{ color: '#ffffff' }}>{course.title}</h1>
+          <h1 className="text-2xl font-black text-slate-900" style={{ color: '#ffffff' }}>{course.title}</h1>
           <p className="text-xs text-green-100 mt-0.5 max-w-2xl" style={{ color: '#dcfce7' }}>{course.description}</p>
         </div>
 
         <div className="flex items-center gap-1.5 flex-wrap">
           <button 
             onClick={() => setActiveTab('curriculum')}
-            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${activeTab === 'curriculum' ? 'bg-white text-green-700 shadow-lg' : 'bg-green-700 text-green-100 hover:text-white border border-green-500'}`}
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${activeTab === 'curriculum' ? 'bg-white text-green-700 shadow-lg' : 'bg-green-700 text-green-100 hover:text-slate-900 border border-green-500'}`}
           >
             Curriculum Builder
           </button>
           <button 
             onClick={() => setActiveTab('course_templates')}
-            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${activeTab === 'course_templates' ? 'bg-white text-green-700 shadow-lg' : 'bg-green-700 text-green-100 hover:text-white border border-green-500'}`}
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${activeTab === 'course_templates' ? 'bg-white text-green-700 shadow-lg' : 'bg-green-700 text-green-100 hover:text-slate-900 border border-green-500'}`}
           >
             Course Templates (10)
           </button>
           <button 
             onClick={() => setActiveTab('certificates')}
-            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${activeTab === 'certificates' ? 'bg-white text-green-700 shadow-lg' : 'bg-green-700 text-green-100 hover:text-white border border-green-500'}`}
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${activeTab === 'certificates' ? 'bg-white text-green-700 shadow-lg' : 'bg-green-700 text-green-100 hover:text-slate-900 border border-green-500'}`}
           >
             Automated Certificates (10)
           </button>
           <button 
             onClick={() => setActiveTab('drip_rules')}
-            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${activeTab === 'drip_rules' ? 'bg-white text-green-700 shadow-lg' : 'bg-green-700 text-green-100 hover:text-white border border-green-500'}`}
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${activeTab === 'drip_rules' ? 'bg-white text-green-700 shadow-lg' : 'bg-green-700 text-green-100 hover:text-slate-900 border border-green-500'}`}
           >
             Drip Scheduler
           </button>
           <button 
             onClick={() => setActiveTab('student_portal')}
-            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${activeTab === 'student_portal' ? 'bg-white text-green-700 shadow-lg' : 'bg-green-700 text-green-100 hover:text-white border border-green-500'}`}
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${activeTab === 'student_portal' ? 'bg-white text-green-700 shadow-lg' : 'bg-green-700 text-green-100 hover:text-slate-900 border border-green-500'}`}
           >
             Student Portal ({progressPercent}%)
           </button>
@@ -1067,9 +1067,9 @@ export const MembershipManager: React.FC = () => {
       {activeTab === 'curriculum' && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left: Modules & Lessons Hierarchy Tree */}
-          <div className="lg:col-span-1 bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-              <span className="text-xs font-extrabold text-slate-300 uppercase tracking-wider">Course Modules</span>
+          <div className="lg:col-span-1 bg-white border border-slate-200 rounded-2xl p-4 space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
+              <span className="text-xs font-extrabold text-slate-700 uppercase tracking-wider">Course Modules</span>
               <button 
                 onClick={handleAddModule}
                 className="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-bold flex items-center gap-1 shadow"
@@ -1081,20 +1081,20 @@ export const MembershipManager: React.FC = () => {
 
             <div className="space-y-4">
               {course.modules.map((mod) => (
-                <div key={mod.id} className="bg-slate-950 border border-slate-800 rounded-xl p-3 space-y-2">
+                <div key={mod.id} className="bg-white border border-slate-200 rounded-xl p-3 space-y-2">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-xs font-bold text-slate-200">{mod.title}</h3>
+                    <h3 className="text-xs font-bold text-slate-800">{mod.title}</h3>
                     <div className="flex items-center gap-1">
                       <button 
                         onClick={() => handleAddLesson(mod.id)}
-                        className="p-1 hover:bg-slate-800 rounded text-indigo-400 hover:text-indigo-300"
+                        className="p-1 hover:bg-slate-50 rounded text-indigo-400 hover:text-indigo-300"
                         title="Add Lesson"
                       >
                         <Plus className="w-3.5 h-3.5" />
                       </button>
                       <button 
                         onClick={() => handleDeleteModule(mod.id)}
-                        className="p-1 hover:bg-slate-800 rounded text-rose-400 hover:text-rose-300"
+                        className="p-1 hover:bg-slate-50 rounded text-rose-400 hover:text-rose-300"
                         title="Delete Module"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -1107,7 +1107,7 @@ export const MembershipManager: React.FC = () => {
                       <button 
                         key={les.id}
                         onClick={() => setSelectedLesson(les)}
-                        className={`w-full p-2 rounded-lg text-left text-xs font-semibold flex items-center justify-between transition-all ${selectedLesson.id === les.id ? 'bg-indigo-900/60 text-indigo-200 border border-indigo-500/50 shadow' : 'hover:bg-slate-900 text-slate-400'}`}
+                        className={`w-full p-2 rounded-lg text-left text-xs font-semibold flex items-center justify-between transition-all ${selectedLesson.id === les.id ? 'bg-indigo-900/60 text-indigo-200 border border-indigo-500/50 shadow' : 'hover:bg-white text-slate-600'}`}
                       >
                         <div className="flex items-center gap-2">
                           <Video className="w-3.5 h-3.5 text-indigo-400" />
@@ -1128,15 +1128,15 @@ export const MembershipManager: React.FC = () => {
           </div>
 
           {/* Right: Selected Lesson Configurator */}
-          <div className="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6">
-            <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+          <div className="lg:col-span-2 bg-white border border-slate-200 rounded-2xl p-6 space-y-6">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-200">
               <div>
                 <span className="text-[10px] uppercase font-extrabold text-indigo-400 tracking-wider">LESSON CONFIGURATOR</span>
-                <h2 className="text-lg font-bold text-slate-100">{selectedLesson.title}</h2>
+                <h2 className="text-lg font-bold text-slate-900">{selectedLesson.title}</h2>
               </div>
               <button 
                 onClick={() => handleToggleComplete(selectedLesson.id)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all ${selectedLesson.isCompleted ? 'bg-emerald-600 text-white shadow' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all ${selectedLesson.isCompleted ? 'bg-emerald-600 text-white shadow' : 'bg-slate-50 text-slate-700 hover:bg-slate-100'}`}
               >
                 <Check className="w-4 h-4" />
                 <span>{selectedLesson.isCompleted ? 'Completed ✓' : 'Mark Complete'}</span>
@@ -1145,7 +1145,7 @@ export const MembershipManager: React.FC = () => {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Lesson Title</label>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Lesson Title</label>
                 <input 
                   type="text" 
                   value={selectedLesson.title}
@@ -1158,12 +1158,12 @@ export const MembershipManager: React.FC = () => {
                     }));
                     setCourse({ ...course, modules: updatedMods });
                   }}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-100"
+                  className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Lesson Stream Video URL (HLS / MP4 / Wistia)</label>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Lesson Stream Video URL (HLS / MP4 / Wistia)</label>
                 <input 
                   type="text" 
                   value={selectedLesson.videoUrl || ''}
@@ -1176,13 +1176,13 @@ export const MembershipManager: React.FC = () => {
                     }));
                     setCourse({ ...course, modules: updatedMods });
                   }}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-100 font-mono"
+                  className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 font-mono"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">Drip Days Post-Enrollment</label>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">Drip Days Post-Enrollment</label>
                   <input 
                     type="number" 
                     value={selectedLesson.dripDays || 0}
@@ -1195,11 +1195,11 @@ export const MembershipManager: React.FC = () => {
                       }));
                       setCourse({ ...course, modules: updatedMods });
                     }}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-100"
+                    className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">Estimated Duration</label>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">Estimated Duration</label>
                   <input 
                     type="text" 
                     value={selectedLesson.duration || '15 mins'}
@@ -1212,23 +1212,23 @@ export const MembershipManager: React.FC = () => {
                       }));
                       setCourse({ ...course, modules: updatedMods });
                     }}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-100"
+                    className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900"
                   />
                 </div>
               </div>
 
               {/* Video Player Preview */}
               <div className="pt-2">
-                <label className="block text-xs font-semibold text-slate-300 mb-2">Video Stream Preview</label>
-                <div className="aspect-video bg-slate-950 rounded-xl overflow-hidden border border-slate-800 relative">
+                <label className="block text-xs font-semibold text-slate-700 mb-2">Video Stream Preview</label>
+                <div className="aspect-video bg-white rounded-xl overflow-hidden border border-slate-200 relative">
                   <video src={selectedLesson.videoUrl} controls className="w-full h-full object-cover" />
                 </div>
               </div>
 
               {/* LESSON DOCUMENTS & PDFS */}
-              <div className="pt-6 border-t border-slate-800 space-y-4">
+              <div className="pt-6 border-t border-slate-200 space-y-4">
                 <div className="flex items-center justify-between">
-                  <label className="block text-xs font-bold text-slate-300">Attached Documents & PDFs</label>
+                  <label className="block text-xs font-bold text-slate-700">Attached Documents & PDFs</label>
                   <button 
                     onClick={() => {
                       const newDoc = { id: `doc_${Date.now()}`, name: '', url: '', type: 'pdf' as const };
@@ -1261,7 +1261,7 @@ export const MembershipManager: React.FC = () => {
                     if (docs.length === 0) return <p className="text-[11px] text-slate-500 italic">No documents attached.</p>;
 
                     return docs.map((doc, idx) => (
-                      <div key={doc.id} className="flex gap-2 items-start bg-slate-900/50 p-2.5 rounded-xl border border-slate-800">
+                      <div key={doc.id} className="flex gap-2 items-start bg-white/50 p-2.5 rounded-xl border border-slate-200">
                         <select 
                           value={doc.type}
                           onChange={(e) => {
@@ -1271,7 +1271,7 @@ export const MembershipManager: React.FC = () => {
                             const updatedMods = course.modules.map(m => ({ ...m, lessons: m.lessons.map(l => l.id === selectedLesson.id ? { ...l, documents: newDocs } : l) }));
                             setCourse({ ...course, modules: updatedMods });
                           }}
-                          className="bg-slate-950 border border-slate-800 rounded-lg px-2 py-2 text-xs text-slate-300"
+                          className="bg-white border border-slate-200 rounded-lg px-2 py-2 text-xs text-slate-700"
                         >
                           <option value="pdf">PDF</option>
                           <option value="doc">Word/Doc</option>
@@ -1290,7 +1290,7 @@ export const MembershipManager: React.FC = () => {
                             const updatedMods = course.modules.map(m => ({ ...m, lessons: m.lessons.map(l => l.id === selectedLesson.id ? { ...l, documents: newDocs } : l) }));
                             setCourse({ ...course, modules: updatedMods });
                           }}
-                          className="w-1/3 bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-100"
+                          className="w-1/3 bg-white border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-900"
                         />
                         <input 
                           type="text" 
@@ -1303,7 +1303,7 @@ export const MembershipManager: React.FC = () => {
                             const updatedMods = course.modules.map(m => ({ ...m, lessons: m.lessons.map(l => l.id === selectedLesson.id ? { ...l, documents: newDocs } : l) }));
                             setCourse({ ...course, modules: updatedMods });
                           }}
-                          className="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-100 font-mono"
+                          className="flex-1 bg-white border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-900 font-mono"
                         />
                         <button 
                           onClick={() => {
@@ -1323,32 +1323,32 @@ export const MembershipManager: React.FC = () => {
               </div>
 
               {/* FULL LESSON BUILDER (Add Headlines, Paragraphs, Images, Audio, Multiple Videos, Quizzes) */}
-              <div className="pt-6 border-t border-slate-800 space-y-4">
+              <div className="pt-6 border-t border-slate-200 space-y-4">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div>
-                    <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                    <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
                       <Layers className="w-4 h-4 text-indigo-400" />
                       <span>Full Lesson Content Builder</span>
                     </h3>
-                    <p className="text-xs text-slate-400">Add headlines, body paragraphs, images, audio podcasts, additional videos, and interactive quizzes.</p>
+                    <p className="text-xs text-slate-600">Add headlines, body paragraphs, images, audio podcasts, additional videos, and interactive quizzes.</p>
                   </div>
                 </div>
 
                 {/* Add Block Toolbar Buttons */}
-                <div className="flex flex-wrap gap-2 p-3 bg-slate-950 rounded-xl border border-slate-800">
-                  <button onClick={() => handleAddLessonBlock('headline')} className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-200 rounded-lg text-xs font-bold flex items-center gap-1.5 border border-slate-700">
+                <div className="flex flex-wrap gap-2 p-3 bg-white rounded-xl border border-slate-200">
+                  <button onClick={() => handleAddLessonBlock('headline')} className="px-3 py-1.5 bg-white hover:bg-slate-50 text-slate-800 rounded-lg text-xs font-bold flex items-center gap-1.5 border border-slate-300">
                     <Type className="w-3.5 h-3.5 text-indigo-400" /> + Headline
                   </button>
-                  <button onClick={() => handleAddLessonBlock('paragraph')} className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-200 rounded-lg text-xs font-bold flex items-center gap-1.5 border border-slate-700">
+                  <button onClick={() => handleAddLessonBlock('paragraph')} className="px-3 py-1.5 bg-white hover:bg-slate-50 text-slate-800 rounded-lg text-xs font-bold flex items-center gap-1.5 border border-slate-300">
                     <FileText className="w-3.5 h-3.5 text-purple-400" /> + Paragraph
                   </button>
-                  <button onClick={() => handleAddLessonBlock('image')} className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-200 rounded-lg text-xs font-bold flex items-center gap-1.5 border border-slate-700">
+                  <button onClick={() => handleAddLessonBlock('image')} className="px-3 py-1.5 bg-white hover:bg-slate-50 text-slate-800 rounded-lg text-xs font-bold flex items-center gap-1.5 border border-slate-300">
                     <ImageIcon className="w-3.5 h-3.5 text-pink-400" /> + Image
                   </button>
-                  <button onClick={() => handleAddLessonBlock('video')} className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-200 rounded-lg text-xs font-bold flex items-center gap-1.5 border border-slate-700">
+                  <button onClick={() => handleAddLessonBlock('video')} className="px-3 py-1.5 bg-white hover:bg-slate-50 text-slate-800 rounded-lg text-xs font-bold flex items-center gap-1.5 border border-slate-300">
                     <Video className="w-3.5 h-3.5 text-emerald-400" /> + Video
                   </button>
-                  <button onClick={() => handleAddLessonBlock('audio')} className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-200 rounded-lg text-xs font-bold flex items-center gap-1.5 border border-slate-700">
+                  <button onClick={() => handleAddLessonBlock('audio')} className="px-3 py-1.5 bg-white hover:bg-slate-50 text-slate-800 rounded-lg text-xs font-bold flex items-center gap-1.5 border border-slate-300">
                     <Volume2 className="w-3.5 h-3.5 text-amber-400" /> + Audio Player
                   </button>
                   <button onClick={() => handleAddLessonBlock('quiz')} className="px-3 py-1.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow">
@@ -1359,13 +1359,13 @@ export const MembershipManager: React.FC = () => {
                 {/* Blocks List */}
                 <div className="space-y-3">
                   {(selectedLesson.blocks || []).length === 0 ? (
-                    <div className="p-6 bg-slate-950/50 border border-dashed border-slate-800 rounded-xl text-center text-xs text-slate-500">
+                    <div className="p-6 bg-white/50 border border-dashed border-slate-200 rounded-xl text-center text-xs text-slate-500">
                       No additional content blocks added yet. Click any button above to build this lesson.
                     </div>
                   ) : (
                     (selectedLesson.blocks || []).map((blk, idx) => (
-                      <div key={blk.id} className="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-3 relative group">
-                        <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                      <div key={blk.id} className="p-4 bg-white border border-slate-200 rounded-xl space-y-3 relative group">
+                        <div className="flex items-center justify-between border-b border-slate-200 pb-2">
                           <span className="text-[10px] uppercase font-bold text-indigo-400 tracking-wider">
                             Block {idx + 1}: {blk.type}
                           </span>
@@ -1379,7 +1379,7 @@ export const MembershipManager: React.FC = () => {
                             type="text" 
                             value={blk.headlineText || ''} 
                             onChange={(e) => handleUpdateBlock(blk.id, { headlineText: e.target.value })}
-                            className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white"
+                            className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-900"
                           />
                         )}
 
@@ -1388,7 +1388,7 @@ export const MembershipManager: React.FC = () => {
                             rows={3}
                             value={blk.paragraphText || ''} 
                             onChange={(e) => handleUpdateBlock(blk.id, { paragraphText: e.target.value })}
-                            className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white"
+                            className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-900"
                           />
                         )}
 
@@ -1399,14 +1399,14 @@ export const MembershipManager: React.FC = () => {
                               placeholder="Image URL..."
                               value={blk.imageUrl || ''} 
                               onChange={(e) => handleUpdateBlock(blk.id, { imageUrl: e.target.value })}
-                              className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white font-mono"
+                              className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-900 font-mono"
                             />
                             <input 
                               type="text" 
                               placeholder="Image Caption..."
                               value={blk.imageCaption || ''} 
                               onChange={(e) => handleUpdateBlock(blk.id, { imageCaption: e.target.value })}
-                              className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-300"
+                              className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-700"
                             />
                           </div>
                         )}
@@ -1418,14 +1418,14 @@ export const MembershipManager: React.FC = () => {
                               placeholder="Video Title..."
                               value={blk.videoTitle || ''} 
                               onChange={(e) => handleUpdateBlock(blk.id, { videoTitle: e.target.value })}
-                              className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white"
+                              className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-900"
                             />
                             <input 
                               type="text" 
                               placeholder="Video Stream URL (MP4 / HLS)..."
                               value={blk.videoUrl || ''} 
                               onChange={(e) => handleUpdateBlock(blk.id, { videoUrl: e.target.value })}
-                              className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white font-mono"
+                              className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-900 font-mono"
                             />
                           </div>
                         )}
@@ -1437,14 +1437,14 @@ export const MembershipManager: React.FC = () => {
                               placeholder="Audio Title..."
                               value={blk.audioTitle || ''} 
                               onChange={(e) => handleUpdateBlock(blk.id, { audioTitle: e.target.value })}
-                              className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white"
+                              className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-900"
                             />
                             <input 
                               type="text" 
                               placeholder="MP3 / Audio URL..."
                               value={blk.audioUrl || ''} 
                               onChange={(e) => handleUpdateBlock(blk.id, { audioUrl: e.target.value })}
-                              className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white font-mono"
+                              className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-900 font-mono"
                             />
                           </div>
                         )}
@@ -1456,7 +1456,7 @@ export const MembershipManager: React.FC = () => {
                               placeholder="Quiz Question..."
                               value={blk.quizQuestion || ''} 
                               onChange={(e) => handleUpdateBlock(blk.id, { quizQuestion: e.target.value })}
-                              className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white font-bold"
+                              className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-900 font-bold"
                             />
                             <div className="grid grid-cols-2 gap-2">
                               {(blk.quizOptions || []).map((opt, oIdx) => (
@@ -1469,7 +1469,7 @@ export const MembershipManager: React.FC = () => {
                                     opts[oIdx] = e.target.value;
                                     handleUpdateBlock(blk.id, { quizOptions: opts });
                                   }}
-                                  className="bg-slate-900 border border-slate-800 rounded px-2.5 py-1.5 text-xs text-slate-200"
+                                  className="bg-white border border-slate-200 rounded px-2.5 py-1.5 text-xs text-slate-800"
                                 />
                               ))}
                             </div>
@@ -1487,46 +1487,46 @@ export const MembershipManager: React.FC = () => {
 
       {/* VIEW 2: STUDENT PORTAL PREVIEW */}
       {activeTab === 'student_portal' && (
-        <div className="max-w-5xl mx-auto bg-slate-900 border border-slate-800 rounded-3xl p-8 space-y-8 shadow-2xl">
+        <div className="max-w-5xl mx-auto bg-white border border-slate-200 rounded-3xl p-8 space-y-8 shadow-2xl">
           {/* Dynamic Template Hero Banner */}
-          <div className="relative rounded-2xl overflow-hidden h-40 bg-slate-950 border border-slate-800">
+          <div className="relative rounded-2xl overflow-hidden h-40 bg-white border border-slate-200">
             <img src={activeCourseTemplate.coverImage} alt={course.title} className="w-full h-full object-cover opacity-30" />
             <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/80 to-transparent p-6 flex flex-col justify-between">
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-mono font-bold uppercase px-2.5 py-1 rounded text-white shadow" style={{ backgroundColor: activeCourseTemplate.accentColor }}>
+                <span className="text-[10px] font-mono font-bold uppercase px-2.5 py-1 rounded text-slate-900 shadow" style={{ backgroundColor: activeCourseTemplate.accentColor }}>
                   {activeCourseTemplate.badge}
                 </span>
-                <span className="text-[10px] font-mono text-slate-300 bg-slate-900/90 px-2 py-0.5 rounded border border-slate-800">
+                <span className="text-[10px] font-mono text-slate-700 bg-white/90 px-2 py-0.5 rounded border border-slate-200">
                   {activeCourseTemplate.styleTag}
                 </span>
               </div>
               <div>
-                <h2 className="text-2xl font-black text-white" style={{ color: '#ffffff' }}>{course.title}</h2>
-                <p className="text-xs text-slate-300 line-clamp-1" style={{ color: '#f8fafc' }}>{course.description}</p>
+                <h2 className="text-2xl font-black text-slate-900" style={{ color: '#ffffff' }}>{course.title}</h2>
+                <p className="text-xs text-slate-700 line-clamp-1" style={{ color: '#f8fafc' }}>{course.description}</p>
               </div>
             </div>
           </div>
 
-          <div className="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-slate-800 gap-4">
+          <div className="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-slate-200 gap-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-purple-600 flex items-center justify-center text-white font-black text-base shadow-lg">
                 LE
               </div>
               <div>
-                <h3 className="text-sm font-extrabold text-white">Student Access Portal</h3>
-                <p className="text-[11px] text-slate-400">Welcome back, Sarah Jenkins (VIP Active Enrollment)</p>
+                <h3 className="text-sm font-extrabold text-slate-900">Student Access Portal</h3>
+                <p className="text-[11px] text-slate-600">Welcome back, Sarah Jenkins (VIP Active Enrollment)</p>
               </div>
             </div>
 
             <div className="flex items-center gap-3">
               {/* Simulated Enrollment Days Selector */}
-              <div className="flex items-center gap-1.5 bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-800 text-xs">
+              <div className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-xl border border-slate-200 text-xs">
                 <Clock className="w-4 h-4 text-amber-400" />
-                <span className="text-slate-400">Simulate Days Post-Enrollment:</span>
+                <span className="text-slate-600">Simulate Days Post-Enrollment:</span>
                 <select 
                   value={studentEnrollmentDays}
                   onChange={(e) => setStudentEnrollmentDays(parseInt(e.target.value))}
-                  className="bg-slate-900 border border-slate-800 text-amber-300 font-bold rounded px-2 py-0.5"
+                  className="bg-white border border-slate-200 text-amber-300 font-bold rounded px-2 py-0.5"
                 >
                   <option value={0}>Day 0 (Instant)</option>
                   <option value={3}>Day 3</option>
@@ -1535,9 +1535,9 @@ export const MembershipManager: React.FC = () => {
                 </select>
               </div>
 
-              <div className="flex items-center gap-2 bg-slate-950 px-4 py-2 rounded-xl border border-slate-800 text-xs">
+              <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-xl border border-slate-200 text-xs">
                 <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                <span className="font-bold text-slate-200">Progress: {progressPercent}% ({completedCount}/{allLessons.length})</span>
+                <span className="font-bold text-slate-800">Progress: {progressPercent}% ({completedCount}/{allLessons.length})</span>
               </div>
             </div>
           </div>
@@ -1546,23 +1546,23 @@ export const MembershipManager: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 space-y-4">
               {(selectedLesson.dripDays || 0) > studentEnrollmentDays ? (
-                <div className="aspect-video bg-slate-950 rounded-2xl border border-amber-500/40 p-8 flex flex-col items-center justify-center text-center space-y-3">
+                <div className="aspect-video bg-white rounded-2xl border border-amber-500/40 p-8 flex flex-col items-center justify-center text-center space-y-3">
                   <div className="w-14 h-14 rounded-full bg-amber-950/80 text-amber-400 flex items-center justify-center border border-amber-500/40 shadow-lg">
                     <Lock className="w-7 h-7" />
                   </div>
                   <h3 className="text-lg font-bold text-amber-200">Lesson Locked via Drip Scheduler</h3>
-                  <p className="text-xs text-slate-400 max-w-md">
-                    This lesson is scheduled to release on <strong className="text-white">Day {selectedLesson.dripDays}</strong> post-enrollment. You are currently simulating Day {studentEnrollmentDays}.
+                  <p className="text-xs text-slate-600 max-w-md">
+                    This lesson is scheduled to release on <strong className="text-slate-900">Day {selectedLesson.dripDays}</strong> post-enrollment. You are currently simulating Day {studentEnrollmentDays}.
                   </p>
                 </div>
               ) : (
-                <div className="aspect-video bg-slate-950 rounded-2xl overflow-hidden border border-indigo-500/40 shadow-xl relative">
+                <div className="aspect-video bg-white rounded-2xl overflow-hidden border border-indigo-500/40 shadow-xl relative">
                   <video src={selectedLesson.videoUrl} controls autoPlay className="w-full h-full object-cover" />
                 </div>
               )}
 
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-bold text-white">{selectedLesson.title}</h3>
+                <h3 className="text-lg font-bold text-slate-900">{selectedLesson.title}</h3>
                 <button 
                   onClick={() => handleToggleComplete(selectedLesson.id)}
                   className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${selectedLesson.isCompleted ? 'bg-emerald-600 text-white' : 'bg-indigo-600 text-white hover:bg-indigo-500'}`}
@@ -1570,7 +1570,7 @@ export const MembershipManager: React.FC = () => {
                   {selectedLesson.isCompleted ? 'Completed ✓' : 'Mark as Complete'}
                 </button>
               </div>
-              <p className="text-xs text-slate-400 leading-relaxed">
+              <p className="text-xs text-slate-600 leading-relaxed">
                 In this lesson, learn the exact blueprint for configuring automated 1-click upsells, drip schedules, and student portals.
               </p>
 
@@ -1586,11 +1586,11 @@ export const MembershipManager: React.FC = () => {
                 return (
                   <div className="pt-4 space-y-3">
                     {docs.map(doc => (
-                      <a key={doc.id} href={doc.url} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-4 py-3 bg-slate-900 border border-slate-700 hover:border-slate-500 rounded-xl transition-all shadow-sm w-full sm:w-fit">
+                      <a key={doc.id} href={doc.url} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-4 py-3 bg-white border border-slate-300 hover:border-slate-500 rounded-xl transition-all shadow-sm w-full sm:w-fit">
                         <FileText className={`w-5 h-5 ${doc.type === 'excel' ? 'text-emerald-400' : doc.type === 'doc' ? 'text-blue-400' : doc.type === 'zip' ? 'text-amber-400' : 'text-rose-400'}`} />
                         <div className="flex-1 pr-6">
-                          <h4 className="text-sm font-bold text-slate-200">{doc.name || 'Attached Document'}</h4>
-                          <p className="text-[10px] text-slate-400 uppercase tracking-wider">{doc.type} File</p>
+                          <h4 className="text-sm font-bold text-slate-800">{doc.name || 'Attached Document'}</h4>
+                          <p className="text-[10px] text-slate-600 uppercase tracking-wider">{doc.type} File</p>
                         </div>
                         <Download className="w-4 h-4 text-slate-500" />
                       </a>
@@ -1601,37 +1601,37 @@ export const MembershipManager: React.FC = () => {
 
               {/* Dynamic Lesson Blocks Rendering (Headlines, Paragraphs, Images, Audio, Multiple Videos, Quizzes) */}
               {(selectedLesson.blocks || []).length > 0 && (
-                <div className="space-y-6 pt-4 border-t border-slate-800">
+                <div className="space-y-6 pt-4 border-t border-slate-200">
                   {(selectedLesson.blocks || []).map((blk) => (
                     <div key={blk.id} className="space-y-3">
                       {blk.type === 'headline' && (
-                        <h4 className="text-base font-extrabold text-white">{blk.headlineText}</h4>
+                        <h4 className="text-base font-extrabold text-slate-900">{blk.headlineText}</h4>
                       )}
 
                       {blk.type === 'paragraph' && (
-                        <p className="text-xs text-slate-300 leading-relaxed bg-slate-950 p-4 rounded-xl border border-slate-800/60">{blk.paragraphText}</p>
+                        <p className="text-xs text-slate-700 leading-relaxed bg-white p-4 rounded-xl border border-slate-200/60">{blk.paragraphText}</p>
                       )}
 
                       {blk.type === 'image' && (
                         <div className="space-y-1.5">
-                          <img src={blk.imageUrl} alt={blk.imageCaption || 'Lesson Image'} className="w-full rounded-2xl border border-slate-800 object-cover max-h-80" />
-                          {blk.imageCaption && <p className="text-[11px] text-slate-400 italic text-center">{blk.imageCaption}</p>}
+                          <img src={blk.imageUrl} alt={blk.imageCaption || 'Lesson Image'} className="w-full rounded-2xl border border-slate-200 object-cover max-h-80" />
+                          {blk.imageCaption && <p className="text-[11px] text-slate-600 italic text-center">{blk.imageCaption}</p>}
                         </div>
                       )}
 
                       {blk.type === 'video' && (
-                        <div className="space-y-2 bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                        <div className="space-y-2 bg-white p-4 rounded-2xl border border-slate-200">
                           <h5 className="text-xs font-bold text-indigo-400 flex items-center gap-1.5">
                             <Video className="w-4 h-4" /> {blk.videoTitle || 'Additional Lesson Video'}
                           </h5>
-                          <div className="aspect-video bg-slate-900 rounded-xl overflow-hidden">
+                          <div className="aspect-video bg-white rounded-xl overflow-hidden">
                             <video src={blk.videoUrl} controls className="w-full h-full object-cover" />
                           </div>
                         </div>
                       )}
 
                       {blk.type === 'audio' && (
-                        <div className="p-4 bg-slate-950 rounded-2xl border border-amber-500/30 space-y-2">
+                        <div className="p-4 bg-white rounded-2xl border border-amber-500/30 space-y-2">
                           <h5 className="text-xs font-bold text-amber-400 flex items-center gap-1.5">
                             <Volume2 className="w-4 h-4" /> {blk.audioTitle || 'Lesson Audio Lecture'}
                           </h5>
@@ -1645,7 +1645,7 @@ export const MembershipManager: React.FC = () => {
                             <HelpCircle className="w-4 h-4 text-indigo-400" />
                             <span>Interactive Module Quiz / Exam</span>
                           </div>
-                          <p className="text-sm font-bold text-white">{blk.quizQuestion}</p>
+                          <p className="text-sm font-bold text-slate-900">{blk.quizQuestion}</p>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                             {(blk.quizOptions || []).map((opt, oIdx) => (
                               <button 
@@ -1657,7 +1657,7 @@ export const MembershipManager: React.FC = () => {
                                     alert('❌ Incorrect choice, try again!');
                                   }
                                 }}
-                                className="p-3 bg-slate-900 hover:bg-indigo-600/80 text-left text-xs font-semibold text-slate-200 hover:text-white rounded-xl border border-slate-800 transition-colors"
+                                className="p-3 bg-white hover:bg-indigo-600/80 text-left text-xs font-semibold text-slate-800 hover:text-slate-900 rounded-xl border border-slate-200 transition-colors"
                               >
                                 {oIdx + 1}. {opt}
                               </button>
@@ -1671,18 +1671,18 @@ export const MembershipManager: React.FC = () => {
               )}
             </div>
 
-            <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4 space-y-3">
-              <h4 className="text-xs font-extrabold uppercase text-slate-400 tracking-wider">Curriculum Outline</h4>
+            <div className="bg-white border border-slate-200 rounded-2xl p-4 space-y-3">
+              <h4 className="text-xs font-extrabold uppercase text-slate-600 tracking-wider">Curriculum Outline</h4>
               {course.modules.map((m) => (
                 <div key={m.id} className="space-y-1.5">
-                  <div className="text-xs font-bold text-slate-300">{m.title}</div>
+                  <div className="text-xs font-bold text-slate-700">{m.title}</div>
                   {m.lessons.map((l) => {
                     const isLocked = (l.dripDays || 0) > studentEnrollmentDays;
                     return (
                       <button 
                         key={l.id} 
                         onClick={() => setSelectedLesson(l)}
-                        className={`w-full p-2.5 rounded-xl text-left text-xs font-semibold flex items-center justify-between transition-all ${l.id === selectedLesson.id ? 'bg-indigo-600 text-white shadow' : 'bg-slate-900 text-slate-400 hover:text-slate-200'}`}
+                        className={`w-full p-2.5 rounded-xl text-left text-xs font-semibold flex items-center justify-between transition-all ${l.id === selectedLesson.id ? 'bg-indigo-600 text-white shadow' : 'bg-white text-slate-600 hover:text-slate-800'}`}
                       >
                         <span className="truncate max-w-[170px]">{l.title}</span>
                         {isLocked ? (
@@ -1704,24 +1704,24 @@ export const MembershipManager: React.FC = () => {
 
       {/* VIEW 3: DRIP RULES */}
       {activeTab === 'drip_rules' && (
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 max-w-3xl mx-auto space-y-6">
-          <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+        <div className="bg-white border border-slate-200 rounded-2xl p-6 max-w-3xl mx-auto space-y-6">
+          <div className="flex items-center justify-between pb-4 border-b border-slate-200">
             <div>
-              <h3 className="text-lg font-bold text-white">Drip Scheduling Policies</h3>
-              <p className="text-xs text-slate-400">Release modules based on calendar dates, days after purchase, or prerequisite lessons.</p>
+              <h3 className="text-lg font-bold text-slate-900">Drip Scheduling Policies</h3>
+              <p className="text-xs text-slate-600">Release modules based on calendar dates, days after purchase, or prerequisite lessons.</p>
             </div>
             <Clock className="w-6 h-6 text-amber-400" />
           </div>
 
           <div className="space-y-4">
             {course.modules.map((m) => (
-              <div key={m.id} className="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-3">
-                <h4 className="text-sm font-bold text-slate-200">{m.title}</h4>
+              <div key={m.id} className="p-4 bg-white border border-slate-200 rounded-xl space-y-3">
+                <h4 className="text-sm font-bold text-slate-800">{m.title}</h4>
                 {m.lessons.map((les) => (
-                  <div key={les.id} className="flex items-center justify-between text-xs p-2 bg-slate-900 rounded-lg">
-                    <span className="font-semibold text-slate-300">{les.title}</span>
+                  <div key={les.id} className="flex items-center justify-between text-xs p-2 bg-white rounded-lg">
+                    <span className="font-semibold text-slate-700">{les.title}</span>
                     <div className="flex items-center gap-2">
-                      <span className="text-slate-400">Unlock Drip Day:</span>
+                      <span className="text-slate-600">Unlock Drip Day:</span>
                       <input 
                         type="number" 
                         value={les.dripDays || 0}
@@ -1733,7 +1733,7 @@ export const MembershipManager: React.FC = () => {
                           }));
                           setCourse({ ...course, modules: updatedMods });
                         }}
-                        className="w-16 bg-slate-950 border border-slate-800 text-amber-400 font-mono font-bold px-2 py-1 rounded"
+                        className="w-16 bg-white border border-slate-200 text-amber-400 font-mono font-bold px-2 py-1 rounded"
                       />
                     </div>
                   </div>
@@ -1747,13 +1747,13 @@ export const MembershipManager: React.FC = () => {
       {/* VIEW 4: PROVEN COURSE TEMPLATES (10) */}
       {activeTab === 'course_templates' && (
         <div className="space-y-6">
-          <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+          <div className="flex items-center justify-between border-b border-slate-200 pb-4">
             <div>
-              <h2 className="text-lg font-black text-white flex items-center gap-2">
+              <h2 className="text-lg font-black text-slate-900 flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-purple-400" />
                 10 Proven Designer Course Templates
               </h2>
-              <p className="text-xs text-slate-400">Select a template matching your teaching style to instantly customize layout and content.</p>
+              <p className="text-xs text-slate-600">Select a template matching your teaching style to instantly customize layout and content.</p>
             </div>
             <span className="text-xs font-mono font-bold bg-purple-950 text-purple-300 px-3 py-1 rounded-full border border-purple-800">
               10 TEMPLATES READY
@@ -1762,32 +1762,32 @@ export const MembershipManager: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {courseTemplates.map((tmpl) => (
-              <div key={tmpl.id} className="bg-slate-900 border border-slate-800 hover:border-purple-500/60 rounded-3xl overflow-hidden transition-all shadow-xl flex flex-col justify-between group">
+              <div key={tmpl.id} className="bg-white border border-slate-200 hover:border-purple-500/60 rounded-3xl overflow-hidden transition-all shadow-xl flex flex-col justify-between group">
                 <div className="space-y-3">
-                  <div className="relative h-44 overflow-hidden bg-slate-950">
+                  <div className="relative h-44 overflow-hidden bg-white">
                     <img src={tmpl.coverImage} alt={tmpl.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent flex items-end p-4">
-                      <span className="text-[10px] font-mono font-black uppercase px-2.5 py-1 rounded-lg text-white shadow" style={{ backgroundColor: tmpl.accentColor }}>
+                      <span className="text-[10px] font-mono font-black uppercase px-2.5 py-1 rounded-lg text-slate-900 shadow" style={{ backgroundColor: tmpl.accentColor }}>
                         {tmpl.badge}
                       </span>
                     </div>
                   </div>
 
                   <div className="p-5 space-y-3">
-                    <div className="flex items-center justify-between text-[11px] font-mono text-slate-400">
+                    <div className="flex items-center justify-between text-[11px] font-mono text-slate-600">
                       <span>{tmpl.category}</span>
-                      <span className="bg-slate-950 px-2 py-0.5 rounded border border-slate-800">{tmpl.styleTag}</span>
+                      <span className="bg-white px-2 py-0.5 rounded border border-slate-200">{tmpl.styleTag}</span>
                     </div>
 
-                    <h3 className="text-base font-bold text-white leading-tight">{tmpl.name}</h3>
-                    <p className="text-xs text-slate-300 leading-relaxed line-clamp-2">{tmpl.description}</p>
+                    <h3 className="text-base font-bold text-slate-900 leading-tight">{tmpl.name}</h3>
+                    <p className="text-xs text-slate-700 leading-relaxed line-clamp-2">{tmpl.description}</p>
 
-                    <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1.5 text-[11px]">
-                      <div className="text-slate-400 flex items-center gap-1">
+                    <div className="p-3 bg-white rounded-xl border border-slate-200 space-y-1.5 text-[11px]">
+                      <div className="text-slate-600 flex items-center gap-1">
                         <BookOpen className="w-3.5 h-3.5 text-purple-400" />
-                        <span>Teaching Style: <strong className="text-slate-200">{tmpl.teachingStyle}</strong></span>
+                        <span>Teaching Style: <strong className="text-slate-800">{tmpl.teachingStyle}</strong></span>
                       </div>
-                      <div className="flex justify-between text-slate-400 font-mono pt-1 border-t border-slate-800/60">
+                      <div className="flex justify-between text-slate-600 font-mono pt-1 border-t border-slate-200/60">
                         <span>{tmpl.modulesCount} Modules</span>
                         <span>{tmpl.totalLessons} Lessons</span>
                       </div>
@@ -1829,9 +1829,9 @@ export const MembershipManager: React.FC = () => {
       {activeTab === 'certificates' && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left: 10 Certificate Templates Selector */}
-          <div className="lg:col-span-1 bg-slate-900 border border-slate-800 rounded-3xl p-5 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-              <h3 className="text-xs font-extrabold uppercase text-slate-300 flex items-center gap-2">
+          <div className="lg:col-span-1 bg-white border border-slate-200 rounded-3xl p-5 space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
+              <h3 className="text-xs font-extrabold uppercase text-slate-700 flex items-center gap-2">
                 <Award className="w-4 h-4 text-amber-400" />
                 Certificate Designs (10)
               </h3>
@@ -1856,14 +1856,14 @@ export const MembershipManager: React.FC = () => {
                     onClick={() => {
                       setSelectedCustomCert(cert);
                     }}
-                    className={`p-3.5 rounded-2xl border cursor-pointer transition-all space-y-2 ${selectedCustomCert?.id === cert.id ? 'bg-amber-950/40 border-amber-500 text-white shadow-lg' : 'bg-slate-950 border-slate-800 hover:border-slate-700 text-slate-400'}`}
+                    className={`p-3.5 rounded-2xl border cursor-pointer transition-all space-y-2 ${selectedCustomCert?.id === cert.id ? 'bg-amber-950/40 border-amber-500 text-white shadow-lg' : 'bg-white border-slate-200 hover:border-slate-300 text-slate-600'}`}
                   >
                     <div className="flex items-center justify-between">
                       <span className="text-base">🛠️</span>
-                      <span className="text-[9px] font-mono uppercase px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-300">CUSTOM</span>
+                      <span className="text-[9px] font-mono uppercase px-2 py-0.5 rounded bg-white border border-slate-200 text-slate-700">CUSTOM</span>
                     </div>
-                    <div className="font-bold text-xs text-slate-100">{cert.title}</div>
-                    <p className="text-[11px] text-slate-400 line-clamp-2">Custom Drag & Drop Design</p>
+                    <div className="font-bold text-xs text-slate-900">{cert.title}</div>
+                    <p className="text-[11px] text-slate-600 line-clamp-2">Custom Drag & Drop Design</p>
                   </div>
                 ))}
                 
@@ -1876,65 +1876,65 @@ export const MembershipManager: React.FC = () => {
                     setSelectedCertTemplate(cert);
                     setCustomCertConfig({});
                   }}
-                  className={`p-3.5 rounded-2xl border cursor-pointer transition-all space-y-2 ${(!selectedCustomCert && selectedCertTemplate.id === cert.id) ? 'bg-amber-950/40 border-amber-500 text-white shadow-lg' : 'bg-slate-950 border-slate-800 hover:border-slate-700 text-slate-400'}`}
+                  className={`p-3.5 rounded-2xl border cursor-pointer transition-all space-y-2 ${(!selectedCustomCert && selectedCertTemplate.id === cert.id) ? 'bg-amber-950/40 border-amber-500 text-white shadow-lg' : 'bg-white border-slate-200 hover:border-slate-300 text-slate-600'}`}
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-base">{cert.sealIcon}</span>
-                    <span className="text-[9px] font-mono uppercase px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-300">{cert.styleTag}</span>
+                    <span className="text-[9px] font-mono uppercase px-2 py-0.5 rounded bg-white border border-slate-200 text-slate-700">{cert.styleTag}</span>
                   </div>
-                  <div className="font-bold text-xs text-slate-100">{cert.title}</div>
-                  <p className="text-[11px] text-slate-400 line-clamp-2">{cert.description}</p>
+                  <div className="font-bold text-xs text-slate-900">{cert.title}</div>
+                  <p className="text-[11px] text-slate-600 line-clamp-2">{cert.description}</p>
                 </div>
               ))}
             </div>
             {!selectedCustomCert && (
-              <div className="pt-4 border-t border-slate-800 space-y-3 mt-4">
-                <h4 className="text-xs font-bold text-slate-300">Customize Certificate</h4>
+              <div className="pt-4 border-t border-slate-200 space-y-3 mt-4">
+                <h4 className="text-xs font-bold text-slate-700">Customize Certificate</h4>
               
               <div>
-                <label className="text-[10px] text-slate-400 font-bold uppercase block mb-1">Title</label>
+                <label className="text-[10px] text-slate-600 font-bold uppercase block mb-1">Title</label>
                 <input 
                   type="text" 
                   value={activeCertTemplate.title || ''} 
                   onChange={(e) => setCustomCertConfig({ ...customCertConfig, title: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
+                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900"
                 />
               </div>
 
               <div>
-                <label className="text-[10px] text-slate-400 font-bold uppercase block mb-1">Badge Text</label>
+                <label className="text-[10px] text-slate-600 font-bold uppercase block mb-1">Badge Text</label>
                 <input 
                   type="text" 
                   value={activeCertTemplate.badgeText || ''} 
                   onChange={(e) => setCustomCertConfig({ ...customCertConfig, badgeText: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
+                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900"
                 />
               </div>
 
               <div>
-                <label className="text-[10px] text-slate-400 font-bold uppercase block mb-1">Description</label>
+                <label className="text-[10px] text-slate-600 font-bold uppercase block mb-1">Description</label>
                 <textarea 
                   rows={3}
                   value={activeCertTemplate.description || ''} 
                   onChange={(e) => setCustomCertConfig({ ...customCertConfig, description: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
+                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900"
                 />
               </div>
 
               <div>
-                <label className="text-[10px] text-slate-400 font-bold uppercase block mb-1">Accent Color</label>
+                <label className="text-[10px] text-slate-600 font-bold uppercase block mb-1">Accent Color</label>
                 <div className="flex items-center gap-2">
                   <input 
                     type="color" 
                     value={activeCertTemplate.accentColor || '#000000'} 
                     onChange={(e) => setCustomCertConfig({ ...customCertConfig, accentColor: e.target.value })}
-                    className="w-8 h-8 rounded cursor-pointer bg-slate-950 border border-slate-800 p-0 overflow-hidden"
+                    className="w-8 h-8 rounded cursor-pointer bg-white border border-slate-200 p-0 overflow-hidden"
                   />
                   <input 
                     type="text" 
                     value={activeCertTemplate.accentColor || ''} 
                     onChange={(e) => setCustomCertConfig({ ...customCertConfig, accentColor: e.target.value })}
-                    className="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white uppercase font-mono"
+                    className="flex-1 bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 uppercase font-mono"
                   />
                 </div>
               </div>
@@ -1943,11 +1943,11 @@ export const MembershipManager: React.FC = () => {
           </div>
 
           {/* Right: Live Interactive Certificate Generator Preview Frame */}
-          <div className="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+          <div className="lg:col-span-2 bg-white border border-slate-200 rounded-3xl p-6 space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
               <div>
                 <span className="text-[10px] font-mono uppercase font-bold text-amber-400">AUTOMATED CERTIFICATE PDF GENERATOR</span>
-                <h3 className="text-lg font-bold text-white">{selectedCustomCert ? selectedCustomCert.title : activeCertTemplate.title}</h3>
+                <h3 className="text-lg font-bold text-slate-900">{selectedCustomCert ? selectedCustomCert.title : activeCertTemplate.title}</h3>
               </div>
 
               <div className="flex items-center gap-2">
@@ -1956,7 +1956,7 @@ export const MembershipManager: React.FC = () => {
                   value={studentCertName}
                   onChange={(e) => setStudentCertName(e.target.value)}
                   placeholder="Student Full Name..."
-                  className="bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 placeholder-slate-500"
+                  className="bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 placeholder-slate-500"
                 />
                 <button 
                   onClick={() => {

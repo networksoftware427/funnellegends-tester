@@ -62,36 +62,36 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-2xl flex flex-col shadow-2xl text-slate-100 overflow-hidden">
+    <div className="fixed inset-0 z-50 bg-white/80 backdrop-blur-md flex items-center justify-center p-4">
+      <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-2xl flex flex-col shadow-2xl text-slate-900 overflow-hidden">
         {/* Header */}
-        <div className="p-5 border-b border-slate-800 flex items-center justify-between">
+        <div className="p-5 border-b border-slate-200 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-pink-600 to-purple-600 flex items-center justify-center text-white shadow-md">
               <Sparkles className="w-4 h-4 animate-pulse" />
             </div>
             <div>
-              <h3 className="font-bold text-sm text-slate-100">LaunchEngine AI Asset & Funnel Copilot</h3>
-              <p className="text-[11px] text-slate-400">Generate high-converting headlines, VSL scripts, or full funnel page layouts.</p>
+              <h3 className="font-bold text-sm text-slate-900">LaunchEngine AI Asset & Funnel Copilot</h3>
+              <p className="text-[11px] text-slate-600">Generate high-converting headlines, VSL scripts, or full funnel page layouts.</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-1 hover:bg-slate-800 rounded text-slate-400 hover:text-white">
+          <button onClick={onClose} className="p-1 hover:bg-slate-50 rounded text-slate-600 hover:text-slate-900">
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Mode Selector */}
-        <div className="p-3 border-b border-slate-800 flex gap-2 bg-slate-950/50">
+        <div className="p-3 border-b border-slate-200 flex gap-2 bg-white/50">
           <button 
             onClick={() => setMode('funnel_builder')}
-            className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${mode === 'funnel_builder' ? 'bg-gradient-to-r from-pink-600 to-purple-600 text-white shadow' : 'bg-slate-800 text-slate-400'}`}
+            className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${mode === 'funnel_builder' ? 'bg-gradient-to-r from-pink-600 to-purple-600 text-white shadow' : 'bg-slate-50 text-slate-600'}`}
           >
             <Layout className="w-4 h-4" />
             <span>Generate Full Funnel Canvas</span>
           </button>
           <button 
             onClick={() => setMode('copy')}
-            className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${mode === 'copy' ? 'bg-gradient-to-r from-pink-600 to-purple-600 text-white shadow' : 'bg-slate-800 text-slate-400'}`}
+            className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${mode === 'copy' ? 'bg-gradient-to-r from-pink-600 to-purple-600 text-white shadow' : 'bg-slate-50 text-slate-600'}`}
           >
             <FileText className="w-4 h-4" />
             <span>AI Sales Copywriter</span>
@@ -101,12 +101,12 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
         {/* Body Form */}
         <div className="p-6 space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5">Describe your product, offer, or target audience:</label>
+            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Describe your product, offer, or target audience:</label>
             <textarea 
               rows={3}
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-100 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full bg-white border border-slate-200 rounded-xl p-3 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
 
@@ -121,15 +121,15 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
 
           {/* Generated Result Output */}
           {generatedOutput && (
-            <div className="mt-4 p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-3">
-              <div className="text-xs text-slate-200 whitespace-pre-line leading-relaxed font-sans">{generatedOutput}</div>
+            <div className="mt-4 p-4 bg-white border border-slate-200 rounded-xl space-y-3">
+              <div className="text-xs text-slate-800 whitespace-pre-line leading-relaxed font-sans">{generatedOutput}</div>
               
               {mode === 'funnel_builder' && (
                 <button 
                   onClick={handleApplyToCanvas}
                   className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-xs shadow flex items-center justify-center gap-2"
                 >
-                  {isApplied ? <Check className="w-4 h-4 text-white" /> : <Wand2 className="w-4 h-4" />}
+                  {isApplied ? <Check className="w-4 h-4 text-slate-900" /> : <Wand2 className="w-4 h-4" />}
                   <span>{isApplied ? 'Canvas Updated with AI Layout ✓' : 'Apply AI Layout to Live Canvas'}</span>
                 </button>
               )}

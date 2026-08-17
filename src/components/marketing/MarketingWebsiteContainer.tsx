@@ -3,7 +3,7 @@ import { MarketingNavbar } from './Navbar';
 import { MarketingFooter } from './Footer';
 import { HomePageVSL } from './HomePageVSL';
 import { FeaturesPage } from './FeaturesPage';
-import { PricingPage, ClickFunnelsOrderModal } from './PricingPage';
+import { PricingPage, FunnelLegendsOrderModal } from './PricingPage';
 import { LoginPage } from './LoginPage';
 
 import { getAdminSession } from '../../utils/adminSeed';
@@ -78,8 +78,8 @@ export const MarketingWebsiteContainer: React.FC<MarketingWebsiteContainerProps>
         )}
       </main>
 
-      {/* Universal ClickFunnels 2-Step Order Form Modal */}
-      <ClickFunnelsOrderModal 
+      {/* Universal 2-Step Order Form Modal */}
+      <FunnelLegendsOrderModal 
         isOpen={isOrderModalOpen}
         onClose={() => setIsOrderModalOpen(false)}
         onSuccess={handleOrderSuccess}

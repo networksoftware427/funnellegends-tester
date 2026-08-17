@@ -69,8 +69,8 @@ export const LivePreviewModal: React.FC<LivePreviewModalProps> = ({
   };
 
   const getWidthClass = () => {
-    if (viewportMode === 'mobile') return 'w-full max-w-[390px] min-h-[840px] rounded-[36px] border-[10px] border-slate-800 shadow-2xl my-6 overflow-visible';
-    if (viewportMode === 'tablet') return 'w-full max-w-[768px] min-h-[960px] rounded-2xl border-[6px] border-slate-800 shadow-2xl my-6 overflow-visible';
+    if (viewportMode === 'mobile') return 'w-full max-w-[390px] min-h-[840px] rounded-[36px] border-[10px] border-slate-200 shadow-2xl my-6 overflow-visible';
+    if (viewportMode === 'tablet') return 'w-full max-w-[768px] min-h-[960px] rounded-2xl border-[6px] border-slate-200 shadow-2xl my-6 overflow-visible';
     return 'w-full min-h-full border-none shadow-none';
   };
 
@@ -92,45 +92,45 @@ export const LivePreviewModal: React.FC<LivePreviewModalProps> = ({
   const googleFontsUrl = fontFamiliesList ? `https://fonts.googleapis.com/css2?family=${fontFamiliesList}:wght@300;400;600;700;800;900&display=swap` : '';
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-md flex flex-col">
+    <div className="fixed inset-0 z-50 bg-white/95 backdrop-blur-md flex flex-col">
       {googleFontsUrl && <link rel="stylesheet" href={googleFontsUrl} />}
       
       {/* Top Navigation & Viewport Bar */}
-      <header className="h-14 bg-slate-900 border-b border-slate-800 px-6 flex items-center justify-between shrink-0 text-slate-100 z-20 shadow-md">
+      <header className="h-14 bg-white border-b border-slate-200 px-6 flex items-center justify-between shrink-0 text-slate-900 z-20 shadow-md">
         <div className="flex items-center gap-3">
           <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
           <h3 className="font-bold text-sm">Live Preview Environment: <span className="text-indigo-400 font-mono">{activeStep.name}</span></h3>
-          <span className="hidden lg:inline text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded-md font-mono">
+          <span className="hidden lg:inline text-[10px] bg-slate-50 text-slate-700 px-2 py-0.5 rounded-md font-mono">
             {viewportMode.toUpperCase()} VIEW • FULL SCROLL ACTIVE
           </span>
         </div>
 
         {/* Viewport Switcher */}
-        <div className="flex items-center gap-1 bg-slate-950 border border-slate-800 p-1 rounded-xl">
+        <div className="flex items-center gap-1 bg-white border border-slate-200 p-1 rounded-xl">
           <button 
             onClick={() => setViewportMode('desktop')} 
-            className={`p-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition-all ${viewportMode === 'desktop' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'}`}
+            className={`p-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition-all ${viewportMode === 'desktop' ? 'bg-indigo-600 text-white shadow' : 'text-slate-600 hover:text-slate-900'}`}
           >
             <Monitor className="w-4 h-4" />
             <span>Desktop</span>
           </button>
           <button 
             onClick={() => setViewportMode('tablet')} 
-            className={`p-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition-all ${viewportMode === 'tablet' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'}`}
+            className={`p-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition-all ${viewportMode === 'tablet' ? 'bg-indigo-600 text-white shadow' : 'text-slate-600 hover:text-slate-900'}`}
           >
             <Tablet className="w-4 h-4" />
             <span>Tablet</span>
           </button>
           <button 
             onClick={() => setViewportMode('mobile')} 
-            className={`p-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition-all ${viewportMode === 'mobile' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'}`}
+            className={`p-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition-all ${viewportMode === 'mobile' ? 'bg-indigo-600 text-white shadow' : 'text-slate-600 hover:text-slate-900'}`}
           >
             <Smartphone className="w-4 h-4" />
             <span>Mobile</span>
           </button>
         </div>
 
-        <button onClick={onClose} className="p-1.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white">
+        <button onClick={onClose} className="p-1.5 hover:bg-slate-50 rounded-lg text-slate-600 hover:text-slate-900">
           <X className="w-5 h-5" />
         </button>
       </header>
@@ -139,9 +139,9 @@ export const LivePreviewModal: React.FC<LivePreviewModalProps> = ({
       <div 
         id="live-preview-scroll-container"
         onScroll={handleScroll}
-        className={`flex-1 overflow-y-auto scroll-smooth bg-slate-950 flex flex-col ${viewportMode === 'desktop' ? 'p-0' : 'p-4 md:p-8 items-center'}`}
+        className={`flex-1 overflow-y-auto scroll-smooth bg-white flex flex-col ${viewportMode === 'desktop' ? 'p-0' : 'p-4 md:p-8 items-center'}`}
       >
-        <div className={`transition-all duration-300 bg-slate-900 mx-auto ${getWidthClass()}`}>
+        <div className={`transition-all duration-300 bg-white mx-auto ${getWidthClass()}`}>
           {canvasState.sections.map((section) => {
             const bgStyle = getBackgroundStyles(section.background);
             if (section.paddingTop) bgStyle.paddingTop = section.paddingTop;
