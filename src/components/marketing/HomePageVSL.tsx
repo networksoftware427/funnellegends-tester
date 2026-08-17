@@ -167,32 +167,81 @@ export const HomePageVSL: React.FC<HomePageVSLProps> = ({ onOpenOrderModal, onNa
         </div>
       </section>
 
-      {/* ── FAQ SECTION ── */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto space-y-8">
-        <div className="text-center space-y-3">
-          <h2 className="text-2xl sm:text-4xl font-black text-white">Frequently Asked Questions</h2>
-          <p className="text-sm text-slate-400">Everything you need to know about starting your 30-day free trial.</p>
+      {/* ── FAQ SECTION (STYLISH GLASSMORPHISM ACCORDION) ── */}
+      <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto space-y-12">
+        
+        <div className="text-center space-y-4">
+          <span className="px-3.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-black uppercase tracking-wider">
+            GOT QUESTIONS? WE'VE GOT ANSWERS
+          </span>
+          <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">Frequently Asked Questions</h2>
+          <p className="text-sm sm:text-base text-slate-400 max-w-xl mx-auto">Everything you need to know about starting your 30-day free trial and scaling your enterprise.</p>
         </div>
 
         <div className="space-y-4">
-          {faqs.map((faq, idx) => (
-            <div 
-              key={idx}
-              className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden cursor-pointer"
-              onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-            >
-              <div className="p-5 flex items-center justify-between font-bold text-sm text-white">
-                <span>{faq.q}</span>
-                {openFaq === idx ? <ChevronUp className="w-4 h-4 text-emerald-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
-              </div>
-              {openFaq === idx && (
-                <div className="p-5 pt-0 text-xs text-slate-300 leading-relaxed border-t border-slate-800/60 mt-2">
-                  {faq.a}
+          {faqs.map((faq, idx) => {
+            const isOpen = openFaq === idx;
+            return (
+              <div 
+                key={idx}
+                onClick={() => setOpenFaq(isOpen ? null : idx)}
+                className={`rounded-3xl transition-all duration-300 cursor-pointer overflow-hidden border ${
+                  isOpen 
+                    ? 'bg-gradient-to-r from-emerald-950/60 via-slate-900 to-slate-900 border-emerald-500 shadow-xl shadow-emerald-950/50 scale-[1.01]' 
+                    : 'bg-slate-900/80 hover:bg-slate-900 border-slate-800 hover:border-slate-700'
+                }`}
+              >
+                <div className="p-6 flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-4">
+                    {/* Number Badge */}
+                    <span className={`w-8 h-8 rounded-xl flex items-center justify-center font-black font-mono text-xs transition-colors shrink-0 ${
+                      isOpen ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/30' : 'bg-slate-800 text-slate-400'
+                    }`}>
+                      0{idx + 1}
+                    </span>
+
+                    <h3 className={`font-bold text-sm sm:text-base transition-colors ${isOpen ? 'text-white' : 'text-slate-200'}`}>
+                      {faq.q}
+                    </h3>
+                  </div>
+
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-transform duration-300 ${
+                    isOpen ? 'bg-emerald-500/20 text-emerald-400 rotate-180' : 'bg-slate-800 text-slate-400'
+                  }`}>
+                    <ChevronDown className="w-4 h-4" />
+                  </div>
                 </div>
-              )}
-            </div>
-          ))}
+
+                {isOpen && (
+                  <div className="px-6 pb-6 pt-2 text-xs sm:text-sm text-slate-300 leading-relaxed border-t border-emerald-500/20 space-y-2 animate-fade-in pl-18">
+                    <p>{faq.a}</p>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
+
+        {/* Bottom Specialist Support Box */}
+        <div className="p-6 rounded-3xl bg-slate-900/60 border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 font-bold">
+              <HelpCircle className="w-5 h-5" />
+            </div>
+            <div>
+              <h4 className="text-sm font-bold text-white">Still have questions?</h4>
+              <p className="text-xs text-slate-400">Our 24/7 Funnel Specialist team is ready to help you set up your account.</p>
+            </div>
+          </div>
+          <button
+            onClick={onOpenOrderModal}
+            className="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs transition-all shadow-lg shrink-0 flex items-center gap-1.5"
+          >
+            <span>Talk To A Specialist</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
+
       </section>
     </div>
   );
