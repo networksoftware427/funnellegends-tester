@@ -139,28 +139,28 @@ export const HomePageVSL: React.FC<HomePageVSLProps> = ({ onOpenOrderModal, onNa
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             
-            <div className="p-6 bg-slate-950 rounded-2xl border border-slate-800 space-y-4 hover:border-emerald-500/40 transition-all">
-              <div className="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold">
+            <div className="p-6 bg-white rounded-2xl border border-emerald-200 space-y-4 shadow-sm hover:border-emerald-500 transition-all">
+              <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
                 <Layers className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-bold text-white">Visual Drag-and-Drop Builder</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">Section, Row, Column & Element ClickFunnels architecture with real-time bidirectional styling.</p>
+              <h3 className="text-lg font-black text-slate-900">Visual Drag-and-Drop Builder</h3>
+              <p className="text-xs text-slate-700 font-medium leading-relaxed">Section, Row, Column & Element ClickFunnels architecture with real-time bidirectional styling.</p>
             </div>
 
-            <div className="p-6 bg-slate-950 rounded-2xl border border-slate-800 space-y-4 hover:border-emerald-500/40 transition-all">
-              <div className="w-12 h-12 rounded-xl bg-teal-500/20 text-teal-400 flex items-center justify-center font-bold">
+            <div className="p-6 bg-white rounded-2xl border border-emerald-200 space-y-4 shadow-sm hover:border-emerald-500 transition-all">
+              <div className="w-12 h-12 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center font-bold">
                 <Trophy className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-bold text-white">BountyPack Affiliate Engine</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">Recruit affiliates, manage tier-1/tier-2 commission payouts, and issue promo materials automatically.</p>
+              <h3 className="text-lg font-black text-slate-900">BountyPack Affiliate Engine</h3>
+              <p className="text-xs text-slate-700 font-medium leading-relaxed">Recruit affiliates, manage tier-1/tier-2 commission payouts, and issue promo materials automatically.</p>
             </div>
 
-            <div className="p-6 bg-slate-950 rounded-2xl border border-slate-800 space-y-4 hover:border-emerald-500/40 transition-all">
-              <div className="w-12 h-12 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold">
+            <div className="p-6 bg-white rounded-2xl border border-emerald-200 space-y-4 shadow-sm hover:border-emerald-500 transition-all">
+              <div className="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold">
                 <Rocket className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-bold text-white">ChronoChimp Appointments</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">Schedule strategy calls, client consultations, and webinar appointments directly inside your funnels.</p>
+              <h3 className="text-lg font-black text-slate-900">ChronoChimp Appointments</h3>
+              <p className="text-xs text-slate-700 font-medium leading-relaxed">Schedule strategy calls, client consultations, and webinar appointments directly inside your funnels.</p>
             </div>
 
           </div>

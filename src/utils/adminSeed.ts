@@ -6,6 +6,7 @@ export interface AdminUser {
   email: string;
   role: 'SuperAdmin' | 'AgencyOwner';
   isLoggedIn: boolean;
+  rememberMe?: boolean;
   avatar: string;
   subscriptionPlan: string;
   trialDaysLeft: number;

@@ -73,12 +73,12 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onOpenOrderModal }) 
         {/* Feature Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {tools.map((t, idx) => (
-            <div key={idx} className="p-8 bg-slate-900 border border-slate-800 rounded-3xl space-y-4 hover:border-emerald-500/50 hover:shadow-2xl hover:shadow-emerald-950/40 transition-all group">
-              <div className="w-14 h-14 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-center group-hover:scale-110 transition-transform">
+            <div key={idx} className="p-8 bg-white border border-emerald-200 rounded-3xl space-y-4 shadow-sm hover:border-emerald-500 hover:shadow-lg transition-all group">
+              <div className="w-14 h-14 rounded-2xl bg-emerald-100 border border-emerald-200 flex items-center justify-center group-hover:scale-110 transition-transform">
                 {t.icon}
               </div>
-              <h3 className="text-xl font-bold text-white group-hover:text-emerald-400 transition-colors">{t.title}</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">{t.desc}</p>
+              <h3 className="text-xl font-black text-slate-900 group-hover:text-emerald-700 transition-colors">{t.title}</h3>
+              <p className="text-xs text-slate-700 font-medium leading-relaxed">{t.desc}</p>
             </div>
           ))}
         </div>

@@ -13,6 +13,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [rememberMe, setRememberMe] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [authSuccess, setAuthSuccess] = useState(false);
 
@@ -20,13 +21,14 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Save Admin Session
+    // Save Admin Session with Remember Me preference
     saveAdminSession({
       id: 'usr_stephen_tofield_888',
       name: name || 'Stephen Tofield',
       email: email || 'tofield69@gmail.com',
       role: 'SuperAdmin',
       isLoggedIn: true,
+      rememberMe: rememberMe,
       avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
       subscriptionPlan: 'SuperAdmin VIP Agency Enterprise',
       trialDaysLeft: 365
@@ -106,6 +108,19 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
                 placeholder="••••••••••••"
               />
             </div>
+          </div>
+
+          {/* Keep me logged in / Remember me Checkbox */}
+          <div className="flex items-center justify-between pt-1 pb-1 text-xs">
+            <label className="flex items-center gap-2 cursor-pointer select-none text-slate-300 hover:text-white transition-colors">
+              <input 
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                className="w-4 h-4 rounded border-slate-800 bg-slate-950 text-emerald-500 focus:ring-emerald-500 accent-emerald-500"
+              />
+              <span className="font-bold text-xs">Keep me logged in / Remember me</span>
+            </label>
           </div>
 
           <button
