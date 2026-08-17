@@ -110,7 +110,7 @@ export const HomePageVSL: React.FC<HomePageVSLProps> = ({ onOpenOrderModal, onNa
         <div className="pt-6 space-y-4">
           <button
             onClick={onOpenOrderModal}
-            className="px-8 sm:px-12 py-5 rounded-2xl text-lg sm:text-xl font-black text-slate-900 shadow-2xl transition-all hover:scale-105 inline-flex items-center gap-3"
+            className="px-8 sm:px-12 py-5 rounded-2xl text-lg sm:text-xl font-black text-white shadow-2xl transition-all hover:scale-105 inline-flex items-center gap-3"
             style={{ 
               background: 'linear-gradient(135deg, #FF6A00 0%, #ee5d00 100%)',
               boxShadow: '0 10px 40px rgba(255, 106, 0, 0.45)'

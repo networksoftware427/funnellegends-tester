@@ -18,11 +18,11 @@ export const MarketingNavbar: React.FC<NavbarProps> = ({
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-emerald-100 shadow-sm">
       {/* Top Announcement Bar */}
       <div className="bg-gradient-to-r from-green-600 via-emerald-600 to-teal-700 text-white text-center py-2 px-4 text-xs font-bold flex items-center justify-center gap-2 shadow-sm">
-        <span className="bg-white/20 text-slate-900 px-2 py-0.5 rounded-full text-[10px] uppercase font-extrabold tracking-wide">SPECIAL OFFER</span>
+        <span className="bg-white/20 text-white px-2 py-0.5 rounded-full text-[10px] uppercase font-extrabold tracking-wide">SPECIAL OFFER</span>
         <span>🎉 Claim Your 30-Day Free Trial + 37 High-Converting Cookbook Templates Included!</span>
         <button 
           onClick={onOpenOrderModal}
-          className="underline hover:text-green-200 transition-colors ml-2 font-extrabold flex items-center gap-1 text-slate-900"
+          className="underline hover:text-orange-300 transition-colors ml-2 font-extrabold flex items-center gap-1 text-orange-400"
         >
           Claim Now <ArrowRight className="w-3.5 h-3.5" />
         </button>
@@ -90,7 +90,7 @@ export const MarketingNavbar: React.FC<NavbarProps> = ({
 
           <button
             onClick={onOpenOrderModal}
-            className="px-5 py-2.5 rounded-xl text-xs font-black text-slate-900 shadow-xl transition-all hover:scale-105 animate-pulse flex items-center gap-2"
+            className="px-5 py-2.5 rounded-xl text-xs font-black text-white shadow-xl transition-all hover:scale-105 animate-pulse flex items-center gap-2"
             style={{ 
               background: 'linear-gradient(135deg, #FF6A00 0%, #ee5d00 100%)',
               boxShadow: '0 4px 20px rgba(255, 106, 0, 0.4)'
