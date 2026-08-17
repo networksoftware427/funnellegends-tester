@@ -16,6 +16,7 @@ import { AiAssistantModal } from './components/ai/AiAssistantModal';
 import { CodeInspector } from './components/builder/CodeInspector';
 import { DashboardOverview } from './components/dashboard/DashboardOverview';
 import { GlobalSettingsManager } from './components/settings/GlobalSettingsManager';
+import { MarketingWebsiteContainer } from './components/marketing/MarketingWebsiteContainer';
 import { GlobalSettingsModal } from './components/settings/GlobalSettingsModal';
 import { WebsitesManager } from './components/websites/WebsitesManager';
 import { 
@@ -63,6 +64,9 @@ export function App() {
   const [activeStep, setActiveStep] = useState<FunnelStepData>(activeFunnel.steps[0]);
   const [canvasState, setCanvasState] = useState<CanvasState>(activeFunnel.steps[0].canvasState);
   
+  // Main App View Mode: 'marketing' (Public Site) vs 'platform' (Builder App)
+  const [viewMode, setViewMode] = useState<'marketing' | 'platform'>('marketing');
+
   // Platform View state
   const [currentTab, setCurrentTab] = useState<'dashboard' | 'builder' | 'funnels' | 'websites' | 'membership' | 'publishing' | 'automations' | 'crm' | 'affiliate' | 'appointments' | 'community' | 'messagehub' | 'settings'>('dashboard');
 
@@ -212,6 +216,14 @@ export function App() {
         ? 'bg-gradient-to-r from-green-500 to-teal-600 text-white shadow-lg'
         : 'text-gray-500 hover:text-gray-800 hover:bg-green-50'
     }`;
+
+  if (viewMode === 'marketing') {
+    return (
+      <MarketingWebsiteContainer 
+        onLaunchPlatformApp={() => setViewMode('platform')}
+      />
+    );
+  }
 
   return (
     <div className="flex h-screen overflow-hidden bg-white font-sans text-gray-900">
@@ -383,8 +395,16 @@ export function App() {
             </span>
           </div>
 
-          {/* Right: Templates + AI Copilot */}
+          {/* Right: Marketing Site + Templates + AI Copilot */}
           <div className="flex items-center gap-2">
+            <button
+              onClick={() => setViewMode('marketing')}
+              className="px-3 py-1.5 bg-green-50 hover:bg-green-100 text-green-800 hover:text-green-950 rounded-xl text-xs font-bold flex items-center gap-1.5 border border-green-300 transition-colors"
+            >
+              <Globe className="w-4 h-4 text-green-600" />
+              <span>Marketing Site</span>
+            </button>
+
             <button
               onClick={() => setIsTemplateModalOpen(true)}
               className="px-3 py-1.5 bg-white hover:bg-green-50 text-gray-700 hover:text-gray-900 rounded-xl text-xs font-bold flex items-center gap-1.5 border border-green-200 transition-colors"
