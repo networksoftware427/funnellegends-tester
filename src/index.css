@@ -57,35 +57,8 @@
    This section re-maps those to the white/green theme.
    ============================================================ */
 
-/* Backgrounds */
-.bg-slate-950 { background-color: #ffffff !important; }
-.bg-slate-900 { background-color: #f8fffe !important; }
-.bg-slate-800 { background-color: #f0faf4 !important; }
-.bg-slate-700 { background-color: #e6f7ee !important; }
-.bg-slate-600 { background-color: #d1fae5 !important; }
-.bg-gray-950  { background-color: #ffffff !important; }
-.bg-gray-900  { background-color: #f8fffe !important; }
-.bg-gray-800  { background-color: #f0faf4 !important; }
-
-/* Text Colors */
-.text-slate-100 { color: #0f2d1e !important; }
-.text-slate-200 { color: #1a3a28 !important; }
-.text-slate-300 { color: #374151 !important; }
-.text-slate-400 { color: #6b7280 !important; }
-.text-slate-500 { color: #9ca3af !important; }
-.text-slate-600 { color: #9ca3af !important; }
-.text-gray-100  { color: #0f2d1e !important; }
-.text-gray-200  { color: #1a3a28 !important; }
-.text-gray-300  { color: #374151 !important; }
-.text-gray-400  { color: #6b7280 !important; }
-.text-white     { color: #0f2d1e !important; }
-
-/* Borders */
-.border-slate-800  { border-color: #d1fae5 !important; }
-.border-slate-700  { border-color: #a7f3d0 !important; }
-.border-slate-600  { border-color: #6ee7b7 !important; }
-.border-gray-800   { border-color: #d1fae5 !important; }
-.border-gray-700   { border-color: #a7f3d0 !important; }
+/* Text Colors - Keep text-white crisp white */
+.text-white { color: #ffffff !important; }
 
 /* Primary action color: indigo → green */
 .bg-indigo-600       { background-color: var(--fl-green) !important; }
