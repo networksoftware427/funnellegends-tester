@@ -1,0 +1,141 @@
+// LaunchEngine - Enterprise All-in-One Funnel Platform Database Schema
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Workspace {
+  id           String      @id @default(uuid())
+  name         String
+  subdomain    String      @unique
+  customDomain String?     @unique
+  funnels      Funnel[]
+  courses      Course[]
+  contacts     Contact[]
+  workflows    Workflow[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+}
+
+model Funnel {
+  id          String       @id @default(uuid())
+  workspaceId String
+  name        String
+  slug        String
+  type        String       // Lead, Sales, Webinar, Membership, Application
+  workspace   Workspace    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  steps       FunnelStep[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model FunnelStep {
+  id         String   @id @default(uuid())
+  funnelId   String
+  name       String
+  slug       String
+  stepOrder  Int
+  stepType   String   // OptIn, Sales, Upsell, Downsell, ThankYou, MemberLogin, MemberArea, Lesson
+  funnel     Funnel   @relation(fields: [funnelId], references: [id], onDelete: Cascade)
+  pages      Page[]
+  lessons    Lesson[]
+}
+
+model Page {
+  id          String        @id @default(uuid())
+  stepId      String
+  title       String
+  status      String        // Draft, Published, Scheduled, Archived
+  canvasState Json          // JSON Tree: Sections -> Rows -> Columns -> Elements
+  publishedAt DateTime?
+  versions    PageVersion[]
+  step        FunnelStep    @relation(fields: [stepId], references: [id], onDelete: Cascade)
+}
+
+model PageVersion {
+  id          String   @id @default(uuid())
+  pageId      String
+  versionNum  Int
+  canvasState Json
+  publishedBy String
+  createdAt   DateTime @default(now())
+  page        Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+}
+
+model Course {
+  id          String    @id @default(uuid())
+  workspaceId String
+  title       String
+  description String?
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  modules     Module[]
+  createdAt   DateTime  @default(now())
+}
+
+model Module {
+  id        String   @id @default(uuid())
+  courseId  String
+  title     String
+  order     Int
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lessons   Lesson[]
+}
+
+model Lesson {
+  id          String      @id @default(uuid())
+  moduleId    String
+  stepId      String?
+  title       String
+  order       Int
+  dripDays    Int?        // Days after enrollment to unlock
+  module      Module      @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  step        FunnelStep? @relation(fields: [stepId], references: [id])
+}
+
+model FunnelTemplate {
+  id           String   @id @default(uuid())
+  name         String
+  category     String   // Sales, Lead, Webinar, Membership, Application
+  thumbnail    String
+  templateData Json     // Pre-built funnel steps, page states, design tokens
+  isSystem     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+}
+
+model Contact {
+  id          String   @id @default(uuid())
+  workspaceId String
+  email       String
+  name        String?
+  phone       String?
+  score       Int      @default(0)
+  tags        String[]
+  deals       Deal[]
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+}
+
+model Deal {
+  id          String   @id @default(uuid())
+  contactId   String
+  title       String
+  value       Float
+  stage       String   // Lead, Qualified, Proposal, Won, Lost
+  contact     Contact  @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+}
+
+model Workflow {
+  id          String   @id @default(uuid())
+  workspaceId String
+  name        String
+  triggerType String   // FormSubmitted, TagAdded, CartAbandoned, PurchaseCompleted, LessonCompleted
+  nodesJson   Json     // Visual nodes & edges configuration
+  isActive    Boolean  @default(true)
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+}
