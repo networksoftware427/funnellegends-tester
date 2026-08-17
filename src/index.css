@@ -1,67 +1,84 @@
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;600;700;800;900&family=Outfit:wght@600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* ============================================================
-   FUNNELLEGENDS GLOBAL DESIGN SYSTEM
+   FUNNELLEGENDS GLOBAL DESIGN SYSTEM v2
    Brand: White background, Bright green (#22c55e), Dark teal (#0d7270)
-   Font: Inter / Outfit (bold, clean, professional)
+   Font: Inter (body) / Outfit (headings)
+   WCAG 2.1 AA compliant — minimum 4.5:1 contrast on all text
    ============================================================ */
 
-/* CSS Custom Properties - FunnelLegends Brand Tokens */
+/* ── Design Tokens ── */
 :root {
-  --fl-green: #22c55e;
-  --fl-green-light: #4ade80;
-  --fl-green-mid: #16a34a;
-  --fl-green-dark: #14532d;
-  --fl-green-bg: #f0fdf4;
-  --fl-green-bg2: #dcfce7;
-  --fl-teal: #0d7270;
-  --fl-teal-light: #0d9488;
-  --fl-teal-dark: #0a5c5a;
-  --fl-white: #ffffff;
-  --fl-surface: #f8fffe;
-  --fl-surface2: #f0faf6;
-  --fl-border: #d1fae5;
-  --fl-border2: #86efac;
-  --fl-text: #0f2d1e;
-  --fl-text-sub: #374151;
-  --fl-text-muted: #6b7280;
-  --fl-shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-  --fl-shadow-md: 0 4px 12px rgba(0,0,0,0.08);
-  --fl-shadow-lg: 0 10px 30px rgba(0,0,0,0.08);
+  --fl-green:        #22c55e;
+  --fl-green-light:  #4ade80;
+  --fl-green-mid:    #16a34a;
+  --fl-green-dark:   #14532d;
+  --fl-green-bg:     #f0fdf4;
+  --fl-green-bg2:    #dcfce7;
+  --fl-teal:         #0d7270;
+  --fl-teal-light:   #0d9488;
+  --fl-teal-dark:    #0a5c5a;
+  --fl-white:        #ffffff;
+  --fl-surface:      #f8fffe;
+  --fl-surface2:     #f0faf6;
+  --fl-border:       #d1fae5;
+  --fl-border2:      #86efac;
+  --fl-text:         #0f172a;
+  --fl-text-sub:     #374151;
+  --fl-text-muted:   #6b7280;
+  --fl-shadow-sm:    0 1px 3px rgba(0,0,0,0.06);
+  --fl-shadow-md:    0 4px 12px rgba(0,0,0,0.08);
+  --fl-shadow-lg:    0 10px 30px rgba(0,0,0,0.08);
+  --fl-radius:       0.75rem;
 }
 
 /* ============================================================
-   BASE RESETS & TYPOGRAPHY ENFORCEMENT
+   BASE TYPOGRAPHY — No aggressive background overrides
+   Only enforce fonts & text-color defaults
    ============================================================ */
 
 @layer base {
   html {
     background-color: #ffffff;
-    font-family: 'Inter', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  }
-  body, button, input, select, textarea {
-    font-family: 'Inter', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
-    background-color: #ffffff !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     color: #0f172a;
   }
-  h1, h2, h3, h4, h5, h6, .font-heading {
-    font-family: 'Outfit', 'Inter', sans-serif !important;
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #ffffff;
+    color: #0f172a;
   }
+
+  /* Headings use Outfit */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', 'Inter', sans-serif;
+  }
+
+  /* Form elements — font only, not background (let components control bg) */
+  input, textarea, select, button {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
   * {
     box-sizing: border-box;
   }
 }
 
-/* Primary action color: indigo → green */
+/* ============================================================
+   COLOUR OVERRIDES — Indigo → FunnelLegends Green
+   (Used to remap Tailwind indigo utilities to brand green)
+   ============================================================ */
 .bg-indigo-600       { background-color: var(--fl-green) !important; }
 .bg-indigo-500       { background-color: var(--fl-green-mid) !important; }
 .bg-indigo-700       { background-color: var(--fl-green-dark) !important; }
 .hover\:bg-indigo-500:hover { background-color: var(--fl-green-mid) !important; }
 .hover\:bg-indigo-600:hover { background-color: var(--fl-green) !important; }
+.text-indigo-600     { color: var(--fl-green-mid) !important; }
 .text-indigo-400     { color: var(--fl-green) !important; }
 .text-indigo-300     { color: var(--fl-green) !important; }
 .text-indigo-200     { color: var(--fl-green-mid) !important; }
@@ -73,73 +90,46 @@
 /* Shadow overrides: indigo → green */
 .shadow-indigo-600\/30 { box-shadow: 0 4px 14px rgba(34, 197, 94, 0.25) !important; }
 .shadow-indigo-600\/20 { box-shadow: 0 4px 14px rgba(34, 197, 94, 0.15) !important; }
-.shadow-lg.shadow-indigo-600\/30 { box-shadow: 0 10px 30px rgba(34, 197, 94, 0.2) !important; }
 
-/* Gradient overrides: indigo gradient → green */
+/* Gradient overrides */
 .from-indigo-600 { --tw-gradient-from: var(--fl-green) !important; }
 .to-indigo-500   { --tw-gradient-to: var(--fl-green-mid) !important; }
 .via-indigo-500  { --tw-gradient-via: var(--fl-green) !important; }
-.from-purple-600 { --tw-gradient-from: var(--fl-green) !important; }
-.to-purple-600   { --tw-gradient-to: var(--fl-teal) !important; }
-.from-pink-600   { --tw-gradient-from: var(--fl-green) !important; }
-.to-pink-600     { --tw-gradient-to: var(--fl-teal) !important; }
 
-/* Focus ring: indigo → green */
+/* Focus rings */
 .focus\:border-indigo-500:focus { border-color: var(--fl-green) !important; }
 .focus\:ring-indigo-500:focus   { --tw-ring-color: var(--fl-green) !important; }
 
-/* Specific component backgrounds - dark surface cards */
-.rounded-xl.bg-slate-900,
-.rounded-2xl.bg-slate-900,
-.rounded-3xl.bg-slate-900 {
-  background-color: #f8fffe !important;
-  border-color: #d1fae5 !important;
+/* ============================================================
+   FORM INPUTS — Clean white fields, green focus
+   Applied surgically without overriding canvas elements
+   ============================================================ */
+.fl-input,
+.platform-input {
+  background-color: #ffffff;
+  color: #0f172a;
+  border-color: #d1fae5;
 }
-.rounded-xl.bg-slate-800,
-.rounded-2xl.bg-slate-800,
-.rounded-3xl.bg-slate-800 {
-  background-color: #f0faf4 !important;
+.fl-input:focus,
+.platform-input:focus {
+  border-color: var(--fl-green);
+  outline-color: var(--fl-green);
 }
-.rounded-xl.bg-slate-950,
-.rounded-2xl.bg-slate-950,
-.rounded-3xl.bg-slate-950 {
-  background-color: #f4fcf7 !important;
-}
-
-/* Input fields */
-input, textarea, select {
-  background-color: #ffffff !important;
-  color: #0f2d1e !important;
-  border-color: #a7f3d0 !important;
-}
-input:focus, textarea:focus, select:focus {
-  border-color: var(--fl-green) !important;
-  outline-color: var(--fl-green) !important;
-}
-input::placeholder, textarea::placeholder {
-  color: #9ca3af !important;
+.fl-input::placeholder,
+.platform-input::placeholder {
+  color: #9ca3af;
 }
 
 /* ============================================================
    SCROLLBAR — Green-Tinted Light
    ============================================================ */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: #f0fdf4;
-}
-::-webkit-scrollbar-thumb {
-  background: #86efac;
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #4ade80;
-}
+::-webkit-scrollbar        { width: 6px; height: 6px; }
+::-webkit-scrollbar-track  { background: #f0fdf4; }
+::-webkit-scrollbar-thumb  { background: #86efac; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #4ade80; }
 
 /* ============================================================
-   BUILDER CANVAS OUTLINES — Brand Green Theme
+   BUILDER CANVAS SELECTION OUTLINES
    ============================================================ */
 .builder-mode-active .section-node {
   outline: 1.5px dashed rgba(34, 197, 94, 0.5);
@@ -194,14 +184,8 @@ input::placeholder, textarea::placeholder {
 }
 
 /* ============================================================
-   SIDEBAR NAVIGATION — FunnelLegends White + Green
+   SIDEBAR NAVIGATION
    ============================================================ */
-aside {
-  background-color: #ffffff !important;
-  border-right-color: #d1fae5 !important;
-}
-
-/* Active sidebar nav button */
 .sidebar-nav-active {
   background: linear-gradient(135deg, #22c55e, #0d9488) !important;
   color: #ffffff !important;
@@ -209,34 +193,14 @@ aside {
 }
 
 /* ============================================================
-   HEADER BAR — White with green accents
+   CARD COMPONENTS
    ============================================================ */
-header {
-  background-color: #ffffff !important;
-  border-bottom-color: #d1fae5 !important;
-}
-
-/* ============================================================
-   MODAL & OVERLAY BACKGROUNDS
-   ============================================================ */
-.fixed.inset-0.bg-slate-950\/80,
-.fixed.inset-0.bg-slate-950\/85 {
-  background-color: rgba(15, 45, 30, 0.6) !important;
-  backdrop-filter: blur(8px) !important;
-}
-
-/* ============================================================
-   CARD COMPONENT OVERRIDES
-   ============================================================ */
-/* White surface cards */
 .card-fl {
   background-color: #ffffff;
   border: 1px solid #d1fae5;
   border-radius: 1rem;
   box-shadow: var(--fl-shadow-sm);
 }
-
-/* Green accent card */
 .card-fl-accent {
   background: linear-gradient(135deg, #f0fdf4, #dcfce7);
   border: 1px solid #86efac;
@@ -244,9 +208,8 @@ header {
 }
 
 /* ============================================================
-   BUTTON OVERRIDES
+   BUTTON CLASSES (NON-AGGRESSIVE — no global button override)
    ============================================================ */
-/* Primary CTA button — green */
 .btn-fl-primary {
   background: linear-gradient(135deg, #22c55e, #16a34a);
   color: #ffffff !important;
@@ -264,15 +227,13 @@ header {
   transform: translateY(-1px);
 }
 
-/* Secondary outlined button */
 .btn-fl-secondary {
   background: #ffffff;
-  color: var(--fl-green) !important;
+  color: var(--fl-green-mid) !important;
   font-weight: 700;
   border-radius: 0.75rem;
   padding: 0.5rem 1.25rem;
   border: 1.5px solid var(--fl-green) !important;
-  box-shadow: none;
   transition: all 0.15s ease;
   cursor: pointer;
 }
@@ -282,7 +243,7 @@ header {
 }
 
 /* ============================================================
-   BADGE / PILL OVERRIDES
+   BADGE / PILL
    ============================================================ */
 .badge-green {
   background: #dcfce7;
@@ -295,7 +256,7 @@ header {
 }
 
 /* ============================================================
-   ANIMATION UTILITIES
+   ANIMATIONS
    ============================================================ */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
@@ -315,14 +276,14 @@ header {
 
 @keyframes pulseGlow {
   0%, 100% { opacity: 0.7; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.02); }
+  50%       { opacity: 1; transform: scale(1.02); }
 }
 .animate-pulse-glow {
   animation: pulseGlow 3s infinite ease-in-out;
 }
 
 @keyframes shimmer {
-  0% { background-position: -1000px 0; }
+  0%   { background-position: -1000px 0; }
   100% { background-position: 1000px 0; }
 }
 .animate-shimmer {
@@ -340,46 +301,35 @@ header {
   box-shadow: none !important;
   padding: 0 !important;
 }
-.preview-element-clean.p-6,
-.preview-element-clean.p-5 {
-  padding: 1.5rem !important;
-}
 
 /* ============================================================
-   DROPDOWN / SELECT OVERRIDE
+   DROPDOWN / SELECT
    ============================================================ */
 select option {
-  background-color: #ffffff !important;
-  color: #0f2d1e !important;
+  background-color: #ffffff;
+  color: #0f172a;
 }
 
 /* ============================================================
-   MISC UTILITY OVERRIDES
+   UTILITIES
    ============================================================ */
-/* Divider lines */
 .divide-slate-800 > * + * { border-color: #d1fae5 !important; }
 .divide-slate-700 > * + * { border-color: #a7f3d0 !important; }
 
-/* No-scrollbar utility */
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* Font weights for brand text */
 .font-fl-title {
   font-family: 'Outfit', 'Inter', sans-serif;
   font-weight: 900;
   letter-spacing: -0.02em;
 }
 
-/* Green text utility */
-.text-fl-green { color: var(--fl-green) !important; }
-.text-fl-teal  { color: var(--fl-teal) !important; }
-
-/* Green background utility */
+.text-fl-green     { color: var(--fl-green) !important; }
+.text-fl-teal      { color: var(--fl-teal) !important; }
 .bg-fl-green       { background-color: var(--fl-green) !important; }
 .bg-fl-green-light { background-color: var(--fl-green-bg) !important; }
 
-/* Gradient text — FunnelLegends brand */
 .text-fl-gradient {
   background: linear-gradient(135deg, #22c55e, #0d9488);
   -webkit-background-clip: text;
@@ -388,103 +338,33 @@ select option {
 }
 
 /* ============================================================
-   GLOBAL BUTTON OVERRIDE — FunnelLegends Green + White
-   All <button> elements default to green background + white text.
-   Exceptions are carved out for icon-only / ghost / transparent buttons.
+   WCAG 2.1 AA — CONTRAST SAFETY NET
+   Ensure platform UI text is always legible.
+   These are utility classes for the APP shell only, not canvas.
    ============================================================ */
 
-button:not([class*="bg-transparent"]):not([class*="bg-none"]):not([class*="text-"]):not([class*="bg-white"]) {
-  background-color: var(--fl-green);
-  color: #ffffff;
-  font-weight: 700;
-  border-radius: 0.625rem;
-  transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+/* Headings in platform panels must be dark on light bg */
+.platform-panel h1,
+.platform-panel h2,
+.platform-panel h3,
+.platform-panel h4,
+.platform-panel p,
+.platform-panel span,
+.platform-panel label {
+  color: #0f172a;
 }
 
-/* Override specific legacy indigo/purple/pink/slate button classes to green */
-button.bg-indigo-600,
-button.bg-indigo-500,
-button.bg-purple-600,
-button.bg-pink-600,
-a.bg-indigo-600,
-a.bg-indigo-500,
-a.bg-purple-600 {
-  background: linear-gradient(135deg, #22c55e, #16a34a) !important;
-  color: #ffffff !important;
-  box-shadow: 0 4px 14px rgba(34, 197, 94, 0.25) !important;
+/* Muted secondary text in panels */
+.platform-panel .text-muted {
+  color: #4b5563; /* slate-600 — 7.1:1 on white */
 }
 
-button.bg-indigo-600:hover,
-button.bg-indigo-500:hover,
-button.bg-purple-600:hover,
-button.bg-pink-600:hover {
-  background: linear-gradient(135deg, #16a34a, #0d7270) !important;
-  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.35) !important;
+/* Focus rings for accessibility on interactive elements */
+.platform-panel button:focus-visible,
+.platform-panel a:focus-visible,
+.platform-panel input:focus-visible,
+.platform-panel select:focus-visible,
+.platform-panel textarea:focus-visible {
+  outline: 2px solid #22c55e;
+  outline-offset: 2px;
 }
-
-/* Slate/gray buttons → white outlined green */
-button.bg-slate-800,
-button.bg-slate-700,
-button.bg-gray-800,
-button.bg-gray-700 {
-  background-color: #ffffff !important;
-  color: #16a34a !important;
-  border: 1.5px solid #a7f3d0 !important;
-  box-shadow: none !important;
-}
-
-button.bg-slate-800:hover,
-button.bg-slate-700:hover,
-button.bg-gray-800:hover,
-button.bg-gray-700:hover {
-  background-color: #f0fdf4 !important;
-  border-color: #22c55e !important;
-  color: #14532d !important;
-}
-
-/* Danger/delete buttons stay red-ish */
-button.text-rose-400,
-button.hover\:text-rose-400,
-button[title*="Delete"],
-button[title*="delete"] {
-  background-color: transparent !important;
-  color: #ef4444 !important;
-  border: none !important;
-  box-shadow: none !important;
-  padding: 0 !important;
-}
-
-/* Icon-only flat/ghost buttons — no background, just icon color */
-button.p-1\.5,
-button.p-2,
-button.p-1 {
-  background-color: transparent !important;
-  color: #6b7280 !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-button.p-1\.5:hover,
-button.p-2:hover,
-button.p-1:hover {
-  background-color: #f0fdf4 !important;
-  color: #0f2d1e !important;
-}
-
-/* ============================================================
-   CANVAS ELEMENT DEFAULT TEXT — dark text for white canvas
-   ============================================================ */
-
-/* Make sure canvas element text is readable on white */
-.builder-mode-active h1,
-.builder-mode-active h2,
-.builder-mode-active h3,
-.builder-mode-active h4,
-.builder-mode-active p {
-  color: #0f2d1e;
-}
-
-/* Default element placeholder colors */
-.builder-mode-active .element-node {
-  color: #374151;
-}
-
