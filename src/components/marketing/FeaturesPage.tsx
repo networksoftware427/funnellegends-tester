@@ -58,16 +58,16 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onOpenOrderModal }) 
   ];
 
   return (
-    <div className="bg-slate-950 text-slate-100 min-h-screen py-16 px-4 sm:px-6 lg:px-8">
+    <div className="bg-white text-slate-900 min-h-screen py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto space-y-16">
         
         {/* Header */}
         <div className="text-center space-y-4 max-w-3xl mx-auto">
-          <span className="px-3.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-black uppercase tracking-wider">
+          <span className="px-3.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-700 text-xs font-black uppercase tracking-wider">
             ALL-IN-ONE ENTERPRISE SUITE
           </span>
-          <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight">Every Tool You Need To Scale Without Buying 10+ Apps</h1>
-          <p className="text-slate-400 text-sm sm:text-base">Explore the full catalog of enterprise tools pre-loaded into your FunnelLegends account.</p>
+          <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">Every Tool You Need To Scale Without Buying 10+ Apps</h1>
+          <p className="text-slate-700 font-medium text-sm sm:text-base">Explore the full catalog of enterprise tools pre-loaded into your FunnelLegends account.</p>
         </div>
 
         {/* Feature Grid */}

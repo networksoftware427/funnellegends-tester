@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -33,18 +35,21 @@
 }
 
 /* ============================================================
-   BASE RESETS — WHITE THEME OVERRIDE
-   Override all dark slate Tailwind utilities globally
+   BASE RESETS & TYPOGRAPHY ENFORCEMENT
    ============================================================ */
 
 @layer base {
   html {
     background-color: #ffffff;
+    font-family: 'Inter', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
-  body {
-    @apply bg-white text-gray-900 min-h-screen font-sans;
+  body, button, input, select, textarea {
+    font-family: 'Inter', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
     background-color: #ffffff !important;
-    color: #0f2d1e !important;
+    color: #0f2d1e;
+  }
+  h1, h2, h3, h4, h5, h6, .font-heading {
+    font-family: 'Outfit', 'Inter', sans-serif !important;
   }
   * {
     box-sizing: border-box;
@@ -52,13 +57,23 @@
 }
 
 /* ============================================================
-   GLOBAL DARK-SLATE → LIGHT THEME OVERRIDES
-   The app currently uses many bg-slate-* / bg-gray-* classes inline.
-   This section re-maps those to the white/green theme.
+   GLOBAL WHITE & EMERALD THEME OVERRIDES
    ============================================================ */
 
-/* Text Colors - Keep text-white crisp white */
-.text-white { color: #ffffff !important; }
+/* Page & Section Backgrounds */
+.bg-slate-950 { background-color: #ffffff !important; }
+.bg-slate-900 { background-color: #f8fffe !important; }
+.bg-slate-800 { background-color: #f0faf4 !important; }
+.bg-slate-700 { background-color: #e6f7ee !important; }
+
+/* Text Colors */
+.text-slate-900 { color: #0f172a !important; }
+.text-slate-800 { color: #1e293b !important; }
+.text-slate-700 { color: #334155 !important; }
+.text-slate-600 { color: #475569 !important; }
+.text-slate-500 { color: #64748b !important; }
+.text-slate-400 { color: #6b7280 !important; }
+.text-white     { color: #ffffff !important; }
 
 /* Primary action color: indigo → green */
 .bg-indigo-600       { background-color: var(--fl-green) !important; }

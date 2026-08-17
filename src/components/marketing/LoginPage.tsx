@@ -45,12 +45,12 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
   };
 
   return (
-    <div className="bg-slate-950 text-slate-100 min-h-screen py-16 px-4 sm:px-6 lg:px-8 flex items-center justify-center relative overflow-hidden">
+    <div className="bg-white text-slate-900 min-h-screen py-16 px-4 sm:px-6 lg:px-8 flex items-center justify-center relative overflow-hidden">
       
       {/* Background Ambient Blur */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-emerald-500/15 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="bg-slate-900 border-2 border-emerald-500/40 rounded-3xl max-w-md w-full p-8 space-y-6 shadow-2xl relative z-10">
+      <div className="bg-white border-2 border-emerald-300 rounded-3xl max-w-md w-full p-8 space-y-6 shadow-xl relative z-10">
         
         {/* Logo & Brand */}
         <div className="text-center space-y-3">
@@ -58,53 +58,53 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
             <FunnelLegendsLogo size={48} />
           </div>
           <div>
-            <h2 className="text-2xl font-black text-white tracking-tight">Admin & Member Login</h2>
-            <p className="text-xs text-slate-400 mt-1">Enter your credentials to access your FunnelLegends account.</p>
+            <h2 className="text-2xl font-black text-slate-900 tracking-tight">Admin & Member Login</h2>
+            <p className="text-xs text-slate-600 font-medium mt-1">Enter your credentials to access your FunnelLegends account.</p>
           </div>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-4 text-xs">
           
           <div>
-            <label className="block text-slate-300 font-bold mb-1">Full Name</label>
-            <div className="flex items-center gap-2 bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-white">
-              <User className="w-4 h-4 text-slate-400" />
+            <label className="block text-slate-800 font-bold mb-1">Full Name</label>
+            <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-900">
+              <User className="w-4 h-4 text-slate-500" />
               <input 
                 type="text" 
                 required
                 value={name} 
                 onChange={(e) => setName(e.target.value)} 
-                className="flex-1 bg-transparent outline-none font-medium text-xs"
+                className="flex-1 bg-transparent outline-none font-medium text-xs text-slate-900"
                 placeholder="Enter your full name"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-slate-300 font-bold mb-1">Email Address</label>
-            <div className="flex items-center gap-2 bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-white">
-              <Mail className="w-4 h-4 text-slate-400" />
+            <label className="block text-slate-800 font-bold mb-1">Email Address</label>
+            <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-900">
+              <Mail className="w-4 h-4 text-slate-500" />
               <input 
                 type="email" 
                 required
                 value={email} 
                 onChange={(e) => setEmail(e.target.value)} 
-                className="flex-1 bg-transparent outline-none font-medium text-xs"
+                className="flex-1 bg-transparent outline-none font-medium text-xs text-slate-900"
                 placeholder="tofield69@gmail.com"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-slate-300 font-bold mb-1">Admin Password</label>
-            <div className="flex items-center gap-2 bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-white">
-              <KeyRound className="w-4 h-4 text-slate-400" />
+            <label className="block text-slate-800 font-bold mb-1">Admin Password</label>
+            <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-900">
+              <KeyRound className="w-4 h-4 text-slate-500" />
               <input 
                 type="password" 
                 required
                 value={password} 
                 onChange={(e) => setPassword(e.target.value)} 
-                className="flex-1 bg-transparent outline-none font-mono text-xs"
+                className="flex-1 bg-transparent outline-none font-mono text-xs text-slate-900"
                 placeholder="••••••••••••"
               />
             </div>
@@ -112,14 +112,14 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
 
           {/* Keep me logged in / Remember me Checkbox */}
           <div className="flex items-center justify-between pt-1 pb-1 text-xs">
-            <label className="flex items-center gap-2 cursor-pointer select-none text-slate-300 hover:text-white transition-colors">
+            <label className="flex items-center gap-2 cursor-pointer select-none text-slate-700 hover:text-slate-900 transition-colors">
               <input 
                 type="checkbox"
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
-                className="w-4 h-4 rounded border-slate-800 bg-slate-950 text-emerald-500 focus:ring-emerald-500 accent-emerald-500"
+                className="w-4 h-4 rounded border-slate-300 bg-slate-100 text-emerald-600 focus:ring-emerald-500 accent-emerald-600"
               />
-              <span className="font-bold text-xs">Keep me logged in / Remember me</span>
+              <span className="font-bold text-xs text-slate-800">Keep me logged in / Remember me</span>
             </label>
           </div>
 

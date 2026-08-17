@@ -33,27 +33,27 @@ export const HomePageVSL: React.FC<HomePageVSLProps> = ({ onOpenOrderModal, onNa
   ];
 
   return (
-    <div className="bg-slate-950 text-slate-100 min-h-screen">
+    <div className="bg-white text-slate-900 min-h-screen">
       
       {/* ── HERO VSL SECTION ── */}
       <section className="relative pt-12 pb-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto text-center space-y-8">
         
         {/* Background Ambient Glow */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-emerald-500/15 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none" />
 
         {/* Attention Eyebrow */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-500/10 border border-rose-500/30 text-rose-400 font-black text-xs uppercase tracking-widest animate-pulse">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-500/10 border border-rose-500/30 text-rose-600 font-black text-xs uppercase tracking-widest animate-pulse">
           <Sparkles className="w-3.5 h-3.5" />
           <span>ATTENTION: ENTREPRENEURS, AGENCIES & DIGITAL MARKETERS</span>
         </div>
 
         {/* Main VSL Headline */}
-        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight max-w-4xl mx-auto">
-          Turn Cold Clicks Into <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-green-400 bg-clip-text text-transparent">High-Ticket Clients</span> On Autopilot
+        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 leading-tight tracking-tight max-w-4xl mx-auto">
+          Turn Cold Clicks Into <span className="bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 bg-clip-text text-transparent">High-Ticket Clients</span> On Autopilot
         </h1>
 
         {/* Subheadline */}
-        <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto font-medium leading-relaxed">
+        <p className="text-base sm:text-lg text-slate-700 max-w-2xl mx-auto font-semibold leading-relaxed">
           Watch how FunnelLegends combines sales funnels, CRM, appointments, and 1-click checkout in one platform.
         </p>
 
@@ -120,21 +120,21 @@ export const HomePageVSL: React.FC<HomePageVSLProps> = ({ onOpenOrderModal, onNa
             <span>CLAIM YOUR 30-DAY FREE TRIAL NOW →</span>
           </button>
           
-          <div className="flex flex-wrap items-center justify-center gap-6 text-xs text-slate-400 font-semibold">
-            <span className="flex items-center gap-1.5"><ShieldCheck className="w-4 h-4 text-emerald-400" /> Instant Setup in 60 Seconds</span>
-            <span className="flex items-center gap-1.5"><Lock className="w-4 h-4 text-teal-400" /> 256-Bit SSL Encrypted</span>
-            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-indigo-400" /> Cancel Anytime</span>
+          <div className="flex flex-wrap items-center justify-center gap-6 text-xs text-slate-700 font-bold">
+            <span className="flex items-center gap-1.5"><ShieldCheck className="w-4 h-4 text-emerald-600" /> Instant Setup in 60 Seconds</span>
+            <span className="flex items-center gap-1.5"><Lock className="w-4 h-4 text-teal-600" /> 256-Bit SSL Encrypted</span>
+            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-emerald-600" /> Cancel Anytime</span>
           </div>
         </div>
       </section>
 
       {/* ── FEATURE HIGHLIGHT GRID (CLICKFUNNELS STYLE) ── */}
-      <section className="py-20 bg-slate-900/60 border-y border-slate-850 px-4 sm:px-6 lg:px-8">
+      <section className="py-20 bg-emerald-50/50 border-y border-emerald-100 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto space-y-12">
           
           <div className="text-center space-y-3">
-            <h2 className="text-2xl sm:text-4xl font-black text-white">Everything You Need To Build A 7-Figure Online Enterprise</h2>
-            <p className="text-sm text-slate-400 max-w-2xl mx-auto">Replace 10+ expensive tools with FunnelLegends unified ecosystem.</p>
+            <h2 className="text-2xl sm:text-4xl font-black text-slate-900">Everything You Need To Build A 7-Figure Online Enterprise</h2>
+            <p className="text-sm text-slate-700 font-medium max-w-2xl mx-auto">Replace 10+ expensive tools with FunnelLegends unified ecosystem.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

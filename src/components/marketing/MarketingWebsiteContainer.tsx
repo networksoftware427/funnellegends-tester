@@ -39,7 +39,7 @@ export const MarketingWebsiteContainer: React.FC<MarketingWebsiteContainerProps>
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col font-sans">
+    <div className="min-h-screen bg-white text-slate-900 flex flex-col font-sans">
       
       {/* Universal Marketing Navbar */}
       <MarketingNavbar 

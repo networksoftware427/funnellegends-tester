@@ -15,14 +15,14 @@ export const MarketingNavbar: React.FC<NavbarProps> = ({
   onLaunchPlatform
 }) => {
   return (
-    <header className="sticky top-0 z-50 bg-slate-950/90 backdrop-blur-md border-b border-green-500/20">
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-emerald-100 shadow-sm">
       {/* Top Announcement Bar */}
-      <div className="bg-gradient-to-r from-green-600 via-emerald-600 to-teal-700 text-white text-center py-2 px-4 text-xs font-bold flex items-center justify-center gap-2 shadow-md">
+      <div className="bg-gradient-to-r from-green-600 via-emerald-600 to-teal-700 text-white text-center py-2 px-4 text-xs font-bold flex items-center justify-center gap-2 shadow-sm">
         <span className="bg-white/20 text-white px-2 py-0.5 rounded-full text-[10px] uppercase font-extrabold tracking-wide">SPECIAL OFFER</span>
         <span>🎉 Claim Your 30-Day Free Trial + 37 High-Converting Cookbook Templates Included!</span>
         <button 
           onClick={onOpenOrderModal}
-          className="underline hover:text-green-200 transition-colors ml-2 font-extrabold flex items-center gap-1"
+          className="underline hover:text-green-200 transition-colors ml-2 font-extrabold flex items-center gap-1 text-white"
         >
           Claim Now <ArrowRight className="w-3.5 h-3.5" />
         </button>
@@ -39,10 +39,10 @@ export const MarketingNavbar: React.FC<NavbarProps> = ({
           <FunnelLegendsLogo size={42} />
           <div>
             <div className="flex items-baseline gap-0.5 leading-none">
-              <span className="font-black text-xl tracking-tight text-emerald-400 group-hover:text-emerald-300 transition-colors">FUNNEL</span>
-              <span className="font-black text-xl tracking-tight text-teal-400 group-hover:text-teal-300 transition-colors">LEGENDS</span>
+              <span className="font-black text-xl tracking-tight text-emerald-600 group-hover:text-emerald-500 transition-colors">FUNNEL</span>
+              <span className="font-black text-xl tracking-tight text-teal-700 group-hover:text-teal-600 transition-colors">LEGENDS</span>
             </div>
-            <p className="text-[11px] text-slate-400 font-medium tracking-wide">Next-Gen Funnel & Sales Architecture</p>
+            <p className="text-[11px] text-slate-500 font-medium tracking-wide">Next-Gen Funnel & Sales Architecture</p>
           </div>
         </div>
 
@@ -50,30 +50,30 @@ export const MarketingNavbar: React.FC<NavbarProps> = ({
         <nav className="hidden md:flex items-center gap-8 text-sm font-bold">
           <button
             onClick={() => onNavigate('home')}
-            className={`transition-colors py-1 border-b-2 ${activeTab === 'home' ? 'text-emerald-400 border-emerald-500 font-extrabold' : 'text-slate-300 hover:text-white border-transparent'}`}
+            className={`transition-colors py-1 border-b-2 ${activeTab === 'home' ? 'text-emerald-600 border-emerald-500 font-extrabold' : 'text-slate-700 hover:text-emerald-600 border-transparent'}`}
           >
             Home
           </button>
 
           <button
             onClick={() => onNavigate('features')}
-            className={`transition-colors py-1 border-b-2 ${activeTab === 'features' ? 'text-emerald-400 border-emerald-500 font-extrabold' : 'text-slate-300 hover:text-white border-transparent'}`}
+            className={`transition-colors py-1 border-b-2 ${activeTab === 'features' ? 'text-emerald-600 border-emerald-500 font-extrabold' : 'text-slate-700 hover:text-emerald-600 border-transparent'}`}
           >
             Features
           </button>
 
           <button
             onClick={() => onNavigate('pricing')}
-            className={`transition-colors py-1 border-b-2 ${activeTab === 'pricing' ? 'text-emerald-400 border-emerald-500 font-extrabold' : 'text-slate-300 hover:text-white border-transparent'}`}
+            className={`transition-colors py-1 border-b-2 ${activeTab === 'pricing' ? 'text-emerald-600 border-emerald-500 font-extrabold' : 'text-slate-700 hover:text-emerald-600 border-transparent'}`}
           >
             Pricing
           </button>
 
           <button
             onClick={() => onNavigate('login')}
-            className={`transition-colors py-1 border-b-2 flex items-center gap-1.5 ${activeTab === 'login' ? 'text-emerald-400 border-emerald-500 font-extrabold' : 'text-slate-300 hover:text-white border-transparent'}`}
+            className={`transition-colors py-1 border-b-2 flex items-center gap-1.5 ${activeTab === 'login' ? 'text-emerald-600 border-emerald-500 font-extrabold' : 'text-slate-700 hover:text-emerald-600 border-transparent'}`}
           >
-            <Lock className="w-3.5 h-3.5 text-emerald-400" />
+            <Lock className="w-3.5 h-3.5 text-emerald-600" />
             <span>Admin Login</span>
           </button>
         </nav>
