@@ -24,14 +24,14 @@ export const DEFAULT_ADMIN: AdminUser = {
   trialDaysLeft: 30
 };
 
-export const getAdminSession = (): AdminUser => {
+export const getAdminSession = (): AdminUser | null => {
   try {
     const stored = localStorage.getItem(ADMIN_STORAGE_KEY);
     if (stored) return JSON.parse(stored);
   } catch (e) {
     console.error('Error reading admin session', e);
   }
-  return DEFAULT_ADMIN;
+  return null;
 };
 
 export const saveAdminSession = (admin: AdminUser) => {

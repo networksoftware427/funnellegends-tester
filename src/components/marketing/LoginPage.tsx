@@ -10,9 +10,9 @@ interface LoginPageProps {
 }
 
 export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
-  const [email, setEmail] = useState('tofield69@gmail.com');
-  const [password, setPassword] = useState('LylaCheerleading8');
-  const [name, setName] = useState('Stephen Tofield');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [authSuccess, setAuthSuccess] = useState(false);
 
@@ -20,7 +20,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Save Stephen Tofield Admin Session
+    // Save Admin Session
     saveAdminSession({
       id: 'usr_stephen_tofield_888',
       name: name || 'Stephen Tofield',
@@ -42,12 +42,6 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
     }, 1000);
   };
 
-  const handleQuickFillAdmin = () => {
-    setName('Stephen Tofield');
-    setEmail('tofield69@gmail.com');
-    setPassword('LylaCheerleading8');
-  };
-
   return (
     <div className="bg-slate-950 text-slate-100 min-h-screen py-16 px-4 sm:px-6 lg:px-8 flex items-center justify-center relative overflow-hidden">
       
@@ -67,18 +61,6 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
           </div>
         </div>
 
-        {/* Quick Fill Admin Badge */}
-        <div 
-          onClick={handleQuickFillAdmin}
-          className="p-3 bg-emerald-950/40 border border-emerald-500/40 rounded-2xl flex items-center justify-between text-xs cursor-pointer hover:bg-emerald-900/40 transition-colors"
-        >
-          <div className="space-y-0.5">
-            <span className="font-extrabold text-emerald-400 text-[11px] block">👑 SUPER ADMIN CREDENTIALS</span>
-            <span className="text-slate-300 font-mono text-[11px]">tofield69@gmail.com</span>
-          </div>
-          <span className="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-400 font-bold text-[10px]">1-CLICK FILL</span>
-        </div>
-
         <form onSubmit={handleLogin} className="space-y-4 text-xs">
           
           <div>
@@ -91,7 +73,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
                 value={name} 
                 onChange={(e) => setName(e.target.value)} 
                 className="flex-1 bg-transparent outline-none font-medium text-xs"
-                placeholder="Stephen Tofield"
+                placeholder="Enter your full name"
               />
             </div>
           </div>

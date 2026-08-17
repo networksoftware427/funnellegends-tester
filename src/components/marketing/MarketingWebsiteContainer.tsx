@@ -6,6 +6,8 @@ import { FeaturesPage } from './FeaturesPage';
 import { PricingPage, ClickFunnelsOrderModal } from './PricingPage';
 import { LoginPage } from './LoginPage';
 
+import { getAdminSession } from '../../utils/adminSeed';
+
 interface MarketingWebsiteContainerProps {
   onLaunchPlatformApp: () => void;
 }
@@ -21,6 +23,16 @@ export const MarketingWebsiteContainer: React.FC<MarketingWebsiteContainerProps>
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleProtectedLaunch = () => {
+    const session = getAdminSession();
+    if (session && session.isLoggedIn) {
+      onLaunchPlatformApp();
+    } else {
+      alert('🔒 App Access Restricted: Please sign in with your admin credentials to launch the FunnelLegends Platform.');
+      handleNavigate('login');
+    }
+  };
+
   const handleOrderSuccess = () => {
     setIsOrderModalOpen(false);
     onLaunchPlatformApp();
@@ -34,7 +46,7 @@ export const MarketingWebsiteContainer: React.FC<MarketingWebsiteContainerProps>
         activeTab={activeTab}
         onNavigate={handleNavigate}
         onOpenOrderModal={() => setIsOrderModalOpen(true)}
-        onLaunchPlatform={onLaunchPlatformApp}
+        onLaunchPlatform={handleProtectedLaunch}
       />
 
       {/* Page Routing Body */}
