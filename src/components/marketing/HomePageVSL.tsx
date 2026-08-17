@@ -48,13 +48,13 @@ export const HomePageVSL: React.FC<HomePageVSLProps> = ({ onOpenOrderModal, onNa
         </div>
 
         {/* Main VSL Headline */}
-        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight max-w-5xl mx-auto">
-          How To <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-green-400 bg-clip-text text-transparent">10x Your Conversions</span> & Turn Cold Clicks Into High-Ticket Clients Without Technical Overwhelm!
+        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight max-w-4xl mx-auto">
+          Turn Cold Clicks Into <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-green-400 bg-clip-text text-transparent">High-Ticket Clients</span> On Autopilot
         </h1>
 
         {/* Subheadline */}
-        <p className="text-base sm:text-lg text-slate-300 max-w-3xl mx-auto font-medium leading-relaxed">
-          Watch the short presentation below to see how FunnelLegends combines high-speed page building, automated CRM workflows, courses, and 1-click checkout in one platform.
+        <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto font-medium leading-relaxed">
+          Watch how FunnelLegends combines sales funnels, CRM, appointments, and 1-click checkout in one platform.
         </p>
 
         {/* ── HIGH-CONVERTING VSL VIDEO PLAYER BLOCK ── */}
