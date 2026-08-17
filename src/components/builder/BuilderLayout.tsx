@@ -799,7 +799,147 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
         settings={activeClickPopSettings}
       />
 
-      {/* Global Design Tokens & Theme Palette Manager Modal */}
+      {/* ── ADD FUNNEL STEP MODAL ── */}
+      {isAddStepModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-200 rounded-3xl w-full max-w-2xl shadow-2xl overflow-hidden">
+
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-6 border-b border-slate-200 bg-gradient-to-r from-green-500 to-emerald-600">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
+                  <Plus className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-base font-black text-white">Add Funnel Step</h3>
+                  <p className="text-xs text-green-100">Choose a step type and starting template</p>
+                </div>
+              </div>
+              <button onClick={() => { setIsAddStepModalOpen(false); setNewStepName(''); setNewStepSlug(''); }} className="text-white/70 hover:text-white transition-colors">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
+
+              {/* Step Name & Slug */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-black text-slate-700 uppercase tracking-wider">Step Name *</label>
+                  <input
+                    type="text"
+                    value={newStepName}
+                    onChange={e => setNewStepName(e.target.value)}
+                    placeholder="e.g. Sales Page, Upsell 1"
+                    className="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm font-medium text-slate-900 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent placeholder:text-slate-400"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-black text-slate-700 uppercase tracking-wider">URL Slug <span className="text-slate-400 font-medium normal-case">(optional)</span></label>
+                  <input
+                    type="text"
+                    value={newStepSlug}
+                    onChange={e => setNewStepSlug(e.target.value)}
+                    placeholder="e.g. sales-page (auto-generated)"
+                    className="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm font-medium text-slate-900 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent placeholder:text-slate-400"
+                  />
+                </div>
+              </div>
+
+              {/* Step Type */}
+              <div className="space-y-2">
+                <label className="text-xs font-black text-slate-700 uppercase tracking-wider">Step Type</label>
+                <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                  {(['OptIn','Sales','Order','Upsell','Downsell','ThankYou','MemberLogin','MemberArea','Webinar','Bridge','Presell','Misc'] as StepType[]).map(type => (
+                    <button
+                      key={type}
+                      onClick={() => setNewStepType(type)}
+                      className={`px-3 py-2 rounded-xl text-xs font-bold border transition-all ${newStepType === type ? 'bg-emerald-500 text-white border-emerald-500 shadow-lg shadow-emerald-200' : 'bg-white text-slate-700 border-slate-200 hover:border-emerald-300 hover:bg-emerald-50'}`}
+                    >
+                      {type}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Page Template Preset */}
+              <div className="space-y-2">
+                <label className="text-xs font-black text-slate-700 uppercase tracking-wider">Starting Template</label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  {[
+                    { id: 'squeeze',        label: '🎯 Squeeze / Opt-In Page',         desc: 'Email capture with lead magnet offer' },
+                    { id: 'reverse_squeeze',label: '🔄 Reverse Squeeze Page',           desc: 'Content-first, email gate at end' },
+                    { id: 'lead_magnet',    label: '📥 Lead Magnet Delivery',           desc: 'Thank you + instant lead magnet delivery' },
+                    { id: 'vsl_order',      label: '🎬 VSL + Order Page',              desc: 'Video sales letter with 2-step checkout' },
+                    { id: 'two_step_order', label: '🛒 2-Step Order Form',             desc: 'Contact info then payment, high conversions' },
+                    { id: 'oto',            label: '⚡ One-Time Offer (OTO)',           desc: 'Upsell immediately after purchase' },
+                    { id: 'downsell',       label: '💲 Downsell Page',                 desc: 'Lower-priced alternative after OTO decline' },
+                    { id: 'thank_you',      label: '✅ Thank You Page',                desc: 'Post-purchase confirmation & next steps' },
+                    { id: 'member_access',  label: '🔐 Member Login Gate',             desc: 'Login/register page for membership area' },
+                    { id: 'member_area',    label: '🏆 Members Area / Dashboard',      desc: 'Course and content delivery portal' },
+                    { id: 'demo_sales',     label: '📊 Full Sales Page',               desc: 'Long-form sales letter with proof & CTA' },
+                  ].map(preset => (
+                    <button
+                      key={preset.id}
+                      onClick={() => setNewStepPreset(preset.id)}
+                      className={`flex items-start gap-3 p-3 rounded-xl border text-left transition-all ${newStepPreset === preset.id ? 'bg-emerald-50 border-emerald-400 shadow-sm' : 'bg-white border-slate-200 hover:border-slate-300'}`}
+                    >
+                      <div className="shrink-0 mt-0.5">
+                        <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${newStepPreset === preset.id ? 'border-emerald-500 bg-emerald-500' : 'border-slate-300'}`}>
+                          {newStepPreset === preset.id && <Check className="w-2.5 h-2.5 text-white" />}
+                        </div>
+                      </div>
+                      <div>
+                        <div className={`text-xs font-bold ${newStepPreset === preset.id ? 'text-emerald-700' : 'text-slate-800'}`}>{preset.label}</div>
+                        <div className="text-[10px] text-slate-500 font-medium mt-0.5">{preset.desc}</div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Funnel Position Preview */}
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+                <p className="text-[10px] font-black uppercase tracking-wider text-slate-500">This step will be added as:</p>
+                <div className="flex items-center gap-2 flex-wrap">
+                  {funnel.steps.map((st, i) => (
+                    <React.Fragment key={st.id}>
+                      <span className="px-2 py-1 rounded-lg bg-green-100 text-green-700 text-[10px] font-bold border border-green-200">
+                        {st.stepOrder}. {st.name}
+                      </span>
+                      <span className="text-slate-300 text-xs">→</span>
+                    </React.Fragment>
+                  ))}
+                  <span className="px-2 py-1 rounded-lg bg-emerald-500 text-white text-[10px] font-black border border-emerald-600 animate-pulse">
+                    {funnel.steps.length + 1}. {newStepName || 'New Step'} ✦ NEW
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Footer Actions */}
+            <div className="flex items-center justify-between p-5 border-t border-slate-200 bg-slate-50 gap-3">
+              <button
+                onClick={() => { setIsAddStepModalOpen(false); setNewStepName(''); setNewStepSlug(''); }}
+                className="px-5 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-100 transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleCreateStepSubmit}
+                disabled={!newStepName.trim()}
+                className="px-6 py-2.5 rounded-xl text-xs font-black text-white flex items-center gap-2 transition-all hover:brightness-110 disabled:opacity-40 disabled:cursor-not-allowed shadow-lg shadow-emerald-200"
+                style={{ background: 'linear-gradient(135deg, #22c55e, #16a34a)' }}
+              >
+                <Plus className="w-4 h-4" />
+                Add Step to Funnel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+
       {isGlobalTokensOpen && (
         <div className="fixed inset-0 z-50 bg-white/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
           <div className="bg-white border border-slate-200 rounded-3xl w-full max-w-2xl p-6 sm:p-8 space-y-6 text-slate-900 shadow-2xl relative my-8">
