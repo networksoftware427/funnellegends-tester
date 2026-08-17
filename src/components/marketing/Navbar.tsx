@@ -1,5 +1,4 @@
-import React from 'react';
-import { FunnelLegendsLogo } from '../builder/Canvas';
+import { FunnelLegendsLogo } from '../../App';
 import { Rocket, ArrowRight, ShieldCheck, Zap, User, Lock, LayoutDashboard } from 'lucide-react';
 
 interface NavbarProps {

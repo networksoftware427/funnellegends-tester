@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { 
   Lock, Mail, User, KeyRound, ShieldCheck, Zap, ArrowRight, CheckCircle2 
 } from 'lucide-react';
-import { FunnelLegendsLogo } from '../builder/Canvas';
+import { FunnelLegendsLogo } from '../../App';
 import { saveAdminSession, syncAdminToSupabase } from '../../utils/adminSeed';
 
 interface LoginPageProps {

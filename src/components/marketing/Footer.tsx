@@ -1,5 +1,4 @@
-import React from 'react';
-import { FunnelLegendsLogo } from '../builder/Canvas';
+import { FunnelLegendsLogo } from '../../App';
 import { ShieldCheck, Lock, CheckCircle, Zap } from 'lucide-react';
 
 interface FooterProps {

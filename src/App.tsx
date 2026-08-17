@@ -26,7 +26,7 @@ import {
 } from 'lucide-react';
 
 // FunnelLegends inline SVG Logo
-const FunnelLegendsLogo = ({ size = 32 }: { size?: number }) => (
+export const FunnelLegendsLogo = ({ size = 32 }: { size?: number }) => (
   <svg
     width={size}
     height={size}
