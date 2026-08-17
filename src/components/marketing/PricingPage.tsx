@@ -31,14 +31,14 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onOpenOrderModal, onLa
           {/* Plan 1: Basic */}
           <div className="p-8 bg-slate-900 border border-slate-800 rounded-3xl space-y-6 flex flex-col justify-between hover:border-slate-700 transition-all">
             <div className="space-y-4">
-              <h3 className="text-xl font-bold text-white">Basic Starter</h3>
-              <p className="text-xs text-slate-400">Perfect for solo entrepreneurs starting their first sales funnel.</p>
+              <h3 className="text-xl font-black text-white">Basic Starter</h3>
+              <p className="text-xs text-slate-300 font-medium">Perfect for solo entrepreneurs starting their first sales funnel.</p>
               <div className="pt-2">
                 <span className="text-4xl font-black text-white">$0</span>
-                <span className="text-xs text-slate-400 font-bold ml-2">For 30 Days</span>
-                <p className="text-[11px] text-emerald-400 mt-1">Then $97/mo • Cancel Anytime</p>
+                <span className="text-xs text-slate-300 font-bold ml-2">For 30 Days</span>
+                <p className="text-[11px] text-emerald-400 font-bold mt-1">Then $97/mo • Cancel Anytime</p>
               </div>
-              <ul className="space-y-2.5 text-xs text-slate-300 pt-4 border-t border-slate-800">
+              <ul className="space-y-2.5 text-xs text-slate-200 font-medium pt-4 border-t border-slate-800">
                 <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-400" /> 1 Workspaces & Custom Domain</li>
                 <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-400" /> 20 Active Funnels & 100 Steps</li>
                 <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-400" /> Visual Canvas Drag & Drop</li>
@@ -54,26 +54,26 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onOpenOrderModal, onLa
           </div>
 
           {/* Plan 2: Pro (Featured) */}
-          <div className="p-8 bg-gradient-to-b from-slate-900 via-slate-950 to-emerald-950/60 border-2 border-emerald-500 rounded-3xl space-y-6 flex flex-col justify-between shadow-2xl shadow-emerald-950/60 relative transform scale-105">
+          <div className="p-8 bg-gradient-to-b from-slate-900 via-slate-950 to-emerald-950/80 border-2 border-emerald-500 rounded-3xl space-y-6 flex flex-col justify-between shadow-2xl shadow-emerald-950/60 relative transform scale-105">
             <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 text-[10px] font-black uppercase tracking-wider shadow-md">
               ★ MOST POPULAR AGENCY CHOICE
             </div>
 
             <div className="space-y-4 pt-2">
-              <h3 className="text-xl font-bold text-white">Pro Agency</h3>
-              <p className="text-xs text-slate-400">For scaling agencies and businesses requiring full suite access.</p>
+              <h3 className="text-2xl font-black text-white">Pro Agency</h3>
+              <p className="text-xs text-white/90 font-medium">For scaling agencies and businesses requiring full suite access.</p>
               <div className="pt-2">
                 <span className="text-4xl font-black text-white">$0</span>
                 <span className="text-xs text-emerald-400 font-bold ml-2">For 30 Days</span>
-                <p className="text-[11px] text-emerald-400 mt-1">Then $297/mo • Unlimited Usage</p>
+                <p className="text-[11px] text-emerald-400 font-bold mt-1">Then $297/mo • Unlimited Usage</p>
               </div>
-              <ul className="space-y-2.5 text-xs text-slate-300 pt-4 border-t border-slate-800">
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-400" /> Unlimited Workspaces & Domains</li>
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-400" /> Unlimited Funnels, Steps & Pages</li>
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-400" /> BountyPack Affiliate Engine</li>
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-400" /> ChronoChimp Appointments</li>
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-400" /> TribeNexus Community Portal</li>
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-400" /> Supabase Real-Time DB Sync</li>
+              <ul className="space-y-2.5 text-xs text-white font-medium pt-4 border-t border-slate-800">
+                <li className="flex items-center gap-2 text-white"><Check className="w-4 h-4 text-emerald-400" /> Unlimited Workspaces & Domains</li>
+                <li className="flex items-center gap-2 text-white"><Check className="w-4 h-4 text-emerald-400" /> Unlimited Funnels, Steps & Pages</li>
+                <li className="flex items-center gap-2 text-white"><Check className="w-4 h-4 text-emerald-400" /> BountyPack Affiliate Engine</li>
+                <li className="flex items-center gap-2 text-white"><Check className="w-4 h-4 text-emerald-400" /> ChronoChimp Appointments</li>
+                <li className="flex items-center gap-2 text-white"><Check className="w-4 h-4 text-emerald-400" /> TribeNexus Community Portal</li>
+                <li className="flex items-center gap-2 text-white"><Check className="w-4 h-4 text-emerald-400" /> Supabase Real-Time DB Sync</li>
               </ul>
             </div>
 
@@ -90,14 +90,14 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onOpenOrderModal, onLa
           {/* Plan 3: Enterprise */}
           <div className="p-8 bg-slate-900 border border-slate-800 rounded-3xl space-y-6 flex flex-col justify-between hover:border-slate-700 transition-all">
             <div className="space-y-4">
-              <h3 className="text-xl font-bold text-white">Enterprise VIP</h3>
-              <p className="text-xs text-slate-400">High-volume enterprises needing dedicated priority infrastructure.</p>
+              <h3 className="text-xl font-black text-white">Enterprise VIP</h3>
+              <p className="text-xs text-slate-300 font-medium">High-volume enterprises needing dedicated priority infrastructure.</p>
               <div className="pt-2">
                 <span className="text-4xl font-black text-white">$0</span>
-                <span className="text-xs text-slate-400 font-bold ml-2">For 30 Days</span>
-                <p className="text-[11px] text-emerald-400 mt-1">Then $497/mo • Dedicated VIP Support</p>
+                <span className="text-xs text-slate-300 font-bold ml-2">For 30 Days</span>
+                <p className="text-[11px] text-emerald-400 font-bold mt-1">Then $497/mo • Dedicated VIP Support</p>
               </div>
-              <ul className="space-y-2.5 text-xs text-slate-300 pt-4 border-t border-slate-800">
+              <ul className="space-y-2.5 text-xs text-slate-200 font-medium pt-4 border-t border-slate-800">
                 <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-400" /> Everything in Pro Agency</li>
                 <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-400" /> Custom Certificate Generator</li>
                 <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-400" /> Dedicated Account Manager</li>
