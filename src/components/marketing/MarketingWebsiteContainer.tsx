@@ -5,8 +5,13 @@ import { HomePageVSL } from './HomePageVSL';
 import { FeaturesPage } from './FeaturesPage';
 import { PricingPage, FunnelLegendsOrderModal } from './PricingPage';
 import { LoginPage } from './LoginPage';
+import { PrivacyPolicyPage } from './PrivacyPolicyPage';
+import { TermsOfServicePage } from './TermsOfServicePage';
+import { EarningsDisclaimerPage } from './EarningsDisclaimerPage';
 
 import { getAdminSession } from '../../utils/adminSeed';
+
+type MarketingTab = 'home' | 'features' | 'pricing' | 'login' | 'privacy' | 'terms' | 'disclaimer';
 
 interface MarketingWebsiteContainerProps {
   onLaunchPlatformApp: () => void;
@@ -15,10 +20,10 @@ interface MarketingWebsiteContainerProps {
 export const MarketingWebsiteContainer: React.FC<MarketingWebsiteContainerProps> = ({
   onLaunchPlatformApp
 }) => {
-  const [activeTab, setActiveTab] = useState<'home' | 'features' | 'pricing' | 'login'>('home');
+  const [activeTab, setActiveTab] = useState<MarketingTab>('home');
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
 
-  const handleNavigate = (tab: 'home' | 'features' | 'pricing' | 'login') => {
+  const handleNavigate = (tab: MarketingTab) => {
     setActiveTab(tab);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -38,13 +43,16 @@ export const MarketingWebsiteContainer: React.FC<MarketingWebsiteContainerProps>
     onLaunchPlatformApp();
   };
 
+  // Only show Navbar and Order modal CTA on main marketing tabs
+  const isMainTab = ['home', 'features', 'pricing', 'login'].includes(activeTab);
+
   return (
     <div className="min-h-screen bg-white text-slate-900 flex flex-col font-sans">
       
       {/* Universal Marketing Navbar */}
       <MarketingNavbar 
-        activeTab={activeTab}
-        onNavigate={handleNavigate}
+        activeTab={activeTab as any}
+        onNavigate={handleNavigate as any}
         onOpenOrderModal={() => setIsOrderModalOpen(true)}
         onLaunchPlatform={handleProtectedLaunch}
       />
@@ -54,7 +62,7 @@ export const MarketingWebsiteContainer: React.FC<MarketingWebsiteContainerProps>
         {activeTab === 'home' && (
           <HomePageVSL 
             onOpenOrderModal={() => setIsOrderModalOpen(true)}
-            onNavigate={handleNavigate}
+            onNavigate={handleNavigate as any}
           />
         )}
 
@@ -76,6 +84,18 @@ export const MarketingWebsiteContainer: React.FC<MarketingWebsiteContainerProps>
             onLoginSuccess={onLaunchPlatformApp}
           />
         )}
+
+        {activeTab === 'privacy' && (
+          <PrivacyPolicyPage onNavigate={handleNavigate} />
+        )}
+
+        {activeTab === 'terms' && (
+          <TermsOfServicePage onNavigate={handleNavigate} />
+        )}
+
+        {activeTab === 'disclaimer' && (
+          <EarningsDisclaimerPage onNavigate={handleNavigate} />
+        )}
       </main>
 
       {/* Universal 2-Step Order Form Modal */}
@@ -87,7 +107,7 @@ export const MarketingWebsiteContainer: React.FC<MarketingWebsiteContainerProps>
 
       {/* Universal Marketing Footer */}
       <MarketingFooter 
-        onNavigate={handleNavigate}
+        onNavigate={handleNavigate as any}
         onOpenOrderModal={() => setIsOrderModalOpen(true)}
       />
 

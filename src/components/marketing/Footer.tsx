@@ -2,7 +2,7 @@ import { FunnelLegendsLogo } from '../../App';
 import { ShieldCheck, Lock, CheckCircle, Zap } from 'lucide-react';
 
 interface FooterProps {
-  onNavigate: (tab: 'home' | 'features' | 'pricing' | 'login') => void;
+  onNavigate: (tab: any) => void;
   onOpenOrderModal: () => void;
 }
 
@@ -84,9 +84,9 @@ export const MarketingFooter: React.FC<FooterProps> = ({ onNavigate, onOpenOrder
         <div className="pt-8 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between text-xs gap-4 text-slate-600 font-medium">
           <p>© {new Date().getFullYear()} FunnelLegends Suite. Designed for High-Converting Digital Enterprises. All rights reserved.</p>
           <div className="flex gap-6">
-            <span className="hover:underline cursor-pointer hover:text-emerald-600">Privacy Policy</span>
-            <span className="hover:underline cursor-pointer hover:text-emerald-600">Terms of Service</span>
-            <span className="hover:underline cursor-pointer hover:text-emerald-600">Earnings Disclaimer</span>
+            <button onClick={() => onNavigate('privacy')} className="hover:underline cursor-pointer hover:text-emerald-600 transition-colors">Privacy Policy</button>
+            <button onClick={() => onNavigate('terms')} className="hover:underline cursor-pointer hover:text-emerald-600 transition-colors">Terms of Service</button>
+            <button onClick={() => onNavigate('disclaimer')} className="hover:underline cursor-pointer hover:text-emerald-600 transition-colors">Earnings Disclaimer</button>
           </div>
         </div>
       </div>
