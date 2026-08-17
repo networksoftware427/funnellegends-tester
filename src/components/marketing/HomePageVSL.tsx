@@ -80,7 +80,7 @@ export const HomePageVSL: React.FC<HomePageVSLProps> = ({ onOpenOrderModal, onNa
                   <Play className="w-10 h-10 fill-white ml-1" />
                 </div>
                 <div>
-                  <h3 className="text-xl sm:text-2xl font-black text-slate-900">Click Play To Watch VSL Presentation</h3>
+                  <h3 className="text-xl sm:text-2xl font-black text-white">Click Play To Watch VSL Presentation</h3>
                   <p className="text-xs text-emerald-400 font-mono mt-1">Duration: 12 mins • Includes 37 Free Funnel Templates</p>
                 </div>
               </div>

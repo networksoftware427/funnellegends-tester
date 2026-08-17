@@ -85,12 +85,12 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onOpenOrderModal }) 
 
         {/* CTA Card */}
         <div className="p-10 rounded-3xl bg-gradient-to-r from-emerald-950 via-slate-900 to-teal-950 border border-emerald-500/40 text-center space-y-6 shadow-2xl">
-          <h2 className="text-2xl sm:text-4xl font-black text-slate-900">Experience All 12 Tools Free For 30 Days</h2>
-          <p className="text-sm text-slate-900 font-medium max-w-2xl mx-auto">No upfront commitments. Cancel anytime in 1-click directly from your dashboard.</p>
+          <h2 className="text-2xl sm:text-4xl font-black text-white">Experience All 12 Tools Free For 30 Days</h2>
+          <p className="text-sm text-white/90 font-medium max-w-2xl mx-auto">No upfront commitments. Cancel anytime in 1-click directly from your dashboard.</p>
           <div>
             <button
               onClick={onOpenOrderModal}
-              className="px-8 py-4 rounded-2xl text-base font-black text-slate-900 shadow-2xl transition-all hover:scale-105 inline-flex items-center gap-3"
+              className="px-8 py-4 rounded-2xl text-base font-black text-white shadow-2xl transition-all hover:scale-105 inline-flex items-center gap-3"
               style={{ 
                 background: 'linear-gradient(135deg, #FF6A00 0%, #ee5d00 100%)',
                 boxShadow: '0 8px 30px rgba(255, 106, 0, 0.45)'

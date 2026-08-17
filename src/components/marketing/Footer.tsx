@@ -14,12 +14,12 @@ export const MarketingFooter: React.FC<FooterProps> = ({ onNavigate, onOpenOrder
         {/* Top CTA Banner */}
         <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-r from-emerald-600 via-emerald-700 to-teal-800 text-center space-y-6 shadow-xl relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none" />
-          <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">Ready To Build High-Converting Funnels In Seconds?</h2>
-          <p className="max-w-2xl mx-auto text-sm text-slate-900 font-medium">Join thousands of entrepreneurs, coaches, and digital agencies scaling their enterprise with FunnelLegends. Try it 100% risk-free for 30 days.</p>
+          <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">Ready To Build High-Converting Funnels In Seconds?</h2>
+          <p className="max-w-2xl mx-auto text-sm text-white/90 font-medium">Join thousands of entrepreneurs, coaches, and digital agencies scaling their enterprise with FunnelLegends. Try it 100% risk-free for 30 days.</p>
           <div className="pt-2">
             <button
               onClick={onOpenOrderModal}
-              className="px-8 py-4 rounded-2xl text-base font-black text-slate-900 shadow-2xl transition-all hover:scale-105 inline-flex items-center gap-3"
+              className="px-8 py-4 rounded-2xl text-base font-black text-white shadow-2xl transition-all hover:scale-105 inline-flex items-center gap-3"
               style={{ 
                 background: 'linear-gradient(135deg, #FF6A00 0%, #ee5d00 100%)',
                 boxShadow: '0 8px 30px rgba(255, 106, 0, 0.45)'
@@ -29,7 +29,7 @@ export const MarketingFooter: React.FC<FooterProps> = ({ onNavigate, onOpenOrder
               <span>START YOUR 30-DAY FREE TRIAL NOW</span>
             </button>
           </div>
-          <div className="flex items-center justify-center gap-6 text-xs text-slate-900 pt-2 font-bold">
+          <div className="flex items-center justify-center gap-6 text-xs text-white/80 pt-2 font-bold">
             <span className="flex items-center gap-1.5"><ShieldCheck className="w-4 h-4 text-emerald-200" /> 30-Day Money-Back Guarantee</span>
             <span className="flex items-center gap-1.5"><Lock className="w-4 h-4 text-emerald-200" /> 256-Bit SSL Encrypted Checkout</span>
             <span className="flex items-center gap-1.5"><CheckCircle className="w-4 h-4 text-emerald-200" /> Cancel Anytime in 1-Click</span>

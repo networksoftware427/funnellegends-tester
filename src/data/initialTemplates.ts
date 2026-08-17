@@ -8,7 +8,7 @@ export const createDefaultStyle = (overrides?: any): ElementStyle => ({
     lineHeight: '1.5',
     letterSpacing: '0px',
     textAlign: 'left',
-    color: '#f8fafc',
+    color: '#0f172a',
     textShadow: 'none',
     isGradientFill: false,
     ...overrides?.typography
@@ -81,8 +81,8 @@ export const createDemoSalesCanvas = (): CanvasState => ({
     primaryColor: '#6366f1',
     secondaryColor: '#ec4899',
     accentColor: '#10b981',
-    backgroundColor: '#0f172a',
-    textColor: '#f8fafc',
+    backgroundColor: '#ffffff',
+    textColor: '#0f172a',
     headingFont: 'Montserrat',
     bodyFont: 'Open Sans',
     borderRadiusPreset: '12px'
@@ -98,8 +98,8 @@ export const createDemoSalesCanvas = (): CanvasState => ({
       paddingBottom: '64px',
       background: {
         bgType: 'gradient',
-        backgroundColor: '#0f172a',
-        gradient: 'radial-gradient(ellipse at top, #1e1b4b 0%, #0f172a 70%)',
+        backgroundColor: '#ffffff',
+        gradient: 'radial-gradient(ellipse at top, #f0fdf4 0%, #ffffff 70%)',
         bgImage: '',
         bgImageSize: 'cover',
         bgImagePosition: 'center',
@@ -238,7 +238,7 @@ export const createDemoSalesCanvas = (): CanvasState => ({
       paddingBottom: '64px',
       background: {
         bgType: 'color',
-        backgroundColor: '#020617',
+        backgroundColor: '#1e293b',
         gradient: '',
         bgImage: '',
         bgImageSize: 'cover',
@@ -271,7 +271,7 @@ export const createDemoSalesCanvas = (): CanvasState => ({
                     label: 'Special Offer Expires In:'
                   },
                   style: createDefaultStyle({
-                    background: { bgType: 'color', backgroundColor: '#0f172a', gradient: '', bgImage: '', bgImageSize: 'cover', bgImagePosition: 'center', isParallax: false, bgVideoUrl: '' },
+                    background: { bgType: 'color', backgroundColor: '#ffffff', gradient: '', bgImage: '', bgImageSize: 'cover', bgImagePosition: 'center', isParallax: false, bgVideoUrl: '' },
                     borders: { borderStyle: 'solid', borderColor: '#3b82f6', borderWidth: '1px', borderRadiusTopLeft: '12px', borderRadiusTopRight: '12px', borderRadiusBottomRight: '12px', borderRadiusBottomLeft: '12px' }
                   })
                 }
@@ -332,10 +332,10 @@ export const createDemoSalesCanvas = (): CanvasState => ({
 
 
 export const createLeadMagnetCanvas = (): CanvasState => ({
-  globalTokens: { primaryColor: '#6366f1', secondaryColor: '#ec4899', accentColor: '#10b981', backgroundColor: '#0f172a', textColor: '#f8fafc', headingFont: 'Outfit', bodyFont: 'Inter', borderRadiusPreset: '16px' },
+  globalTokens: { primaryColor: '#6366f1', secondaryColor: '#ec4899', accentColor: '#10b981', backgroundColor: '#ffffff', textColor: '#0f172a', headingFont: 'Outfit', bodyFont: 'Inter', borderRadiusPreset: '16px' },
   sections: [{
     id: 'sec_lm_1', name: 'Lead Magnet Section', isFullWidth: false, displayMode: 'flex', paddingTop: '64px', paddingBottom: '64px',
-    background: { bgType: 'gradient', backgroundColor: '#0f172a', gradient: 'radial-gradient(ellipse at top, #1e1b4b 0%, #0f172a 75%)', bgImage: '', bgImageSize: 'cover', bgImagePosition: 'center', isParallax: false, bgVideoUrl: '' },
+    background: { bgType: 'gradient', backgroundColor: '#ffffff', gradient: 'radial-gradient(ellipse at top, #f0fdf4 0%, #ffffff 75%)', bgImage: '', bgImageSize: 'cover', bgImagePosition: 'center', isParallax: false, bgVideoUrl: '' },
     rows: [
       {
         id: 'row_lm_top', columnCount: 1, gap: '16px', alignItems: 'center',
@@ -427,7 +427,7 @@ export const createLeadMagnetCanvas = (): CanvasState => ({
                 id: 'el_lm_name', type: 'text_input', name: 'Name Input',
                 props: { placeholder: 'Enter your full name...', required: true },
                 style: createDefaultStyle({
-                  background: { bgType: 'color', backgroundColor: '#020617' },
+                  background: { bgType: 'color', backgroundColor: '#1e293b' },
                   borders: { borderStyle: 'solid', borderColor: '#334155', borderWidth: '1px', borderRadiusTopLeft: '8px', borderRadiusTopRight: '8px', borderRadiusBottomRight: '8px', borderRadiusBottomLeft: '8px' },
                   boxModel: { marginBottom: '12px', paddingTop: '12px', paddingBottom: '12px', paddingLeft: '16px', paddingRight: '16px' }
                 })
@@ -436,7 +436,7 @@ export const createLeadMagnetCanvas = (): CanvasState => ({
                 id: 'el_lm_4', type: 'text_input', name: 'Email Input',
                 props: { placeholder: 'Enter your best email address...', required: true },
                 style: createDefaultStyle({
-                  background: { bgType: 'color', backgroundColor: '#020617' },
+                  background: { bgType: 'color', backgroundColor: '#1e293b' },
                   borders: { borderStyle: 'solid', borderColor: '#334155', borderWidth: '1px', borderRadiusTopLeft: '8px', borderRadiusTopRight: '8px', borderRadiusBottomRight: '8px', borderRadiusBottomLeft: '8px' },
                   boxModel: { marginBottom: '20px', paddingTop: '12px', paddingBottom: '12px', paddingLeft: '16px', paddingRight: '16px' }
                 })
@@ -468,10 +468,10 @@ export const createLeadMagnetCanvas = (): CanvasState => ({
 });
 
 export const createReverseSqueezeCanvas = (): CanvasState => ({
-  globalTokens: { primaryColor: '#6366f1', secondaryColor: '#ec4899', accentColor: '#10b981', backgroundColor: '#0f172a', textColor: '#f8fafc', headingFont: 'Outfit', bodyFont: 'Inter', borderRadiusPreset: '16px' },
+  globalTokens: { primaryColor: '#6366f1', secondaryColor: '#ec4899', accentColor: '#10b981', backgroundColor: '#ffffff', textColor: '#0f172a', headingFont: 'Outfit', bodyFont: 'Inter', borderRadiusPreset: '16px' },
   sections: [{
     id: 'sec_rs_1', name: 'Reverse Squeeze Section', isFullWidth: false, displayMode: 'flex', paddingTop: '48px', paddingBottom: '64px',
-    background: { bgType: 'gradient', backgroundColor: '#0f172a', gradient: 'radial-gradient(ellipse at top, #1e1b4b 0%, #0f172a 75%)', bgImage: '', bgImageSize: 'cover', bgImagePosition: 'center', isParallax: false, bgVideoUrl: '' },
+    background: { bgType: 'gradient', backgroundColor: '#ffffff', gradient: 'radial-gradient(ellipse at top, #f0fdf4 0%, #ffffff 75%)', bgImage: '', bgImageSize: 'cover', bgImagePosition: 'center', isParallax: false, bgVideoUrl: '' },
     rows: [
       {
         id: 'row_rs_top', columnCount: 1, gap: '16px', alignItems: 'center',
@@ -562,7 +562,7 @@ export const createReverseSqueezeCanvas = (): CanvasState => ({
                 id: 'el_rs_name_in', type: 'text_input', name: 'Name Input',
                 props: { placeholder: 'Enter your full name...', required: true },
                 style: createDefaultStyle({
-                  background: { bgType: 'color', backgroundColor: '#020617' },
+                  background: { bgType: 'color', backgroundColor: '#1e293b' },
                   borders: { borderStyle: 'solid', borderColor: '#334155', borderWidth: '1px', borderRadiusTopLeft: '8px', borderRadiusTopRight: '8px', borderRadiusBottomRight: '8px', borderRadiusBottomLeft: '8px' },
                   boxModel: { marginBottom: '12px', paddingTop: '12px', paddingBottom: '12px', paddingLeft: '16px', paddingRight: '16px' }
                 })
@@ -571,7 +571,7 @@ export const createReverseSqueezeCanvas = (): CanvasState => ({
                 id: 'el_rs_3', type: 'text_input', name: 'Email Input',
                 props: { placeholder: 'Enter your best email address...', required: true },
                 style: createDefaultStyle({
-                  background: { bgType: 'color', backgroundColor: '#020617' },
+                  background: { bgType: 'color', backgroundColor: '#1e293b' },
                   borders: { borderStyle: 'solid', borderColor: '#334155', borderWidth: '1px', borderRadiusTopLeft: '8px', borderRadiusTopRight: '8px', borderRadiusBottomRight: '8px', borderRadiusBottomLeft: '8px' },
                   boxModel: { marginBottom: '20px', paddingTop: '12px', paddingBottom: '12px', paddingLeft: '16px', paddingRight: '16px' }
                 })
@@ -603,10 +603,10 @@ export const createReverseSqueezeCanvas = (): CanvasState => ({
 });
 
 export const createSqueezeCanvas = (): CanvasState => ({
-  globalTokens: { primaryColor: '#6366f1', secondaryColor: '#ec4899', accentColor: '#10b981', backgroundColor: '#0f172a', textColor: '#f8fafc', headingFont: 'Outfit', bodyFont: 'Inter', borderRadiusPreset: '16px' },
+  globalTokens: { primaryColor: '#6366f1', secondaryColor: '#ec4899', accentColor: '#10b981', backgroundColor: '#ffffff', textColor: '#0f172a', headingFont: 'Outfit', bodyFont: 'Inter', borderRadiusPreset: '16px' },
   sections: [{
     id: 'sec_sq_1', name: 'Squeeze Section', isFullWidth: false, displayMode: 'flex', paddingTop: '80px', paddingBottom: '80px',
-    background: { bgType: 'gradient', backgroundColor: '#0f172a', gradient: 'radial-gradient(ellipse at top, #1e1b4b 0%, #0f172a 80%)', bgImage: '', bgImageSize: 'cover', bgImagePosition: 'center', isParallax: false, bgVideoUrl: '' },
+    background: { bgType: 'gradient', backgroundColor: '#ffffff', gradient: 'radial-gradient(ellipse at top, #f0fdf4 0%, #ffffff 80%)', bgImage: '', bgImageSize: 'cover', bgImagePosition: 'center', isParallax: false, bgVideoUrl: '' },
     rows: [{
       id: 'row_sq_1', columnCount: 1, gap: '24px', alignItems: 'center',
       columns: [{
@@ -652,7 +652,7 @@ export const createSqueezeCanvas = (): CanvasState => ({
             id: 'el_sq_2', type: 'text_input', name: 'Email Input',
             props: { placeholder: 'Enter your best email address...', required: true },
             style: createDefaultStyle({
-              background: { bgType: 'color', backgroundColor: '#020617' },
+              background: { bgType: 'color', backgroundColor: '#1e293b' },
               borders: { borderStyle: 'solid', borderColor: '#334155', borderWidth: '1px', borderRadiusTopLeft: '8px', borderRadiusTopRight: '8px', borderRadiusBottomRight: '8px', borderRadiusBottomLeft: '8px' },
               boxModel: { maxWidth: '460px', marginLeft: 'auto', marginRight: 'auto', marginBottom: '16px', paddingTop: '14px', paddingBottom: '14px', paddingLeft: '16px', paddingRight: '16px' }
             })
@@ -676,10 +676,10 @@ export const createSqueezeCanvas = (): CanvasState => ({
 
 
 export const createThankYouCanvas = (): CanvasState => ({
-  globalTokens: { primaryColor: '#6366f1', secondaryColor: '#ec4899', accentColor: '#10b981', backgroundColor: '#0f172a', textColor: '#f8fafc', headingFont: 'Montserrat', bodyFont: 'Open Sans', borderRadiusPreset: '12px' },
+  globalTokens: { primaryColor: '#6366f1', secondaryColor: '#ec4899', accentColor: '#10b981', backgroundColor: '#ffffff', textColor: '#0f172a', headingFont: 'Montserrat', bodyFont: 'Open Sans', borderRadiusPreset: '12px' },
   sections: [{
     id: 'sec_ty_1', name: 'Thank You Section', isFullWidth: false, displayMode: 'flex', paddingTop: '64px', paddingBottom: '64px',
-    background: { bgType: 'color', backgroundColor: '#0f172a', gradient: '', bgImage: '', bgImageSize: 'cover', bgImagePosition: 'center', isParallax: false, bgVideoUrl: '' },
+    background: { bgType: 'color', backgroundColor: '#ffffff', gradient: '', bgImage: '', bgImageSize: 'cover', bgImagePosition: 'center', isParallax: false, bgVideoUrl: '' },
     rows: [{
       id: 'row_ty_1', columnCount: 1, gap: '24px', alignItems: 'center',
       columns: [{
@@ -697,7 +697,7 @@ export const createThankYouCanvas = (): CanvasState => ({
 
 
 export const createVSLOrderCanvas = (): CanvasState => ({
-  globalTokens: { primaryColor: '#2563eb', secondaryColor: '#4f46e5', accentColor: '#3b82f6', backgroundColor: '#f8fafc', textColor: '#0f172a', headingFont: 'Montserrat', bodyFont: 'Open Sans', borderRadiusPreset: '8px' },
+  globalTokens: { primaryColor: '#2563eb', secondaryColor: '#4f46e5', accentColor: '#3b82f6', backgroundColor: '#0f172a', textColor: '#ffffff', headingFont: 'Montserrat', bodyFont: 'Open Sans', borderRadiusPreset: '8px' },
   sections: [
     {
       id: 'sec_vsl_order_1', name: 'VSL & Order Form', isFullWidth: false, displayMode: 'flex', paddingTop: '48px', paddingBottom: '64px',
@@ -747,10 +747,10 @@ export const createVSLOrderCanvas = (): CanvasState => ({
 });
 
 export const createWebinarRegistrationCanvas = (): CanvasState => ({
-  globalTokens: { primaryColor: '#6366f1', secondaryColor: '#ec4899', accentColor: '#10b981', backgroundColor: '#0f172a', textColor: '#f8fafc', headingFont: 'Montserrat', bodyFont: 'Open Sans', borderRadiusPreset: '12px' },
+  globalTokens: { primaryColor: '#6366f1', secondaryColor: '#ec4899', accentColor: '#10b981', backgroundColor: '#ffffff', textColor: '#0f172a', headingFont: 'Montserrat', bodyFont: 'Open Sans', borderRadiusPreset: '12px' },
   sections: [{
     id: 'sec_web_reg_1', name: 'Webinar Registration', isFullWidth: false, displayMode: 'flex', paddingTop: '32px', paddingBottom: '64px',
-    background: { bgType: 'color', backgroundColor: '#0f172a', gradient: '', bgImage: '', bgImageSize: 'cover', bgImagePosition: 'center', isParallax: false, bgVideoUrl: '' },
+    background: { bgType: 'color', backgroundColor: '#ffffff', gradient: '', bgImage: '', bgImageSize: 'cover', bgImagePosition: 'center', isParallax: false, bgVideoUrl: '' },
     rows: [{
       id: 'row_web_reg_1', columnCount: 1, gap: '24px', alignItems: 'center',
       columns: [{
@@ -770,10 +770,10 @@ export const createWebinarRegistrationCanvas = (): CanvasState => ({
 });
 
 export const createWebinarConfirmationCanvas = (): CanvasState => ({
-  globalTokens: { primaryColor: '#6366f1', secondaryColor: '#ec4899', accentColor: '#10b981', backgroundColor: '#0f172a', textColor: '#f8fafc', headingFont: 'Montserrat', bodyFont: 'Open Sans', borderRadiusPreset: '12px' },
+  globalTokens: { primaryColor: '#6366f1', secondaryColor: '#ec4899', accentColor: '#10b981', backgroundColor: '#ffffff', textColor: '#0f172a', headingFont: 'Montserrat', bodyFont: 'Open Sans', borderRadiusPreset: '12px' },
   sections: [{
     id: 'sec_web_conf_1', name: 'Webinar Confirmation', isFullWidth: false, displayMode: 'flex', paddingTop: '64px', paddingBottom: '64px',
-    background: { bgType: 'color', backgroundColor: '#0f172a', gradient: '', bgImage: '', bgImageSize: 'cover', bgImagePosition: 'center', isParallax: false, bgVideoUrl: '' },
+    background: { bgType: 'color', backgroundColor: '#ffffff', gradient: '', bgImage: '', bgImageSize: 'cover', bgImagePosition: 'center', isParallax: false, bgVideoUrl: '' },
     rows: [{
       id: 'row_web_conf_1', columnCount: 1, gap: '24px', alignItems: 'center',
       columns: [{
@@ -794,10 +794,10 @@ export const createWebinarConfirmationCanvas = (): CanvasState => ({
 });
 
 export const createWebinarBroadcastCanvas = (): CanvasState => ({
-  globalTokens: { primaryColor: '#6366f1', secondaryColor: '#ec4899', accentColor: '#10b981', backgroundColor: '#0f172a', textColor: '#f8fafc', headingFont: 'Montserrat', bodyFont: 'Open Sans', borderRadiusPreset: '12px' },
+  globalTokens: { primaryColor: '#6366f1', secondaryColor: '#ec4899', accentColor: '#10b981', backgroundColor: '#ffffff', textColor: '#0f172a', headingFont: 'Montserrat', bodyFont: 'Open Sans', borderRadiusPreset: '12px' },
   sections: [{
     id: 'sec_web_bc_1', name: 'Broadcast Room', isFullWidth: true, displayMode: 'flex', paddingTop: '32px', paddingBottom: '32px',
-    background: { bgType: 'color', backgroundColor: '#020617', gradient: '', bgImage: '', bgImageSize: 'cover', bgImagePosition: 'center', isParallax: false, bgVideoUrl: '' },
+    background: { bgType: 'color', backgroundColor: '#1e293b', gradient: '', bgImage: '', bgImageSize: 'cover', bgImagePosition: 'center', isParallax: false, bgVideoUrl: '' },
     rows: [{
       id: 'row_web_bc_1', columnCount: 1, gap: '16px', alignItems: 'center',
       columns: [{
@@ -814,10 +814,10 @@ export const createWebinarBroadcastCanvas = (): CanvasState => ({
 });
 
 export const createWebinarReplayCanvas = (): CanvasState => ({
-  globalTokens: { primaryColor: '#6366f1', secondaryColor: '#ec4899', accentColor: '#10b981', backgroundColor: '#0f172a', textColor: '#f8fafc', headingFont: 'Montserrat', bodyFont: 'Open Sans', borderRadiusPreset: '12px' },
+  globalTokens: { primaryColor: '#6366f1', secondaryColor: '#ec4899', accentColor: '#10b981', backgroundColor: '#ffffff', textColor: '#0f172a', headingFont: 'Montserrat', bodyFont: 'Open Sans', borderRadiusPreset: '12px' },
   sections: [{
     id: 'sec_web_rep_1', name: 'Replay Room', isFullWidth: true, displayMode: 'flex', paddingTop: '32px', paddingBottom: '32px',
-    background: { bgType: 'color', backgroundColor: '#0f172a', gradient: '', bgImage: '', bgImageSize: 'cover', bgImagePosition: 'center', isParallax: false, bgVideoUrl: '' },
+    background: { bgType: 'color', backgroundColor: '#ffffff', gradient: '', bgImage: '', bgImageSize: 'cover', bgImagePosition: 'center', isParallax: false, bgVideoUrl: '' },
     rows: [{
       id: 'row_web_rep_1', columnCount: 1, gap: '16px', alignItems: 'center',
       columns: [{
@@ -836,10 +836,10 @@ export const createWebinarReplayCanvas = (): CanvasState => ({
 
 
 export const createMemberAccessCanvas = (): CanvasState => ({
-  globalTokens: { primaryColor: '#6366f1', secondaryColor: '#ec4899', accentColor: '#10b981', backgroundColor: '#0f172a', textColor: '#f8fafc', headingFont: 'Montserrat', bodyFont: 'Open Sans', borderRadiusPreset: '12px' },
+  globalTokens: { primaryColor: '#6366f1', secondaryColor: '#ec4899', accentColor: '#10b981', backgroundColor: '#ffffff', textColor: '#0f172a', headingFont: 'Montserrat', bodyFont: 'Open Sans', borderRadiusPreset: '12px' },
   sections: [{
     id: 'sec_mem_acc_1', name: 'Member Access Section', isFullWidth: false, displayMode: 'flex', paddingTop: '100px', paddingBottom: '100px',
-    background: { bgType: 'color', backgroundColor: '#0f172a', gradient: '', bgImage: '', bgImageSize: 'cover', bgImagePosition: 'center', isParallax: false, bgVideoUrl: '' },
+    background: { bgType: 'color', backgroundColor: '#ffffff', gradient: '', bgImage: '', bgImageSize: 'cover', bgImagePosition: 'center', isParallax: false, bgVideoUrl: '' },
     rows: [{
       id: 'row_mem_acc_1', columnCount: 1, gap: '24px', alignItems: 'center',
       columns: [{
@@ -855,11 +855,11 @@ export const createMemberAccessCanvas = (): CanvasState => ({
 });
 
 export const createMembersAreaCanvas = (): CanvasState => ({
-  globalTokens: { primaryColor: '#6366f1', secondaryColor: '#ec4899', accentColor: '#10b981', backgroundColor: '#0f172a', textColor: '#f8fafc', headingFont: 'Montserrat', bodyFont: 'Open Sans', borderRadiusPreset: '12px' },
+  globalTokens: { primaryColor: '#6366f1', secondaryColor: '#ec4899', accentColor: '#10b981', backgroundColor: '#ffffff', textColor: '#0f172a', headingFont: 'Montserrat', bodyFont: 'Open Sans', borderRadiusPreset: '12px' },
   sections: [
     {
       id: 'sec_mem_nav_1', name: 'Membership Header', isFullWidth: true, displayMode: 'flex', paddingTop: '16px', paddingBottom: '16px',
-      background: { bgType: 'color', backgroundColor: '#020617', gradient: '', bgImage: '', bgImageSize: 'cover', bgImagePosition: 'center', isParallax: false, bgVideoUrl: '' },
+      background: { bgType: 'color', backgroundColor: '#1e293b', gradient: '', bgImage: '', bgImageSize: 'cover', bgImagePosition: 'center', isParallax: false, bgVideoUrl: '' },
       rows: [{
         id: 'row_mem_nav_1', columnCount: 1, gap: '16px', alignItems: 'center',
         columns: [{
@@ -873,7 +873,7 @@ export const createMembersAreaCanvas = (): CanvasState => ({
     },
     {
       id: 'sec_mem_content_1', name: 'Membership Content', isFullWidth: false, displayMode: 'flex', paddingTop: '32px', paddingBottom: '64px',
-      background: { bgType: 'color', backgroundColor: '#0f172a', gradient: '', bgImage: '', bgImageSize: 'cover', bgImagePosition: 'center', isParallax: false, bgVideoUrl: '' },
+      background: { bgType: 'color', backgroundColor: '#ffffff', gradient: '', bgImage: '', bgImageSize: 'cover', bgImagePosition: 'center', isParallax: false, bgVideoUrl: '' },
       rows: [{
         id: 'row_mem_content_1', columnCount: 1, gap: '24px', alignItems: 'center',
         columns: [{
@@ -891,7 +891,7 @@ export const createMembersAreaCanvas = (): CanvasState => ({
 
 
 export const createOfferWallCanvas = (): CanvasState => ({
-  globalTokens: { primaryColor: '#2563eb', secondaryColor: '#4f46e5', accentColor: '#3b82f6', backgroundColor: '#f8fafc', textColor: '#0f172a', headingFont: 'Montserrat', bodyFont: 'Open Sans', borderRadiusPreset: '8px' },
+  globalTokens: { primaryColor: '#2563eb', secondaryColor: '#4f46e5', accentColor: '#3b82f6', backgroundColor: '#0f172a', textColor: '#ffffff', headingFont: 'Montserrat', bodyFont: 'Open Sans', borderRadiusPreset: '8px' },
   sections: [
     {
       id: 'sec_offerwall_1', name: 'Offer Wall Content', isFullWidth: false, displayMode: 'flex', paddingTop: '48px', paddingBottom: '64px',
@@ -942,7 +942,7 @@ export const createOfferWallCanvas = (): CanvasState => ({
 
 
 export const createOTOCanvas = (): CanvasState => ({
-  globalTokens: { primaryColor: '#f97316', secondaryColor: '#ea580c', accentColor: '#fb923c', backgroundColor: '#f8fafc', textColor: '#0f172a', headingFont: 'Montserrat', bodyFont: 'Open Sans', borderRadiusPreset: '8px' },
+  globalTokens: { primaryColor: '#f97316', secondaryColor: '#ea580c', accentColor: '#fb923c', backgroundColor: '#0f172a', textColor: '#ffffff', headingFont: 'Montserrat', bodyFont: 'Open Sans', borderRadiusPreset: '8px' },
   sections: [
     {
       id: 'sec_oto_1', name: 'One Time Offer', isFullWidth: false, displayMode: 'flex', paddingTop: '64px', paddingBottom: '64px',
@@ -967,7 +967,7 @@ export const createOTOCanvas = (): CanvasState => ({
 });
 
 export const createDownsellCanvas = (): CanvasState => ({
-  globalTokens: { primaryColor: '#ef4444', secondaryColor: '#dc2626', accentColor: '#f87171', backgroundColor: '#f8fafc', textColor: '#0f172a', headingFont: 'Montserrat', bodyFont: 'Open Sans', borderRadiusPreset: '8px' },
+  globalTokens: { primaryColor: '#ef4444', secondaryColor: '#dc2626', accentColor: '#f87171', backgroundColor: '#0f172a', textColor: '#ffffff', headingFont: 'Montserrat', bodyFont: 'Open Sans', borderRadiusPreset: '8px' },
   sections: [
     {
       id: 'sec_downsell_1', name: 'Downsell Offer', isFullWidth: false, displayMode: 'flex', paddingTop: '64px', paddingBottom: '64px',
@@ -993,7 +993,7 @@ export const createDownsellCanvas = (): CanvasState => ({
 
 
 export const createBridgeCanvas = (): CanvasState => ({
-  globalTokens: { primaryColor: '#2563eb', secondaryColor: '#4f46e5', accentColor: '#3b82f6', backgroundColor: '#f8fafc', textColor: '#0f172a', headingFont: 'Montserrat', bodyFont: 'Open Sans', borderRadiusPreset: '8px' },
+  globalTokens: { primaryColor: '#2563eb', secondaryColor: '#4f46e5', accentColor: '#3b82f6', backgroundColor: '#0f172a', textColor: '#ffffff', headingFont: 'Montserrat', bodyFont: 'Open Sans', borderRadiusPreset: '8px' },
   sections: [
     {
       id: 'sec_bridge_1', name: 'Bridge Content', isFullWidth: false, displayMode: 'flex', paddingTop: '64px', paddingBottom: '64px',
@@ -1020,7 +1020,7 @@ export const createBridgeCanvas = (): CanvasState => ({
 
 
 export const createShareCanvas = (): CanvasState => ({
-  globalTokens: { primaryColor: '#2563eb', secondaryColor: '#4f46e5', accentColor: '#3b82f6', backgroundColor: '#f8fafc', textColor: '#0f172a', headingFont: 'Montserrat', bodyFont: 'Open Sans', borderRadiusPreset: '8px' },
+  globalTokens: { primaryColor: '#2563eb', secondaryColor: '#4f46e5', accentColor: '#3b82f6', backgroundColor: '#0f172a', textColor: '#ffffff', headingFont: 'Montserrat', bodyFont: 'Open Sans', borderRadiusPreset: '8px' },
   sections: [
     {
       id: 'sec_share_1', name: 'Share Page Content', isFullWidth: false, displayMode: 'flex', paddingTop: '64px', paddingBottom: '64px',
@@ -1045,7 +1045,7 @@ export const createShareCanvas = (): CanvasState => ({
 
 
 export const createTwoStepOrderCanvas = (): CanvasState => ({
-  globalTokens: { primaryColor: '#2563eb', secondaryColor: '#4f46e5', accentColor: '#3b82f6', backgroundColor: '#f8fafc', textColor: '#0f172a', headingFont: 'Montserrat', bodyFont: 'Open Sans', borderRadiusPreset: '8px' },
+  globalTokens: { primaryColor: '#2563eb', secondaryColor: '#4f46e5', accentColor: '#3b82f6', backgroundColor: '#0f172a', textColor: '#ffffff', headingFont: 'Montserrat', bodyFont: 'Open Sans', borderRadiusPreset: '8px' },
   sections: [
     {
       id: 'sec_two_step_1', name: 'Order Page Content', isFullWidth: false, displayMode: 'flex', paddingTop: '64px', paddingBottom: '64px',
@@ -1075,7 +1075,7 @@ export const createTwoStepOrderCanvas = (): CanvasState => ({
             {
               id: 'col_two_step_3', widthFraction: 0.4, verticalAlign: 'top', padding: '16px', margin: '0px',
               elements: [
-                { id: 'el_ts_6', type: 'two_step_checkout', name: 'Two Step Checkout', props: { productName: 'LaunchEngine SaaS License', price: '$297.00', formBgColor: '#0f172a', formBorderColor: '#1e293b', formBorderRadius: '8px', formPadding: '24px', fieldBgColor: '#020617', fieldBorderColor: '#1e293b', fieldTextColor: '#f1f5f9', fieldFontFamily: 'inherit', fieldFontSize: '14px', titleColor: '#ffffff', titleFontFamily: 'inherit', titleFontSize: '14px', buttonText: 'COMPLETE ORDER NOW', buttonColor: '#22c55e', buttonHoverColor: '#16a34a', buttonTextColor: '#ffffff', buttonFontFamily: 'inherit', buttonFontSize: '16px', buttonFontWeight: '700', buttonBorderRadius: '12px', buttonBorderWidth: '0px', buttonBorderColor: 'transparent' }, style: createDefaultStyle({ boxModel: { width: '100%' } }) }
+                { id: 'el_ts_6', type: 'two_step_checkout', name: 'Two Step Checkout', props: { productName: 'LaunchEngine SaaS License', price: '$297.00', formBgColor: '#ffffff', formBorderColor: '#0f172a', formBorderRadius: '8px', formPadding: '24px', fieldBgColor: '#1e293b', fieldBorderColor: '#0f172a', fieldTextColor: '#1e293b', fieldFontFamily: 'inherit', fieldFontSize: '14px', titleColor: '#ffffff', titleFontFamily: 'inherit', titleFontSize: '14px', buttonText: 'COMPLETE ORDER NOW', buttonColor: '#22c55e', buttonHoverColor: '#16a34a', buttonTextColor: '#ffffff', buttonFontFamily: 'inherit', buttonFontSize: '16px', buttonFontWeight: '700', buttonBorderRadius: '12px', buttonBorderWidth: '0px', buttonBorderColor: 'transparent' }, style: createDefaultStyle({ boxModel: { width: '100%' } }) }
               ]
             }
           ]
@@ -1638,8 +1638,8 @@ const pinkConfig: AppFunnelThemeConfig = {
   primaryColor: '#ec4899',
   secondaryColor: '#db2777',
   accentColor: '#14b8a6',
-  backgroundColor: '#0f172a',
-  textColor: '#f8fafc',
+  backgroundColor: '#ffffff',
+  textColor: '#0f172a',
   headingFont: 'Playfair Display',
   bodyFont: 'Lato',
   heroBgImage: 'https://images.unsplash.com/photo-1573496799652-408c2ac9fe98?w=1600&auto=format&fit=crop&q=80',
@@ -1655,8 +1655,8 @@ const yellowConfig: AppFunnelThemeConfig = {
   primaryColor: '#f59e0b',
   secondaryColor: '#d97706',
   accentColor: '#0284c7',
-  backgroundColor: '#020617',
-  textColor: '#f8fafc',
+  backgroundColor: '#1e293b',
+  textColor: '#0f172a',
   headingFont: 'Montserrat',
   bodyFont: 'Open Sans',
   heroBgImage: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=1600&auto=format&fit=crop&q=80',
@@ -1672,8 +1672,8 @@ const orangeConfig: AppFunnelThemeConfig = {
   primaryColor: '#f97316',
   secondaryColor: '#ea580c',
   accentColor: '#06b6d4',
-  backgroundColor: '#0f172a',
-  textColor: '#f8fafc',
+  backgroundColor: '#ffffff',
+  textColor: '#0f172a',
   headingFont: 'Montserrat',
   bodyFont: 'Inter',
   heroBgImage: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1600&auto=format&fit=crop&q=80',
@@ -1688,9 +1688,9 @@ const redConfig: AppFunnelThemeConfig = {
   nicheUpper: 'NETWORK MARKETER',
   primaryColor: '#ef4444',
   secondaryColor: '#dc2626',
-  accentColor: '#1e293b',
+  accentColor: '#0f172a',
   backgroundColor: '#090d16',
-  textColor: '#f8fafc',
+  textColor: '#0f172a',
   headingFont: 'Montserrat',
   bodyFont: 'Inter',
   heroBgImage: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=1600&auto=format&fit=crop&q=80',
@@ -1707,7 +1707,7 @@ const greenConfig: AppFunnelThemeConfig = {
   secondaryColor: '#059669',
   accentColor: '#06b6d4',
   backgroundColor: '#064e3b',
-  textColor: '#f8fafc',
+  textColor: '#0f172a',
   headingFont: 'Lora',
   bodyFont: 'Nunito',
   heroBgImage: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=1600&auto=format&fit=crop&q=80',

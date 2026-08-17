@@ -8,13 +8,13 @@ const createHeader = (siteTitle: string, themeColor: string, fontFamily: string)
   name: 'Header Area',
   isFullWidth: true,
   displayMode: 'block',
-  background: { bgType: 'solid', backgroundColor: '#0f172a' } as any,
+  background: { bgType: 'solid', backgroundColor: '#ffffff' } as any,
   paddingTop: '20px',
   paddingBottom: '20px',
   style: createDefaultStyle({
-    background: { bgType: 'solid', backgroundColor: '#0f172a' },
+    background: { bgType: 'solid', backgroundColor: '#ffffff' },
     boxModel: { paddingTop: '20px', paddingBottom: '20px', marginBottom: '0px' },
-    borders: { borderStyle: 'solid', borderColor: '#1e293b', borderWidth: '0 0 1px 0' }
+    borders: { borderStyle: 'solid', borderColor: '#0f172a', borderWidth: '0 0 1px 0' }
   }),
   rows: [{
     id: `row-hdr-${generateId()}`,
@@ -45,13 +45,13 @@ const createFooter = (siteTitle: string, themeColor: string, fontFamily: string)
   name: 'Footer Area',
   isFullWidth: true,
   displayMode: 'block',
-  background: { bgType: 'solid', backgroundColor: '#020617' } as any,
+  background: { bgType: 'solid', backgroundColor: '#1e293b' } as any,
   paddingTop: '60px',
   paddingBottom: '40px',
   style: createDefaultStyle({
-    background: { bgType: 'solid', backgroundColor: '#020617' },
+    background: { bgType: 'solid', backgroundColor: '#1e293b' },
     boxModel: { paddingTop: '60px', paddingBottom: '40px', marginBottom: '0px' },
-    borders: { borderStyle: 'solid', borderColor: '#1e293b', borderWidth: '1px 0 0 0' }
+    borders: { borderStyle: 'solid', borderColor: '#0f172a', borderWidth: '1px 0 0 0' }
   }),
   rows: [
     {
@@ -87,7 +87,7 @@ const createFooter = (siteTitle: string, themeColor: string, fontFamily: string)
         {
           id: `col-cpy-${generateId()}`, widthFraction: 1, verticalAlign: 'center', padding: '0px', margin: '0px',
           elements: [
-            { id: `el-${generateId()}`, type: 'paragraph', name: 'Copy', props: { text: `© ${new Date().getFullYear()} ${siteTitle}. All Rights Reserved.` }, style: createDefaultStyle({ typography: { fontFamily, fontSize: '12px', color: '#64748b', textAlign: 'center' }, boxModel: { marginTop: '40px', paddingTop: '20px' }, borders: { borderStyle: 'solid', borderColor: '#0f172a', borderWidth: '1px 0 0 0' } }) }
+            { id: `el-${generateId()}`, type: 'paragraph', name: 'Copy', props: { text: `© ${new Date().getFullYear()} ${siteTitle}. All Rights Reserved.` }, style: createDefaultStyle({ typography: { fontFamily, fontSize: '12px', color: '#64748b', textAlign: 'center' }, boxModel: { marginTop: '40px', paddingTop: '20px' }, borders: { borderStyle: 'solid', borderColor: '#ffffff', borderWidth: '1px 0 0 0' } }) }
           ]
         }
       ]
@@ -132,10 +132,10 @@ const buildPage = (siteTitle: string, themeColor: string, fontFamily: string, pa
   return {
     globalTokens: {
       primaryColor: themeColor,
-      secondaryColor: '#1e293b',
+      secondaryColor: '#0f172a',
       accentColor: '#38bdf8',
-      backgroundColor: '#020617',
-      textColor: '#f8fafc',
+      backgroundColor: '#1e293b',
+      textColor: '#0f172a',
       headingFont: fontFamily,
       bodyFont: fontFamily,
       borderRadiusPreset: '8px'
@@ -196,19 +196,19 @@ export const WEBSITE_TEMPLATES: WebsiteTemplate[] = [
   // 1. SAASIFY PRO (Tech)
   createWebsite('saasify', 'SaaSify Pro', 'Technology & SaaS', 'Modern 6-page software website with custom product feature pages, developer docs, case studies, and demo booking.', '#6366f1', 'Inter', 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=80', [
     { title: 'Home', slug: 'home', type: 'OptIn', sections: [
-      createSection('Hero', '#020617', [
+      createSection('Hero', '#1e293b', [
         { col: 1, els: [[
           { id: generateId(), type: 'hero_banner_widget', name: 'Hero', props: { headline: 'Build & Scale Software Products Faster', subheadline: 'The all-in-one developer & automation platform designed for modern engineering teams.', primaryButtonText: 'Start Free Trial', imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1000&q=80' }, style: createDefaultStyle() }
         ]]}
       ]),
-      createSection('Features', '#0f172a', [
+      createSection('Features', '#ffffff', [
         { col: 3, els: [
           [{ id: generateId(), type: 'callout_box', name: 'F1', props: { title: 'Global Edge Caching', text: 'Deploy across 300+ edge nodes instantly for zero latency.' }, style: createDefaultStyle() }],
           [{ id: generateId(), type: 'callout_box', name: 'F2', props: { title: 'Automated CI/CD', text: 'Seamless integrations with GitHub, GitLab, and Bitbucket.' }, style: createDefaultStyle() }],
           [{ id: generateId(), type: 'callout_box', name: 'F3', props: { title: 'Zero Downtime', text: 'Blue-green deployments managed entirely by the platform.' }, style: createDefaultStyle() }]
         ]}
       ]),
-      createSection('Social Proof', '#020617', [
+      createSection('Social Proof', '#1e293b', [
         { col: 1, els: [[
           { id: generateId(), type: 'logo_cloud_widget', name: 'Logos', props: { title: 'Trusted by engineering teams at' }, style: createDefaultStyle() },
           { id: generateId(), type: 'testimonial_card_widget', name: 'Testimonial', props: { quote: 'SaaSify reduced our deployment times from 45 minutes to 3 seconds.', author: 'Sarah Jenkins', role: 'CTO, TechFlow' }, style: createDefaultStyle({ boxModel: { marginTop: '40px' } }) }
@@ -216,7 +216,7 @@ export const WEBSITE_TEMPLATES: WebsiteTemplate[] = [
       ])
     ]},
     { title: 'About Us', slug: 'about', type: 'Sales', sections: [
-      createSection('About Hero', '#0f172a', [
+      createSection('About Hero', '#ffffff', [
         { col: 2, els: [
           [
             { id: generateId(), type: 'headline', name: 'H', props: { text: 'Our Mission to Simplify Cloud Architecture', headlineLevel: 'h2' }, style: createDefaultStyle({ typography: { color: '#ffffff', fontSize: '36px', fontWeight: '900' } }) },
@@ -227,14 +227,14 @@ export const WEBSITE_TEMPLATES: WebsiteTemplate[] = [
           ]
         ]}
       ]),
-      createSection('Team', '#020617', [
+      createSection('Team', '#1e293b', [
         { col: 1, els: [[
           { id: generateId(), type: 'team_grid_widget', name: 'Team Grid', props: { title: 'Meet the Founders', columns: 3 }, style: createDefaultStyle() }
         ]]}
       ])
     ]},
     { title: 'Services', slug: 'services', type: 'Sales', sections: [
-      createSection('Services Grid', '#020617', [
+      createSection('Services Grid', '#1e293b', [
         { col: 1, els: [[
           { id: generateId(), type: 'headline', name: 'H', props: { text: 'Core Platform Services', headlineLevel: 'h2' }, style: createDefaultStyle({ typography: { color: '#ffffff', fontSize: '36px', fontWeight: '900', textAlign: 'center' } }) },
           { id: generateId(), type: 'feature_comparison_widget', name: 'Features', props: { title: 'Enterprise vs Standard Features' }, style: createDefaultStyle({ boxModel: { marginTop: '40px' } }) }
@@ -242,7 +242,7 @@ export const WEBSITE_TEMPLATES: WebsiteTemplate[] = [
       ])
     ]},
     { title: 'Pricing', slug: 'pricing', type: 'Order', sections: [
-      createSection('Pricing Table', '#0f172a', [
+      createSection('Pricing Table', '#ffffff', [
         { col: 1, els: [[
           { id: generateId(), type: 'headline', name: 'H', props: { text: 'Transparent Pricing', headlineLevel: 'h2' }, style: createDefaultStyle({ typography: { color: '#ffffff', fontSize: '36px', fontWeight: '900', textAlign: 'center' } }) },
           { id: generateId(), type: 'price_list_widget', name: 'Pricing', props: { currency: '$' }, style: createDefaultStyle({ boxModel: { marginTop: '40px' } }) },
@@ -251,7 +251,7 @@ export const WEBSITE_TEMPLATES: WebsiteTemplate[] = [
       ])
     ]},
     { title: 'Blog', slug: 'blog', type: 'Sales', sections: [
-      createSection('Blog Grid', '#020617', [
+      createSection('Blog Grid', '#1e293b', [
         { col: 1, els: [[
           { id: generateId(), type: 'headline', name: 'H', props: { text: 'Engineering Insights', headlineLevel: 'h2' }, style: createDefaultStyle({ typography: { color: '#ffffff', fontSize: '36px', fontWeight: '900' } }) },
           { id: generateId(), type: 'interactive_gallery_widget', name: 'Blog Posts', props: { columns: 3 }, style: createDefaultStyle({ boxModel: { marginTop: '40px' } }) },
@@ -260,7 +260,7 @@ export const WEBSITE_TEMPLATES: WebsiteTemplate[] = [
       ])
     ]},
     { title: 'Contact', slug: 'contact', type: 'OptIn', sections: [
-      createSection('Contact Form', '#0f172a', [
+      createSection('Contact Form', '#ffffff', [
         { col: 2, els: [
           [
             { id: generateId(), type: 'headline', name: 'H', props: { text: 'Get in Touch', headlineLevel: 'h2' }, style: createDefaultStyle({ typography: { color: '#ffffff', fontSize: '36px', fontWeight: '900' } }) },
@@ -278,26 +278,26 @@ export const WEBSITE_TEMPLATES: WebsiteTemplate[] = [
   // 2. JUSTICE LAW FIRM (Corporate & Legal)
   createWebsite('justice', 'Justice Law Firm', 'Corporate & Legal', 'Prestigious law firm template with practice areas, attorney profiles, consultation booking, and case results.', '#1e3a8a', 'Playfair Display', 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&w=600&q=80', [
     { title: 'Home', slug: 'home', type: 'OptIn', sections: [
-      createSection('Hero', '#0f172a', [
+      createSection('Hero', '#ffffff', [
         { col: 1, els: [[
           { id: generateId(), type: 'hero_banner_widget', name: 'Hero', props: { headline: 'Defending Your Future With Unwavering Precision', subheadline: 'Top-tier legal representation for complex corporate and civil litigation.', primaryButtonText: 'Request Free Consultation', imageUrl: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&w=1000&q=80' }, style: createDefaultStyle() }
         ]]}
       ]),
-      createSection('Practice Areas', '#020617', [
+      createSection('Practice Areas', '#1e293b', [
         { col: 3, els: [
           [{ id: generateId(), type: 'callout_box', name: 'P1', props: { title: 'Corporate Law', text: 'Mergers, acquisitions, and compliance.' }, style: createDefaultStyle() }],
           [{ id: generateId(), type: 'callout_box', name: 'P2', props: { title: 'Civil Litigation', text: 'Aggressive representation in high-stakes civil disputes.' }, style: createDefaultStyle() }],
           [{ id: generateId(), type: 'callout_box', name: 'P3', props: { title: 'Intellectual Property', text: 'Protecting your patents, trademarks, and trade secrets.' }, style: createDefaultStyle() }]
         ]}
       ]),
-      createSection('Trust', '#0f172a', [
+      createSection('Trust', '#ffffff', [
         { col: 1, els: [[
           { id: generateId(), type: 'stats_counter_widget', name: 'Stats', props: { stat1: '$500M+', label1: 'Recovered', stat2: '20+', label2: 'Years Experience' }, style: createDefaultStyle() }
         ]]}
       ])
     ]},
     { title: 'Attorneys', slug: 'attorneys', type: 'Sales', sections: [
-      createSection('Attorneys', '#020617', [
+      createSection('Attorneys', '#1e293b', [
         { col: 1, els: [[
           { id: generateId(), type: 'headline', name: 'H', props: { text: 'Our Legal Team', headlineLevel: 'h2' }, style: createDefaultStyle({ typography: { color: '#ffffff', fontSize: '36px', fontWeight: '900', textAlign: 'center' } }) },
           { id: generateId(), type: 'team_grid_widget', name: 'Team', props: { columns: 4 }, style: createDefaultStyle({ boxModel: { marginTop: '40px' } }) }
@@ -305,7 +305,7 @@ export const WEBSITE_TEMPLATES: WebsiteTemplate[] = [
       ])
     ]},
     { title: 'Practice Areas', slug: 'practice-areas', type: 'Sales', sections: [
-      createSection('Areas', '#0f172a', [
+      createSection('Areas', '#ffffff', [
         { col: 2, els: [
           [
             { id: generateId(), type: 'image_carousel_widget', name: 'Images', props: {}, style: createDefaultStyle() }
@@ -319,7 +319,7 @@ export const WEBSITE_TEMPLATES: WebsiteTemplate[] = [
       ])
     ]},
     { title: 'Case Results', slug: 'results', type: 'Sales', sections: [
-      createSection('Results', '#020617', [
+      createSection('Results', '#1e293b', [
         { col: 1, els: [[
           { id: generateId(), type: 'headline', name: 'H', props: { text: 'Recent Triumphs', headlineLevel: 'h2' }, style: createDefaultStyle({ typography: { color: '#ffffff', fontSize: '36px', fontWeight: '900', textAlign: 'center' } }) },
           { id: generateId(), type: 'reviews_widget', name: 'Reviews', props: { layout: 'grid' }, style: createDefaultStyle({ boxModel: { marginTop: '40px' } }) }
@@ -327,7 +327,7 @@ export const WEBSITE_TEMPLATES: WebsiteTemplate[] = [
       ])
     ]},
     { title: 'News & Insights', slug: 'news', type: 'Sales', sections: [
-      createSection('Blog', '#0f172a', [
+      createSection('Blog', '#ffffff', [
         { col: 1, els: [[
           { id: generateId(), type: 'headline', name: 'H', props: { text: 'Legal Insights', headlineLevel: 'h2' }, style: createDefaultStyle({ typography: { color: '#ffffff', fontSize: '36px', fontWeight: '900' } }) },
           { id: generateId(), type: 'interactive_gallery_widget', name: 'News', props: { columns: 3 }, style: createDefaultStyle({ boxModel: { marginTop: '40px' } }) }
@@ -335,7 +335,7 @@ export const WEBSITE_TEMPLATES: WebsiteTemplate[] = [
       ])
     ]},
     { title: 'Consultation', slug: 'contact', type: 'OptIn', sections: [
-      createSection('Contact', '#020617', [
+      createSection('Contact', '#1e293b', [
         { col: 1, els: [[
           { id: generateId(), type: 'appointment_calendar', name: 'Booking', props: { headerTitle: 'Schedule a Confidential Consultation' }, style: createDefaultStyle() },
           { id: generateId(), type: 'map_location_widget', name: 'Map', props: { address: 'New York, NY' }, style: createDefaultStyle({ boxModel: { marginTop: '40px' } }) }
@@ -347,7 +347,7 @@ export const WEBSITE_TEMPLATES: WebsiteTemplate[] = [
   // 3. PIXEL & CANVAS (Creative Agency)
   createWebsite('pixel', 'Pixel & Canvas', 'Creative Agency', 'Vibrant, bold creative agency template with masonry portfolios, client showcases, and dynamic service grids.', '#ec4899', 'Outfit', 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=600&q=80', [
     { title: 'Home', slug: 'home', type: 'OptIn', sections: [
-      createSection('Hero', '#020617', [
+      createSection('Hero', '#1e293b', [
         { col: 1, els: [[
           { id: generateId(), type: 'hero_banner_widget', name: 'Hero', props: { headline: 'We Build Digital Masterpieces', subheadline: 'Award-winning design and development for brands that want to stand out.', primaryButtonText: 'View Our Work', imageUrl: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1000&q=80' }, style: createDefaultStyle() }
         ]]}
@@ -360,7 +360,7 @@ export const WEBSITE_TEMPLATES: WebsiteTemplate[] = [
       ])
     ]},
     { title: 'Our Studio', slug: 'studio', type: 'Sales', sections: [
-      createSection('Studio', '#020617', [
+      createSection('Studio', '#1e293b', [
         { col: 2, els: [
           [
             { id: generateId(), type: 'headline', name: 'H', props: { text: 'A Collective of Dreamers', headlineLevel: 'h2' }, style: createDefaultStyle({ typography: { color: '#ffffff', fontSize: '36px', fontWeight: '900' } }) },
@@ -382,7 +382,7 @@ export const WEBSITE_TEMPLATES: WebsiteTemplate[] = [
       ])
     ]},
     { title: 'Process', slug: 'process', type: 'Sales', sections: [
-      createSection('Process', '#020617', [
+      createSection('Process', '#1e293b', [
         { col: 1, els: [[
           { id: generateId(), type: 'headline', name: 'H', props: { text: 'How We Work', headlineLevel: 'h2' }, style: createDefaultStyle({ typography: { color: '#ffffff', fontSize: '36px', fontWeight: '900', textAlign: 'center' } }) },
           { id: generateId(), type: 'progress_step_widget', name: 'Steps', props: {}, style: createDefaultStyle({ boxModel: { marginTop: '40px' } }) }
@@ -398,7 +398,7 @@ export const WEBSITE_TEMPLATES: WebsiteTemplate[] = [
       ])
     ]},
     { title: 'Start a Project', slug: 'contact', type: 'OptIn', sections: [
-      createSection('Contact', '#020617', [
+      createSection('Contact', '#1e293b', [
         { col: 1, els: [[
           { id: generateId(), type: 'appointment_calendar', name: 'Booking', props: { headerTitle: 'Book a Discovery Call' }, style: createDefaultStyle() }
         ]]}
@@ -409,13 +409,13 @@ export const WEBSITE_TEMPLATES: WebsiteTemplate[] = [
   // 4. HORIZON REAL ESTATE
   createWebsite('horizon', 'Horizon Realty', 'Real Estate & Hospitality', 'Luxurious real estate template with large hero images, property carousels, agent profiles, and lead capture.', '#d4af37', 'Playfair Display', 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80', [
     { title: 'Home', slug: 'home', type: 'OptIn', sections: [
-      createSection('Hero', '#0f172a', [
+      createSection('Hero', '#ffffff', [
         { col: 1, els: [[
           { id: generateId(), type: 'hero_banner_widget', name: 'Hero', props: { headline: 'Find Your Luxury Dream Home', subheadline: 'Exclusive listings in the most prestigious neighborhoods.', primaryButtonText: 'View Properties', imageUrl: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1000&q=80' }, style: createDefaultStyle() },
           { id: generateId(), type: 'search_bar_widget', name: 'Search', props: { placeholder: 'Search by city, zip, or neighborhood...' }, style: createDefaultStyle({ boxModel: { marginTop: '40px' } }) }
         ]]}
       ]),
-      createSection('Featured', '#020617', [
+      createSection('Featured', '#1e293b', [
         { col: 1, els: [[
           { id: generateId(), type: 'headline', name: 'H', props: { text: 'Featured Listings', headlineLevel: 'h3' }, style: createDefaultStyle({ typography: { color: '#ffffff', fontSize: '32px', fontWeight: '700' } }) },
           { id: generateId(), type: 'image_carousel_widget', name: 'Carousel', props: {}, style: createDefaultStyle({ boxModel: { marginTop: '30px' } }) }
@@ -423,21 +423,21 @@ export const WEBSITE_TEMPLATES: WebsiteTemplate[] = [
       ])
     ]},
     { title: 'Properties', slug: 'properties', type: 'Sales', sections: [
-      createSection('Properties', '#0f172a', [
+      createSection('Properties', '#ffffff', [
         { col: 1, els: [[
           { id: generateId(), type: 'interactive_gallery_widget', name: 'Grid', props: { columns: 3 }, style: createDefaultStyle() }
         ]]}
       ])
     ]},
     { title: 'Agents', slug: 'agents', type: 'Sales', sections: [
-      createSection('Team', '#020617', [
+      createSection('Team', '#1e293b', [
         { col: 1, els: [[
           { id: generateId(), type: 'team_grid_widget', name: 'Agents', props: { columns: 3, title: 'Meet Our Expert Brokers' }, style: createDefaultStyle() }
         ]]}
       ])
     ]},
     { title: 'Neighborhoods', slug: 'neighborhoods', type: 'Sales', sections: [
-      createSection('Areas', '#0f172a', [
+      createSection('Areas', '#ffffff', [
         { col: 1, els: [[
           { id: generateId(), type: 'map_location_widget', name: 'Map', props: { address: 'Beverly Hills, CA' }, style: createDefaultStyle() },
           { id: generateId(), type: 'content_slider_widget', name: 'Areas', props: {}, style: createDefaultStyle({ boxModel: { marginTop: '40px' } }) }
@@ -445,14 +445,14 @@ export const WEBSITE_TEMPLATES: WebsiteTemplate[] = [
       ])
     ]},
     { title: 'Market Updates', slug: 'blog', type: 'Sales', sections: [
-      createSection('Blog', '#020617', [
+      createSection('Blog', '#1e293b', [
         { col: 1, els: [[
           { id: generateId(), type: 'interactive_gallery_widget', name: 'Grid', props: { columns: 3 }, style: createDefaultStyle() }
         ]]}
       ])
     ]},
     { title: 'Contact Us', slug: 'contact', type: 'OptIn', sections: [
-      createSection('Contact', '#0f172a', [
+      createSection('Contact', '#ffffff', [
         { col: 1, els: [[
           { id: generateId(), type: 'appointment_calendar', name: 'Booking', props: { headerTitle: 'Schedule a Viewing' }, style: createDefaultStyle() }
         ]]}
