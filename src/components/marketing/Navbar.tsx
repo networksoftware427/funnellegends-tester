@@ -52,21 +52,21 @@ export const MarketingNavbar: React.FC<NavbarProps> = ({
             onClick={() => onNavigate('home')}
             className={`transition-colors py-1 border-b-2 ${activeTab === 'home' ? 'text-emerald-400 border-emerald-500 font-extrabold' : 'text-slate-300 hover:text-white border-transparent'}`}
           >
-            Home (VSL)
+            Home
           </button>
 
           <button
             onClick={() => onNavigate('features')}
             className={`transition-colors py-1 border-b-2 ${activeTab === 'features' ? 'text-emerald-400 border-emerald-500 font-extrabold' : 'text-slate-300 hover:text-white border-transparent'}`}
           >
-            Features & Suite
+            Features
           </button>
 
           <button
             onClick={() => onNavigate('pricing')}
             className={`transition-colors py-1 border-b-2 ${activeTab === 'pricing' ? 'text-emerald-400 border-emerald-500 font-extrabold' : 'text-slate-300 hover:text-white border-transparent'}`}
           >
-            Pricing & 30-Day Trial
+            Pricing
           </button>
 
           <button
