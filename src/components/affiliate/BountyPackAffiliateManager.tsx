@@ -34,7 +34,7 @@ export const BountyPackAffiliateManager: React.FC = () => {
 
   // Active Main Sub-Tab
   const [activeTab, setActiveTab] = useState<
-    'overview' | 'roster' | 'plans' | 'ledger' | 'payouts' | 'promo_assets' | 'contests' | 'portal' | 'simulations' | 'settings'
+    'overview' | 'roster' | 'plans' | 'ledger' | 'payouts' | 'promo_assets' | 'contests' | 'portal' | 'settings'
   >('overview');
 
   // Roster Filter & Search
@@ -58,8 +58,8 @@ export const BountyPackAffiliateManager: React.FC = () => {
   const [newAffName, setNewAffName] = useState('');
   const [newAffEmail, setNewAffEmail] = useState('');
   const [newAffCode, setNewAffCode] = useState('');
-  const [newAffPlanId, setNewAffPlanId] = useState(plans[0]?.id || 'plan_std_40');
-  const [newAffParentId, setNewAffParentId] = useState('');
+  const [newAffPlanId, setNewAffPlanId] = useState(plans[0]?.id || '');
+  const [newAffParentId, setNewAffParentId] = useState<string>('');
   const [newAffPayoutMethod, setNewAffPayoutMethod] = useState<PayoutMethod>('PayPal');
   const [newAffPayoutEmail, setNewAffPayoutEmail] = useState('');
   const [newAffStatus, setNewAffStatus] = useState<AffiliateStatus>('Approved');
@@ -73,44 +73,15 @@ export const BountyPackAffiliateManager: React.FC = () => {
   const [portalSubId, setPortalSubId] = useState('campaign_vsl');
   const [portalSelectedProduct, setPortalSelectedProduct] = useState('7-Figure Launch Accelerator System');
 
-  // Promo Add Modal
-  const [isAddPromoOpen, setIsAddPromoOpen] = useState(false);
+  // Promo Material Form State
+  const [isPromoModalOpen, setIsPromoModalOpen] = useState(false);
   const [newPromoType, setNewPromoType] = useState<PromoMaterial['type']>('email');
   const [newPromoTitle, setNewPromoTitle] = useState('');
   const [newPromoCategory, setNewPromoCategory] = useState('Email Swipe');
   const [newPromoSubject, setNewPromoSubject] = useState('');
   const [newPromoContent, setNewPromoContent] = useState('');
   const [newPromoImageUrl, setNewPromoImageUrl] = useState('');
-
-  // ── SIMULATION ENGINE STATES ──
-  const [simAffiliateId, setSimAffiliateId] = useState<string>(affiliates[1]?.id || affiliates[0]?.id || '');
-  const [simProductPrice, setSimProductPrice] = useState('2997');
-  const [simProductName, setSimProductName] = useState('7-Figure Launch Accelerator System');
-  const [simCustomerName, setSimCustomerName] = useState('Oliver Green');
-  const [simCustomerEmail, setSimCustomerEmail] = useState('oliver@scalestrategy.demo');
-  const [simFunnelName, setSimFunnelName] = useState('Main VSL Sales Funnel');
-  const [simResultNotification, setSimResultNotification] = useState<{
-    orderId: string;
-    tier1Name: string;
-    tier1Amount: number;
-    tier2Name?: string;
-    tier2Amount?: number;
-    gross: number;
-  } | null>(null);
-  const [isSimulatingSale, setIsSimulatingSale] = useState(false);
-
-  // Cookie simulation
-  const [simCookieVisitorEmail, setSimCookieVisitorEmail] = useState('visitor_lead_99@gmail.com');
-  const [simCookieAffCode, setSimCookieAffCode] = useState('SARAHGLOW');
-  const [simCookieDuration, setSimCookieDuration] = useState('60');
-  const [simCookieStatus, setSimCookieStatus] = useState<string | null>(null);
-
-  // Clawback simulation
-  const [selectedClawbackTxId, setSelectedClawbackTxId] = useState<string>(transactions[0]?.id || '');
-  const [clawbackStatusNotice, setClawbackStatusNotice] = useState<string | null>(null);
-
-  // Webhook Simulation
-  const [webhookSimOutput, setWebhookSimOutput] = useState<string | null>(null);
+  const [isAddPromoOpen, setIsAddPromoOpen] = useState(false);
 
   // Supabase Sync Status
   const [dbSyncStatus, setDbSyncStatus] = useState<{ success: boolean; message: string; timestamp: string } | null>(null);
@@ -334,179 +305,8 @@ export const BountyPackAffiliateManager: React.FC = () => {
       setPromoMaterials(loadStoredPromoMaterials());
       setContests(loadStoredContests());
       setSettings(loadStoredSettings());
-      setSimResultNotification(null);
       alert('BountyPack data reset to factory demo state.');
     }
-  };
-
-  // ── SIMULATION 1: RUN LIVE REFERRED SALE ──
-  const handleSimulateReferredSale = () => {
-    const affiliate = affiliates.find(a => a.id === simAffiliateId);
-    if (!affiliate) {
-      alert('Please select an active affiliate.');
-      return;
-    }
-
-    setIsSimulatingSale(true);
-
-    setTimeout(() => {
-      const orderAmount = parseFloat(simProductPrice) || 2997;
-      const assignedPlan = plans.find(p => p.id === affiliate.planId) || plans[0];
-      
-      // Calculate Tier 1 Direct Commission
-      const tier1Rate = assignedPlan.tier1Rate;
-      const tier1Commission = assignedPlan.tier1Type === 'percentage' 
-        ? (orderAmount * (tier1Rate / 100))
-        : tier1Rate;
-
-      const orderId = `ORD-${Math.floor(10000 + Math.random() * 90000)}`;
-      const newTransactions: ReferredTransaction[] = [];
-
-      // 1. Add Tier 1 Transaction
-      const txTier1: ReferredTransaction = {
-        id: `tx_${Date.now()}_1`,
-        orderId,
-        customerName: simCustomerName,
-        customerEmail: simCustomerEmail,
-        productName: simProductName,
-        amount: orderAmount,
-        affiliateId: affiliate.id,
-        affiliateCode: affiliate.affiliateCode,
-        tier: 1,
-        commissionAmount: tier1Commission,
-        status: 'Approved',
-        date: new Date().toISOString().split('T')[0],
-        funnelName: simFunnelName
-      };
-      newTransactions.push(txTier1);
-
-      // Check if Parent Affiliate exists for Tier 2 Sub-Kickback
-      let parentAffiliate = affiliate.parentAffiliateId ? affiliates.find(a => a.id === affiliate.parentAffiliateId) : null;
-      let tier2Commission = 0;
-
-      if (parentAffiliate) {
-        const tier2Rate = assignedPlan.tier2Rate;
-        tier2Commission = assignedPlan.tier2Type === 'percentage'
-          ? (orderAmount * (tier2Rate / 100))
-          : tier2Rate;
-
-        const txTier2: ReferredTransaction = {
-          id: `tx_${Date.now()}_2`,
-          orderId,
-          customerName: simCustomerName,
-          customerEmail: simCustomerEmail,
-          productName: simProductName,
-          amount: orderAmount,
-          affiliateId: parentAffiliate.id,
-          affiliateCode: parentAffiliate.affiliateCode,
-          tier: 2,
-          commissionAmount: tier2Commission,
-          status: 'Approved',
-          date: new Date().toISOString().split('T')[0],
-          funnelName: simFunnelName
-        };
-        newTransactions.push(txTier2);
-      }
-
-      // Update Affiliates Stats
-      const updatedAffiliates = affiliates.map(a => {
-        if (a.id === affiliate.id) {
-          return {
-            ...a,
-            totalSalesCount: a.totalSalesCount + 1,
-            grossRevenue: a.grossRevenue + orderAmount,
-            commissionEarned: a.commissionEarned + tier1Commission,
-            pendingHoldback: a.pendingHoldback + tier1Commission
-          };
-        }
-        if (parentAffiliate && a.id === parentAffiliate.id) {
-          return {
-            ...a,
-            commissionEarned: a.commissionEarned + tier2Commission,
-            pendingHoldback: a.pendingHoldback + tier2Commission
-          };
-        }
-        return a;
-      });
-
-      setAffiliates(updatedAffiliates);
-      setTransactions([...newTransactions, ...transactions]);
-      setIsSimulatingSale(false);
-
-      setSimResultNotification({
-        orderId,
-        tier1Name: affiliate.name,
-        tier1Amount: tier1Commission,
-        tier2Name: parentAffiliate?.name,
-        tier2Amount: tier2Commission,
-        gross: orderAmount
-      });
-    }, 600);
-  };
-
-  // ── SIMULATION 2: STICKY COOKIE ATTRIBUTION ──
-  const handleSimulateCookieDrop = () => {
-    setSimCookieStatus(
-      `🍪 Sticky Cookie Stored in Local Session! Tied Email [${simCookieVisitorEmail}] to Affiliate [${simCookieAffCode}] for ${simCookieDuration} days. Any purchase by this email will auto-attribute even on direct visits.`
-    );
-  };
-
-  // ── SIMULATION 3: CLAWBACK SIMULATION ──
-  const handleSimulateClawback = () => {
-    const tx = transactions.find(t => t.id === selectedClawbackTxId);
-    if (!tx) return;
-
-    if (tx.status === 'ClawedBack') {
-      setClawbackStatusNotice(`Order ${tx.orderId} is already clawed back.`);
-      return;
-    }
-
-    const updatedTx = transactions.map(t => t.id === tx.id ? { ...t, status: 'ClawedBack' as TransactionStatus } : t);
-    setTransactions(updatedTx);
-
-    // Adjust affiliate earned
-    const updatedAff = affiliates.map(a => {
-      if (a.id === tx.affiliateId) {
-        return {
-          ...a,
-          commissionEarned: Math.max(0, a.commissionEarned - tx.commissionAmount),
-          pendingHoldback: Math.max(0, a.pendingHoldback - tx.commissionAmount)
-        };
-      }
-      return a;
-    });
-    setAffiliates(updatedAff);
-
-    setClawbackStatusNotice(
-      `✅ Commission Clawback Complete! Order ${tx.orderId} status set to ClawedBack. $${tx.commissionAmount.toFixed(2)} deducted from ${tx.affiliateCode}'s balance.`
-    );
-  };
-
-  // ── SIMULATION 4: TEST WEBHOOK DISPATCH ──
-  const handleSimulateWebhook = () => {
-    const payload = {
-      event: 'bountypack.commission.created',
-      timestamp: new Date().toISOString(),
-      platform: 'FunnelLegends BountyPack v2.0',
-      data: {
-        orderId: 'ORD-99381',
-        grossAmount: 2997.00,
-        currency: 'USD',
-        affiliate: {
-          code: 'HORMOZI',
-          name: 'Alex Hormozi',
-          tier: 1,
-          commissionRate: '50%',
-          commissionEarned: 1498.50,
-          payoutEmail: 'payouts@acquisition.demo'
-        },
-        stickyCookie: {
-          daysRemaining: 365,
-          attributionMode: settings.cookieAttributionMode
-        }
-      }
-    };
-    setWebhookSimOutput(JSON.stringify(payload, null, 2));
   };
 
   // ── SUPABASE SYNC TRIGGER ──
@@ -555,14 +355,6 @@ export const BountyPackAffiliateManager: React.FC = () => {
 
         {/* Action Controls Header */}
         <div className="flex items-center gap-2 flex-wrap">
-          <button 
-            onClick={() => setActiveTab('simulations')}
-            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 border shadow-sm ${activeTab === 'simulations' ? 'bg-amber-400 text-slate-950 border-amber-300 shadow-amber-500/20 font-black' : 'bg-white/10 hover:bg-white/20 text-white border-white/20'}`}
-          >
-            <Sparkles className="w-4 h-4 text-amber-300" />
-            <span>⚡ Fun Simulations</span>
-          </button>
-
           <button 
             onClick={() => setActiveTab('portal')}
             className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 border shadow-sm ${activeTab === 'portal' ? 'bg-white text-emerald-800 border-white shadow-emerald-900/20 font-black' : 'bg-white/10 hover:bg-white/20 text-white border-white/20'}`}
@@ -669,14 +461,6 @@ export const BountyPackAffiliateManager: React.FC = () => {
         </button>
 
         <button 
-          onClick={() => setActiveTab('simulations')}
-          className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${activeTab === 'simulations' ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 shadow-md shadow-amber-500/25 font-black' : 'text-amber-700 bg-amber-50 hover:bg-amber-100'}`}
-        >
-          <Zap className="w-4 h-4 fill-amber-500" />
-          <span>Simulations & Workflows</span>
-        </button>
-
-        <button 
           onClick={() => setActiveTab('settings')}
           className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${activeTab === 'settings' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/25 font-black' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'}`}
         >
@@ -686,44 +470,6 @@ export const BountyPackAffiliateManager: React.FC = () => {
       </div>
 
       <div className="p-6 flex-1 max-w-[1600px] w-full mx-auto space-y-6">
-        
-        {/* ── SIMULATION RECEIPT TOAST NOTIFICATION ── */}
-        {simResultNotification && (
-          <div className="bg-emerald-900 text-white border-2 border-emerald-400 rounded-2xl p-5 shadow-2xl animate-fade-in flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="flex items-start gap-3.5">
-              <div className="w-10 h-10 rounded-xl bg-emerald-500 text-slate-950 flex items-center justify-center shrink-0 font-black">
-                <Check className="w-6 h-6" />
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <h4 className="text-base font-black text-white">Live Commission Simulation Success!</h4>
-                  <span className="px-2 py-0.5 bg-emerald-800 text-emerald-200 rounded font-mono text-[10px] font-bold">{simResultNotification.orderId}</span>
-                </div>
-                <p className="text-xs text-emerald-100 mt-1">
-                  Referred Gross: <strong className="text-white">${simResultNotification.gross.toLocaleString()}</strong> • 
-                  Tier 1 to <strong>{simResultNotification.tier1Name}</strong>: <strong className="text-emerald-300">+${simResultNotification.tier1Amount.toFixed(2)}</strong>
-                  {simResultNotification.tier2Name && (
-                    <span> • Tier 2 Kickback to <strong>{simResultNotification.tier2Name}</strong>: <strong className="text-amber-300">+${simResultNotification.tier2Amount?.toFixed(2)}</strong></span>
-                  )}
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2 shrink-0">
-              <button 
-                onClick={() => setActiveTab('ledger')}
-                className="px-3 py-1.5 bg-white text-emerald-950 hover:bg-emerald-100 rounded-xl text-xs font-black transition-all"
-              >
-                View in Ledger →
-              </button>
-              <button 
-                onClick={() => setSimResultNotification(null)}
-                className="p-1.5 text-emerald-300 hover:text-white"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        )}
 
         {/* ── TAB 1: OVERVIEW DASHBOARD ── */}
         {activeTab === 'overview' && (
@@ -841,20 +587,10 @@ export const BountyPackAffiliateManager: React.FC = () => {
                     <Flame className="w-5 h-5 text-orange-500" />
                     Quick Actions
                   </h3>
-                  <p className="text-xs text-slate-500 mt-1">Manage partner applications, commission tiers and simulations.</p>
+                  <p className="text-xs text-slate-500 mt-1">Manage partner applications, commission tiers and affiliate rosters.</p>
                 </div>
 
                 <div className="space-y-2.5">
-                  <button 
-                    onClick={() => setActiveTab('simulations')}
-                    className="w-full py-2.5 px-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-xl text-xs font-black flex items-center justify-between shadow-md shadow-emerald-600/20 transition-all"
-                  >
-                    <div className="flex items-center gap-2">
-                      <Sparkles className="w-4 h-4 text-amber-300" />
-                      <span>Run Live Commission Simulation</span>
-                    </div>
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
 
                   <button 
                     onClick={() => setActiveTab('roster')}
@@ -1257,16 +993,6 @@ export const BountyPackAffiliateManager: React.FC = () => {
               <div>
                 <h3 className="text-xl font-black text-slate-900">Referred Sales Ledger</h3>
                 <p className="text-xs text-slate-500">Audit sales attribution, 2-tier commission split allocations, and holdback statuses.</p>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <button 
-                  onClick={() => setActiveTab('simulations')}
-                  className="px-3.5 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl flex items-center gap-1.5 shadow-sm"
-                >
-                  <Zap className="w-4 h-4 fill-slate-950" />
-                  <span>Simulate New Sale</span>
-                </button>
               </div>
             </div>
 
@@ -1784,286 +1510,6 @@ export const BountyPackAffiliateManager: React.FC = () => {
           </div>
         )}
 
-        {/* ── TAB 9: FUN SIMULATIONS & WORKFLOWS ENGINE ── */}
-        {activeTab === 'simulations' && (
-          <div className="space-y-8">
-            <div className="bg-gradient-to-r from-emerald-900 via-teal-900 to-slate-900 text-white rounded-3xl p-6 sm:p-8 space-y-3 shadow-xl relative overflow-hidden">
-              <div className="flex items-center gap-2">
-                <span className="px-3 py-1 bg-amber-400 text-slate-950 rounded-full text-xs font-black font-mono flex items-center gap-1.5 shadow-sm">
-                  <Zap className="w-4 h-4 fill-slate-950" /> BETA TESTER SANDBOX
-                </span>
-              </div>
-              <h3 className="text-2xl sm:text-3xl font-black tracking-tight" style={{ fontFamily: 'Outfit, Inter, sans-serif' }}>
-                BountyPack Interactive Simulations & 2-Tier Workflows
-              </h3>
-              <p className="text-xs sm:text-sm text-emerald-100 max-w-3xl leading-relaxed">
-                Test and experience live checkout attributions, real-time 2-tier commission calculations, sticky cookie attribution simulations, clawbacks, and automated webhook payloads.
-              </p>
-            </div>
-
-            {/* SIMULATION 1: LIVE 2-TIER CHECKOUT SIMULATOR */}
-            <div className="bg-white border-2 border-emerald-300 rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-black">
-                    <Play className="w-5 h-5 fill-emerald-700" />
-                  </div>
-                  <div>
-                    <h4 className="text-base font-black text-slate-900">Simulation 1: Live Checkout & 2-Tier Split Processor</h4>
-                    <p className="text-xs text-slate-500">Simulate a high-ticket customer purchase through an affiliate link and watch live commission splits.</p>
-                  </div>
-                </div>
-                <span className="text-xs font-mono font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
-                  REAL-TIME DB SYNC
-                </span>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                {/* Select Affiliate */}
-                <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">Select Referring Partner (Tier 1)</label>
-                  <select 
-                    value={simAffiliateId}
-                    onChange={(e) => setSimAffiliateId(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-slate-900 font-bold focus:outline-none focus:border-emerald-500"
-                  >
-                    {affiliates.map(a => {
-                      const parent = affiliates.find(p => p.id === a.parentAffiliateId);
-                      return (
-                        <option key={a.id} value={a.id}>
-                          {a.name} ({a.affiliateCode}) {parent ? `[Sub-tier of ${parent.name}]` : ''}
-                        </option>
-                      );
-                    })}
-                  </select>
-                </div>
-
-                {/* Product & Price */}
-                <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">Select Product Offer</label>
-                  <select 
-                    value={simProductPrice}
-                    onChange={(e) => {
-                      setSimProductPrice(e.target.value);
-                      if (e.target.value === '2997') setSimProductName('7-Figure Launch Accelerator System');
-                      else if (e.target.value === '997') setSimProductName('Course Portal VIP Membership');
-                      else if (e.target.value === '9997') setSimProductName('High Ticket Mastermind');
-                      else if (e.target.value === '97') setSimProductName('Funnel Starter Toolkit');
-                    }}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-slate-900 font-bold focus:outline-none focus:border-emerald-500"
-                  >
-                    <option value="2997">7-Figure Launch Accelerator ($2,997)</option>
-                    <option value="997">Course Portal VIP Membership ($997)</option>
-                    <option value="9997">High Ticket Mastermind ($9,997)</option>
-                    <option value="97">Funnel Starter Toolkit ($97)</option>
-                  </select>
-                </div>
-
-                {/* Mock Customer */}
-                <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">Simulated Customer Name</label>
-                  <input 
-                    type="text"
-                    value={simCustomerName}
-                    onChange={(e) => setSimCustomerName(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-slate-900 font-bold"
-                  />
-                </div>
-              </div>
-
-              {/* Action Button */}
-              <button 
-                onClick={handleSimulateReferredSale}
-                disabled={isSimulatingSale}
-                className="w-full py-4 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 hover:brightness-110 text-white rounded-2xl text-sm font-black shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 transition-all hover:scale-[1.01]"
-              >
-                {isSimulatingSale ? (
-                  <span className="flex items-center gap-2">
-                    <Activity className="w-5 h-5 animate-spin" />
-                    Processing 2-Tier Split & Dropping Sticky Cookie...
-                  </span>
-                ) : (
-                  <>
-                    <Zap className="w-5 h-5 fill-white" />
-                    <span>SIMULATE LIVE PURCHASE & PROCESS 2-TIER COMMISSIONS →</span>
-                  </>
-                )}
-              </button>
-            </div>
-
-            {/* SIMULATION 2: STICKY COOKIE & SIMULATION 3: CLAWBACK */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Sticky Cookie Simulation */}
-              <div className="bg-white border border-slate-200 rounded-3xl p-6 space-y-4 shadow-sm">
-                <div className="flex items-center gap-2.5">
-                  <ShieldCheck className="w-5 h-5 text-emerald-600" />
-                  <h4 className="text-base font-black text-slate-900">Simulation 2: Sticky Cookie Attribution</h4>
-                </div>
-                <p className="text-xs text-slate-500">Test how sticky cookies permanently lock customer emails to their originating referrer for lifetime upsells.</p>
-
-                <div className="space-y-3 text-xs">
-                  <div>
-                    <label className="font-bold text-slate-700 block mb-1">Visitor Email</label>
-                    <input 
-                      type="email"
-                      value={simCookieVisitorEmail}
-                      onChange={(e) => setSimCookieVisitorEmail(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 font-mono"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <label className="font-bold text-slate-700 block mb-1">Tracking Code</label>
-                      <input 
-                        type="text"
-                        value={simCookieAffCode}
-                        onChange={(e) => setSimCookieAffCode(e.target.value)}
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 font-mono font-bold"
-                      />
-                    </div>
-                    <div>
-                      <label className="font-bold text-slate-700 block mb-1">Cookie Days</label>
-                      <input 
-                        type="number"
-                        value={simCookieDuration}
-                        onChange={(e) => setSimCookieDuration(e.target.value)}
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 font-mono"
-                      />
-                    </div>
-                  </div>
-
-                  <button 
-                    onClick={handleSimulateCookieDrop}
-                    className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-all"
-                  >
-                    <span>Drop Sticky Cookie Simulation</span>
-                  </button>
-
-                  {simCookieStatus && (
-                    <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-900 text-xs font-medium animate-fade-in">
-                      {simCookieStatus}
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Clawback / Refund Simulation */}
-              <div className="bg-white border border-slate-200 rounded-3xl p-6 space-y-4 shadow-sm">
-                <div className="flex items-center gap-2.5">
-                  <RefreshCw className="w-5 h-5 text-rose-600" />
-                  <h4 className="text-base font-black text-slate-900">Simulation 3: Refund & Clawback Engine</h4>
-                </div>
-                <p className="text-xs text-slate-500">Simulate customer chargebacks and automatically adjust unpaid affiliate commission balances.</p>
-
-                <div className="space-y-3 text-xs">
-                  <div>
-                    <label className="font-bold text-slate-700 block mb-1">Select Transaction to Clawback</label>
-                    <select 
-                      value={selectedClawbackTxId}
-                      onChange={(e) => setSelectedClawbackTxId(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 font-mono"
-                    >
-                      {transactions.map(t => (
-                        <option key={t.id} value={t.id}>
-                          {t.orderId} - ${t.commissionAmount.toFixed(2)} to {t.affiliateCode} ({t.status})
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <button 
-                    onClick={handleSimulateClawback}
-                    className="w-full py-2.5 bg-rose-600 hover:bg-rose-500 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-sm"
-                  >
-                    <span>Execute Commission Clawback</span>
-                  </button>
-
-                  {clawbackStatusNotice && (
-                    <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-900 text-xs font-medium animate-fade-in">
-                      {clawbackStatusNotice}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* SIMULATION 4: AUTOMATED WEBHOOK PAYLOAD DISPATCHER */}
-            <div className="bg-white border border-slate-200 rounded-3xl p-6 space-y-4 shadow-sm">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2.5">
-                  <Send className="w-5 h-5 text-teal-600" />
-                  <h4 className="text-base font-black text-slate-900">Simulation 4: Automated Webhook & Zapier Payload Dispatcher</h4>
-                </div>
-                <button 
-                  onClick={handleSimulateWebhook}
-                  className="px-3.5 py-1.5 bg-teal-600 hover:bg-teal-500 text-white rounded-xl text-xs font-black flex items-center gap-1.5"
-                >
-                  <Terminal className="w-3.5 h-3.5" />
-                  <span>Test Fire Webhook Event</span>
-                </button>
-              </div>
-              <p className="text-xs text-slate-500">Test real-time commission event payloads sent to external CRM endpoints, Zapier, Make, and SMS webhooks.</p>
-
-              {webhookSimOutput && (
-                <div className="bg-slate-950 text-emerald-400 p-4 rounded-2xl font-mono text-xs overflow-x-auto shadow-inner">
-                  <pre>{webhookSimOutput}</pre>
-                </div>
-              )}
-            </div>
-
-            {/* VISUAL 2-TIER WORKFLOW ARCHITECTURE DIAGRAM */}
-            <div className="bg-slate-900 text-white rounded-3xl p-6 sm:p-8 space-y-6 shadow-xl">
-              <div className="flex items-center gap-3">
-                <Radio className="w-6 h-6 text-emerald-400 animate-pulse" />
-                <div>
-                  <h4 className="text-lg font-black text-white" style={{ fontFamily: 'Outfit, Inter, sans-serif' }}>
-                    BountyPack 2-Tier Automated Workflow Engine Pipeline
-                  </h4>
-                  <p className="text-xs text-slate-400">Step-by-step automated lifecycle executed on every referred visit and customer checkout.</p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 text-center text-xs">
-                <div className="bg-white/10 p-4 rounded-2xl border border-white/10 space-y-2">
-                  <span className="w-6 h-6 rounded-full bg-emerald-500 text-slate-950 font-black text-xs mx-auto flex items-center justify-center">1</span>
-                  <h5 className="font-bold text-emerald-300">Tracking Link</h5>
-                  <p className="text-[11px] text-slate-300">Visitor clicks affiliate link with ?ref=CODE & Sub-ID</p>
-                </div>
-
-                <div className="bg-white/10 p-4 rounded-2xl border border-white/10 space-y-2">
-                  <span className="w-6 h-6 rounded-full bg-emerald-500 text-slate-950 font-black text-xs mx-auto flex items-center justify-center">2</span>
-                  <h5 className="font-bold text-emerald-300">Sticky Cookie</h5>
-                  <p className="text-[11px] text-slate-300">60-day cookie dropped in browser + IP hashed</p>
-                </div>
-
-                <div className="bg-white/10 p-4 rounded-2xl border border-white/10 space-y-2">
-                  <span className="w-6 h-6 rounded-full bg-emerald-500 text-slate-950 font-black text-xs mx-auto flex items-center justify-center">3</span>
-                  <h5 className="font-bold text-emerald-300">Checkout</h5>
-                  <p className="text-[11px] text-slate-300">Buyer purchases high-ticket VSL or subscription</p>
-                </div>
-
-                <div className="bg-white/10 p-4 rounded-2xl border border-white/10 space-y-2">
-                  <span className="w-6 h-6 rounded-full bg-teal-400 text-slate-950 font-black text-xs mx-auto flex items-center justify-center">4</span>
-                  <h5 className="font-bold text-teal-300">2-Tier Split</h5>
-                  <p className="text-[11px] text-slate-300">Direct partner gets 40%, Parent partner gets 10%</p>
-                </div>
-
-                <div className="bg-white/10 p-4 rounded-2xl border border-white/10 space-y-2">
-                  <span className="w-6 h-6 rounded-full bg-amber-400 text-slate-950 font-black text-xs mx-auto flex items-center justify-center">5</span>
-                  <h5 className="font-bold text-amber-300">30-Day Holdback</h5>
-                  <p className="text-[11px] text-slate-300">Protects from refund & chargeback clawbacks</p>
-                </div>
-
-                <div className="bg-white/10 p-4 rounded-2xl border border-white/10 space-y-2">
-                  <span className="w-6 h-6 rounded-full bg-green-400 text-slate-950 font-black text-xs mx-auto flex items-center justify-center">6</span>
-                  <h5 className="font-bold text-green-300">MassPay CSV</h5>
-                  <p className="text-[11px] text-slate-300">One-click export to PayPal MassPay & Stripe</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* ── TAB 10: SETTINGS ── */}
         {activeTab === 'settings' && (

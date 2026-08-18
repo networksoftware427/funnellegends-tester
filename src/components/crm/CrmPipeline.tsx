@@ -17,7 +17,7 @@ import {
 export const CrmPipeline: React.FC = () => {
   const [deals, setDeals] = useState<DealData[]>(loadStoredDeals());
   const [contacts, setContacts] = useState<ContactData[]>(loadStoredContacts());
-  const [activeTab, setActiveTab] = useState<'kanban' | 'simulations' | 'contacts' | 'integrations'>('kanban');
+  const [activeTab, setActiveTab] = useState<'kanban' | 'contacts' | 'integrations'>('kanban');
   const [selectedContact, setSelectedContact] = useState<ContactData | null>(contacts[0] || null);
   const [contactSearchQuery, setContactSearchQuery] = useState('');
 
@@ -42,14 +42,6 @@ export const CrmPipeline: React.FC = () => {
   const [isSyncingDb, setIsSyncingDb] = useState(false);
   const [copiedSchema, setCopiedSchema] = useState(false);
   const [appliedToast, setAppliedToast] = useState<string | null>(null);
-
-  // ── SIMULATION SANDBOX STATE ──
-  const [simSelectedContact, setSimSelectedContact] = useState<ContactData>(contacts[0] || {
-    id: 'cnt_demo', name: 'Sarah Jenkins', email: 'sarah@growthlabs.io', score: 140, tags: ['OptIn'], lastActive: 'Just now', createdDate: '2026-08-01'
-  });
-  const [simLastAction, setSimLastAction] = useState<string | null>(null);
-  const [simWebhookPayload, setSimWebhookPayload] = useState<any | null>(null);
-  const [isSimulatingDealWin, setIsSimulatingDealWin] = useState(false);
 
   // Persist state
   useEffect(() => {
@@ -138,97 +130,6 @@ export const CrmPipeline: React.FC = () => {
     setIsSyncingDb(false);
   };
 
-  // ── SIMULATION HANDLERS ──
-  const handleSimulateFunnelTrigger = (actionType: 'optin' | 'vsl_watch' | 'checkout' | 'high_ticket') => {
-    let pointsToAdd = 0;
-    let tagToAdd = '';
-    let actionDesc = '';
-    let dealTitle = '';
-    let dealVal = 0;
-
-    if (actionType === 'optin') {
-      pointsToAdd = 25;
-      tagToAdd = 'OptIn_Lead';
-      actionDesc = '⚡ Opt-In Form Submitted on Squeeze Page (+25 pts)';
-    } else if (actionType === 'vsl_watch') {
-      pointsToAdd = 40;
-      tagToAdd = 'VSL_Engaged';
-      actionDesc = '🎥 Watched 80% of Core VSL Video Stream (+40 pts)';
-    } else if (actionType === 'checkout') {
-      pointsToAdd = 100;
-      tagToAdd = 'Customer_VIP';
-      actionDesc = '💳 2-Step Checkout Purchase Completed for $497 (+100 pts)';
-      dealTitle = `${simSelectedContact.name} - Front-End Course ($497)`;
-      dealVal = 497;
-    } else if (actionType === 'high_ticket') {
-      pointsToAdd = 150;
-      tagToAdd = 'Mastermind_Applicant';
-      actionDesc = '👑 High-Ticket Mastermind Application Submitted ($4,997) (+150 pts)';
-      dealTitle = `${simSelectedContact.name} - Mastermind Consulting ($4,997)`;
-      dealVal = 4997;
-    }
-
-    const updatedScore = (simSelectedContact.score || 0) + pointsToAdd;
-    const updatedTags = Array.from(new Set([...(simSelectedContact.tags || []), tagToAdd]));
-    const updatedContact = {
-      ...simSelectedContact,
-      score: updatedScore,
-      tags: updatedTags,
-      lastActive: 'Just now'
-    };
-
-    setSimSelectedContact(updatedContact);
-    setSimLastAction(actionDesc);
-
-    // Update contacts list
-    const updatedList = contacts.map(c => c.id === simSelectedContact.id ? updatedContact : c);
-    setContacts(updatedList);
-
-    // If deal generated, add to pipeline
-    if (dealVal > 0) {
-      const newDeal: DealData = {
-        id: `deal_${Date.now()}`,
-        title: dealTitle,
-        value: dealVal,
-        contactName: simSelectedContact.name,
-        contactEmail: simSelectedContact.email,
-        stage: actionType === 'checkout' ? 'Won' : 'Proposal',
-        score: updatedScore,
-        createdDate: new Date().toISOString().split('T')[0]
-      };
-      setDeals([newDeal, ...deals]);
-    }
-
-    // Prepare outbound webhook payload
-    setSimWebhookPayload({
-      event: `crm.lead.${actionType}`,
-      timestamp: new Date().toISOString(),
-      contact: {
-        id: simSelectedContact.id,
-        name: simSelectedContact.name,
-        email: simSelectedContact.email,
-        score: updatedScore,
-        tags: updatedTags
-      },
-      action: actionDesc,
-      dealCreated: dealVal > 0 ? { title: dealTitle, value: dealVal } : null
-    });
-  };
-
-  // Simulate Winning a Deal
-  const handleSimulateDealWin = () => {
-    setIsSimulatingDealWin(true);
-    setTimeout(() => {
-      const openDeal = deals.find(d => d.stage !== 'Won') || deals[0];
-      if (openDeal) {
-        const updated = deals.map(d => d.id === openDeal.id ? { ...d, stage: 'Won' as const } : d);
-        setDeals(updated);
-        setAppliedToast(`🎉 Deal "${openDeal.title}" marked as WON ($${openDeal.value.toLocaleString()})! Outbound Webhook Dispatched.`);
-      }
-      setIsSimulatingDealWin(false);
-    }, 600);
-  };
-
   // Test Outbound Webhook
   const handleTestIntegrationWebhook = (integration: ThirdPartyIntegration) => {
     setTestedWebhookResult(`⚡ Dispatched test event to ${integration.name} (${integration.endpoint}). HTTP 200 OK.`);
@@ -313,14 +214,6 @@ export const CrmPipeline: React.FC = () => {
         >
           <Layers className="w-4 h-4" />
           <span>Kanban Pipeline Board</span>
-        </button>
-
-        <button 
-          onClick={() => setActiveTab('simulations')}
-          className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${activeTab === 'simulations' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/25 font-black' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'}`}
-        >
-          <Zap className="w-4 h-4" />
-          <span>⚡ Simulations & Workflows</span>
         </button>
 
         <button 
@@ -421,170 +314,7 @@ export const CrmPipeline: React.FC = () => {
           </div>
         )}
 
-        {/* ── VIEW 2: SIMULATIONS & WORKFLOWS ── */}
-        {activeTab === 'simulations' && (
-          <div className="space-y-6">
-            <div className="bg-white border border-slate-200 rounded-3xl p-6 space-y-6 shadow-sm">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-black">
-                    <Zap className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h3 className="text-base font-black text-slate-900">CRM Lead Ingestion & Real-Time Scoring Cascade Simulator</h3>
-                    <p className="text-xs text-slate-500">Test live lead capture events, point increments, automated tagging, and outbound webhook dispatches.</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* SIMULATION CONTACT SELECTOR */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Target Simulated Lead</label>
-                  <select 
-                    value={simSelectedContact.id}
-                    onChange={(e) => {
-                      const found = contacts.find(c => c.id === e.target.value) || contacts[0];
-                      setSimSelectedContact(found);
-                    }}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 focus:outline-none"
-                  >
-                    {contacts.map(c => (
-                      <option key={c.id} value={c.id}>{c.name} ({c.email}) - {c.score} pts</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Current Dynamic Lead Score</label>
-                  <div className="p-2 bg-amber-50 border border-amber-200 rounded-xl text-xs font-black text-amber-800 flex items-center gap-2">
-                    <Flame className="w-4 h-4 text-amber-500 fill-amber-500" />
-                    <span>{simSelectedContact.score || 0} Total Lead Points</span>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Assigned Behavioral Tags</label>
-                  <div className="flex flex-wrap gap-1">
-                    {(simSelectedContact.tags || []).map(t => (
-                      <span key={t} className="px-2 py-0.5 bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] rounded font-bold">
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* SIMULATION TRIGGER BUTTONS */}
-              <div className="space-y-2">
-                <label className="block text-xs font-bold text-slate-700 uppercase font-mono text-[10px]">
-                  ⚡ Fire Live Funnel Event:
-                </label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
-                  <button 
-                    onClick={() => handleSimulateFunnelTrigger('optin')}
-                    className="p-3.5 bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 rounded-2xl text-left space-y-1 transition-all"
-                  >
-                    <div className="font-bold text-xs text-slate-900">🎯 Squeeze Page Opt-In</div>
-                    <div className="text-[10px] text-slate-500">+25 Lead Points • Tag: OptIn_Lead</div>
-                  </button>
-
-                  <button 
-                    onClick={() => handleSimulateFunnelTrigger('vsl_watch')}
-                    className="p-3.5 bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 rounded-2xl text-left space-y-1 transition-all"
-                  >
-                    <div className="font-bold text-xs text-slate-900">🎥 VSL 80% Video Watch</div>
-                    <div className="text-[10px] text-slate-500">+40 Lead Points • Tag: VSL_Engaged</div>
-                  </button>
-
-                  <button 
-                    onClick={() => handleSimulateFunnelTrigger('checkout')}
-                    className="p-3.5 bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 rounded-2xl text-left space-y-1 transition-all"
-                  >
-                    <div className="font-bold text-xs text-emerald-800">💳 2-Step Checkout ($497)</div>
-                    <div className="text-[10px] text-slate-500">+100 Pts • Tag: Customer_VIP • Deals Won</div>
-                  </button>
-
-                  <button 
-                    onClick={() => handleSimulateFunnelTrigger('high_ticket')}
-                    className="p-3.5 bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 rounded-2xl text-left space-y-1 transition-all"
-                  >
-                    <div className="font-bold text-xs text-teal-800">👑 Mastermind Application</div>
-                    <div className="text-[10px] text-slate-500">+150 Pts • $4,997 Proposal Deal Created</div>
-                  </button>
-                </div>
-              </div>
-
-              {simLastAction && (
-                <div className="p-4 bg-emerald-50 border-2 border-emerald-300 rounded-2xl space-y-2 animate-fade-in">
-                  <div className="text-xs font-black text-emerald-950 flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                    <span>{simLastAction}</span>
-                  </div>
-                  <p className="text-xs text-slate-700">
-                    Lead score was dynamically recalculated and recorded into the persistent CRM database.
-                  </p>
-                </div>
-              )}
-
-              {/* LIVE OUTBOUND WEBHOOK PAYLOAD PREVIEW */}
-              {simWebhookPayload && (
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-                      <Send className="w-3.5 h-3.5 text-emerald-600" />
-                      Live Outbound Zapier / Make.com JSON Webhook Payload:
-                    </span>
-                    <span className="text-[10px] font-mono text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                      HTTP 200 OK DISPATCHED
-                    </span>
-                  </div>
-                  <div className="bg-slate-950 text-emerald-400 p-4 rounded-2xl font-mono text-xs max-h-56 overflow-y-auto">
-                    <pre>{JSON.stringify(simWebhookPayload, null, 2)}</pre>
-                  </div>
-                </div>
-              )}
-
-              {/* SIMULATE DEAL WIN */}
-              <div className="pt-2">
-                <button 
-                  onClick={handleSimulateDealWin}
-                  disabled={isSimulatingDealWin}
-                  className="w-full py-3.5 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 hover:brightness-110 text-white rounded-xl text-xs font-black shadow-md shadow-emerald-600/30 flex items-center justify-center gap-2"
-                >
-                  {isSimulatingDealWin ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Award className="w-4 h-4" />}
-                  <span>{isSimulatingDealWin ? 'Simulating Stage Advancement...' : 'SIMULATE KANBAN DEAL ADVANCEMENT TO WON ($ WON CASH COLLECTED) →'}</span>
-                </button>
-              </div>
-            </div>
-
-            {/* 6-STAGE CRM DATA PIPELINE ARCHITECTURE */}
-            <div className="bg-white border border-slate-200 rounded-3xl p-6 space-y-4 shadow-sm">
-              <h3 className="text-sm font-black text-slate-900 flex items-center gap-2">
-                <Activity className="w-4 h-4 text-emerald-600" />
-                FunnelLegends CRM & Lead Ingestion Pipeline Architecture
-              </h3>
-              <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
-                {[
-                  { step: '1', title: 'Funnel Opt-In', desc: 'Squeeze & VSL Lead Capture' },
-                  { step: '2', title: 'Real-Time Scoring', desc: 'Algorithmic +Pts Attribution' },
-                  { step: '3', title: 'Deal Generation', desc: 'Instant Kanban Stage Ingestion' },
-                  { step: '4', title: 'Tag Assignment', desc: 'VIP / Buyer / Applicant Flags' },
-                  { step: '5', title: '3rd Party Webhook', desc: 'Outbound Zapier / Stripe Stream' },
-                  { step: '6', title: 'Retention & Close', desc: '1-Click Upsell & Call Booking' }
-                ].map((st) => (
-                  <div key={st.step} className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-center space-y-1">
-                    <span className="w-6 h-6 rounded-full bg-emerald-600 text-white text-xs font-black flex items-center justify-center mx-auto">
-                      {st.step}
-                    </span>
-                    <div className="text-xs font-bold text-slate-900">{st.title}</div>
-                    <div className="text-[10px] text-slate-500 leading-tight">{st.desc}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
+        {/* ── VIEW 3: LEADS DATABASE ── */}
 
         {/* ── VIEW 3: LEADS DATABASE ── */}
         {activeTab === 'contacts' && (

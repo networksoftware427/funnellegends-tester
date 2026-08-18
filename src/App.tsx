@@ -501,14 +501,6 @@ export function App() {
             </button>
 
             <button
-              onClick={() => setViewMode('marketing')}
-              className="px-3 py-1.5 bg-white hover:bg-green-50 text-green-800 hover:text-green-950 rounded-xl text-xs font-bold flex items-center gap-1.5 border border-green-300 transition-colors"
-            >
-              <Globe className="w-4 h-4 text-green-600" />
-              <span>Marketing Site</span>
-            </button>
-
-            <button
               onClick={() => setIsTemplateModalOpen(true)}
               className="px-3 py-1.5 bg-white hover:bg-green-50 text-gray-700 hover:text-gray-900 rounded-xl text-xs font-bold flex items-center gap-1.5 border border-green-200 transition-colors"
             >

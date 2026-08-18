@@ -837,7 +837,7 @@ export const getModulesForTemplate = (templateId: string): ModuleData[] => {
 
 export const MembershipManager: React.FC = () => {
   const [course, setCourse] = useState<CourseData>(loadStoredCourse());
-  const [activeTab, setActiveTab] = useState<'curriculum' | 'simulations' | 'course_templates' | 'certificates' | 'drip_rules' | 'student_portal'>('curriculum');
+  const [activeTab, setActiveTab] = useState<'curriculum' | 'course_templates' | 'certificates' | 'drip_rules' | 'student_portal'>('curriculum');
   const [selectedLesson, setSelectedLesson] = useState<LessonData>(course.modules[0]?.lessons[0] || { id: 'les_1', title: 'Lesson 1.1', order: 1 });
   const [studentEnrollmentDays, setStudentEnrollmentDays] = useState<number>(0);
 
@@ -864,13 +864,6 @@ export const MembershipManager: React.FC = () => {
   const [isSyncingDb, setIsSyncingDb] = useState(false);
   const [copiedSchema, setCopiedSchema] = useState(false);
 
-  // ── SIMULATIONS & WORKFLOWS STATE ──
-  const [simStudentProfile, setSimStudentProfile] = useState({ name: 'Elena Rostova', email: 'elena@scalevault.demo' });
-  const [simEnrollmentDayOffset, setSimEnrollmentDayOffset] = useState<number>(7);
-  const [simProgressPercent, setSimProgressPercent] = useState<number>(65);
-  const [isSimulatingComplete, setIsSimulatingComplete] = useState(false);
-  const [simCertResult, setSimCertResult] = useState<{ certId: string; issueDate: string; student: string } | null>(null);
-
   // Trigger Supabase Sync
   const handleTriggerSupabaseSync = async () => {
     setIsSyncingDb(true);
@@ -888,26 +881,6 @@ export const MembershipManager: React.FC = () => {
       setAppliedToast('✓ Reset Course & LMS to default demo state!');
       setTimeout(() => setAppliedToast(null), 3000);
     }
-  };
-
-  // Run 100% Course Completion Simulation
-  const handleSimulate100PercentComplete = () => {
-    setIsSimulatingComplete(true);
-    setTimeout(() => {
-      // Mark all lessons complete in current course state
-      const updatedMods = course.modules.map(m => ({
-        ...m,
-        lessons: m.lessons.map(l => ({ ...l, isCompleted: true }))
-      }));
-      setCourse({ ...course, modules: updatedMods });
-      setSimProgressPercent(100);
-      setSimCertResult({
-        certId: `CERT-2026-X${Math.floor(1000 + Math.random() * 9000)}`,
-        issueDate: new Date().toISOString().split('T')[0],
-        student: simStudentProfile.name
-      });
-      setIsSimulatingComplete(false);
-    }, 600);
   };
 
   // Save to persistence
@@ -1093,14 +1066,6 @@ export const MembershipManager: React.FC = () => {
         >
           <BookOpen className="w-4 h-4" />
           <span>Curriculum Builder</span>
-        </button>
-
-        <button 
-          onClick={() => setActiveTab('simulations')}
-          className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${activeTab === 'simulations' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/25 font-black' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'}`}
-        >
-          <Zap className="w-4 h-4" />
-          <span>⚡ Simulations & Workflows</span>
         </button>
 
         <button 
@@ -2085,154 +2050,6 @@ export const MembershipManager: React.FC = () => {
                 courseTitle={course.title} 
               />
             )}
-          </div>
-        </div>
-      )}
-
-      {/* ── VIEW 6: SIMULATIONS & WORKFLOWS ── */}
-      {activeTab === 'simulations' && (
-        <div className="space-y-6">
-          <div className="bg-white border border-slate-200 rounded-3xl p-6 space-y-6 shadow-sm">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-black">
-                  <Zap className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="text-base font-black text-slate-900">Student Progression & Automated Drip Sandbox</h3>
-                  <p className="text-xs text-slate-500">Test student enrollment timelines, drip lock/unlock rules, and instant certificate issuance.</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Simulated Student</label>
-                <select 
-                  value={simStudentProfile.name}
-                  onChange={(e) => {
-                    const name = e.target.value;
-                    const email = name === 'Elena Rostova' ? 'elena@scalevault.demo' : name === 'David Sterling' ? 'david@apexscale.demo' : 'sarah.connor@apex.io';
-                    setSimStudentProfile({ name, email });
-                    setStudentCertName(name);
-                  }}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 focus:outline-none"
-                >
-                  <option value="Elena Rostova">Elena Rostova (elena@scalevault.demo)</option>
-                  <option value="David Sterling">David Sterling (david@apexscale.demo)</option>
-                  <option value="Sarah Connor">Sarah Connor (sarah.connor@apex.io)</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Simulated Days Since Enrollment: ({simEnrollmentDayOffset} Days)</label>
-                <input 
-                  type="range"
-                  min={0}
-                  max={30}
-                  value={simEnrollmentDayOffset}
-                  onChange={(e) => setSimEnrollmentDayOffset(parseInt(e.target.value))}
-                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-600 mt-2"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Active Curriculum Status</label>
-                <div className="p-2 bg-emerald-50 border border-emerald-200 rounded-xl text-xs font-bold text-emerald-900 flex items-center justify-between">
-                  <span>{course.modules.length} Modules • {allLessons.length} Lessons</span>
-                  <span>{progressPercent}% Complete</span>
-                </div>
-              </div>
-            </div>
-
-            {/* DRIP STATUS PREVIEW */}
-            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-3">
-              <div className="text-xs font-bold text-slate-800 uppercase font-mono text-[10px]">
-                ⚡ Drip Release Status for Day {simEnrollmentDayOffset}:
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-xs">
-                {course.modules.map((mod, i) => {
-                  const requiredDay = i * 7;
-                  const isUnlocked = simEnrollmentDayOffset >= requiredDay;
-                  return (
-                    <div key={mod.id} className={`p-3.5 rounded-xl border flex items-center justify-between ${isUnlocked ? 'bg-emerald-50 border-emerald-300 text-emerald-950 font-bold' : 'bg-white border-slate-200 text-slate-500'}`}>
-                      <div>
-                        <div>{mod.title}</div>
-                        <div className="text-[10px] opacity-75">{isUnlocked ? '✓ Unlocked & Accessible' : `🔒 Locked (Unlocks Day ${requiredDay})`}</div>
-                      </div>
-                      <span className="text-lg">{isUnlocked ? '🔓' : '🔒'}</span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* SIMULATE 100% COMPLETION & ISSUE CERTIFICATE */}
-            <div className="pt-2">
-              <button 
-                onClick={handleSimulate100PercentComplete}
-                disabled={isSimulatingComplete}
-                className="w-full py-3.5 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 hover:brightness-110 text-white rounded-xl text-xs font-black shadow-md shadow-emerald-600/30 flex items-center justify-center gap-2"
-              >
-                {isSimulatingComplete ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Award className="w-4 h-4" />}
-                <span>{isSimulatingComplete ? 'Simulating 100% Completion & Issuing Certificate...' : 'SIMULATE 100% CURRICULUM COMPLETION & ISSUE CERTIFICATE →'}</span>
-              </button>
-            </div>
-
-            {simCertResult && (
-              <div className="p-5 bg-emerald-50 border-2 border-emerald-300 rounded-2xl space-y-3 animate-fade-in">
-                <div className="flex items-center justify-between">
-                  <div className="font-black text-emerald-950 text-sm flex items-center gap-2">
-                    <Award className="w-5 h-5 text-amber-500" />
-                    <span>✓ Verified Completion Certificate Issued for {simCertResult.student}!</span>
-                  </div>
-                  <span className="font-mono text-emerald-800 text-xs font-bold">{simCertResult.certId}</span>
-                </div>
-                <p className="text-xs text-slate-700">
-                  Student completed all {allLessons.length} lessons. Official accreditation badge and PDF download link have been dispatched via automated email notification.
-                </p>
-                <div className="flex gap-2">
-                  <button 
-                    onClick={() => setActiveTab('certificates')}
-                    className="px-3.5 py-1.5 bg-emerald-600 text-white rounded-xl text-xs font-bold hover:bg-emerald-500 shadow-sm"
-                  >
-                    View in Certificate Studio →
-                  </button>
-                  <button 
-                    onClick={() => setActiveTab('student_portal')}
-                    className="px-3.5 py-1.5 bg-white border border-emerald-300 text-emerald-800 rounded-xl text-xs font-bold hover:bg-emerald-50"
-                  >
-                    Open Student Portal View →
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* 6-STAGE VISUAL ARCHITECTURE */}
-          <div className="bg-white border border-slate-200 rounded-3xl p-6 space-y-4 shadow-sm">
-            <h3 className="text-sm font-black text-slate-900 flex items-center gap-2">
-              <GraduationCap className="w-4 h-4 text-emerald-600" />
-              FunnelLegends Academy & LMS Learning Pipeline Architecture
-            </h3>
-            <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
-              {[
-                { step: '1', title: 'Checkout Gate', desc: 'Funnel Buyer Instant Enrollment' },
-                { step: '2', title: 'Magic Login', desc: 'Credential Dispatch via SMS/Email' },
-                { step: '3', title: 'Drip Timeline', desc: 'Automated Module Release' },
-                { step: '4', title: 'HD Lesson VSL', desc: 'Interactive Video + Quizzes' },
-                { step: '5', title: '100% Complete', desc: 'Progress Milestone Tracking' },
-                { step: '6', title: 'Official Diploma', desc: 'Verified PDF Certificate' }
-              ].map((st) => (
-                <div key={st.step} className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-center space-y-1">
-                  <span className="w-6 h-6 rounded-full bg-emerald-600 text-white text-xs font-black flex items-center justify-center mx-auto">
-                    {st.step}
-                  </span>
-                  <div className="text-xs font-bold text-slate-900">{st.title}</div>
-                  <div className="text-[10px] text-slate-500 leading-tight">{st.desc}</div>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       )}

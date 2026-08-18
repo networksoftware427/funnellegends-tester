@@ -178,12 +178,12 @@ const toolGuides: ToolGuide[] = [
       'Entry triggers: Form Submitted, Order Completed, Tag Added, Appointment Booked, Course Enrolled',
       'Action nodes: Send Email, Assign Tag, Update CRM Stage, Delay Time (Hours/Days), HTTP Webhook',
       'Condition branches: If/Else splits based on contact tags, deal value, or previous email opens',
-      'Live execution simulation runner to test node progression step-by-step'
+      'Direct node execution connecting triggers to multi-step actions and email templates'
     ],
     steps: [
       { title: '1. Select Entry Trigger', desc: 'Choose the event that initiates the workflow (e.g. "New Lead Opted In" or "Stripe Order Completed").', tip: 'Triggers automatically pull lead details into workflow execution variables.' },
       { title: '2. Connect Action Nodes', desc: 'Add a "Send Email" action node with your welcome message, followed by a "Delay" node (e.g. 24 hours), then a follow-up email.', tip: 'Use pre-tested email copy templates for high open and click-through rates.' },
-      { title: '3. Run Visual Simulation', desc: 'Click "Simulate Workflow Run" to watch nodes evaluate and execute in real-time.' }
+      { title: '3. Activate & Deploy Workflow', desc: 'Review your step sequences and message templates to publish the automated customer journey.' }
     ],
     proTips: [
       'Apply a tag (e.g. "Customer - VIP") immediately upon order completion to segment your buyers from free leads.'

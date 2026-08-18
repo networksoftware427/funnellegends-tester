@@ -28,7 +28,7 @@ export const ChronoChimpAppointmentManager: React.FC = () => {
 
   // Active Main Sub-Tab
   const [activeTab, setActiveTab] = useState<
-    'overview' | 'roster' | 'event_types' | 'hosts' | 'reminders' | 'embed' | 'simulations' | 'settings'
+    'overview' | 'roster' | 'event_types' | 'hosts' | 'reminders' | 'embed' | 'settings'
   >('overview');
 
   // Filters & Search
@@ -57,26 +57,6 @@ export const ChronoChimpAppointmentManager: React.FC = () => {
   const [hostFormRole, setHostFormRole] = useState('');
   const [hostFormZoomUrl, setHostFormZoomUrl] = useState('');
   const [hostFormPhone, setHostFormPhone] = useState('');
-
-  // ── SIMULATION ENGINE STATES ──
-  const [simSelectedEventId, setSimSelectedEventId] = useState(eventTypes[0]?.id || '');
-  const [simSelectedHostId, setSimSelectedHostId] = useState(hosts[0]?.id || '');
-  const [simDate, setSimDate] = useState('2026-08-19');
-  const [simSlot, setSimSlot] = useState('14:00');
-  const [simClientName, setSimClientName] = useState('Oliver Green');
-  const [simClientEmail, setSimClientEmail] = useState('oliver@growthagency.demo');
-  const [simClientPhone, setSimClientPhone] = useState('+1 (555) 349-2810');
-  const [simClientRevenue, setSimClientRevenue] = useState('$50k - $100k/mo');
-  const [simClientGoal, setSimClientGoal] = useState('Scale high-ticket VSL funnel to $250k/month');
-  const [isSimulatingBooking, setIsSimulatingBooking] = useState(false);
-  const [simBookingReceipt, setSimBookingReceipt] = useState<BookedAppointment | null>(null);
-
-  // SMS Simulation
-  const [simSmsDispatched, setSimSmsDispatched] = useState(false);
-
-  // Attendance Status Simulator
-  const [selectedStatusSimApptId, setSelectedStatusSimApptId] = useState<string>(appointments[0]?.id || '');
-  const [statusSimFeedback, setStatusSimFeedback] = useState<string | null>(null);
 
   // Supabase Sync Status
   const [dbSyncStatus, setDbSyncStatus] = useState<{ success: boolean; message: string; timestamp: string } | null>(null);
@@ -256,69 +236,8 @@ export const ChronoChimpAppointmentManager: React.FC = () => {
       setEventTypes(loadStoredEventTypes());
       setAppointments(loadStoredAppointments());
       setChronoSettings(loadStoredChronoSettings());
-      setSimBookingReceipt(null);
       alert('ChronoChimp data reset to default demo state.');
     }
-  };
-
-  // ── SIMULATION 1: EXECUTE LIVE BOOKING ──
-  const handleSimulateLiveBooking = () => {
-    if (!simClientName.trim() || !simClientEmail.trim()) {
-      alert('Please provide customer name and email.');
-      return;
-    }
-
-    setIsSimulatingBooking(true);
-
-    setTimeout(() => {
-      const evt = eventTypes.find(e => e.id === simSelectedEventId) || eventTypes[0];
-      const assignedHost = hosts.find(h => h.id === simSelectedHostId) || hosts[0];
-
-      const newAppt: BookedAppointment = {
-        id: `appt_${Date.now()}`,
-        eventTypeId: evt.id,
-        eventTitle: evt.title,
-        hostId: assignedHost.id,
-        hostName: assignedHost.name,
-        hostAvatar: assignedHost.avatar,
-        customerName: simClientName,
-        customerEmail: simClientEmail,
-        customerPhone: simClientPhone,
-        date: simDate,
-        timeSlot: simSlot,
-        locationType: evt.locationType,
-        meetingLink: assignedHost.zoomUrl || `https://zoom.us/j/${Math.floor(1000000000 + Math.random() * 9000000000)}`,
-        status: 'Upcoming',
-        answers: {
-          q_revenue: simClientRevenue,
-          q_goal: simClientGoal
-        },
-        createdAt: new Date().toISOString(),
-        isPaid: evt.priceAmount > 0,
-        amountPaid: evt.priceAmount
-      };
-
-      const updated = [newAppt, ...appointments];
-      setAppointments(updated);
-      setIsSimulatingBooking(false);
-      setSimBookingReceipt(newAppt);
-      setBookingSuccessMsg(`🎉 Live Appointment Confirmed with ${assignedHost.name} on ${simDate} at ${simSlot}!`);
-    }, 600);
-  };
-
-  // ── SIMULATION 2: TEST SMS SEQUENCE DISPATCH ──
-  const handleSimulateSmsSequence = () => {
-    setSimSmsDispatched(true);
-    setTimeout(() => setSimSmsDispatched(false), 5000);
-  };
-
-  // ── SIMULATION 3: ATTENDANCE STATUS SIMULATION ──
-  const handleSimulateStatusChange = (status: AppointmentStatus) => {
-    const target = appointments.find(a => a.id === selectedStatusSimApptId);
-    if (!target) return;
-    handleUpdateApptStatus(target.id, status);
-    setStatusSimFeedback(`✅ Meeting with ${target.customerName} marked as [${status}]. Status logged in DB.`);
-    setTimeout(() => setStatusSimFeedback(null), 4000);
   };
 
   // ── SUPABASE SYNC TRIGGER ──
@@ -381,14 +300,6 @@ export const ChronoChimpAppointmentManager: React.FC = () => {
 
         {/* Action Header Controls */}
         <div className="flex items-center gap-2 flex-wrap">
-          <button 
-            onClick={() => setActiveTab('simulations')}
-            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 border shadow-sm ${activeTab === 'simulations' ? 'bg-amber-400 text-slate-950 border-amber-300 shadow-amber-500/20 font-black' : 'bg-white/10 hover:bg-white/20 text-white border-white/20'}`}
-          >
-            <Sparkles className="w-4 h-4 text-amber-300" />
-            <span>⚡ Fun Simulations</span>
-          </button>
-
           <button 
             onClick={() => { setEditingEvent(null); setEventFormTitle(''); setEventFormSlug(''); setEventFormDesc(''); setIsEventModalOpen(true); }}
             className="px-3.5 py-2 bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-xl text-xs font-black flex items-center gap-1.5 transition-all shadow-sm"
@@ -468,14 +379,6 @@ export const ChronoChimpAppointmentManager: React.FC = () => {
         >
           <Share2 className="w-4 h-4" />
           <span>Embed Widget</span>
-        </button>
-
-        <button 
-          onClick={() => setActiveTab('simulations')}
-          className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${activeTab === 'simulations' ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 shadow-md shadow-amber-500/25 font-black' : 'text-amber-700 bg-amber-50 hover:bg-amber-100'}`}
-        >
-          <Zap className="w-4 h-4 fill-amber-500" />
-          <span>Simulations & Workflows</span>
         </button>
 
         <button 
@@ -642,14 +545,6 @@ export const ChronoChimpAppointmentManager: React.FC = () => {
                     </div>
                   ))}
                 </div>
-
-                <button 
-                  onClick={() => setActiveTab('simulations')}
-                  className="w-full py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-xl text-xs font-black flex items-center justify-center gap-2 shadow-md shadow-emerald-600/20"
-                >
-                  <CalendarCheck className="w-4 h-4" />
-                  <span>Launch Booking Simulator</span>
-                </button>
               </div>
             </div>
           </div>
@@ -663,14 +558,6 @@ export const ChronoChimpAppointmentManager: React.FC = () => {
                 <h3 className="text-xl font-black text-slate-900">Appointments Roster & Bookings</h3>
                 <p className="text-xs text-slate-500">Manage all booked calls, inspect customer qualification answers, and update meeting statuses.</p>
               </div>
-
-              <button 
-                onClick={() => setActiveTab('simulations')}
-                className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black shadow-lg shadow-emerald-600/20 flex items-center gap-2"
-              >
-                <Plus className="w-4 h-4" />
-                <span>Simulate New Booking</span>
-              </button>
             </div>
 
             {/* Filter & Search Bar */}
@@ -969,12 +856,6 @@ export const ChronoChimpAppointmentManager: React.FC = () => {
 
               <div className="border-t border-slate-100 pt-4 flex items-center justify-between">
                 <span className="text-xs text-slate-500 font-bold">Twilio SMS Gateway: <strong className="text-emerald-700">Connected</strong></span>
-                <button 
-                  onClick={() => setActiveTab('simulations')}
-                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black shadow-sm"
-                >
-                  Test SMS Simulation →
-                </button>
               </div>
             </div>
           </div>
@@ -1021,300 +902,6 @@ export const ChronoChimpAppointmentManager: React.FC = () => {
           </div>
         )}
 
-        {/* ── TAB 7: FUN SIMULATIONS & WORKFLOWS ENGINE ── */}
-        {activeTab === 'simulations' && (
-          <div className="space-y-8">
-            <div className="bg-gradient-to-r from-emerald-900 via-teal-900 to-slate-900 text-white rounded-3xl p-6 sm:p-8 space-y-3 shadow-xl relative overflow-hidden">
-              <div className="flex items-center gap-2">
-                <span className="px-3 py-1 bg-amber-400 text-slate-950 rounded-full text-xs font-black font-mono flex items-center gap-1.5 shadow-sm">
-                  <Zap className="w-4 h-4 fill-slate-950" /> CHRONOCHIMP SANDBOX
-                </span>
-              </div>
-              <h3 className="text-2xl sm:text-3xl font-black tracking-tight" style={{ fontFamily: 'Outfit, Inter, sans-serif' }}>
-                ChronoChimp Interactive Booking & Workflow Simulations
-              </h3>
-              <p className="text-xs sm:text-sm text-emerald-100 max-w-3xl leading-relaxed">
-                Experience full real-time call booking, automatic Zoom room generation, multi-stage SMS sequence dispatch, round-robin team distribution, and status transitions.
-              </p>
-            </div>
-
-            {/* SIMULATION 1: LIVE BOOKING SIMULATOR */}
-            <div className="bg-white border-2 border-emerald-300 rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-black">
-                    <CalendarCheck className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="text-base font-black text-slate-900">Simulation 1: Live Interactive 1-on-1 Booking Simulator</h4>
-                    <p className="text-xs text-slate-500">Simulate a client selecting an appointment, submitting qualification answers & generating a Zoom room.</p>
-                  </div>
-                </div>
-                <span className="text-xs font-mono font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
-                  REAL-TIME DB SYNC
-                </span>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">Select Event Type</label>
-                  <select 
-                    value={simSelectedEventId}
-                    onChange={(e) => setSimSelectedEventId(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-slate-900 font-bold"
-                  >
-                    {eventTypes.map(e => (
-                      <option key={e.id} value={e.id}>{e.title} ({e.durationMinutes}m • {e.priceAmount > 0 ? `$${e.priceAmount}` : 'FREE'})</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">Assigned Team Host</label>
-                  <select 
-                    value={simSelectedHostId}
-                    onChange={(e) => setSimSelectedHostId(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-slate-900 font-bold"
-                  >
-                    {hosts.map(h => (
-                      <option key={h.id} value={h.id}>{h.name} ({h.role})</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="grid grid-cols-2 gap-2">
-                  <div>
-                    <label className="text-xs font-bold text-slate-700 block mb-1">Date</label>
-                    <input 
-                      type="date"
-                      value={simDate}
-                      onChange={(e) => setSimDate(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 font-mono font-bold"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs font-bold text-slate-700 block mb-1">Slot</label>
-                    <select 
-                      value={simSlot}
-                      onChange={(e) => setSimSlot(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 font-mono font-bold"
-                    >
-                      <option value="09:00">09:00 AM</option>
-                      <option value="11:30">11:30 AM</option>
-                      <option value="14:00">02:00 PM</option>
-                      <option value="16:30">04:30 PM</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">Client Full Name</label>
-                  <input 
-                    type="text"
-                    value={simClientName}
-                    onChange={(e) => setSimClientName(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 font-bold"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">Client Email</label>
-                  <input 
-                    type="email"
-                    value={simClientEmail}
-                    onChange={(e) => setSimClientEmail(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">Client Phone (SMS Alerts)</label>
-                  <input 
-                    type="text"
-                    value={simClientPhone}
-                    onChange={(e) => setSimClientPhone(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900"
-                  />
-                </div>
-              </div>
-
-              <button 
-                onClick={handleSimulateLiveBooking}
-                disabled={isSimulatingBooking}
-                className="w-full py-4 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 hover:brightness-110 text-white rounded-2xl text-sm font-black shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 transition-all hover:scale-[1.01]"
-              >
-                {isSimulatingBooking ? (
-                  <span className="flex items-center gap-2">
-                    <Activity className="w-5 h-5 animate-spin" />
-                    Generating Zoom Link & Triggering Calendar Sync...
-                  </span>
-                ) : (
-                  <>
-                    <Zap className="w-5 h-5 fill-white" />
-                    <span>SIMULATE LIVE BOOKING & GENERATE ZOOM MEETING ROOM →</span>
-                  </>
-                )}
-              </button>
-
-              {simBookingReceipt && (
-                <div className="p-4 bg-emerald-50 border border-emerald-300 rounded-2xl space-y-2 animate-fade-in text-xs">
-                  <div className="flex items-center justify-between">
-                    <span className="font-black text-emerald-950">✓ Appointment Generated: {simBookingReceipt.eventTitle}</span>
-                    <span className="font-mono text-emerald-700 font-bold">{simBookingReceipt.id}</span>
-                  </div>
-                  <p className="text-slate-700">
-                    Host: <strong>{simBookingReceipt.hostName}</strong> • Date: <strong>{simBookingReceipt.date} at {simBookingReceipt.timeSlot}</strong> • Zoom URL: <a href={simBookingReceipt.meetingLink} target="_blank" rel="noreferrer" className="text-emerald-700 underline font-mono">{simBookingReceipt.meetingLink}</a>
-                  </p>
-                </div>
-              )}
-            </div>
-
-            {/* SIMULATION 2: SMS HANDSET SIMULATION */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="bg-white border border-slate-200 rounded-3xl p-6 space-y-4 shadow-sm">
-                <div className="flex items-center gap-2.5">
-                  <Smartphone className="w-5 h-5 text-emerald-600" />
-                  <h4 className="text-base font-black text-slate-900">Simulation 2: SMS Handset Simulator</h4>
-                </div>
-                <p className="text-xs text-slate-500">Live preview of the SMS messages dispatched to {simClientPhone}.</p>
-
-                <div className="bg-slate-950 p-4 rounded-2xl space-y-3 font-mono text-xs text-white">
-                  <div className="p-3 bg-emerald-950/80 border border-emerald-500/40 rounded-xl space-y-1">
-                    <span className="text-[10px] text-emerald-300 font-bold">ChronoChimp SMS • Just Now</span>
-                    <p className="text-emerald-100">
-                      Hi {simClientName}! Your strategy call with {hosts[0]?.name} is confirmed for {simDate} at {simSlot}. Zoom: https://zoom.us/j/9981248019
-                    </p>
-                  </div>
-
-                  <div className="p-3 bg-slate-900 border border-slate-700 rounded-xl space-y-1">
-                    <span className="text-[10px] text-slate-400 font-bold">Scheduled • 24h Before Call</span>
-                    <p className="text-slate-300">
-                      Quick reminder: Tomorrow is your 1-on-1 consultation! Reply YES to confirm attendance.
-                    </p>
-                  </div>
-                </div>
-
-                <button 
-                  onClick={handleSimulateSmsSequence}
-                  className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black shadow-sm flex items-center justify-center gap-1.5"
-                >
-                  <Send className="w-3.5 h-3.5" />
-                  <span>{simSmsDispatched ? '✓ SMS Dispatched to Handset!' : 'Test Fire Instant SMS Reminder'}</span>
-                </button>
-              </div>
-
-              {/* SIMULATION 3: ATTENDANCE STATUS SIMULATION */}
-              <div className="bg-white border border-slate-200 rounded-3xl p-6 space-y-4 shadow-sm">
-                <div className="flex items-center gap-2.5">
-                  <CheckCircle2 className="w-5 h-5 text-teal-600" />
-                  <h4 className="text-base font-black text-slate-900">Simulation 3: Meeting Attendance Engine</h4>
-                </div>
-                <p className="text-xs text-slate-500">Simulate post-meeting attendance marking and automatic CRM status synchronization.</p>
-
-                <div className="space-y-3 text-xs">
-                  <div>
-                    <label className="font-bold text-slate-700 block mb-1">Select Target Appointment</label>
-                    <select 
-                      value={selectedStatusSimApptId}
-                      onChange={(e) => setSelectedStatusSimApptId(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 font-bold"
-                    >
-                      {appointments.map(a => (
-                        <option key={a.id} value={a.id}>{a.customerName} - {a.eventTitle} ({a.date}) [{a.status}]</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-2 pt-1">
-                    <button 
-                      onClick={() => handleSimulateStatusChange('Completed')}
-                      className="py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-sm"
-                    >
-                      ✓ Completed
-                    </button>
-                    <button 
-                      onClick={() => handleSimulateStatusChange('Rescheduled')}
-                      className="py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl shadow-sm"
-                    >
-                      ↻ Rescheduled
-                    </button>
-                    <button 
-                      onClick={() => handleSimulateStatusChange('Cancelled')}
-                      className="py-2.5 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl shadow-sm"
-                    >
-                      ✕ Cancelled
-                    </button>
-                    <button 
-                      onClick={() => handleSimulateStatusChange('NoShow')}
-                      className="py-2.5 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl shadow-sm"
-                    >
-                      ⊘ No-Show
-                    </button>
-                  </div>
-
-                  {statusSimFeedback && (
-                    <div className="p-3 bg-emerald-50 border border-emerald-300 rounded-xl text-emerald-950 font-bold animate-fade-in">
-                      {statusSimFeedback}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* VISUAL PIPELINE DIAGRAM */}
-            <div className="bg-slate-900 text-white rounded-3xl p-6 sm:p-8 space-y-6 shadow-xl">
-              <div className="flex items-center gap-3">
-                <Radio className="w-6 h-6 text-emerald-400 animate-pulse" />
-                <div>
-                  <h4 className="text-lg font-black text-white" style={{ fontFamily: 'Outfit, Inter, sans-serif' }}>
-                    ChronoChimp Automated Lifecycle Pipeline Architecture
-                  </h4>
-                  <p className="text-xs text-slate-400">Automated end-to-end flow from visual canvas page booking to live video call execution.</p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 text-center text-xs">
-                <div className="bg-white/10 p-4 rounded-2xl border border-white/10 space-y-2">
-                  <span className="w-6 h-6 rounded-full bg-emerald-500 text-slate-950 font-black text-xs mx-auto flex items-center justify-center">1</span>
-                  <h5 className="font-bold text-emerald-300">Canvas Page</h5>
-                  <p className="text-[11px] text-slate-300">Visitor views ChronoChimp booking element on sales funnel</p>
-                </div>
-
-                <div className="bg-white/10 p-4 rounded-2xl border border-white/10 space-y-2">
-                  <span className="w-6 h-6 rounded-full bg-emerald-500 text-slate-950 font-black text-xs mx-auto flex items-center justify-center">2</span>
-                  <h5 className="font-bold text-emerald-300">Date/Time Slot</h5>
-                  <p className="text-[11px] text-slate-300">Real-time availability check across assigned team hosts</p>
-                </div>
-
-                <div className="bg-white/10 p-4 rounded-2xl border border-white/10 space-y-2">
-                  <span className="w-6 h-6 rounded-full bg-emerald-500 text-slate-950 font-black text-xs mx-auto flex items-center justify-center">3</span>
-                  <h5 className="font-bold text-emerald-300">Intake Form</h5>
-                  <p className="text-[11px] text-slate-300">Prospect answers qualification questions & goal targets</p>
-                </div>
-
-                <div className="bg-white/10 p-4 rounded-2xl border border-white/10 space-y-2">
-                  <span className="w-6 h-6 rounded-full bg-teal-400 text-slate-950 font-black text-xs mx-auto flex items-center justify-center">4</span>
-                  <h5 className="font-bold text-teal-300">Zoom Created</h5>
-                  <p className="text-[11px] text-slate-300">HD Zoom link generated and attached to appointment</p>
-                </div>
-
-                <div className="bg-white/10 p-4 rounded-2xl border border-white/10 space-y-2">
-                  <span className="w-6 h-6 rounded-full bg-amber-400 text-slate-950 font-black text-xs mx-auto flex items-center justify-center">5</span>
-                  <h5 className="font-bold text-amber-300">SMS Reminders</h5>
-                  <p className="text-[11px] text-slate-300">Multi-stage 24h & 10min SMS dispatched via Twilio</p>
-                </div>
-
-                <div className="bg-white/10 p-4 rounded-2xl border border-white/10 space-y-2">
-                  <span className="w-6 h-6 rounded-full bg-green-400 text-slate-950 font-black text-xs mx-auto flex items-center justify-center">6</span>
-                  <h5 className="font-bold text-green-300">CRM Tag Sync</h5>
-                  <p className="text-[11px] text-slate-300">Lead tagged in CRM Pipeline as Call_Booked</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* ── TAB 8: SETTINGS ── */}
         {activeTab === 'settings' && (

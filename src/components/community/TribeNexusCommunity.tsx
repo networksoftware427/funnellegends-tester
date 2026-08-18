@@ -27,7 +27,7 @@ export const TribeNexusCommunity: React.FC<TribeNexusCommunityProps> = ({ defaul
   const [selectedSpaceSlug, setSelectedSpaceSlug] = useState<string>(defaultSpaceSlug);
 
   // Active Main Sub-Tab
-  const [activeTab, setActiveTab] = useState<'feed' | 'spaces' | 'leaderboard' | 'simulations' | 'settings'>('feed');
+  const [activeTab, setActiveTab] = useState<'feed' | 'spaces' | 'leaderboard' | 'settings'>('feed');
 
   // Search & Filter
   const [searchQuery, setSearchQuery] = useState('');
@@ -49,21 +49,6 @@ export const TribeNexusCommunity: React.FC<TribeNexusCommunityProps> = ({ defaul
   const [newSpaceSlug, setNewSpaceSlug] = useState('');
   const [newSpaceDesc, setNewSpaceDesc] = useState('');
   const [newSpaceIcon, setNewSpaceIcon] = useState('💬');
-
-  // ── SIMULATION ENGINE STATES ──
-  const [simAuthorId, setSimAuthorId] = useState(members[0]?.id || 'm_1');
-  const [simSpaceSlug, setSimSpaceSlug] = useState('wins-of-the-day');
-  const [simPostTitle, setSimPostTitle] = useState('🔥 Generated 42 High-Ticket Strategy Bookings in 48 Hours!');
-  const [simPostContent, setSimPostContent] = useState('Plugged in the ChronoChimp 2-step scheduler at the end of our VSL and our show-up rate jumped from 68% to 94%! Highly recommend using SMS automated reminders.');
-  const [simMediaUrl, setSimMediaUrl] = useState('https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&auto=format&fit=crop&q=80');
-  const [simAutoEngage, setSimAutoEngage] = useState(true);
-  const [isSimulatingPost, setIsSimulatingPost] = useState(false);
-  const [simToast, setSimToast] = useState<string | null>(null);
-
-  // Gamification XP Simulation
-  const [xpSimMemberId, setXpSimMemberId] = useState(members[0]?.id || 'm_1');
-  const [xpSimActionType, setXpSimActionType] = useState<'win_share' | 'post' | 'coach_reply' | 'order_bump'>('win_share');
-  const [xpSimFeedback, setXpSimFeedback] = useState<string | null>(null);
 
   // Supabase Sync Status
   const [dbSyncStatus, setDbSyncStatus] = useState<{ success: boolean; message: string; timestamp: string } | null>(null);
@@ -197,87 +182,6 @@ export const TribeNexusCommunity: React.FC<TribeNexusCommunityProps> = ({ defaul
     setCommentInputs({ ...commentInputs, [postId]: '' });
   };
 
-  // ── SIMULATION 1: LIVE POST & AUTO-ENGAGEMENT CASCADE ──
-  const handleSimulatePostWithEngagement = () => {
-    if (!simPostTitle.trim() || !simPostContent.trim()) {
-      alert('Please provide post title and content.');
-      return;
-    }
-
-    setIsSimulatingPost(true);
-
-    setTimeout(() => {
-      const selectedMember = members.find(m => m.id === simAuthorId) || members[0];
-      const coachMember = members.find(m => m.id !== simAuthorId) || members[1];
-
-      const newSimPost: CommunityPost = {
-        id: `post_sim_${Date.now()}`,
-        spaceSlug: simSpaceSlug,
-        authorName: selectedMember.name,
-        authorAvatar: selectedMember.avatar,
-        authorRole: selectedMember.badge,
-        title: simPostTitle,
-        content: simPostContent,
-        mediaUrl: simMediaUrl.trim() || undefined,
-        mediaType: 'image',
-        tags: [simSpaceSlug, 'VerifiedBreakthrough'],
-        likesCount: simAutoEngage ? 6 : 1,
-        commentsCount: simAutoEngage ? 1 : 0,
-        comments: simAutoEngage ? [
-          {
-            id: `c_coach_${Date.now()}`,
-            authorName: coachMember.name,
-            authorAvatar: coachMember.avatar,
-            authorRole: coachMember.badge,
-            content: '🎯 Exceptional execution! That jump in show-up rate directly validates the multi-channel SMS automation playbook. Keep crushing it!',
-            createdAt: 'Just now',
-            likesCount: 3
-          }
-        ] : [],
-        createdAt: 'Just now',
-        isPinned: false
-      };
-
-      // Award XP to author
-      const updatedMembers = members.map(m => m.id === selectedMember.id ? {
-        ...m,
-        points: m.points + (simAutoEngage ? 120 : 50)
-      } : m);
-
-      setMembers(updatedMembers);
-      setPosts([newSimPost, ...posts]);
-      setIsSimulatingPost(false);
-      setSimToast(`🎉 Post simulated from ${selectedMember.name}! +${simAutoEngage ? '120' : '50'} XP awarded & auto-engagement fired!`);
-      setTimeout(() => setSimToast(null), 5000);
-    }, 600);
-  };
-
-  // ── SIMULATION 2: GAMIFICATION XP & LEVEL UP ──
-  const handleSimulateXpAward = () => {
-    const target = members.find(m => m.id === xpSimMemberId) || members[0];
-    const pointsToAdd = xpSimActionType === 'win_share' ? 150 :
-                        xpSimActionType === 'coach_reply' ? 75 :
-                        xpSimActionType === 'order_bump' ? 200 : 50;
-
-    const newPoints = target.points + pointsToAdd;
-    const newLevel = Math.floor(newPoints / 1000) + 1;
-    const levelUp = newLevel > target.level;
-
-    const updated = members.map(m => m.id === target.id ? {
-      ...m,
-      points: newPoints,
-      level: newLevel,
-      badge: newLevel >= 10 ? '👑 VIP FOUNDER' : newLevel >= 7 ? '🔥 MASTERMIND ELITE' : newLevel >= 4 ? '⚡ FUNNEL ARCHITECT' : '🔥 CONTRIBUTOR'
-    } : m);
-
-    // Sort leaderboard by points descending
-    updated.sort((a, b) => b.points - a.points);
-    setMembers(updated);
-
-    setXpSimFeedback(`🏆 Awarded +${pointsToAdd} XP to ${target.name}! Total: ${newPoints.toLocaleString()} XP ${levelUp ? `(🎉 LEVELED UP TO LEVEL ${newLevel}!)` : ''}`);
-    setTimeout(() => setXpSimFeedback(null), 5000);
-  };
-
   // ── SUPABASE SYNC TRIGGER ──
   const handleTriggerSupabaseSync = async () => {
     setIsSyncingDb(true);
@@ -335,14 +239,6 @@ export const TribeNexusCommunity: React.FC<TribeNexusCommunityProps> = ({ defaul
         {/* Action Header Controls */}
         <div className="flex items-center gap-2 flex-wrap">
           <button 
-            onClick={() => setActiveTab('simulations')}
-            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 border shadow-sm ${activeTab === 'simulations' ? 'bg-amber-400 text-slate-950 border-amber-300 shadow-amber-500/20 font-black' : 'bg-white/10 hover:bg-white/20 text-white border-white/20'}`}
-          >
-            <Sparkles className="w-4 h-4 text-amber-300" />
-            <span>⚡ Fun Simulations</span>
-          </button>
-
-          <button 
             onClick={() => { setIsCreatingSpace(true); setIsCreatingPost(false); }}
             className="px-3.5 py-2 bg-emerald-950/40 hover:bg-emerald-950/60 text-white border border-emerald-400/40 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm"
           >
@@ -395,14 +291,6 @@ export const TribeNexusCommunity: React.FC<TribeNexusCommunityProps> = ({ defaul
         </button>
 
         <button 
-          onClick={() => setActiveTab('simulations')}
-          className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${activeTab === 'simulations' ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 shadow-md shadow-amber-500/25 font-black' : 'text-amber-700 bg-amber-50 hover:bg-amber-100'}`}
-        >
-          <Zap className="w-4 h-4 fill-amber-500" />
-          <span>Simulations & Workflows</span>
-        </button>
-
-        <button 
           onClick={() => setActiveTab('settings')}
           className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${activeTab === 'settings' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/25 font-black' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'}`}
         >
@@ -412,13 +300,13 @@ export const TribeNexusCommunity: React.FC<TribeNexusCommunityProps> = ({ defaul
       </div>
 
       {/* ── TOAST NOTIFICATION ── */}
-      {(postSuccessToast || simToast) && (
+      {postSuccessToast && (
         <div className="mx-6 mt-4 p-4 bg-emerald-900 text-white border-2 border-emerald-400 rounded-2xl flex items-center justify-between shadow-2xl animate-fade-in text-xs font-bold">
           <div className="flex items-center gap-3">
             <CheckCircle2 className="w-5 h-5 text-emerald-300 shrink-0" />
-            <span>{postSuccessToast || simToast}</span>
+            <span>{postSuccessToast}</span>
           </div>
-          <button onClick={() => { setPostSuccessToast(null); setSimToast(null); }} className="text-emerald-300 hover:text-white">
+          <button onClick={() => setPostSuccessToast(null)} className="text-emerald-300 hover:text-white">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -516,7 +404,7 @@ export const TribeNexusCommunity: React.FC<TribeNexusCommunityProps> = ({ defaul
               <div className="lg:col-span-2 space-y-6">
                 {filteredPosts.length === 0 ? (
                   <div className="p-12 text-center bg-white border border-slate-200 rounded-2xl text-xs text-slate-500 shadow-sm">
-                    No posts found in this space. Click "New Post" or launch a simulation!
+                    No posts found in this space. Click "New Post" to start a discussion!
                   </div>
                 ) : (
                   filteredPosts.map(post => (
@@ -737,14 +625,6 @@ export const TribeNexusCommunity: React.FC<TribeNexusCommunityProps> = ({ defaul
                 <h3 className="text-xl font-black text-slate-900">VIP Gamification & Member Leaderboard</h3>
                 <p className="text-xs text-slate-500">Reward top contributors, sales breakthrough sharers, and mastermind leaders with automated XP levels.</p>
               </div>
-
-              <button 
-                onClick={() => setActiveTab('simulations')}
-                className="px-4 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black rounded-xl text-xs shadow-md shadow-amber-500/20 flex items-center gap-2"
-              >
-                <Zap className="w-4 h-4 fill-slate-950" />
-                <span>Simulate XP Point Level-Up</span>
-              </button>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -787,266 +667,6 @@ export const TribeNexusCommunity: React.FC<TribeNexusCommunityProps> = ({ defaul
           </div>
         )}
 
-        {/* ── TAB 4: FUN SIMULATIONS & WORKFLOWS ENGINE ── */}
-        {activeTab === 'simulations' && (
-          <div className="space-y-8">
-            <div className="bg-gradient-to-r from-emerald-900 via-teal-900 to-slate-900 text-white rounded-3xl p-6 sm:p-8 space-y-3 shadow-xl relative overflow-hidden">
-              <div className="flex items-center gap-2">
-                <span className="px-3 py-1 bg-amber-400 text-slate-950 rounded-full text-xs font-black font-mono flex items-center gap-1.5 shadow-sm">
-                  <Zap className="w-4 h-4 fill-slate-950" /> TRIBENEXUS SANDBOX
-                </span>
-              </div>
-              <h3 className="text-2xl sm:text-3xl font-black tracking-tight" style={{ fontFamily: 'Outfit, Inter, sans-serif' }}>
-                TribeNexus Community & Gamification Simulations
-              </h3>
-              <p className="text-xs sm:text-sm text-emerald-100 max-w-3xl leading-relaxed">
-                Test rich post creation with simulated mastermind auto-engagement, peer feedback cascades, gamified XP leveling, and automated funnel community gates.
-              </p>
-            </div>
-
-            {/* SIMULATION 1: LIVE POST & AUTO-ENGAGEMENT */}
-            <div className="bg-white border-2 border-emerald-300 rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-black">
-                    <MessageSquare className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="text-base font-black text-slate-900">Simulation 1: Live Post & Mastermind Auto-Engagement Cascade</h4>
-                    <p className="text-xs text-slate-500">Publish a breakthrough or question and trigger instant simulated upvotes, coach feedback, and XP rewards.</p>
-                  </div>
-                </div>
-                <span className="text-xs font-mono font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
-                  REAL-TIME FEED SYNC
-                </span>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">Post Author</label>
-                  <select 
-                    value={simAuthorId}
-                    onChange={(e) => setSimAuthorId(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-slate-900 font-bold"
-                  >
-                    {members.map(m => (
-                      <option key={m.id} value={m.id}>{m.name} ({m.badge})</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">Target Space</label>
-                  <select 
-                    value={simSpaceSlug}
-                    onChange={(e) => setSimSpaceSlug(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-slate-900 font-bold"
-                  >
-                    {spaces.map(s => (
-                      <option key={s.id} value={s.slug}>{s.icon} #{s.slug}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="flex items-center pt-6">
-                  <label className="flex items-center gap-2 cursor-pointer text-xs font-bold text-slate-800">
-                    <input 
-                      type="checkbox"
-                      checked={simAutoEngage}
-                      onChange={(e) => setSimAutoEngage(e.target.checked)}
-                      className="w-4 h-4 rounded border-slate-300 text-emerald-600 focus:ring-0 accent-emerald-600"
-                    />
-                    <span>Trigger Auto-Upvotes (+5) & AI Coach Reply</span>
-                  </label>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">Post Title</label>
-                  <input 
-                    type="text"
-                    value={simPostTitle}
-                    onChange={(e) => setSimPostTitle(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 font-bold"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">Post Content</label>
-                  <textarea 
-                    rows={3}
-                    value={simPostContent}
-                    onChange={(e) => setSimPostContent(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-900 font-medium"
-                  />
-                </div>
-              </div>
-
-              <button 
-                onClick={handleSimulatePostWithEngagement}
-                disabled={isSimulatingPost}
-                className="w-full py-4 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 hover:brightness-110 text-white rounded-2xl text-sm font-black shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 transition-all hover:scale-[1.01]"
-              >
-                {isSimulatingPost ? (
-                  <span className="flex items-center gap-2">
-                    <Activity className="w-5 h-5 animate-spin" />
-                    Publishing Post & Firing Auto-Engagement Cascade...
-                  </span>
-                ) : (
-                  <>
-                    <Zap className="w-5 h-5 fill-white" />
-                    <span>SIMULATE COMMUNITY POST & TRIGGER ENGAGEMENT CASCADE →</span>
-                  </>
-                )}
-              </button>
-            </div>
-
-            {/* SIMULATION 2: GAMIFICATION XP & LEVEL UP */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="bg-white border border-slate-200 rounded-3xl p-6 space-y-4 shadow-sm">
-                <div className="flex items-center gap-2.5">
-                  <Award className="w-5 h-5 text-amber-500" />
-                  <h4 className="text-base font-black text-slate-900">Simulation 2: Gamification XP & Level-Up Simulator</h4>
-                </div>
-                <p className="text-xs text-slate-500">Test awarding gamification points for community actions and triggering level-up badge rewards.</p>
-
-                <div className="space-y-3 text-xs">
-                  <div>
-                    <label className="font-bold text-slate-700 block mb-1">Select Member</label>
-                    <select 
-                      value={xpSimMemberId}
-                      onChange={(e) => setXpSimMemberId(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 font-bold"
-                    >
-                      {members.map(m => (
-                        <option key={m.id} value={m.id}>{m.name} - Level {m.level} ({m.points.toLocaleString()} XP)</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="font-bold text-slate-700 block mb-1">Simulated Action</label>
-                    <select 
-                      value={xpSimActionType}
-                      onChange={(e) => setXpSimActionType(e.target.value as any)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 font-bold"
-                    >
-                      <option value="win_share">🏆 Share Sales Milestone / Breakthrough (+150 XP)</option>
-                      <option value="coach_reply">🎓 Helpful Mastermind Feedback (+75 XP)</option>
-                      <option value="order_bump">⚡ Order Bump Optimization Winner (+200 XP)</option>
-                      <option value="post">💬 General Discussion Contribution (+50 XP)</option>
-                    </select>
-                  </div>
-
-                  <button 
-                    onClick={handleSimulateXpAward}
-                    className="w-full py-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:brightness-110 text-slate-950 font-black rounded-xl shadow-md shadow-amber-500/20 flex items-center justify-center gap-2"
-                  >
-                    <Crown className="w-4 h-4 fill-slate-950" />
-                    <span>Award XP Points & Simulate Level-Up</span>
-                  </button>
-
-                  {xpSimFeedback && (
-                    <div className="p-3 bg-amber-50 border border-amber-300 rounded-xl text-amber-950 font-bold animate-fade-in text-xs">
-                      {xpSimFeedback}
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* SIMULATION 3: COMMUNITY ACCESS & FUNNEL GATE */}
-              <div className="bg-white border border-slate-200 rounded-3xl p-6 space-y-4 shadow-sm">
-                <div className="flex items-center gap-2.5">
-                  <ShieldCheck className="w-5 h-5 text-emerald-600" />
-                  <h4 className="text-base font-black text-slate-900">Simulation 3: Funnel Community Gate</h4>
-                </div>
-                <p className="text-xs text-slate-500">Simulate granting instant community portal access when a buyer completes a funnel checkout.</p>
-
-                <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2 text-xs">
-                  <div className="flex items-center justify-between font-bold text-emerald-800">
-                    <span>Funnel Hook: 1-Click Mastermind Enrollment</span>
-                    <span className="font-mono bg-emerald-100 px-2 py-0.5 rounded text-[10px]">WEBHOOK READY</span>
-                  </div>
-                  <p className="text-slate-600">
-                    When customer signs up via FunnelLegends checkout, TribeNexus automatically creates their member profile, assigns initial 500 Welcome XP, and unlocks private discussion spaces.
-                  </p>
-                </div>
-
-                <button 
-                  onClick={() => {
-                    const newGuest: CommunityMember = {
-                      id: `m_guest_${Date.now()}`,
-                      name: 'Jonathan Hayes',
-                      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80',
-                      level: 1,
-                      badge: '⚡ NEW MEMBER',
-                      points: 500,
-                      bio: 'Enrolled via 1-Click Sales Funnel Checkout.'
-                    };
-                    setMembers([newGuest, ...members]);
-                    alert('🎉 Simulated buyer enrollment! Jonathan Hayes added to TribeNexus with 500 Welcome XP.');
-                  }}
-                  className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-xl shadow-sm flex items-center justify-center gap-2 text-xs"
-                >
-                  <Sparkles className="w-4 h-4 text-amber-300" />
-                  <span>Simulate 1-Click Funnel Checkout Enrollment</span>
-                </button>
-              </div>
-            </div>
-
-            {/* VISUAL PIPELINE DIAGRAM */}
-            <div className="bg-slate-900 text-white rounded-3xl p-6 sm:p-8 space-y-6 shadow-xl">
-              <div className="flex items-center gap-3">
-                <Radio className="w-6 h-6 text-emerald-400 animate-pulse" />
-                <div>
-                  <h4 className="text-lg font-black text-white" style={{ fontFamily: 'Outfit, Inter, sans-serif' }}>
-                    TribeNexus Community Retention Architecture
-                  </h4>
-                  <p className="text-xs text-slate-400">Automated end-to-end flow from checkout to high-retention mastermind engagement.</p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 text-center text-xs">
-                <div className="bg-white/10 p-4 rounded-2xl border border-white/10 space-y-2">
-                  <span className="w-6 h-6 rounded-full bg-emerald-500 text-slate-950 font-black text-xs mx-auto flex items-center justify-center">1</span>
-                  <h5 className="font-bold text-emerald-300">Checkout Gate</h5>
-                  <p className="text-[11px] text-slate-300">Buyer purchases course or mastermind membership</p>
-                </div>
-
-                <div className="bg-white/10 p-4 rounded-2xl border border-white/10 space-y-2">
-                  <span className="w-6 h-6 rounded-full bg-emerald-500 text-slate-950 font-black text-xs mx-auto flex items-center justify-center">2</span>
-                  <h5 className="font-bold text-emerald-300">Auto Onboard</h5>
-                  <p className="text-[11px] text-slate-300">Instant member profile creation + 500 Welcome XP</p>
-                </div>
-
-                <div className="bg-white/10 p-4 rounded-2xl border border-white/10 space-y-2">
-                  <span className="w-6 h-6 rounded-full bg-emerald-500 text-slate-950 font-black text-xs mx-auto flex items-center justify-center">3</span>
-                  <h5 className="font-bold text-emerald-300">Topic Feeds</h5>
-                  <p className="text-[11px] text-slate-300">Join #announcements, #wins, and #funnel-teardowns</p>
-                </div>
-
-                <div className="bg-white/10 p-4 rounded-2xl border border-white/10 space-y-2">
-                  <span className="w-6 h-6 rounded-full bg-teal-400 text-slate-950 font-black text-xs mx-auto flex items-center justify-center">4</span>
-                  <h5 className="font-bold text-teal-300">Peer Feedback</h5>
-                  <p className="text-[11px] text-slate-300">Share VSL copy and get feedback from 7-figure mentors</p>
-                </div>
-
-                <div className="bg-white/10 p-4 rounded-2xl border border-white/10 space-y-2">
-                  <span className="w-6 h-6 rounded-full bg-amber-400 text-slate-950 font-black text-xs mx-auto flex items-center justify-center">5</span>
-                  <h5 className="font-bold text-amber-300">XP Level-Up</h5>
-                  <p className="text-[11px] text-slate-300">Gamification points unlock VIP Founder badges</p>
-                </div>
-
-                <div className="bg-white/10 p-4 rounded-2xl border border-white/10 space-y-2">
-                  <span className="w-6 h-6 rounded-full bg-green-400 text-slate-950 font-black text-xs mx-auto flex items-center justify-center">6</span>
-                  <h5 className="font-bold text-green-300">Zero Churn</h5>
-                  <p className="text-[11px] text-slate-300">Active peer network delivers 90%+ monthly retention</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* ── TAB 5: PORTAL SETTINGS ── */}
         {activeTab === 'settings' && (

@@ -172,26 +172,13 @@ export const AutomationWorkflowBuilder: React.FC = () => {
   const [nodes, setNodes] = useState<WorkflowNodeData[]>(initial.nodes && initial.nodes.length > 0 ? initial.nodes : defaultAutomationsNodes);
   const [edges, setEdges] = useState<WorkflowEdgeData[]>(initial.edges && initial.edges.length > 0 ? initial.edges : defaultAutomationsEdges);
   const [selectedNode, setSelectedNode] = useState<WorkflowNodeData | null>(nodes[0] || null);
-  const [activeSubTab, setActiveSubTab] = useState<'canvas' | 'simulations' | 'message_templates'>('canvas');
+  const [activeSubTab, setActiveSubTab] = useState<'canvas' | 'message_templates'>('canvas');
   const [copiedTemplateId, setCopiedTemplateId] = useState<string | null>(null);
   const [copiedSchema, setCopiedSchema] = useState(false);
 
   // Supabase sync
   const [dbSyncStatus, setDbSyncStatus] = useState<{ success: boolean; message: string; timestamp: string } | null>(null);
   const [isSyncingDb, setIsSyncingDb] = useState(false);
-
-  // ── SIMULATION ENGINE STATES ──
-  const [simTriggerEvent, setSimTriggerEvent] = useState<'optin' | 'purchase' | 'abandoned_cart' | 'booking' | 'level_up'>('optin');
-  const [simLeadName, setSimLeadName] = useState('Sarah Connor');
-  const [simLeadEmail, setSimLeadEmail] = useState('sarah.connor@apex.io');
-  const [simLeadPhone, setSimLeadPhone] = useState('+1 (555) 234-5678');
-  const [isSimulating, setIsSimulating] = useState(false);
-  const [simulationLog, setSimulationLog] = useState<string[]>([]);
-  const [simulationResult, setSimulationResult] = useState<{
-    contactScore: number;
-    tagsApplied: string[];
-    dispatchedMessage: { channel: string; subject: string; body: string };
-  } | null>(null);
 
   // Persist workflows
   useEffect(() => {
@@ -244,114 +231,6 @@ export const AutomationWorkflowBuilder: React.FC = () => {
     }
   };
 
-  // Run comprehensive multi-step simulation
-  const handleRunSimulation = () => {
-    setIsSimulating(true);
-    setSimulationLog([]);
-    setSimulationResult(null);
-
-    let eventTitle = '';
-    let scoreBoost = 25;
-    let tagsToAdd: string[] = [];
-    let messageTemplate = automationMessageTemplates[0];
-
-    switch (simTriggerEvent) {
-      case 'optin':
-        eventTitle = `🎯 [TRIGGER] Form Opt-In Received: "${simLeadName}" on Squeeze Funnel Step`;
-        scoreBoost = 25;
-        tagsToAdd = ['Lead_OptIn', 'FunnelBlueprint_Requested'];
-        messageTemplate = automationMessageTemplates[0];
-        break;
-      case 'purchase':
-        eventTitle = `💳 [TRIGGER] 2-Step Checkout Purchase: "${simLeadName}" bought 7-Figure Academy ($497.00)`;
-        scoreBoost = 100;
-        tagsToAdd = ['Customer_VIP', 'LMS_Enrolled', 'OTO_Eligible'];
-        messageTemplate = automationMessageTemplates[1];
-        break;
-      case 'abandoned_cart':
-        eventTitle = `🛒 [TRIGGER] Abandoned Cart Detected: "${simLeadName}" left checkout without completing`;
-        scoreBoost = 10;
-        tagsToAdd = ['Cart_Abandoned', '10Pct_Discount_Sent'];
-        messageTemplate = automationMessageTemplates[3];
-        break;
-      case 'booking':
-        eventTitle = `📅 [TRIGGER] ChronoChimp VIP Strategy Call Scheduled by "${simLeadName}"`;
-        scoreBoost = 50;
-        tagsToAdd = ['ChronoChimp_Booked', 'HighTicket_Lead'];
-        messageTemplate = automationMessageTemplates[4];
-        break;
-      case 'level_up':
-        eventTitle = `👑 [TRIGGER] TribeNexus Level Up: "${simLeadName}" crossed 500 XP Milestone!`;
-        scoreBoost = 75;
-        tagsToAdd = ['TribeNexus_VIP_Founder', 'Mastermind_Elite'];
-        messageTemplate = automationMessageTemplates[4];
-        break;
-    }
-
-    const steps = [
-      eventTitle,
-      `🔍 [CONDITION] Verifying deduplication & suppression lists in Cloud CRM... (PASSED)`,
-      `⚡ [WORKFLOW] Routing lead through behavioral decision tree (Stage: Active Conversion)`,
-      `🎓 [LMS INTEGRATION] Provisioned student portal credentials & unlocked Module 1 access`,
-      `📩 [DISPATCH] Sent multi-channel notifications with dynamically merged customer tags:`,
-      `📈 [CRM ENRICHMENT] Updated Lead Score (+${scoreBoost} XP) & Applied Tags: [${tagsToAdd.join(', ')}]`,
-      `✅ [COMPLETED] Automation executed successfully in 0.34s with 0 errors.`
-    ];
-
-    steps.forEach((msg, idx) => {
-      setTimeout(() => {
-        setSimulationLog(prev => [...prev, msg]);
-        if (idx === steps.length - 1) {
-          setIsSimulating(false);
-          // Render personalized message
-          const renderedSubject = messageTemplate.subject
-            .replace('{{first_name}}', simLeadName.split(' ')[0])
-            .replace('{{product_name}}', '7-Figure Funnel Masterclass');
-          
-          const renderedBody = messageTemplate.body
-            .replace(/\{\{first_name\}\}/g, simLeadName.split(' ')[0])
-            .replace(/\{\{email\}\}/g, simLeadEmail)
-            .replace(/\{\{sender_name\}\}/g, 'FunnelLegends Growth Mentor')
-            .replace(/\{\{download_url\}\}/g, 'https://funnel.growthlabs.io/dl/blueprint-pdf')
-            .replace(/\{\{portal_url\}\}/g, 'https://portal.growthlabs.io/login')
-            .replace(/\{\{temp_password\}\}/g, 'Legend2026!#')
-            .replace(/\{\{course_title\}\}/g, 'High-Ticket Academy 101')
-            .replace(/\{\{company_name\}\}/g, 'FunnelLegends Mastermind')
-            .replace(/\{\{booking_url\}\}/g, 'https://funnel.growthlabs.io/schedule/vip-strategy')
-            .replace(/\{\{checkout_url\}\}/g, 'https://funnel.growthlabs.io/checkout/recover10');
-
-          setSimulationResult({
-            contactScore: 10 + scoreBoost,
-            tagsApplied: tagsToAdd,
-            dispatchedMessage: {
-              channel: messageTemplate.channel === 'email_sms' ? '✉️ Email & 📱 SMS' : messageTemplate.channel === 'email' ? '✉️ Email' : '📱 SMS',
-              subject: renderedSubject,
-              body: renderedBody
-            }
-          });
-
-          // Mutate stored CRM contacts
-          const contacts = loadStoredContacts();
-          if (contacts.length > 0) {
-            const updated = contacts.map((c, i) => {
-              if (i === 0) {
-                return {
-                  ...c,
-                  name: simLeadName,
-                  email: simLeadEmail,
-                  score: c.score + scoreBoost,
-                  tags: Array.from(new Set([...c.tags, ...tagsToAdd]))
-                };
-              }
-              return c;
-            });
-            saveStoredContacts(updated);
-          }
-        }
-      }, (idx + 1) * 350);
-    });
-  };
-
   return (
     <div className="flex-1 bg-slate-50 text-slate-900 overflow-y-auto flex flex-col font-sans">
       
@@ -400,14 +279,6 @@ export const AutomationWorkflowBuilder: React.FC = () => {
         </button>
 
         <button 
-          onClick={() => setActiveSubTab('simulations')}
-          className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${activeSubTab === 'simulations' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/25 font-black' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'}`}
-        >
-          <Zap className="w-4 h-4" />
-          <span>⚡ Simulations & Workflows</span>
-        </button>
-
-        <button 
           onClick={() => setActiveSubTab('message_templates')}
           className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${activeSubTab === 'message_templates' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/25 font-black' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'}`}
         >
@@ -448,14 +319,6 @@ export const AutomationWorkflowBuilder: React.FC = () => {
                   <span>+ Condition Branch</span>
                 </button>
               </div>
-
-              <button 
-                onClick={() => setActiveSubTab('simulations')}
-                className="px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:brightness-110 text-white rounded-xl text-xs font-black shadow-md shadow-emerald-600/20 flex items-center gap-2"
-              >
-                <Zap className="w-4 h-4 fill-white" />
-                <span>Simulate Workflow Triggers →</span>
-              </button>
             </div>
 
             {/* Canvas Node Grid & Properties */}
@@ -554,149 +417,7 @@ export const AutomationWorkflowBuilder: React.FC = () => {
           </div>
         )}
 
-        {/* ── TAB 2: SIMULATIONS & WORKFLOWS ── */}
-        {activeSubTab === 'simulations' && (
-          <div className="space-y-6">
-            <div className="bg-white border border-slate-200 rounded-3xl p-6 space-y-6 shadow-sm">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-black">
-                    <Zap className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h3 className="text-base font-black text-slate-900">Multi-Channel Behavioral Trigger Simulator</h3>
-                    <p className="text-xs text-slate-500">Test live funnel triggers, CRM tag application, LMS enrollments, and dynamic message rendering.</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* SIMULATION FORM */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Simulated Funnel Event Trigger</label>
-                  <select 
-                    value={simTriggerEvent}
-                    onChange={(e) => setSimTriggerEvent(e.target.value as any)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 focus:outline-none"
-                  >
-                    <option value="optin">🎯 Squeeze Page Lead Opt-In</option>
-                    <option value="purchase">💳 2-Step Checkout Purchase ($497)</option>
-                    <option value="abandoned_cart">🛒 1-Hour Cart Abandonment</option>
-                    <option value="booking">📅 ChronoChimp VIP Strategy Call Booked</option>
-                    <option value="level_up">👑 TribeNexus Level Up (500+ XP)</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Prospect Full Name</label>
-                  <input 
-                    type="text" 
-                    value={simLeadName}
-                    onChange={(e) => setSimLeadName(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-900"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Prospect Email</label>
-                  <input 
-                    type="email" 
-                    value={simLeadEmail}
-                    onChange={(e) => setSimLeadEmail(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-mono font-bold text-slate-900"
-                  />
-                </div>
-              </div>
-
-              <button 
-                onClick={handleRunSimulation}
-                disabled={isSimulating}
-                className="w-full py-3.5 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 hover:brightness-110 text-white rounded-xl text-xs font-black shadow-md shadow-emerald-600/30 flex items-center justify-center gap-2 transition-all"
-              >
-                {isSimulating ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Zap className="w-4 h-4 fill-white" />}
-                <span>{isSimulating ? 'Executing Behavioral Sequence Pipeline...' : 'EXECUTE LIVE AUTOMATION WORKFLOW SIMULATION →'}</span>
-              </button>
-
-              {/* LIVE SIMULATION LOG CONSOLE */}
-              {simulationLog.length > 0 && (
-                <div className="bg-slate-950 text-emerald-400 p-4 rounded-2xl font-mono text-xs space-y-1 shadow-inner max-h-56 overflow-y-auto">
-                  <div className="text-slate-400 text-[10px] uppercase font-bold mb-2">⚡ Pipeline Execution Telemetry:</div>
-                  {simulationLog.map((log, i) => (
-                    <div key={i} className="leading-relaxed">{log}</div>
-                  ))}
-                </div>
-              )}
-
-              {/* SIMULATION RESULTS & MERGED MESSAGE CARD */}
-              {simulationResult && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-fade-in pt-2">
-                  <div className="bg-emerald-50 border-2 border-emerald-300 rounded-2xl p-5 space-y-3 shadow-sm">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-black text-emerald-950 uppercase">📈 CRM Lead Enrichment State</span>
-                      <span className="text-xs font-black bg-emerald-600 text-white px-2 py-0.5 rounded-full">
-                        Score: {simulationResult.contactScore} XP
-                      </span>
-                    </div>
-                    <div className="space-y-1.5 text-xs text-slate-700">
-                      <div><strong>Target Contact:</strong> {simLeadName} ({simLeadEmail})</div>
-                      <div>
-                        <strong>Tags Applied:</strong>
-                        <div className="flex flex-wrap gap-1 mt-1">
-                          {simulationResult.tagsApplied.map((tg, i) => (
-                            <span key={i} className="bg-emerald-200/80 text-emerald-900 text-[10px] font-bold px-2 py-0.5 rounded-md">
-                              #{tg}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-white border-2 border-emerald-300 rounded-2xl p-5 space-y-3 shadow-sm">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-black text-slate-900 uppercase">📩 Rendered Message ({simulationResult.dispatchedMessage.channel})</span>
-                      <span className="text-[10px] font-mono text-emerald-700 font-bold">Merge Tags Dynamic</span>
-                    </div>
-                    <div className="space-y-2 text-xs">
-                      <div className="font-bold text-slate-900 bg-slate-50 p-2 rounded-lg border border-slate-200">
-                        {simulationResult.dispatchedMessage.subject}
-                      </div>
-                      <div className="p-3 bg-slate-50 rounded-lg border border-slate-200 font-mono text-[11px] text-slate-700 whitespace-pre-wrap max-h-36 overflow-y-auto">
-                        {simulationResult.dispatchedMessage.body}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* 6-STEP VISUAL PIPELINE ARCHITECTURE */}
-            <div className="bg-white border border-slate-200 rounded-3xl p-6 space-y-4 shadow-sm">
-              <h3 className="text-sm font-black text-slate-900 flex items-center gap-2">
-                <GitBranch className="w-4 h-4 text-emerald-600" />
-                FunnelLegends 6-Stage Behavioral Automation Architecture
-              </h3>
-              <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
-                {[
-                  { step: '1', title: 'Funnel Event', desc: 'Squeeze, VSL or Checkout Trigger' },
-                  { step: '2', title: 'Condition Gate', desc: 'Score & Tag Deduplication' },
-                  { step: '3', title: 'Multi-Channel', desc: 'Email + SMS Dynamic Dispatch' },
-                  { step: '4', title: 'LMS Provision', desc: 'Instant Course & Lesson Unlock' },
-                  { step: '5', title: 'Chrono Schedule', desc: 'VIP Strategy Call Booking' },
-                  { step: '6', title: 'Zero Churn', desc: 'TribeNexus Community Nurture' }
-                ].map((st) => (
-                  <div key={st.step} className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-center space-y-1">
-                    <span className="w-6 h-6 rounded-full bg-emerald-600 text-white text-xs font-black flex items-center justify-center mx-auto">
-                      {st.step}
-                    </span>
-                    <div className="text-xs font-bold text-slate-900">{st.title}</div>
-                    <div className="text-[10px] text-slate-500 leading-tight">{st.desc}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
+        {/* ── TAB 3: MESSAGE TEMPLATES (10) ── */}
 
         {/* ── TAB 3: MESSAGE TEMPLATES (10) ── */}
         {activeSubTab === 'message_templates' && (

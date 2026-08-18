@@ -91,21 +91,13 @@ export const resetGlobalSettingsToDefaults = (): GlobalPlatformSettings => {
 
 export const GlobalSettingsManager: React.FC = () => {
   const [settings, setSettings] = useState<GlobalPlatformSettings>(loadStoredGlobalSettings());
-  const [activeTab, setActiveTab] = useState<'general' | 'simulations' | 'seo' | 'payments' | 'email' | 'integrations' | 'security'>('general');
+  const [activeTab, setActiveTab] = useState<'general' | 'seo' | 'payments' | 'email' | 'integrations' | 'security'>('general');
   const [savedToast, setSavedToast] = useState(false);
   const [appliedToast, setAppliedToast] = useState<string | null>(null);
 
   // Integrations state
   const [integrations, setIntegrations] = useState<WorkspaceIntegration[]>(initialWorkspaceIntegrations);
   const [testedWebhookResult, setTestedWebhookResult] = useState<string | null>(null);
-
-  // ── SIMULATION SANDBOX STATE ──
-  const [simTestDomain, setSimTestDomain] = useState('funnels.growthscale.io');
-  const [isCheckingDns, setIsCheckingDns] = useState(false);
-  const [simDnsResult, setSimDnsResult] = useState<{ cnameValid: boolean; sslValid: boolean; httpStatus: number; message: string } | null>(null);
-  const [simChargeAmount, setSimChargeAmount] = useState('497');
-  const [simChargeResult, setSimChargeResult] = useState<any | null>(null);
-  const [isSimulatingCharge, setIsSimulatingCharge] = useState(false);
 
   useEffect(() => {
     saveStoredGlobalSettings(settings);
@@ -132,37 +124,6 @@ export const GlobalSettingsManager: React.FC = () => {
       alert('System cache purged! Reloading clean workspace.');
       window.location.reload();
     }
-  };
-
-  // ── SIMULATION HANDLERS ──
-  const handleSimulateDnsCheck = () => {
-    setIsCheckingDns(true);
-    setTimeout(() => {
-      setSimDnsResult({
-        cnameValid: true,
-        sslValid: true,
-        httpStatus: 200,
-        message: `✓ Domain "${simTestDomain}" is properly routed to cname.funnellegends.com with Active Let's Encrypt Wildcard SSL!`
-      });
-      setIsCheckingDns(false);
-    }, 700);
-  };
-
-  const handleSimulatePaymentCharge = () => {
-    setIsSimulatingCharge(true);
-    setTimeout(() => {
-      setSimChargeResult({
-        event: 'charge.succeeded',
-        id: `ch_${Date.now()}`,
-        amount: parseFloat(simChargeAmount),
-        currency: settings.currency,
-        livemode: !settings.stripeTestMode,
-        customerEmail: 'buyer@prospectcorp.demo',
-        receiptSent: settings.autoInvoiceEmail,
-        timestamp: new Date().toISOString()
-      });
-      setIsSimulatingCharge(false);
-    }, 600);
   };
 
   const handleTestIntegration = (integration: WorkspaceIntegration) => {
@@ -224,14 +185,6 @@ export const GlobalSettingsManager: React.FC = () => {
         >
           <Building className="w-4 h-4" />
           <span>General & Branding</span>
-        </button>
-
-        <button 
-          onClick={() => setActiveTab('simulations')}
-          className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${activeTab === 'simulations' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/25 font-black' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'}`}
-        >
-          <Zap className="w-4 h-4" />
-          <span>⚡ Simulations & Workflows</span>
         </button>
 
         <button 
@@ -375,130 +328,7 @@ export const GlobalSettingsManager: React.FC = () => {
           </div>
         )}
 
-        {/* ── TAB 2: SIMULATIONS & WORKFLOWS ── */}
-        {activeTab === 'simulations' && (
-          <div className="space-y-6">
-            <div className="bg-white border border-slate-200 rounded-3xl p-6 space-y-6 shadow-sm">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-black">
-                    <Zap className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h3 className="text-base font-black text-slate-900">Global Platform Infrastructure & Gateway Sandbox</h3>
-                    <p className="text-xs text-slate-500">Simulate custom domain DNS propagation, Stripe multi-currency checkout, and global script injection.</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* SIMULATION 1: DOMAIN & SSL CHECK */}
-              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-3">
-                <span className="text-xs font-bold text-slate-800 uppercase font-mono text-[10px]">
-                  Simulation 1: Custom Domain DNS & SSL Handshake Validator
-                </span>
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <input 
-                    type="text" 
-                    value={simTestDomain}
-                    onChange={(e) => setSimTestDomain(e.target.value)}
-                    placeholder="e.g. funnels.myagency.com"
-                    className="flex-1 bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 font-mono font-bold focus:outline-none"
-                  />
-                  <button 
-                    onClick={handleSimulateDnsCheck}
-                    disabled={isCheckingDns}
-                    className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-sm"
-                  >
-                    <RefreshCw className={`w-4 h-4 ${isCheckingDns ? 'animate-spin' : ''}`} />
-                    <span>{isCheckingDns ? 'Validating DNS...' : 'Verify DNS & SSL Handshake'}</span>
-                  </button>
-                </div>
-
-                {simDnsResult && (
-                  <div className="p-4 bg-emerald-50 border-2 border-emerald-300 rounded-xl space-y-2 text-xs animate-fade-in">
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-emerald-950 flex items-center gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                        {simDnsResult.message}
-                      </span>
-                      <span className="font-mono text-emerald-800 font-bold bg-white px-2 py-0.5 rounded border border-emerald-200">
-                        HTTP {simDnsResult.httpStatus} OK
-                      </span>
-                    </div>
-                    <div className="grid grid-cols-2 gap-2 text-[11px] text-slate-600 font-mono pt-1">
-                      <div>CNAME Record: cname.funnellegends.com (Matched)</div>
-                      <div>SSL Certificate: Let's Encrypt TLS 1.3 (Valid 90 Days)</div>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* SIMULATION 2: STRIPE PAYMENT CHARGE */}
-              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-3">
-                <span className="text-xs font-bold text-slate-800 uppercase font-mono text-[10px]">
-                  Simulation 2: Stripe Payment Charge & Auto-Receipt Dispatcher
-                </span>
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <input 
-                    type="number" 
-                    value={simChargeAmount}
-                    onChange={(e) => setSimChargeAmount(e.target.value)}
-                    placeholder="497"
-                    className="w-40 bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 font-mono font-bold focus:outline-none"
-                  />
-                  <button 
-                    onClick={handleSimulatePaymentCharge}
-                    disabled={isSimulatingCharge}
-                    className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-sm"
-                  >
-                    <CreditCard className="w-4 h-4" />
-                    <span>{isSimulatingCharge ? 'Charging...' : `Simulate $${simChargeAmount} ${settings.currency} Stripe Charge`}</span>
-                  </button>
-                </div>
-
-                {simChargeResult && (
-                  <div className="space-y-2 animate-fade-in">
-                    <div className="flex items-center justify-between text-xs font-bold text-slate-700">
-                      <span>Simulated Stripe Webhook Payload (`charge.succeeded`):</span>
-                      <span className="text-[10px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                        PROCESSED
-                      </span>
-                    </div>
-                    <div className="bg-slate-950 text-emerald-400 p-4 rounded-xl font-mono text-xs max-h-48 overflow-y-auto">
-                      <pre>{JSON.stringify(simChargeResult, null, 2)}</pre>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* 6-STAGE PLATFORM ARCHITECTURE */}
-            <div className="bg-white border border-slate-200 rounded-3xl p-6 space-y-4 shadow-sm">
-              <h3 className="text-sm font-black text-slate-900 flex items-center gap-2">
-                <Activity className="w-4 h-4 text-emerald-600" />
-                FunnelLegends Global Platform Architecture & Security Pipeline
-              </h3>
-              <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
-                {[
-                  { step: '1', title: 'Custom Domain', desc: 'Edge DNS & CNAME Routing' },
-                  { step: '2', title: 'SSL Encryption', desc: 'TLS 1.3 Let\'s Encrypt Gate' },
-                  { step: '3', title: 'Global Scripts', desc: 'GA4 / Meta Pixel Injection' },
-                  { step: '4', title: 'Payment Router', desc: 'Stripe 1-Click Tokenization' },
-                  { step: '5', title: 'SMTP Dispatch', desc: 'Resend Transactional Mails' },
-                  { step: '6', title: 'Cache Sync', desc: 'Encrypted Cloud Persistence' }
-                ].map((st) => (
-                  <div key={st.step} className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-center space-y-1">
-                    <span className="w-6 h-6 rounded-full bg-emerald-600 text-white text-xs font-black flex items-center justify-center mx-auto">
-                      {st.step}
-                    </span>
-                    <div className="text-xs font-bold text-slate-900">{st.title}</div>
-                    <div className="text-[10px] text-slate-500 leading-tight">{st.desc}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
+        {/* ── TAB 3: SEO & TRACKING ── */}
 
         {/* ── TAB 3: SEO & TRACKING ── */}
         {activeTab === 'seo' && (

@@ -8,7 +8,8 @@ import { ClickPopOverlay } from './ClickPopOverlay';
 import { 
   Monitor, Tablet, Smartphone, Save, Play, Sparkles, Code, Split, ArrowLeft, 
   Check, Layers, Settings, Eye, HelpCircle, FolderKanban, Plus, Download, Upload, Palette,
-  MousePointerClick, X, RefreshCw, Sliders, Globe, ShieldCheck, Trash2, Zap, Activity
+  MousePointerClick, X, RefreshCw, Sliders, Globe, ShieldCheck, Trash2, Zap, Activity,
+  Undo2, Redo2, ChevronDown
 } from 'lucide-react';
 import { 
   createDemoSalesCanvas, createSqueezeCanvas, createReverseSqueezeCanvas, 
@@ -176,66 +177,84 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [importJsonText, setImportJsonText] = useState('');
 
-  // ── SIMULATION & STRESS TEST MODAL STATES ──
-  const [isSimModalOpen, setIsSimModalOpen] = useState(false);
-  const [simActiveTab, setSimActiveTab] = useState<'checkout' | 'ab_split' | 'element_health' | 'viewport'>('checkout');
-  const [simProspectName, setSimProspectName] = useState('Alexander Wright');
-  const [simProspectEmail, setSimProspectEmail] = useState('alex@apexscale.demo');
-  const [simIncludeBump, setSimIncludeBump] = useState(true);
-  const [simIncludeOto, setSimIncludeOto] = useState(false);
-  const [isSimulatingOrder, setIsSimulatingOrder] = useState(false);
-  const [simOrderReceipt, setSimOrderReceipt] = useState<{
-    orderId: string;
-    total: string;
-    items: string[];
-    timestamp: string;
-  } | null>(null);
+  // Undo & Redo History
+  const [undoStack, setUndoStack] = useState<CanvasState[]>([]);
+  const [redoStack, setRedoStack] = useState<CanvasState[]>([]);
 
-  // Element Health Scanner state
-  const [isScanningElements, setIsScanningElements] = useState(false);
-  const [elementScanResults, setElementScanResults] = useState<{
-    totalScanned: number;
-    errorsFound: number;
-    status: string;
-    categoriesChecked: string[];
-  } | null>(null);
+  // Top Bar Dropdown UI States
+  const [isViewportDropdownOpen, setIsViewportDropdownOpen] = useState(false);
+  const [isToolsDropdownOpen, setIsToolsDropdownOpen] = useState(false);
+  const [isStepDropdownOpen, setIsStepDropdownOpen] = useState(false);
 
-  const handleRunElementHealthScan = () => {
-    setIsScanningElements(true);
-    setTimeout(() => {
-      setIsScanningElements(false);
-      setElementScanResults({
-        totalScanned: 54,
-        errorsFound: 0,
-        status: '100% HEALTHY - 0 CRASHES',
-        categoriesChecked: ['Typography & Content', 'Media & Video Players', 'Form & Multi-Step Opt-ins', 'E-Commerce & Checkouts', 'Membership & Lessons', 'Interactive & Widgets']
-      });
-    }, 700);
+  // Current canvas to display depending on Variant A vs Variant B
+  const currentDisplayedCanvas = activeVariant === 'B' 
+    ? (activeStep.abSplitVariantBState || canvasState) 
+    : canvasState;
+
+  // Reset undo/redo when switching steps
+  useEffect(() => {
+    setUndoStack([]);
+    setRedoStack([]);
+    setIsStepDropdownOpen(false);
+    setIsViewportDropdownOpen(false);
+    setIsToolsDropdownOpen(false);
+  }, [activeStep.id]);
+
+  // Undo Handler
+  const handleUndo = () => {
+    if (undoStack.length === 0) return;
+    const previous = undoStack[undoStack.length - 1];
+    const newUndo = undoStack.slice(0, -1);
+    setUndoStack(newUndo);
+    setRedoStack((prev) => [...prev, currentDisplayedCanvas]);
+
+    if (activeVariant === 'B' && onUpdateStepVariantB) {
+      onUpdateStepVariantB(previous);
+    } else {
+      onUpdateCanvasState(previous);
+    }
   };
 
-  const handleSimulateCheckout = () => {
-    setIsSimulatingOrder(true);
-    setTimeout(() => {
-      let basePrice = 47;
-      let items = ['Front-End Offer Blueprint ($47)'];
-      if (simIncludeBump) {
-        basePrice += 17;
-        items.push('Implementation Audio Workbook ($17)');
-      }
-      if (simIncludeOto) {
-        basePrice += 97;
-        items.push('1-Click OTO VIP Mastermind Fast-Pass ($97)');
-      }
+  // Redo Handler
+  const handleRedo = () => {
+    if (redoStack.length === 0) return;
+    const next = redoStack[redoStack.length - 1];
+    const newRedo = redoStack.slice(0, -1);
+    setRedoStack(newRedo);
+    setUndoStack((prev) => [...prev, currentDisplayedCanvas]);
 
-      setSimOrderReceipt({
-        orderId: `ord_sim_${Date.now()}`,
-        total: `$${basePrice}.00`,
-        items,
-        timestamp: new Date().toLocaleTimeString()
-      });
-      setIsSimulatingOrder(false);
-    }, 500);
+    if (activeVariant === 'B' && onUpdateStepVariantB) {
+      onUpdateStepVariantB(next);
+    } else {
+      onUpdateCanvasState(next);
+    }
   };
+
+  // Global Keyboard Shortcuts for Undo/Redo (Ctrl+Z, Ctrl+Y, Ctrl+Shift+Z)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const activeTag = (document.activeElement as HTMLElement)?.tagName?.toLowerCase();
+      const isContentEditable = (document.activeElement as HTMLElement)?.isContentEditable;
+      if (activeTag === 'input' || activeTag === 'textarea' || activeTag === 'select' || isContentEditable) {
+        return;
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
+        if (e.shiftKey) {
+          e.preventDefault();
+          handleRedo();
+        } else {
+          e.preventDefault();
+          handleUndo();
+        }
+      } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'y') {
+        e.preventDefault();
+        handleRedo();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [undoStack, redoStack, currentDisplayedCanvas, activeVariant]);
 
   // Handle Create New Funnel Step
   const handleCreateStepSubmit = () => {
@@ -376,8 +395,11 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
     setTargetColumnId(null);
   };
 
-  // State Change Dispatcher considering active Variant A vs Variant B
+  // State Change Dispatcher considering active Variant A vs Variant B with Undo History
   const handleStateChange = (newState: CanvasState) => {
+    setUndoStack((prev) => [...prev.slice(-40), currentDisplayedCanvas]);
+    setRedoStack([]);
+
     if (activeVariant === 'B' && onUpdateStepVariantB) {
       onUpdateStepVariantB(newState);
     } else {
@@ -564,16 +586,11 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
     }
   };
 
-  // Current canvas to display depending on Variant A vs Variant B
-  const currentDisplayedCanvas = activeVariant === 'B' 
-    ? (activeStep.abSplitVariantBState || canvasState) 
-    : canvasState;
-
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-white text-gray-900">
+    <div className="flex flex-col h-screen w-screen bg-slate-100 select-none overflow-hidden font-sans">
       {/* TOP COMMAND BAR — FunnelLegends */}
-      <header className="h-14 bg-white border-b border-green-100 px-4 flex items-center justify-between shrink-0 z-40 shadow-sm">
-        {/* Left: Back & Funnel Step Selector */}
+      <header className="h-14 bg-white border-b border-green-100 px-4 flex items-center justify-between shrink-0 z-40 shadow-sm relative">
+        {/* Left: Back & Funnel Step Selector Dropdown */}
         <div className="flex items-center gap-3">
           <button 
             onClick={onBackToDashboard} 
@@ -585,42 +602,87 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
 
           <div className="h-5 w-px bg-green-100"></div>
 
-          <div>
-            <div className="text-[10px] uppercase font-extrabold tracking-wider" style={{ color: '#22c55e' }}>FUNNEL STEP</div>
-            <div className="flex items-center gap-2">
-              <select 
-                value={activeStep.id} 
-                onChange={(e) => onSelectStep(e.target.value)}
-                className="bg-white border border-green-200 rounded px-2.5 py-1 text-xs font-bold text-gray-700 focus:outline-none focus:ring-2 focus:border-green-400"
-                style={{ '--tw-ring-color': '#22c55e' } as any}
-              >
-                {funnel.steps.map((st) => (
-                  <option key={st.id} value={st.id}>
-                    Step {st.stepOrder}: {st.name} ({st.stepType})
-                  </option>
-                ))}
-              </select>
+          {/* Step Selector Dropdown */}
+          <div className="relative">
+            <button
+              onClick={() => {
+                setIsStepDropdownOpen(!isStepDropdownOpen);
+                setIsViewportDropdownOpen(false);
+                setIsToolsDropdownOpen(false);
+              }}
+              className="flex items-center gap-2 bg-white border border-green-200 hover:border-green-400 rounded-xl px-3 py-1.5 text-xs font-bold text-gray-800 shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-green-400"
+            >
+              <span className="w-4 h-4 rounded-full bg-green-100 text-green-700 text-[10px] font-black flex items-center justify-center">
+                {activeStep.stepOrder}
+              </span>
+              <span className="max-w-[130px] sm:max-w-[180px] truncate">{activeStep.name}</span>
+              <span className="text-[10px] px-1.5 py-0.5 rounded font-mono font-bold bg-green-50 text-green-700 border border-green-200 uppercase">
+                {activeStep.stepType}
+              </span>
+              <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
+            </button>
 
-              <button
-                onClick={() => setIsAddStepModalOpen(true)}
-                className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded text-xs font-bold flex items-center gap-1 shadow-sm transition-all"
-                title="Create New Funnel Step"
-              >
-                <Plus className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Add Step</span>
-              </button>
-            </div>
+            {isStepDropdownOpen && (
+              <>
+                <div className="fixed inset-0 z-30" onClick={() => setIsStepDropdownOpen(false)} />
+                <div className="absolute left-0 top-full mt-1.5 w-72 bg-white border border-slate-200 rounded-2xl shadow-xl z-40 p-2 space-y-1 animate-fade-in">
+                  <div className="px-2 py-1 text-[10px] font-extrabold uppercase tracking-wider text-green-600">
+                    Funnel Steps ({funnel.steps.length})
+                  </div>
+                  <div className="max-h-60 overflow-y-auto space-y-1">
+                    {funnel.steps.map((st) => (
+                      <button
+                        key={st.id}
+                        onClick={() => {
+                          onSelectStep(st.id);
+                          setActiveVariant('A');
+                          setIsStepDropdownOpen(false);
+                        }}
+                        className={`w-full p-2 rounded-xl text-left text-xs font-semibold flex items-center justify-between transition-all ${st.id === activeStep.id ? 'bg-emerald-50 text-emerald-800 border border-emerald-300 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
+                      >
+                        <div className="flex items-center gap-2">
+                          <span className={`w-4 h-4 rounded-full text-[10px] font-bold flex items-center justify-center ${st.id === activeStep.id ? 'bg-emerald-600 text-white' : 'bg-slate-100 text-slate-600'}`}>
+                            {st.stepOrder}
+                          </span>
+                          <span className="truncate max-w-[150px]">{st.name}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-[9px] px-1.5 py-0.5 rounded font-mono uppercase bg-slate-100 text-slate-600">
+                            {st.stepType}
+                          </span>
+                          {st.id === activeStep.id && <Check className="w-3.5 h-3.5 text-emerald-600" />}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Add Step button at bottom of listed steps */}
+                  <div className="pt-2 border-t border-slate-100 mt-1">
+                    <button
+                      onClick={() => {
+                        setIsStepDropdownOpen(false);
+                        setIsAddStepModalOpen(true);
+                      }}
+                      className="w-full py-2 px-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition-all"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      <span>Add New Funnel Step</span>
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
 
           {/* A/B Variant Selector Tabs if A/B Split enabled */}
           {activeStep.abSplitEnabled && (
-            <div className="flex items-center bg-white border border-green-200 p-0.5 rounded-lg text-xs font-bold ml-2">
+            <div className="flex items-center bg-white border border-green-200 p-0.5 rounded-lg text-xs font-bold ml-1">
               <button 
                 onClick={() => setActiveVariant('A')}
                 className={`px-2.5 py-1 rounded transition-all ${activeVariant === 'A' ? 'text-white' : 'text-gray-500 hover:text-gray-800'}`}
                 style={activeVariant === 'A' ? { background: 'linear-gradient(135deg,#22c55e,#16a34a)' } : {}}
               >
-                Variant A (Control)
+                Control (A)
               </button>
               <button 
                 onClick={() => {
@@ -632,127 +694,218 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
                 className={`px-2.5 py-1 rounded transition-all ${activeVariant === 'B' ? 'text-white' : 'text-gray-500 hover:text-gray-800'}`}
                 style={activeVariant === 'B' ? { background: 'linear-gradient(135deg,#0d9488,#0d7270)' } : {}}
               >
-                Variant B (Challenger)
+                Challenger (B)
               </button>
             </div>
           )}
         </div>
 
-        {/* Center: Viewport Switcher — Green */}
-        <div className="flex items-center gap-1 bg-gray-50 border border-green-100 p-1 rounded-xl">
-          <button 
-            onClick={() => setViewportMode('desktop')} 
-            className={`p-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition-all ${viewportMode === 'desktop' ? 'text-white' : 'text-gray-500 hover:text-gray-800'}`}
-            style={viewportMode === 'desktop' ? { background: 'linear-gradient(135deg,#22c55e,#16a34a)' } : {}}
-          >
-            <Monitor className="w-4 h-4" />
-            <span className="hidden md:inline">Desktop</span>
-          </button>
-          <button 
-            onClick={() => setViewportMode('tablet')} 
-            className={`p-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition-all ${viewportMode === 'tablet' ? 'text-white' : 'text-gray-500 hover:text-gray-800'}`}
-            style={viewportMode === 'tablet' ? { background: 'linear-gradient(135deg,#22c55e,#16a34a)' } : {}}
-          >
-            <Tablet className="w-4 h-4" />
-            <span className="hidden md:inline">Tablet</span>
-          </button>
-          <button 
-            onClick={() => setViewportMode('mobile')} 
-            className={`p-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition-all ${viewportMode === 'mobile' ? 'text-white' : 'text-gray-500 hover:text-gray-800'}`}
-            style={viewportMode === 'mobile' ? { background: 'linear-gradient(135deg,#22c55e,#16a34a)' } : {}}
-          >
-            <Smartphone className="w-4 h-4" />
-            <span className="hidden md:inline">Mobile</span>
-          </button>
+        {/* Center: Undo/Redo & Viewport Dropdown Menu */}
+        <div className="flex items-center gap-2">
+          {/* Undo / Redo buttons */}
+          <div className="flex items-center bg-gray-50 border border-green-100 p-0.5 rounded-xl shadow-inner">
+            <button
+              onClick={handleUndo}
+              disabled={undoStack.length === 0}
+              title={`Undo (${typeof navigator !== 'undefined' && navigator.platform.includes('Mac') ? 'Cmd' : 'Ctrl'}+Z)`}
+              className="p-1.5 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-white disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-gray-400 transition-all"
+            >
+              <Undo2 className="w-4 h-4" />
+            </button>
+            <button
+              onClick={handleRedo}
+              disabled={redoStack.length === 0}
+              title={`Redo (${typeof navigator !== 'undefined' && navigator.platform.includes('Mac') ? 'Cmd' : 'Ctrl'}+Y)`}
+              className="p-1.5 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-white disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-gray-400 transition-all"
+            >
+              <Redo2 className="w-4 h-4" />
+            </button>
+          </div>
+
+          <div className="h-5 w-px bg-green-100"></div>
+
+          {/* Viewport Dropdown Menu */}
+          <div className="relative">
+            <button
+              onClick={() => {
+                setIsViewportDropdownOpen(!isViewportDropdownOpen);
+                setIsStepDropdownOpen(false);
+                setIsToolsDropdownOpen(false);
+              }}
+              className="flex items-center gap-2 bg-gray-50 hover:bg-green-50 border border-green-200 rounded-xl px-3 py-1.5 text-xs font-bold text-gray-800 shadow-sm transition-all focus:outline-none"
+            >
+              {viewportMode === 'desktop' && <Monitor className="w-4 h-4 text-emerald-600" />}
+              {viewportMode === 'tablet' && <Tablet className="w-4 h-4 text-emerald-600" />}
+              {viewportMode === 'mobile' && <Smartphone className="w-4 h-4 text-emerald-600" />}
+              <span className="capitalize">{viewportMode}</span>
+              <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
+            </button>
+
+            {isViewportDropdownOpen && (
+              <>
+                <div className="fixed inset-0 z-30" onClick={() => setIsViewportDropdownOpen(false)} />
+                <div className="absolute left-1/2 -translate-x-1/2 top-full mt-1.5 w-52 bg-white border border-slate-200 rounded-2xl shadow-xl z-40 p-1.5 space-y-1 animate-fade-in">
+                  <div className="px-2 py-1 text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
+                    Device Viewport
+                  </div>
+                  <button
+                    onClick={() => { setViewportMode('desktop'); setIsViewportDropdownOpen(false); }}
+                    className={`w-full p-2 rounded-xl text-left text-xs font-semibold flex items-center justify-between transition-all ${viewportMode === 'desktop' ? 'bg-emerald-50 text-emerald-800 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Monitor className="w-4 h-4 text-emerald-600" />
+                      <div>
+                        <div>Desktop</div>
+                        <div className="text-[10px] text-slate-400 font-normal">100% Canvas (1200px)</div>
+                      </div>
+                    </div>
+                    {viewportMode === 'desktop' && <Check className="w-3.5 h-3.5 text-emerald-600" />}
+                  </button>
+
+                  <button
+                    onClick={() => { setViewportMode('tablet'); setIsViewportDropdownOpen(false); }}
+                    className={`w-full p-2 rounded-xl text-left text-xs font-semibold flex items-center justify-between transition-all ${viewportMode === 'tablet' ? 'bg-emerald-50 text-emerald-800 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Tablet className="w-4 h-4 text-emerald-600" />
+                      <div>
+                        <div>Tablet</div>
+                        <div className="text-[10px] text-slate-400 font-normal">768px Viewport</div>
+                      </div>
+                    </div>
+                    {viewportMode === 'tablet' && <Check className="w-3.5 h-3.5 text-emerald-600" />}
+                  </button>
+
+                  <button
+                    onClick={() => { setViewportMode('mobile'); setIsViewportDropdownOpen(false); }}
+                    className={`w-full p-2 rounded-xl text-left text-xs font-semibold flex items-center justify-between transition-all ${viewportMode === 'mobile' ? 'bg-emerald-50 text-emerald-800 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Smartphone className="w-4 h-4 text-emerald-600" />
+                      <div>
+                        <div>Mobile</div>
+                        <div className="text-[10px] text-slate-400 font-normal">390px Viewport</div>
+                      </div>
+                    </div>
+                    {viewportMode === 'mobile' && <Check className="w-3.5 h-3.5 text-emerald-600" />}
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
         </div>
 
         {/* Right Action Tools */}
         <div className="flex items-center gap-2">
-          {/* ClickPop Manager */}
-          <button 
-            onClick={() => setIsClickPopModalOpen(true)}
-            className="px-3 py-1.5 bg-white hover:bg-green-50 text-gray-700 rounded-lg text-xs font-bold flex items-center gap-1.5 border border-green-200 shadow-sm"
-            title="Configure ClickPop & Exit Intent Popup"
-          >
-            <MousePointerClick className="w-4 h-4" style={{ color: '#22c55e' }} />
-            <span className="hidden md:inline">ClickPop</span>
-            <span className="text-[9px] px-1.5 py-0.5 rounded font-extrabold bg-green-50 border border-green-200" style={{ color: '#16a34a' }}>
-              {activeClickPopSettings.triggerType.replace('_', ' ').toUpperCase()}
-            </span>
-          </button>
+          {/* Tools & Utilities Dropdown */}
+          <div className="relative">
+            <button
+              onClick={() => {
+                setIsToolsDropdownOpen(!isToolsDropdownOpen);
+                setIsStepDropdownOpen(false);
+                setIsViewportDropdownOpen(false);
+              }}
+              className="px-3 py-1.5 bg-white hover:bg-green-50 text-gray-700 rounded-xl text-xs font-bold flex items-center gap-1.5 border border-green-200 shadow-sm transition-colors"
+            >
+              <Sliders className="w-4 h-4 text-green-600" />
+              <span className="hidden sm:inline">Tools</span>
+              <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
+            </button>
 
-          {/* Global Tokens */}
-          <button 
-            onClick={() => setIsGlobalTokensOpen(true)}
-            className="p-2 bg-white hover:bg-green-50 text-gray-600 hover:text-gray-900 rounded-lg text-xs font-bold flex items-center gap-1 border border-green-200"
-            title="Global Design Tokens"
-          >
-            <Palette className="w-4 h-4" style={{ color: '#22c55e' }} />
-          </button>
+            {isToolsDropdownOpen && (
+              <>
+                <div className="fixed inset-0 z-30" onClick={() => setIsToolsDropdownOpen(false)} />
+                <div className="absolute right-0 top-full mt-1.5 w-60 bg-white border border-slate-200 rounded-2xl shadow-xl z-40 p-2 space-y-1 animate-fade-in text-xs">
+                  <div className="px-2 py-1 text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
+                    Page & Canvas Tools
+                  </div>
 
-          {/* Import JSON */}
-          <button 
-            onClick={() => setIsImportModalOpen(true)}
-            className="p-2 bg-white hover:bg-green-50 text-gray-500 hover:text-gray-900 rounded-lg text-xs font-bold border border-green-200"
-            title="Import Canvas JSON"
-          >
-            <Upload className="w-4 h-4" />
-          </button>
+                  <button
+                    onClick={() => { setIsGlobalTokensOpen(true); setIsToolsDropdownOpen(false); }}
+                    className="w-full p-2 hover:bg-slate-50 rounded-xl text-left font-bold text-slate-700 flex items-center gap-2.5 transition-colors"
+                  >
+                    <Palette className="w-4 h-4 text-purple-600" />
+                    <div>
+                      <div>Global Design Tokens</div>
+                      <div className="text-[10px] text-slate-400 font-normal">Fonts, brand colors & theme</div>
+                    </div>
+                  </button>
 
-          {/* Export JSON */}
-          <button 
-            onClick={handleDownloadJson}
-            className="p-2 bg-white hover:bg-green-50 text-gray-500 hover:text-gray-900 rounded-lg text-xs font-bold border border-green-200"
-            title="Download Canvas JSON File"
-          >
-            <Download className="w-4 h-4" />
-          </button>
+                  <button
+                    onClick={() => { setIsClickPopModalOpen(true); setIsToolsDropdownOpen(false); }}
+                    className="w-full p-2 hover:bg-slate-50 rounded-xl text-left font-bold text-slate-700 flex items-center justify-between transition-colors"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <MousePointerClick className="w-4 h-4 text-emerald-600" />
+                      <div>
+                        <div>ClickPop & Exit Modal</div>
+                        <div className="text-[10px] text-slate-400 font-normal">Triggers & overlay styling</div>
+                      </div>
+                    </div>
+                    <span className="text-[9px] px-1.5 py-0.5 rounded font-mono font-bold bg-green-50 text-green-700 border border-green-200">
+                      {activeClickPopSettings.triggerType.replace('_', ' ').toUpperCase()}
+                    </span>
+                  </button>
 
-          {/* Visual Simulations Engine */}
-          <button 
-            onClick={() => setIsSimModalOpen(true)}
-            className="px-3 py-1.5 bg-gradient-to-r from-amber-400 to-orange-500 hover:brightness-110 text-slate-950 rounded-lg text-xs font-black flex items-center gap-1.5 shadow-md shadow-amber-500/20 transition-all"
-            title="Launch Visual Funnel Simulations & Element Stress Tests"
-          >
-            <Sparkles className="w-4 h-4 fill-slate-950" />
-            <span className="hidden sm:inline">⚡ Fun Simulations</span>
-          </button>
+                  <button
+                    onClick={() => { onOpenCodeInspector(); setIsToolsDropdownOpen(false); }}
+                    className="w-full p-2 hover:bg-slate-50 rounded-xl text-left font-bold text-slate-700 flex items-center gap-2.5 transition-colors"
+                  >
+                    <Code className="w-4 h-4 text-indigo-600" />
+                    <div>
+                      <div>Inspect Code Tree</div>
+                      <div className="text-[10px] text-slate-400 font-normal">View raw JSON AST canvas tree</div>
+                    </div>
+                  </button>
 
-          {/* AI Copilot — Green gradient */}
+                  <div className="h-px bg-slate-100 my-1" />
+
+                  <button
+                    onClick={() => { setIsImportModalOpen(true); setIsToolsDropdownOpen(false); }}
+                    className="w-full p-2 hover:bg-slate-50 rounded-xl text-left font-bold text-slate-700 flex items-center gap-2.5 transition-colors"
+                  >
+                    <Upload className="w-4 h-4 text-slate-500" />
+                    <div>Import Canvas JSON</div>
+                  </button>
+
+                  <button
+                    onClick={() => { handleDownloadJson(); setIsToolsDropdownOpen(false); }}
+                    className="w-full p-2 hover:bg-slate-50 rounded-xl text-left font-bold text-slate-700 flex items-center gap-2.5 transition-colors"
+                  >
+                    <Download className="w-4 h-4 text-slate-500" />
+                    <div>Export Canvas JSON</div>
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+
+          {/* AI Copilot */}
           <button 
             onClick={onOpenAiCopilot} 
-            className="px-3 py-1.5 text-slate-900 rounded-lg text-xs font-bold flex items-center gap-1.5"
-            style={{ background: 'linear-gradient(135deg,#22c55e,#0d9488)', boxShadow: '0 4px 14px rgba(34,197,94,0.3)' }}
+            className="px-3 py-1.5 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all hover:shadow-md"
+            style={{ background: 'linear-gradient(135deg,#22c55e,#0d9488)' }}
           >
-            <Sparkles className="w-4 h-4 animate-pulse" />
-            <span className="hidden lg:inline">AI Copilot</span>
-          </button>
-
-          {/* Code Inspector */}
-          <button 
-            onClick={onOpenCodeInspector} 
-            className="p-2 bg-white hover:bg-green-50 text-gray-500 hover:text-gray-900 rounded-lg text-xs font-bold border border-green-200"
-            title="Inspect Canvas JSON Tree"
-          >
-            <Code className="w-4 h-4" />
+            <Sparkles className="w-4 h-4 animate-pulse text-white" />
+            <span className="text-white hidden sm:inline">AI Copilot</span>
           </button>
 
           {/* Live Preview */}
           <button 
             onClick={onOpenLivePreview} 
-            className="px-3 py-1.5 bg-white hover:bg-green-50 text-gray-700 hover:text-gray-900 rounded-lg text-xs font-bold flex items-center gap-1.5 border border-green-200"
+            className="px-3 py-1.5 bg-white hover:bg-green-50 text-gray-700 hover:text-gray-900 rounded-xl text-xs font-bold flex items-center gap-1.5 border border-green-200 shadow-sm transition-colors"
           >
-            <Eye className="w-4 h-4" style={{ color: '#22c55e' }} />
-            <span className="hidden md:inline">Live Preview</span>
+            <Eye className="w-4 h-4 text-green-600" />
+            <span className="hidden sm:inline">Live Preview</span>
           </button>
 
           {/* Save Button */}
           <button 
             onClick={handleSaveState} 
-            className="px-4 py-1.5 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 hover:brightness-110 text-white rounded-lg text-xs font-black shadow-md shadow-emerald-600/30 flex items-center gap-1.5 transition-all"
+            className="px-4 py-1.5 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 hover:brightness-110 text-white rounded-xl text-xs font-black shadow-md shadow-emerald-600/30 flex items-center gap-1.5 transition-all"
           >
             <Save className="w-4 h-4" />
-            <span>Save Changes</span>
+            <span>Save</span>
           </button>
         </div>
       </header>
@@ -801,8 +954,8 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
           <div className="p-2 border-t border-green-100 bg-white">
             <button
               onClick={() => setIsAddStepModalOpen(true)}
-              className="w-full py-2 px-3 text-slate-900 rounded-lg text-xs font-extrabold flex items-center justify-center gap-1.5 shadow-md transition-all hover:brightness-110"
-              style={{ background: 'linear-gradient(135deg, #22c55e, #16a34a)', boxShadow: '0 4px 12px rgba(34,197,94,0.25)' }}
+              className="w-full py-2 px-3 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-md transition-all hover:brightness-110"
+              style={{ background: 'linear-gradient(135deg, #22c55e, #16a34a)' }}
             >
               <Plus className="w-4 h-4" />
               <span>Add Funnel Step</span>
@@ -1460,112 +1613,7 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
         </div>
       )}
 
-      {/* Add Funnel Step Modal */}
-      {isAddStepModalOpen && (
-        <div className="fixed inset-0 z-50 bg-white/85 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-md p-6 space-y-4 text-slate-900 shadow-2xl animate-fade-in">
-            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-              <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-                <Plus className="w-5 h-5 text-emerald-400" />
-                <span>Add New Funnel Step</span>
-              </h3>
-              <button onClick={() => setIsAddStepModalOpen(false)} className="p-1 hover:bg-slate-50 rounded-lg text-slate-600">
-                <X className="w-5 h-5" />
-              </button>
-            </div>
 
-            <div className="space-y-3 text-xs">
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Step Name *</label>
-                <input 
-                  type="text" 
-                  placeholder="e.g., 1-Click Upsell #2, Order Form..." 
-                  value={newStepName} 
-                  onChange={(e) => setNewStepName(e.target.value)}
-                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Step Type</label>
-                  <select 
-                    value={newStepType} 
-                    onChange={(e) => setNewStepType(e.target.value as StepType)}
-                    className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 font-medium focus:outline-none"
-                  >
-                    <option value="OptIn">OptIn / Squeeze</option>
-                    <option value="Sales">Sales Page</option>
-                    <option value="Upsell">1-Click OTO / Upsell</option>
-                    <option value="Downsell">Downsell Offer</option>
-                    <option value="ThankYou">Thank You Page</option>
-                    <option value="WebinarRoom">Webinar Room</option>
-                    <option value="Replay">Webinar Replay</option>
-                    <option value="MemberArea">Member Area</option>
-                    <option value="MemberLogin">Member Login</option>
-                    <option value="Survey">Survey Quiz</option>
-                    <option value="Application">Application</option>
-                    <option value="Storefront">Storefront</option>
-                    <option value="Ask">Ask Page</option>
-                    <option value="Hero">Hero Bio</option>
-                    <option value="Bridge">Bridge Page</option>
-                    <option value="Share">Viral Share</option>
-                    <option value="OfferWall">Offer Wall</option>
-                    <option value="Presell">Presell Article</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Starter Template</label>
-                  <select 
-                    value={newStepPreset} 
-                    onChange={(e) => setNewStepPreset(e.target.value)}
-                    className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 font-medium focus:outline-none"
-                  >
-                    <option value="squeeze">Squeeze Lead Gate</option>
-                    <option value="reverse_squeeze">Reverse Squeeze VSL</option>
-                    <option value="lead_magnet">Lead Magnet Bribe</option>
-                    <option value="two_step_order">2-Step Order Form</option>
-                    <option value="vsl_order">VSL + Checkout</option>
-                    <option value="oto">1-Click OTO Upsell</option>
-                    <option value="downsell">Downsell Discount</option>
-                    <option value="thank_you">Thank You Confirmation</option>
-                    <option value="member_access">Member Access Gate</option>
-                    <option value="member_area">LMS Member Area</option>
-                  </select>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Custom Page Slug (Optional)</label>
-                <input 
-                  type="text" 
-                  placeholder="e.g. oto-special-discount" 
-                  value={newStepSlug} 
-                  onChange={(e) => setNewStepSlug(e.target.value)}
-                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-emerald-400 font-mono focus:outline-none font-medium"
-                />
-              </div>
-            </div>
-
-            <div className="flex gap-2 pt-2">
-              <button 
-                onClick={handleCreateStepSubmit} 
-                className="flex-1 py-2.5 text-slate-900 rounded-xl text-xs font-extrabold shadow-lg transition-all hover:brightness-110"
-                style={{ background: 'linear-gradient(135deg, #22c55e, #16a34a)' }}
-              >
-                + Create Funnel Step
-              </button>
-              <button 
-                onClick={() => setIsAddStepModalOpen(false)} 
-                className="px-4 py-2.5 bg-slate-50 text-slate-600 rounded-xl text-xs font-bold hover:text-slate-900"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Save Notification Toast */}
       {isSavedToast && (
@@ -1574,197 +1622,6 @@ export const BuilderLayout: React.FC<BuilderLayoutProps> = ({
           <span>Step state & A/B variants saved to persistent workspace!</span>
         </div>
       )}
-
-      {/* ── VISUAL CANVAS SIMULATIONS & STRESS TEST MODAL ── */}
-      {isSimModalOpen && (
-        <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-md z-50 flex items-center justify-center p-4">
-          <div className="bg-white border-2 border-emerald-500/50 rounded-3xl max-w-2xl w-full p-6 sm:p-8 space-y-6 shadow-2xl animate-fade-in max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-black">
-                  <Sparkles className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-black text-slate-900 flex items-center gap-2">
-                    Visual Canvas Funnel Simulations
-                  </h3>
-                  <p className="text-xs text-slate-500">Test live checkout flows, A/B split traffic, and element crash safeguards.</p>
-                </div>
-              </div>
-              <button onClick={() => setIsSimModalOpen(false)} className="text-slate-400 hover:text-slate-700">
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Sub Tabs */}
-            <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-              <button 
-                onClick={() => setSimActiveTab('checkout')}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${simActiveTab === 'checkout' ? 'bg-emerald-600 text-white shadow' : 'text-slate-600 hover:bg-slate-100'}`}
-              >
-                🛒 Checkout & Upsell Flow
-              </button>
-              <button 
-                onClick={() => setSimActiveTab('element_health')}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${simActiveTab === 'element_health' ? 'bg-emerald-600 text-white shadow' : 'text-slate-600 hover:bg-slate-100'}`}
-              >
-                🛡️ Element Health Scanner
-              </button>
-              <button 
-                onClick={() => setSimActiveTab('viewport')}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${simActiveTab === 'viewport' ? 'bg-emerald-600 text-white shadow' : 'text-slate-600 hover:bg-slate-100'}`}
-              >
-                📱 Viewport Responsiveness
-              </button>
-            </div>
-
-            {/* TAB 1: CHECKOUT & UPSELL SIMULATION */}
-            {simActiveTab === 'checkout' && (
-              <div className="space-y-4 text-xs">
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="font-bold text-slate-700 block mb-1">Prospect Name</label>
-                    <input 
-                      type="text" 
-                      value={simProspectName} 
-                      onChange={(e) => setSimProspectName(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 font-bold"
-                    />
-                  </div>
-                  <div>
-                    <label className="font-bold text-slate-700 block mb-1">Prospect Email</label>
-                    <input 
-                      type="email" 
-                      value={simProspectEmail} 
-                      onChange={(e) => setSimProspectEmail(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 font-mono"
-                    />
-                  </div>
-                </div>
-
-                <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2.5">
-                  <div className="font-bold text-slate-800 uppercase font-mono text-[10px]">Simulated Cart Add-Ons:</div>
-                  <label className="flex items-center gap-2 cursor-pointer font-bold text-slate-700">
-                    <input 
-                      type="checkbox" 
-                      checked={simIncludeBump} 
-                      onChange={(e) => setSimIncludeBump(e.target.checked)}
-                      className="w-4 h-4 rounded text-emerald-600 focus:ring-0 accent-emerald-600"
-                    />
-                    <span>Include 1-Click Order Bump (+$17.00 Audio Workbook)</span>
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer font-bold text-slate-700">
-                    <input 
-                      type="checkbox" 
-                      checked={simIncludeOto} 
-                      onChange={(e) => setSimIncludeOto(e.target.checked)}
-                      className="w-4 h-4 rounded text-emerald-600 focus:ring-0 accent-emerald-600"
-                    />
-                    <span>Include 1-Click OTO VIP Mastermind Fast-Pass (+$97.00)</span>
-                  </label>
-                </div>
-
-                <button 
-                  onClick={handleSimulateCheckout}
-                  disabled={isSimulatingOrder}
-                  className="w-full py-3.5 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 hover:brightness-110 text-white rounded-xl font-black shadow-md shadow-emerald-600/30 flex items-center justify-center gap-2 transition-all"
-                >
-                  <Zap className="w-4 h-4 fill-white" />
-                  <span>{isSimulatingOrder ? 'Processing Simulated Order...' : 'SIMULATE COMPLETE CONVERSION & UPSELL →'}</span>
-                </button>
-
-                {simOrderReceipt && (
-                  <div className="p-4 bg-emerald-50 border border-emerald-300 rounded-2xl space-y-2 animate-fade-in">
-                    <div className="flex items-center justify-between font-black text-emerald-950">
-                      <span>✓ Order Simulated Successfully ({simOrderReceipt.total})</span>
-                      <span className="font-mono text-emerald-700 text-[10px]">{simOrderReceipt.orderId}</span>
-                    </div>
-                    <ul className="list-disc list-inside space-y-1 text-slate-700 text-[11px]">
-                      {simOrderReceipt.items.map((it, idx) => (
-                        <li key={idx}><strong>{it}</strong></li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* TAB 2: ELEMENT HEALTH SCANNER */}
-            {simActiveTab === 'element_health' && (
-              <div className="space-y-4 text-xs">
-                <p className="text-slate-600 leading-relaxed">
-                  Run an automated diagnostic test across all 54 drag-and-drop elements to ensure element settings, custom code injections, and error boundaries are functioning with 0 crashes.
-                </p>
-
-                <button 
-                  onClick={handleRunElementHealthScan}
-                  disabled={isScanningElements}
-                  className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-xl shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2"
-                >
-                  <Activity className={`w-4 h-4 ${isScanningElements ? 'animate-spin' : ''}`} />
-                  <span>{isScanningElements ? 'Scanning Element Renders...' : 'Run 54-Element Rendering Health Check →'}</span>
-                </button>
-
-                {elementScanResults && (
-                  <div className="p-4 bg-emerald-50 border border-emerald-300 rounded-2xl space-y-3 animate-fade-in">
-                    <div className="flex items-center justify-between font-black text-emerald-900">
-                      <span>{elementScanResults.status}</span>
-                      <span className="font-mono text-[10px] text-emerald-700">54 / 54 PASSED</span>
-                    </div>
-                    <div className="grid grid-cols-2 gap-2 text-[11px] text-slate-700">
-                      {elementScanResults.categoriesChecked.map((cat, i) => (
-                        <div key={i} className="flex items-center gap-1 text-emerald-800 font-bold">
-                          <span>✓</span>
-                          <span>{cat}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* TAB 3: VIEWPORT RESPONSIVENESS */}
-            {simActiveTab === 'viewport' && (
-              <div className="space-y-4 text-xs">
-                <p className="text-slate-600">
-                  Instantly switch between screen viewports to test layout responsiveness and mobile font scaling:
-                </p>
-
-                <div className="grid grid-cols-3 gap-3">
-                  <button 
-                    onClick={() => { setViewportMode('desktop'); setIsSimModalOpen(false); }}
-                    className="p-4 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-300 border border-slate-200 rounded-2xl text-center space-y-1 transition-all"
-                  >
-                    <Monitor className="w-5 h-5 text-emerald-600 mx-auto" />
-                    <div className="font-bold text-slate-900">Desktop</div>
-                    <div className="text-[10px] text-slate-500 font-mono">1200px Max</div>
-                  </button>
-
-                  <button 
-                    onClick={() => { setViewportMode('tablet'); setIsSimModalOpen(false); }}
-                    className="p-4 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-300 border border-slate-200 rounded-2xl text-center space-y-1 transition-all"
-                  >
-                    <Tablet className="w-5 h-5 text-teal-600 mx-auto" />
-                    <div className="font-bold text-slate-900">Tablet</div>
-                    <div className="text-[10px] text-slate-500 font-mono">768px Width</div>
-                  </button>
-
-                  <button 
-                    onClick={() => { setViewportMode('mobile'); setIsSimModalOpen(false); }}
-                    className="p-4 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-300 border border-slate-200 rounded-2xl text-center space-y-1 transition-all"
-                  >
-                    <Smartphone className="w-5 h-5 text-amber-500 mx-auto" />
-                    <div className="font-bold text-slate-900">Mobile</div>
-                    <div className="text-[10px] text-slate-500 font-mono">375px Width</div>
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
     </div>
   );
 };
