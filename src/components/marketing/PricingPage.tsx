@@ -234,7 +234,6 @@ export const OrderModal: React.FC<{
         {/* Top Header */}
         <div className="flex items-center justify-between border-b border-slate-200 pb-4">
           <div>
-            <span className="text-[10px] font-black uppercase tracking-wider text-emerald-600">2-STEP ORDER FORM</span>
             <h3 className="text-xl font-black text-slate-900">Activate Your 30-Day Free Trial</h3>
           </div>
           <button onClick={onClose} className="text-slate-500 hover:text-slate-900 text-xs font-bold p-1">Close ✕</button>
