@@ -94,7 +94,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
                 value={email} 
                 onChange={(e) => setEmail(e.target.value)} 
                 className="flex-1 bg-transparent outline-none font-medium text-xs text-slate-900"
-                placeholder="tofield69@gmail.com"
+                placeholder="Enter Your Email"
               />
             </div>
           </div>
