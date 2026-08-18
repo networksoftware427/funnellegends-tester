@@ -48,6 +48,15 @@ export const saveStoredCourse = (course: CourseData) => {
   }
 };
 
+export const resetCourseStorageToDefaults = (): CourseData => {
+  try {
+    localStorage.setItem(KEYS.COURSE, JSON.stringify(initialCourseData));
+  } catch (e) {
+    console.error('Failed resetting course data', e);
+  }
+  return initialCourseData;
+};
+
 export const loadStoredContacts = (): ContactData[] => {
   try {
     const raw = localStorage.getItem(KEYS.CONTACTS);
@@ -82,6 +91,16 @@ export const saveStoredDeals = (deals: DealData[]) => {
   } catch (e) {
     console.error('Failed saving deals', e);
   }
+};
+
+export const resetCrmStorageToDefaults = () => {
+  try {
+    localStorage.setItem(KEYS.CONTACTS, JSON.stringify(initialContacts));
+    localStorage.setItem(KEYS.DEALS, JSON.stringify(initialDeals));
+  } catch (e) {
+    console.error('Failed resetting CRM data', e);
+  }
+  return { contacts: initialContacts, deals: initialDeals };
 };
 
 export const loadStoredWorkflows = () => {

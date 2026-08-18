@@ -6,14 +6,17 @@ import {
   loadStoredHosts, saveStoredHosts, 
   loadStoredEventTypes, saveStoredEventTypes, 
   loadStoredAppointments, saveStoredAppointments, 
-  loadStoredChronoSettings, saveStoredChronoSettings 
+  loadStoredChronoSettings, saveStoredChronoSettings,
+  resetChronoChimpStorageToDefaults
 } from '../../utils/appointmentStorage';
+import { syncChronoChimpToSupabase, CHRONOCHIMP_SQL_SCHEMA } from '../../utils/chronochimpDbSync';
 import { 
   Calendar, Clock, Video, Users, CheckCircle2, XCircle, Plus, Search, 
   Filter, Download, RefreshCw, ChevronRight, Eye, Settings, Share2, 
   Sparkles, ExternalLink, Trash2, Edit3, UserPlus, Check, X, AlertCircle, 
   Phone, MapPin, CreditCard, Mail, ShieldCheck, Zap, BarChart2, CalendarCheck,
-  MessageSquare, Copy, Sliders, Globe, ArrowRight, CheckSquare, Layers
+  MessageSquare, Copy, Sliders, Globe, ArrowRight, CheckSquare, Layers,
+  Smartphone, Terminal, Database, Send, Radio, Activity, CheckCheck, RefreshCcw
 } from 'lucide-react';
 
 export const ChronoChimpAppointmentManager: React.FC = () => {
@@ -24,7 +27,9 @@ export const ChronoChimpAppointmentManager: React.FC = () => {
   const [chronoSettings, setChronoSettings] = useState<ChronoChimpSettings>(loadStoredChronoSettings());
 
   // Active Main Sub-Tab
-  const [activeTab, setActiveTab] = useState<'overview' | 'roster' | 'event_types' | 'hosts' | 'reminders' | 'embed' | 'settings'>('overview');
+  const [activeTab, setActiveTab] = useState<
+    'overview' | 'roster' | 'event_types' | 'hosts' | 'reminders' | 'embed' | 'simulations' | 'database' | 'settings'
+  >('overview');
 
   // Filters & Search
   const [apptFilterStatus, setApptFilterStatus] = useState<AppointmentStatus | 'All'>('All');
@@ -34,30 +39,53 @@ export const ChronoChimpAppointmentManager: React.FC = () => {
 
   // Event Type Edit/Create Modal
   const [isEventModalOpen, setIsEventModalOpen] = useState(false);
-  const [newEventTitle, setNewEventTitle] = useState('');
-  const [newEventSlug, setNewEventSlug] = useState('');
-  const [newEventDesc, setNewEventDesc] = useState('');
-  const [newEventDuration, setNewEventDuration] = useState('30');
-  const [newEventPrice, setNewEventPrice] = useState('0');
+  const [editingEvent, setEditingEvent] = useState<EventTypeConfig | null>(null);
+  const [eventFormTitle, setEventFormTitle] = useState('');
+  const [eventFormSlug, setEventFormSlug] = useState('');
+  const [eventFormDesc, setEventFormDesc] = useState('');
+  const [eventFormDuration, setEventFormDuration] = useState('30');
+  const [eventFormPrice, setEventFormPrice] = useState('0');
+  const [eventFormLocation, setEventFormLocation] = useState<MeetingLocationType>('zoom');
+  const [eventFormBufferBefore, setEventFormBufferBefore] = useState('5');
+  const [eventFormBufferAfter, setEventFormBufferAfter] = useState('10');
 
-  // Host Add Modal
+  // Host Add / Edit Modal
   const [isHostModalOpen, setIsHostModalOpen] = useState(false);
-  const [newHostName, setNewHostName] = useState('');
-  const [newHostEmail, setNewHostEmail] = useState('');
-  const [newHostRole, setNewHostRole] = useState('');
+  const [editingHost, setEditingHost] = useState<MeetingHost | null>(null);
+  const [hostFormName, setHostFormName] = useState('');
+  const [hostFormEmail, setHostFormEmail] = useState('');
+  const [hostFormRole, setHostFormRole] = useState('');
+  const [hostFormZoomUrl, setHostFormZoomUrl] = useState('');
+  const [hostFormPhone, setHostFormPhone] = useState('');
 
-  // Live Booking Demo Modal
-  const [isBookingDemoOpen, setIsBookingDemoOpen] = useState(false);
-  const [demoSelectedEventId, setDemoSelectedEventId] = useState(eventTypes[0]?.id || '');
-  const [demoSelectedDate, setDemoSelectedDate] = useState('2026-08-16');
-  const [demoSelectedSlot, setDemoSelectedSlot] = useState('11:00');
-  const [demoName, setDemoName] = useState('');
-  const [demoEmail, setDemoEmail] = useState('');
-  const [demoPhone, setDemoPhone] = useState('');
-  const [bookingSuccessMsg, setBookingSuccessMsg] = useState<string | null>(null);
+  // ── SIMULATION ENGINE STATES ──
+  const [simSelectedEventId, setSimSelectedEventId] = useState(eventTypes[0]?.id || '');
+  const [simSelectedHostId, setSimSelectedHostId] = useState(hosts[0]?.id || '');
+  const [simDate, setSimDate] = useState('2026-08-19');
+  const [simSlot, setSimSlot] = useState('14:00');
+  const [simClientName, setSimClientName] = useState('Oliver Green');
+  const [simClientEmail, setSimClientEmail] = useState('oliver@growthagency.demo');
+  const [simClientPhone, setSimClientPhone] = useState('+1 (555) 349-2810');
+  const [simClientRevenue, setSimClientRevenue] = useState('$50k - $100k/mo');
+  const [simClientGoal, setSimClientGoal] = useState('Scale high-ticket VSL funnel to $250k/month');
+  const [isSimulatingBooking, setIsSimulatingBooking] = useState(false);
+  const [simBookingReceipt, setSimBookingReceipt] = useState<BookedAppointment | null>(null);
+
+  // SMS Simulation
+  const [simSmsDispatched, setSimSmsDispatched] = useState(false);
+
+  // Attendance Status Simulator
+  const [selectedStatusSimApptId, setSelectedStatusSimApptId] = useState<string>(appointments[0]?.id || '');
+  const [statusSimFeedback, setStatusSimFeedback] = useState<string | null>(null);
+
+  // Supabase Sync Status
+  const [dbSyncStatus, setDbSyncStatus] = useState<{ success: boolean; message: string; timestamp: string } | null>(null);
+  const [isSyncingDb, setIsSyncingDb] = useState(false);
+  const [copiedSchema, setCopiedSchema] = useState(false);
 
   // Clipboard toast
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [bookingSuccessMsg, setBookingSuccessMsg] = useState<string | null>(null);
 
   // Persist state
   useEffect(() => { saveStoredHosts(hosts); }, [hosts]);
@@ -85,107 +113,220 @@ export const ChronoChimpAppointmentManager: React.FC = () => {
     }
   };
 
-  // Create Event Type
-  const handleCreateEventType = () => {
-    if (!newEventTitle.trim()) return;
-    const newEvt: EventTypeConfig = {
-      id: `event_${Date.now()}`,
-      title: newEventTitle,
-      slug: newEventSlug || newEventTitle.toLowerCase().replace(/\s+/g, '-'),
-      description: newEventDesc || 'Custom appointment call',
-      color: '#6366f1',
-      durationMinutes: parseInt(newEventDuration) || 30,
-      locationType: 'zoom',
-      locationDetails: 'Zoom HD Meeting',
-      priceAmount: parseFloat(newEventPrice) || 0,
-      assignedHostIds: [hosts[0]?.id || 'host_marcus_v'],
-      assignmentMode: 'equal_distribution',
-      bufferBeforeMinutes: 5,
-      bufferAfterMinutes: 10,
-      minNoticeHours: 4,
-      maxAdvanceDays: 30,
-      weeklySchedule: [
-        { day: 'Monday', enabled: true, startTime: '09:00', endTime: '17:00' },
-        { day: 'Tuesday', enabled: true, startTime: '09:00', endTime: '17:00' },
-        { day: 'Wednesday', enabled: true, startTime: '09:00', endTime: '17:00' },
-        { day: 'Thursday', enabled: true, startTime: '09:00', endTime: '17:00' },
-        { day: 'Friday', enabled: true, startTime: '09:00', endTime: '16:00' },
-        { day: 'Saturday', enabled: false, startTime: '10:00', endTime: '14:00' },
-        { day: 'Sunday', enabled: false, startTime: '10:00', endTime: '14:00' }
-      ],
-      customQuestions: [
-        { id: 'q_goal', label: 'Primary objective for this meeting:', type: 'text', required: true }
-      ],
-      redirectUrl: 'https://growthlabs.launchengine.io/thank-you',
-      sendEmailReminders: true,
-      sendSmsReminders: true
-    };
-    setEventTypes([...eventTypes, newEvt]);
+  // Create or Update Event Type
+  const handleSaveEventType = () => {
+    if (!eventFormTitle.trim()) return;
+
+    if (editingEvent) {
+      const updated = eventTypes.map(e => e.id === editingEvent.id ? {
+        ...e,
+        title: eventFormTitle,
+        slug: eventFormSlug || eventFormTitle.toLowerCase().replace(/\s+/g, '-'),
+        description: eventFormDesc || 'Custom appointment call',
+        durationMinutes: parseInt(eventFormDuration) || 30,
+        priceAmount: parseFloat(eventFormPrice) || 0,
+        locationType: eventFormLocation,
+        bufferBeforeMinutes: parseInt(eventFormBufferBefore) || 5,
+        bufferAfterMinutes: parseInt(eventFormBufferAfter) || 10
+      } : e);
+      setEventTypes(updated);
+    } else {
+      const newEvt: EventTypeConfig = {
+        id: `event_${Date.now()}`,
+        title: eventFormTitle,
+        slug: eventFormSlug || eventFormTitle.toLowerCase().replace(/\s+/g, '-'),
+        description: eventFormDesc || 'Custom appointment call',
+        color: '#10b981',
+        durationMinutes: parseInt(eventFormDuration) || 30,
+        locationType: eventFormLocation,
+        locationDetails: eventFormLocation === 'zoom' ? 'Zoom HD Video Room' : 'Phone Call',
+        priceAmount: parseFloat(eventFormPrice) || 0,
+        assignedHostIds: [hosts[0]?.id || 'host_marcus_v'],
+        assignmentMode: 'equal_distribution',
+        bufferBeforeMinutes: parseInt(eventFormBufferBefore) || 5,
+        bufferAfterMinutes: parseInt(eventFormBufferAfter) || 10,
+        minNoticeHours: 4,
+        maxAdvanceDays: 30,
+        weeklySchedule: [
+          { day: 'Monday', enabled: true, startTime: '09:00', endTime: '17:00' },
+          { day: 'Tuesday', enabled: true, startTime: '09:00', endTime: '17:00' },
+          { day: 'Wednesday', enabled: true, startTime: '09:00', endTime: '17:00' },
+          { day: 'Thursday', enabled: true, startTime: '09:00', endTime: '17:00' },
+          { day: 'Friday', enabled: true, startTime: '09:00', endTime: '16:00' },
+          { day: 'Saturday', enabled: false, startTime: '10:00', endTime: '14:00' },
+          { day: 'Sunday', enabled: false, startTime: '10:00', endTime: '14:00' }
+        ],
+        customQuestions: [
+          { id: 'q_goal', label: 'Primary objective for this meeting:', type: 'text', required: true }
+        ],
+        redirectUrl: 'https://growthlabs.launchengine.io/thank-you',
+        sendEmailReminders: true,
+        sendSmsReminders: true
+      };
+      setEventTypes([...eventTypes, newEvt]);
+    }
+
     setIsEventModalOpen(false);
-    setNewEventTitle('');
-    setNewEventSlug('');
-    setNewEventDesc('');
+    setEditingEvent(null);
+    setEventFormTitle('');
+    setEventFormSlug('');
+    setEventFormDesc('');
   };
 
-  // Create Team Host
-  const handleCreateHost = () => {
-    if (!newHostName.trim() || !newHostEmail.trim()) return;
-    const newHost: MeetingHost = {
-      id: `host_${Date.now()}`,
-      name: newHostName,
-      email: newHostEmail,
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-      role: newHostRole || 'Account Advisor',
-      bio: 'High-ticket sales & strategy specialist.',
-      rating: 5.0,
-      zoomUrl: `https://zoom.us/j/${Math.floor(1000000000 + Math.random() * 9000000000)}`,
-      phone: '+1 (555) 019-2831',
-      isAvailable: true
-    };
-    setHosts([...hosts, newHost]);
-    setIsHostModalOpen(false);
-    setNewHostName('');
-    setNewHostEmail('');
-    setNewHostRole('');
+  const handleOpenEditEvent = (evt: EventTypeConfig) => {
+    setEditingEvent(evt);
+    setEventFormTitle(evt.title);
+    setEventFormSlug(evt.slug);
+    setEventFormDesc(evt.description);
+    setEventFormDuration(evt.durationMinutes.toString());
+    setEventFormPrice(evt.priceAmount.toString());
+    setEventFormLocation(evt.locationType);
+    setEventFormBufferBefore(evt.bufferBeforeMinutes.toString());
+    setEventFormBufferAfter(evt.bufferAfterMinutes.toString());
+    setIsEventModalOpen(true);
   };
 
-  // Live Booking Submission Demo
-  const handleExecuteDemoBooking = () => {
-    if (!demoName.trim() || !demoEmail.trim()) {
-      alert('Please fill in your name and email.');
+  const handleDeleteEvent = (eventId: string) => {
+    if (eventTypes.length <= 1) {
+      alert('Must maintain at least 1 active event type.');
       return;
     }
-    const evt = eventTypes.find(e => e.id === demoSelectedEventId) || eventTypes[0];
-    const assignedHost = hosts[0] || { id: 'host_marcus_v', name: 'Marcus Vance', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80' };
+    if (confirm('Delete this event type?')) {
+      setEventTypes(eventTypes.filter(e => e.id !== eventId));
+    }
+  };
 
-    const newAppt: BookedAppointment = {
-      id: `appt_${Date.now()}`,
-      eventTypeId: evt.id,
-      eventTitle: evt.title,
-      hostId: assignedHost.id,
-      hostName: assignedHost.name,
-      hostAvatar: assignedHost.avatar,
-      customerName: demoName,
-      customerEmail: demoEmail,
-      customerPhone: demoPhone || '+1 (555) 881-2093',
-      date: demoSelectedDate,
-      timeSlot: demoSelectedSlot,
-      locationType: evt.locationType,
-      meetingLink: 'https://zoom.us/j/9981248019',
-      status: 'Upcoming',
-      answers: {
-        q_goal: 'Test live booking via ChronoChimp scheduling widget.'
-      },
-      createdAt: new Date().toISOString(),
-      isPaid: evt.priceAmount > 0,
-      amountPaid: evt.priceAmount
-    };
+  // Create or Update Host
+  const handleSaveHost = () => {
+    if (!hostFormName.trim() || !hostFormEmail.trim()) return;
 
-    const updated = [newAppt, ...appointments];
-    setAppointments(updated);
-    setIsBookingDemoOpen(false);
-    setBookingSuccessMsg(`🎉 Appointment confirmed for ${demoName} on ${demoSelectedDate} at ${demoSelectedSlot}!`);
-    setTimeout(() => setBookingSuccessMsg(null), 5000);
+    if (editingHost) {
+      const updated = hosts.map(h => h.id === editingHost.id ? {
+        ...h,
+        name: hostFormName,
+        email: hostFormEmail,
+        role: hostFormRole || 'Account Advisor',
+        zoomUrl: hostFormZoomUrl || h.zoomUrl,
+        phone: hostFormPhone || h.phone
+      } : h);
+      setHosts(updated);
+    } else {
+      const newHost: MeetingHost = {
+        id: `host_${Date.now()}`,
+        name: hostFormName,
+        email: hostFormEmail,
+        avatar: `https://images.unsplash.com/photo-${1534528741775 + (hosts.length * 100)}?w=150&auto=format&fit=crop&q=80`,
+        role: hostFormRole || 'Account Advisor',
+        bio: 'High-ticket sales & funnel strategy specialist.',
+        rating: 5.0,
+        zoomUrl: hostFormZoomUrl || `https://zoom.us/j/${Math.floor(1000000000 + Math.random() * 9000000000)}`,
+        phone: hostFormPhone || '+1 (555) 019-2831',
+        isAvailable: true
+      };
+      setHosts([...hosts, newHost]);
+    }
+
+    setIsHostModalOpen(false);
+    setEditingHost(null);
+    setHostFormName('');
+    setHostFormEmail('');
+    setHostFormRole('');
+  };
+
+  const handleOpenEditHost = (host: MeetingHost) => {
+    setEditingHost(host);
+    setHostFormName(host.name);
+    setHostFormEmail(host.email);
+    setHostFormRole(host.role);
+    setHostFormZoomUrl(host.zoomUrl);
+    setHostFormPhone(host.phone);
+    setIsHostModalOpen(true);
+  };
+
+  const handleToggleHostAvailability = (hostId: string) => {
+    const updated = hosts.map(h => h.id === hostId ? { ...h, isAvailable: !h.isAvailable } : h);
+    setHosts(updated);
+  };
+
+  // Reset to Demo Defaults
+  const handleResetDefaults = () => {
+    if (confirm('Reset ChronoChimp appointments and schedules back to factory demo state?')) {
+      resetChronoChimpStorageToDefaults();
+      setHosts(loadStoredHosts());
+      setEventTypes(loadStoredEventTypes());
+      setAppointments(loadStoredAppointments());
+      setChronoSettings(loadStoredChronoSettings());
+      setSimBookingReceipt(null);
+      alert('ChronoChimp data reset to default demo state.');
+    }
+  };
+
+  // ── SIMULATION 1: EXECUTE LIVE BOOKING ──
+  const handleSimulateLiveBooking = () => {
+    if (!simClientName.trim() || !simClientEmail.trim()) {
+      alert('Please provide customer name and email.');
+      return;
+    }
+
+    setIsSimulatingBooking(true);
+
+    setTimeout(() => {
+      const evt = eventTypes.find(e => e.id === simSelectedEventId) || eventTypes[0];
+      const assignedHost = hosts.find(h => h.id === simSelectedHostId) || hosts[0];
+
+      const newAppt: BookedAppointment = {
+        id: `appt_${Date.now()}`,
+        eventTypeId: evt.id,
+        eventTitle: evt.title,
+        hostId: assignedHost.id,
+        hostName: assignedHost.name,
+        hostAvatar: assignedHost.avatar,
+        customerName: simClientName,
+        customerEmail: simClientEmail,
+        customerPhone: simClientPhone,
+        date: simDate,
+        timeSlot: simSlot,
+        locationType: evt.locationType,
+        meetingLink: assignedHost.zoomUrl || `https://zoom.us/j/${Math.floor(1000000000 + Math.random() * 9000000000)}`,
+        status: 'Upcoming',
+        answers: {
+          q_revenue: simClientRevenue,
+          q_goal: simClientGoal
+        },
+        createdAt: new Date().toISOString(),
+        isPaid: evt.priceAmount > 0,
+        amountPaid: evt.priceAmount
+      };
+
+      const updated = [newAppt, ...appointments];
+      setAppointments(updated);
+      setIsSimulatingBooking(false);
+      setSimBookingReceipt(newAppt);
+      setBookingSuccessMsg(`🎉 Live Appointment Confirmed with ${assignedHost.name} on ${simDate} at ${simSlot}!`);
+    }, 600);
+  };
+
+  // ── SIMULATION 2: TEST SMS SEQUENCE DISPATCH ──
+  const handleSimulateSmsSequence = () => {
+    setSimSmsDispatched(true);
+    setTimeout(() => setSimSmsDispatched(false), 5000);
+  };
+
+  // ── SIMULATION 3: ATTENDANCE STATUS SIMULATION ──
+  const handleSimulateStatusChange = (status: AppointmentStatus) => {
+    const target = appointments.find(a => a.id === selectedStatusSimApptId);
+    if (!target) return;
+    handleUpdateApptStatus(target.id, status);
+    setStatusSimFeedback(`✅ Meeting with ${target.customerName} marked as [${status}]. Status logged in DB.`);
+    setTimeout(() => setStatusSimFeedback(null), 4000);
+  };
+
+  // ── SUPABASE SYNC TRIGGER ──
+  const handleTriggerSupabaseSync = async () => {
+    setIsSyncingDb(true);
+    const res = await syncChronoChimpToSupabase(hosts, eventTypes, appointments, chronoSettings);
+    setDbSyncStatus(res);
+    setIsSyncingDb(false);
   };
 
   // Export CSV of Appointments
@@ -214,58 +355,71 @@ export const ChronoChimpAppointmentManager: React.FC = () => {
   });
 
   return (
-    <div className="flex-1 bg-white text-gray-900 overflow-y-auto flex flex-col">
-      {/* TOP BRAND HEADER BAR */}
-      <div className="bg-green-600 backdrop-blur-md border-b border-green-700 px-6 py-4 flex flex-col md:flex-row md:items-center justify-between gap-4 sticky top-0 z-20">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-500 via-purple-600 to-pink-600 flex items-center justify-center text-white shadow-xl shadow-purple-600/30">
-            <CalendarCheck className="w-6 h-6 animate-bounce" />
+    <div className="flex-1 bg-slate-50 text-slate-900 overflow-y-auto flex flex-col font-sans">
+      {/* ── TOP CHRONOCHIMP BRAND HEADER ── */}
+      <div 
+        className="px-6 py-4 flex flex-col md:flex-row md:items-center justify-between gap-4 sticky top-0 z-20 shrink-0 border-b border-emerald-700/40 shadow-lg"
+        style={{ background: 'linear-gradient(135deg, #065f46 0%, #047857 50%, #0d9488 100%)' }}
+      >
+        <div className="flex items-center gap-3.5">
+          <div className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md border border-white/30 flex items-center justify-center text-white shadow-xl shadow-emerald-950/30">
+            <CalendarCheck className="w-6 h-6 text-emerald-300 animate-pulse" />
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-xl font-black tracking-tight text-slate-900">ChronoChimp</h2>
-              <span className="text-[10px] uppercase font-mono font-extrabold bg-white/20 text-slate-900 border border-white/30 px-2 py-0.5 rounded-full flex items-center gap-1">
-                <Zap className="w-3 h-3 text-slate-900" />
-                Calendar & Appointment Engine
+            <div className="flex items-center gap-2.5">
+              <h2 className="text-xl font-black tracking-tight text-white flex items-center gap-2" style={{ fontFamily: 'Outfit, Inter, sans-serif' }}>
+                ChronoChimp
+              </h2>
+              <span className="text-[10px] uppercase font-mono font-extrabold bg-emerald-400/20 text-emerald-100 border border-emerald-300/30 px-2.5 py-0.5 rounded-full flex items-center gap-1.5 shadow-sm">
+                <Zap className="w-3 h-3 text-amber-300 fill-amber-300" />
+                Appointment & Calendar Engine
               </span>
             </div>
-            <p className="text-xs text-green-100">High-converting 1-on-1 calls, group masterclasses, round-robin team scheduling & SMS reminders.</p>
+            <p className="text-xs text-emerald-100/90 font-medium">1-on-1 strategy calls, round-robin team scheduling, Zoom automation & SMS reminders.</p>
           </div>
         </div>
 
         {/* Action Header Controls */}
         <div className="flex items-center gap-2 flex-wrap">
           <button 
-            onClick={() => setIsBookingDemoOpen(true)}
-            className="px-3.5 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white rounded-xl text-xs font-extrabold shadow-lg shadow-purple-600/30 flex items-center gap-2 transition-all"
+            onClick={() => setActiveTab('simulations')}
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 border shadow-sm ${activeTab === 'simulations' ? 'bg-amber-400 text-slate-950 border-amber-300 shadow-amber-500/20 font-black' : 'bg-white/10 hover:bg-white/20 text-white border-white/20'}`}
           >
-            <Sparkles className="w-4 h-4 text-amber-300 animate-pulse" />
-            <span>Test Live Booking Widget</span>
+            <Sparkles className="w-4 h-4 text-amber-300" />
+            <span>⚡ Fun Simulations</span>
           </button>
 
           <button 
-            onClick={() => setIsEventModalOpen(true)}
-            className="px-3.5 py-2 bg-slate-50 hover:bg-slate-100 text-slate-800 border border-slate-300 rounded-xl text-xs font-bold flex items-center gap-2 transition-all"
+            onClick={() => { setEditingEvent(null); setEventFormTitle(''); setEventFormSlug(''); setEventFormDesc(''); setIsEventModalOpen(true); }}
+            className="px-3.5 py-2 bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-xl text-xs font-black flex items-center gap-1.5 transition-all shadow-sm"
           >
-            <Plus className="w-4 h-4 text-indigo-400" />
+            <Plus className="w-4 h-4 text-emerald-600" />
             <span>New Event Type</span>
           </button>
 
           <button 
             onClick={handleExportCsv}
-            className="px-3.5 py-2 bg-slate-50 hover:bg-slate-100 text-slate-800 border border-slate-300 rounded-xl text-xs font-bold flex items-center gap-2 transition-all"
+            className="px-3.5 py-2 bg-emerald-950/40 hover:bg-emerald-950/60 text-white border border-emerald-400/40 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm"
           >
-            <Download className="w-4 h-4 text-emerald-400" />
+            <Download className="w-4 h-4 text-emerald-300" />
             <span>Export CSV</span>
+          </button>
+
+          <button 
+            onClick={handleResetDefaults}
+            className="p-2 bg-white/10 hover:bg-rose-500/30 text-white hover:text-rose-200 border border-white/20 rounded-xl text-xs transition-all"
+            title="Reset to Demo State"
+          >
+            <RefreshCcw className="w-4 h-4" />
           </button>
         </div>
       </div>
 
-      {/* SECONDARY TAB NAVIGATION */}
-      <div className="bg-white border-b border-gray-200 px-6 py-2 flex items-center gap-1 overflow-x-auto no-scrollbar">
+      {/* ── SECONDARY TAB NAVIGATION ── */}
+      <div className="bg-white border-b border-slate-200 px-6 py-2 flex items-center gap-1.5 overflow-x-auto no-scrollbar shrink-0 shadow-sm">
         <button 
           onClick={() => setActiveTab('overview')}
-          className={`px-4 py-2 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 shrink-0 ${activeTab === 'overview' ? 'bg-green-600 text-white shadow-md shadow-green-600/30' : 'text-gray-500 hover:text-gray-800'}`}
+          className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${activeTab === 'overview' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/25 font-black' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'}`}
         >
           <BarChart2 className="w-4 h-4" />
           <span>Overview</span>
@@ -273,12 +427,12 @@ export const ChronoChimpAppointmentManager: React.FC = () => {
 
         <button 
           onClick={() => setActiveTab('roster')}
-          className={`px-4 py-2 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 shrink-0 relative ${activeTab === 'roster' ? 'bg-green-600 text-white shadow-md shadow-green-600/30' : 'text-gray-500 hover:text-gray-800'}`}
+          className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 relative ${activeTab === 'roster' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/25 font-black' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'}`}
         >
           <Calendar className="w-4 h-4" />
           <span>Appointments ({appointments.length})</span>
           {totalUpcoming > 0 && (
-            <span className="w-5 h-5 rounded-full bg-emerald-500 text-slate-950 font-bold text-[10px] flex items-center justify-center">
+            <span className="w-5 h-5 rounded-full bg-emerald-500 text-slate-950 font-black text-[10px] flex items-center justify-center">
               {totalUpcoming}
             </span>
           )}
@@ -286,7 +440,7 @@ export const ChronoChimpAppointmentManager: React.FC = () => {
 
         <button 
           onClick={() => setActiveTab('event_types')}
-          className={`px-4 py-2 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 shrink-0 ${activeTab === 'event_types' ? 'bg-green-600 text-white shadow-md shadow-green-600/30' : 'text-gray-500 hover:text-gray-800'}`}
+          className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${activeTab === 'event_types' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/25 font-black' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'}`}
         >
           <Clock className="w-4 h-4" />
           <span>Event Types ({eventTypes.length})</span>
@@ -294,7 +448,7 @@ export const ChronoChimpAppointmentManager: React.FC = () => {
 
         <button 
           onClick={() => setActiveTab('hosts')}
-          className={`px-4 py-2 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 shrink-0 ${activeTab === 'hosts' ? 'bg-green-600 text-white shadow-md shadow-green-600/30' : 'text-gray-500 hover:text-gray-800'}`}
+          className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${activeTab === 'hosts' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/25 font-black' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'}`}
         >
           <Users className="w-4 h-4" />
           <span>Team Hosts ({hosts.length})</span>
@@ -302,99 +456,115 @@ export const ChronoChimpAppointmentManager: React.FC = () => {
 
         <button 
           onClick={() => setActiveTab('reminders')}
-          className={`px-4 py-2 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 shrink-0 ${activeTab === 'reminders' ? 'bg-green-600 text-white shadow-md shadow-green-600/30' : 'text-gray-500 hover:text-gray-800'}`}
+          className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${activeTab === 'reminders' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/25 font-black' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'}`}
         >
-          <MessageSquare className="w-4 h-4 text-amber-400" />
+          <MessageSquare className="w-4 h-4" />
           <span>SMS & Reminders</span>
         </button>
 
         <button 
           onClick={() => setActiveTab('embed')}
-          className={`px-4 py-2 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 shrink-0 ${activeTab === 'embed' ? 'bg-green-600 text-white shadow-md shadow-green-600/30' : 'text-gray-500 hover:text-gray-800'}`}
+          className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${activeTab === 'embed' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/25 font-black' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'}`}
         >
           <Share2 className="w-4 h-4" />
           <span>Embed Widget</span>
         </button>
 
         <button 
+          onClick={() => setActiveTab('simulations')}
+          className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${activeTab === 'simulations' ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 shadow-md shadow-amber-500/25 font-black' : 'text-amber-700 bg-amber-50 hover:bg-amber-100'}`}
+        >
+          <Zap className="w-4 h-4 fill-amber-500" />
+          <span>Simulations & Workflows</span>
+        </button>
+
+        <button 
+          onClick={() => setActiveTab('database')}
+          className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${activeTab === 'database' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/25 font-black' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'}`}
+        >
+          <Database className="w-4 h-4" />
+          <span>Database & Schema</span>
+        </button>
+
+        <button 
           onClick={() => setActiveTab('settings')}
-          className={`px-4 py-2 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 shrink-0 ${activeTab === 'settings' ? 'bg-green-600 text-white shadow-md shadow-green-600/30' : 'text-gray-500 hover:text-gray-800'}`}
+          className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${activeTab === 'settings' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/25 font-black' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'}`}
         >
           <Settings className="w-4 h-4" />
           <span>Settings</span>
         </button>
       </div>
 
-      {/* FEEDBACK SUCCESS NOTIFICATION TOAST */}
+      {/* ── TOAST NOTIFICATION ── */}
       {bookingSuccessMsg && (
-        <div className="mx-6 mt-4 p-4 bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-xs font-bold rounded-2xl flex items-center justify-between shadow-xl animate-fade-in">
-          <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
+        <div className="mx-6 mt-4 p-4 bg-emerald-900 text-white border-2 border-emerald-400 rounded-2xl flex items-center justify-between shadow-2xl animate-fade-in text-xs font-bold">
+          <div className="flex items-center gap-3">
+            <CheckCircle2 className="w-5 h-5 text-emerald-300 shrink-0" />
             <span>{bookingSuccessMsg}</span>
           </div>
-          <button onClick={() => setBookingSuccessMsg(null)} className="text-emerald-400 hover:text-slate-900">
+          <button onClick={() => setBookingSuccessMsg(null)} className="text-emerald-300 hover:text-white">
             <X className="w-4 h-4" />
           </button>
         </div>
       )}
 
-      {/* MAIN CONTENT DISPLAY */}
-      <div className="flex-1 p-6 space-y-6 max-w-7xl mx-auto w-full">
+      {/* ── MAIN CONTENT DISPLAY ── */}
+      <div className="flex-1 p-6 space-y-6 max-w-[1600px] mx-auto w-full">
 
-        {/* TAB 1: OVERVIEW DASHBOARD */}
+        {/* ── TAB 1: OVERVIEW DASHBOARD ── */}
         {activeTab === 'overview' && (
           <div className="space-y-6">
             {/* KPI STAT CARDS */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              <div className="bg-white border border-slate-200 rounded-2xl p-5 space-y-2 relative overflow-hidden shadow-xl">
-                <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center">
+              <div className="bg-white border border-slate-200 rounded-2xl p-5 space-y-2 shadow-sm hover:border-emerald-300 transition-all">
+                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center border border-emerald-200">
                   <CalendarCheck className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-xs text-slate-600 font-medium">Upcoming Bookings</p>
+                  <p className="text-xs text-slate-500 font-semibold">Upcoming Bookings</p>
                   <h3 className="text-2xl font-black text-slate-900">{totalUpcoming}</h3>
                 </div>
-                <div className="text-[10px] text-emerald-400 flex items-center gap-1 font-mono">
+                <div className="text-[11px] text-emerald-700 font-bold">
                   All Zoom links auto-generated
                 </div>
               </div>
 
-              <div className="bg-white border border-slate-200 rounded-2xl p-5 space-y-2 relative overflow-hidden shadow-xl">
-                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center">
+              <div className="bg-white border border-slate-200 rounded-2xl p-5 space-y-2 shadow-sm hover:border-emerald-300 transition-all">
+                <div className="w-10 h-10 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center border border-teal-200">
                   <CheckCircle2 className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-xs text-slate-600 font-medium">Completed Meetings</p>
-                  <h3 className="text-2xl font-black text-emerald-400">{totalCompleted}</h3>
+                  <p className="text-xs text-slate-500 font-semibold">Completed Strategy Calls</p>
+                  <h3 className="text-2xl font-black text-teal-700">{totalCompleted}</h3>
                 </div>
-                <div className="text-[10px] text-slate-600 font-mono">
-                  Show-up rate ~92.4%
+                <div className="text-[11px] text-teal-700 font-bold">
+                  Show-up rate ~94.8%
                 </div>
               </div>
 
-              <div className="bg-white border border-slate-200 rounded-2xl p-5 space-y-2 relative overflow-hidden shadow-xl">
-                <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center">
+              <div className="bg-white border border-slate-200 rounded-2xl p-5 space-y-2 shadow-sm hover:border-emerald-300 transition-all">
+                <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center border border-amber-200">
                   <CreditCard className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-xs text-slate-600 font-medium">Paid Consultation Revenue</p>
-                  <h3 className="text-2xl font-black text-amber-300">${totalPaidRevenue.toLocaleString()}</h3>
+                  <p className="text-xs text-slate-500 font-semibold">Paid Consultation Revenue</p>
+                  <h3 className="text-2xl font-black text-amber-600">${totalPaidRevenue.toLocaleString()}</h3>
                 </div>
-                <div className="text-[10px] text-amber-400/80 font-mono">
-                  Stripe checkout deposit active
+                <div className="text-[11px] text-amber-700 font-bold">
+                  Direct Stripe & Checkout sync
                 </div>
               </div>
 
-              <div className="bg-white border border-slate-200 rounded-2xl p-5 space-y-2 relative overflow-hidden shadow-xl">
-                <div className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center">
+              <div className="bg-white border border-slate-200 rounded-2xl p-5 space-y-2 shadow-sm hover:border-emerald-300 transition-all">
+                <div className="w-10 h-10 rounded-xl bg-green-50 text-green-700 flex items-center justify-center border border-green-200">
                   <Users className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-xs text-slate-600 font-medium">Active Team Hosts</p>
-                  <h3 className="text-2xl font-black text-indigo-300">{hosts.length}</h3>
+                  <p className="text-xs text-slate-500 font-semibold">Active Team Hosts</p>
+                  <h3 className="text-2xl font-black text-green-700">{hosts.length}</h3>
                 </div>
-                <div className="text-[10px] text-indigo-400 font-mono">
-                  Round-Robin distribution
+                <div className="text-[11px] text-green-700 font-bold">
+                  Round-Robin distribution active
                 </div>
               </div>
             </div>
@@ -402,15 +572,15 @@ export const ChronoChimpAppointmentManager: React.FC = () => {
             {/* AGENDA & HOST AVAILABILITY ROW */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Upcoming Agenda Stream */}
-              <div className="lg:col-span-2 bg-white border border-slate-200 rounded-2xl p-6 space-y-4 shadow-xl">
-                <div className="flex items-center justify-between border-b border-slate-200 pb-4">
+              <div className="lg:col-span-2 bg-white border border-slate-200 rounded-2xl p-6 space-y-4 shadow-sm">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                   <div className="flex items-center gap-2">
-                    <Clock className="w-5 h-5 text-purple-400" />
-                    <h3 className="text-base font-bold text-slate-900">Upcoming Appointment Agenda</h3>
+                    <Clock className="w-5 h-5 text-emerald-600" />
+                    <h3 className="text-base font-black text-slate-900">Upcoming Appointment Agenda</h3>
                   </div>
                   <button 
                     onClick={() => setActiveTab('roster')}
-                    className="text-xs font-bold text-purple-400 hover:text-purple-300 flex items-center gap-1"
+                    className="text-xs font-bold text-emerald-600 hover:text-emerald-700 flex items-center gap-1"
                   >
                     View All ({appointments.length}) <ChevronRight className="w-4 h-4" />
                   </button>
@@ -418,13 +588,13 @@ export const ChronoChimpAppointmentManager: React.FC = () => {
 
                 <div className="space-y-3">
                   {appointments.filter(a => a.status === 'Upcoming').slice(0, 4).map(appt => (
-                    <div key={appt.id} className="p-4 bg-white rounded-xl border border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-purple-500/50 transition-all">
+                    <div key={appt.id} className="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-emerald-300 transition-all">
                       <div className="flex items-start gap-3">
-                        <img src={appt.hostAvatar} alt={appt.hostName} className="w-10 h-10 rounded-full object-cover border border-slate-300 shrink-0" />
+                        <img src={appt.hostAvatar} alt={appt.hostName} className="w-10 h-10 rounded-full object-cover border border-slate-200 shrink-0" />
                         <div>
                           <div className="flex items-center gap-2">
-                            <span className="font-extrabold text-sm text-slate-900">{appt.customerName}</span>
-                            <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-800">
+                            <span className="font-bold text-sm text-slate-900">{appt.customerName}</span>
+                            <span className="text-[10px] font-mono font-black px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">
                               {appt.timeSlot}
                             </span>
                           </div>
@@ -438,7 +608,7 @@ export const ChronoChimpAppointmentManager: React.FC = () => {
                           href={appt.meetingLink} 
                           target="_blank" 
                           rel="noreferrer"
-                          className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow"
+                          className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-sm"
                         >
                           <Video className="w-3.5 h-3.5" />
                           <span>Join Zoom</span>
@@ -446,7 +616,7 @@ export const ChronoChimpAppointmentManager: React.FC = () => {
 
                         <button 
                           onClick={() => { setSelectedAppt(appt); setIsApptDetailsOpen(true); }}
-                          className="px-3 py-1.5 bg-slate-50 hover:bg-slate-100 text-slate-800 rounded-lg text-xs font-bold border border-slate-300"
+                          className="px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-800 rounded-lg text-xs font-bold border border-slate-200"
                         >
                           Details
                         </button>
@@ -457,64 +627,79 @@ export const ChronoChimpAppointmentManager: React.FC = () => {
               </div>
 
               {/* Team Hosts Roster Quick Status */}
-              <div className="bg-white border border-slate-200 rounded-2xl p-6 space-y-4 shadow-xl flex flex-col justify-between">
+              <div className="bg-white border border-slate-200 rounded-2xl p-6 space-y-4 shadow-sm flex flex-col justify-between">
                 <div>
-                  <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-                    <Users className="w-5 h-5 text-indigo-400" />
+                  <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
+                    <Users className="w-5 h-5 text-emerald-600" />
                     Active Team Hosts
                   </h3>
-                  <p className="text-xs text-slate-600 mt-1">Round-Robin sales reps & call hosts.</p>
+                  <p className="text-xs text-slate-500 mt-1">Round-Robin sales reps & call hosts.</p>
                 </div>
 
                 <div className="space-y-3">
                   {hosts.map(h => (
-                    <div key={h.id} className="p-3 bg-white rounded-xl border border-slate-200 flex items-center justify-between">
+                    <div key={h.id} className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
                       <div className="flex items-center gap-2.5">
                         <img src={h.avatar} alt={h.name} className="w-8 h-8 rounded-full object-cover" />
                         <div>
-                          <div className="font-bold text-xs text-slate-800">{h.name}</div>
-                          <div className="text-[10px] text-slate-600">{h.role}</div>
+                          <div className="font-bold text-xs text-slate-900">{h.name}</div>
+                          <div className="text-[10px] text-slate-500">{h.role}</div>
                         </div>
                       </div>
-                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" title="Available for calls" />
+                      <span className={`w-2.5 h-2.5 rounded-full ${h.isAvailable ? 'bg-emerald-500 animate-pulse' : 'bg-slate-300'}`} title={h.isAvailable ? 'Available for calls' : 'Out of Office'} />
                     </div>
                   ))}
                 </div>
 
                 <button 
-                  onClick={() => setIsBookingDemoOpen(true)}
-                  className="w-full py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 shadow-lg shadow-purple-600/20"
+                  onClick={() => setActiveTab('simulations')}
+                  className="w-full py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-xl text-xs font-black flex items-center justify-center gap-2 shadow-md shadow-emerald-600/20"
                 >
                   <CalendarCheck className="w-4 h-4" />
-                  <span>Launch Booking Experience</span>
+                  <span>Launch Booking Simulator</span>
                 </button>
               </div>
             </div>
           </div>
         )}
 
-        {/* TAB 2: APPOINTMENTS ROSTER */}
+        {/* ── TAB 2: APPOINTMENTS ROSTER ── */}
         {activeTab === 'roster' && (
           <div className="space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h3 className="text-xl font-black text-slate-900">Appointments Roster & Bookings</h3>
+                <p className="text-xs text-slate-500">Manage all booked calls, inspect customer qualification answers, and update meeting statuses.</p>
+              </div>
+
+              <button 
+                onClick={() => setActiveTab('simulations')}
+                className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black shadow-lg shadow-emerald-600/20 flex items-center gap-2"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Simulate New Booking</span>
+              </button>
+            </div>
+
             {/* Filter & Search Bar */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-slate-200 shadow-xl">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
               <div className="relative flex-1 max-w-md">
-                <Search className="w-4 h-4 text-slate-600 absolute left-3.5 top-3" />
+                <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
                 <input 
                   type="text"
-                  placeholder="Search by client name, email, host, or call title..."
+                  placeholder="Search by client name, email, event, or host..."
                   value={apptSearchQuery}
                   onChange={(e) => setApptSearchQuery(e.target.value)}
-                  className="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-4 py-2 text-xs text-slate-800 focus:outline-none focus:border-purple-500"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2 text-xs text-slate-900 focus:outline-none focus:border-emerald-500"
                 />
               </div>
 
               <div className="flex items-center gap-1.5 flex-wrap">
-                {(['All', 'Upcoming', 'Completed', 'Rescheduled', 'Cancelled', 'NoShow'] as const).map(status => (
+                {(['All', 'Upcoming', 'Completed', 'Rescheduled', 'Cancelled'] as const).map(status => (
                   <button 
                     key={status}
                     onClick={() => setApptFilterStatus(status)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${apptFilterStatus === status ? 'bg-purple-600 text-white shadow-md' : 'bg-white text-slate-600 hover:text-slate-800 border border-slate-200'}`}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${apptFilterStatus === status ? 'bg-emerald-600 text-white shadow-md' : 'bg-slate-50 text-slate-600 hover:text-slate-900 border border-slate-200'}`}
                   >
                     {status}
                   </button>
@@ -522,95 +707,85 @@ export const ChronoChimpAppointmentManager: React.FC = () => {
               </div>
             </div>
 
-            {/* Roster Table */}
-            <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xl">
+            {/* Appointments Table */}
+            <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="border-b border-slate-200 bg-white/60 text-slate-600 uppercase font-mono text-[10px]">
-                    <th className="py-3.5 px-4">Client Name / Contact</th>
-                    <th className="py-3.5 px-4">Event Type</th>
-                    <th className="py-3.5 px-4">Assigned Host</th>
-                    <th className="py-3.5 px-4">Date & Slot</th>
-                    <th className="py-3.5 px-4">Location</th>
-                    <th className="py-3.5 px-4">Status</th>
-                    <th className="py-3.5 px-4 text-right">Actions</th>
+                  <tr className="border-b border-slate-200 bg-slate-50 text-slate-600 uppercase font-mono text-[10px]">
+                    <th className="py-3 px-4 font-bold">Client / Attendee</th>
+                    <th className="py-3 px-4 font-bold">Event Type</th>
+                    <th className="py-3 px-4 font-bold">Host</th>
+                    <th className="py-3 px-4 font-bold">Date & Time</th>
+                    <th className="py-3 px-4 font-bold">Status</th>
+                    <th className="py-3 px-4 font-bold">Meeting Link</th>
+                    <th className="py-3 px-4 text-right font-bold">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800/60">
+                <tbody className="divide-y divide-slate-100">
                   {filteredAppointments.map(appt => (
-                    <tr key={appt.id} className="hover:bg-slate-50/40 transition-colors">
+                    <tr key={appt.id} className="hover:bg-slate-50/60 transition-colors">
                       <td className="py-3.5 px-4">
                         <div className="font-bold text-slate-900">{appt.customerName}</div>
-                        <div className="text-[11px] text-slate-600">{appt.customerEmail} • {appt.customerPhone}</div>
+                        <div className="text-[11px] text-slate-500">{appt.customerEmail}</div>
                       </td>
 
                       <td className="py-3.5 px-4">
-                        <span className="font-medium text-slate-800">{appt.eventTitle}</span>
+                        <div className="font-medium text-slate-800">{appt.eventTitle}</div>
                         {appt.isPaid && (
-                          <span className="ml-2 px-2 py-0.5 bg-amber-950 text-amber-300 border border-amber-800 rounded text-[10px] font-mono font-bold">
-                            PAID ${appt.amountPaid}
-                          </span>
+                          <span className="text-[10px] font-bold text-amber-700 font-mono">Paid (${appt.amountPaid})</span>
                         )}
                       </td>
 
                       <td className="py-3.5 px-4">
                         <div className="flex items-center gap-2">
                           <img src={appt.hostAvatar} alt={appt.hostName} className="w-6 h-6 rounded-full object-cover" />
-                          <span className="text-slate-700 font-medium">{appt.hostName}</span>
+                          <span className="font-medium text-slate-800">{appt.hostName}</span>
                         </div>
                       </td>
 
                       <td className="py-3.5 px-4 font-mono">
-                        <div className="font-bold text-purple-300">{appt.date}</div>
-                        <div className="text-[11px] text-slate-600">{appt.timeSlot} (EST)</div>
-                      </td>
-
-                      <td className="py-3.5 px-4">
-                        <a 
-                          href={appt.meetingLink} 
-                          target="_blank" 
-                          rel="noreferrer"
-                          className="px-2.5 py-1 bg-white border border-slate-200 text-indigo-400 hover:text-indigo-300 rounded font-mono text-[11px] font-bold flex items-center gap-1 w-max"
-                        >
-                          <Video className="w-3 h-3" />
-                          <span>Zoom HD</span>
-                        </a>
+                        <div className="font-bold text-slate-900">{appt.date}</div>
+                        <div className="text-[11px] text-emerald-700 font-bold">{appt.timeSlot}</div>
                       </td>
 
                       <td className="py-3.5 px-4">
                         <span className={`px-2.5 py-1 rounded text-[10px] font-extrabold uppercase ${
-                          appt.status === 'Upcoming' ? 'bg-purple-950 text-purple-300 border border-purple-800 shadow-sm' :
-                          appt.status === 'Completed' ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' :
-                          appt.status === 'Rescheduled' ? 'bg-amber-950 text-amber-400 border border-amber-800' :
-                          'bg-rose-950 text-rose-400 border border-rose-800'
+                          appt.status === 'Upcoming' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' :
+                          appt.status === 'Completed' ? 'bg-blue-100 text-blue-800 border border-blue-300' :
+                          appt.status === 'Rescheduled' ? 'bg-amber-100 text-amber-800 border border-amber-300' :
+                          'bg-rose-100 text-rose-800 border border-rose-300'
                         }`}>
                           {appt.status}
                         </span>
                       </td>
 
-                      <td className="py-3.5 px-4 text-right space-x-1.5">
+                      <td className="py-3.5 px-4">
+                        <a 
+                          href={appt.meetingLink}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="px-2.5 py-1 bg-emerald-50 border border-emerald-200 text-emerald-800 hover:bg-emerald-100 rounded text-xs font-mono font-bold inline-flex items-center gap-1.5"
+                        >
+                          <Video className="w-3 h-3 text-emerald-600" />
+                          <span>Zoom Link</span>
+                        </a>
+                      </td>
+
+                      <td className="py-3.5 px-4 text-right space-x-1">
                         <button 
                           onClick={() => { setSelectedAppt(appt); setIsApptDetailsOpen(true); }}
-                          className="px-2.5 py-1 bg-slate-50 hover:bg-slate-100 text-slate-800 rounded-lg text-xs font-bold border border-slate-300"
+                          className="px-2.5 py-1 bg-slate-50 hover:bg-slate-100 text-slate-800 rounded-lg text-xs font-bold border border-slate-200"
                         >
-                          View Details
+                          Details
                         </button>
 
                         {appt.status === 'Upcoming' && (
-                          <>
-                            <button 
-                              onClick={() => handleUpdateApptStatus(appt.id, 'Completed')}
-                              className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold"
-                            >
-                              Mark Done
-                            </button>
-                            <button 
-                              onClick={() => handleUpdateApptStatus(appt.id, 'Cancelled')}
-                              className="px-2.5 py-1 bg-rose-950 hover:bg-rose-900 text-rose-400 border border-rose-800 rounded-lg text-xs font-bold"
-                            >
-                              Cancel
-                            </button>
-                          </>
+                          <button 
+                            onClick={() => handleUpdateApptStatus(appt.id, 'Completed')}
+                            className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold"
+                          >
+                            Complete
+                          </button>
                         )}
                       </td>
                     </tr>
@@ -621,66 +796,71 @@ export const ChronoChimpAppointmentManager: React.FC = () => {
           </div>
         )}
 
-        {/* TAB 3: EVENT TYPES */}
+        {/* ── TAB 3: EVENT TYPES & SERVICES ── */}
         {activeTab === 'event_types' && (
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-xl font-black text-slate-900">Event Types & Meeting Rules</h3>
-                <p className="text-xs text-slate-600">Configure call durations, location links, round-robin rules & qualification questions.</p>
+                <h3 className="text-xl font-black text-slate-900">Event Types & Call Packages</h3>
+                <p className="text-xs text-slate-500">Configure meeting durations, custom intake questionnaires, pricing, buffer rules & round-robin hosts.</p>
               </div>
 
               <button 
-                onClick={() => setIsEventModalOpen(true)}
-                className="px-4 py-2.5 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-extrabold shadow-lg shadow-purple-600/30 flex items-center gap-2"
+                onClick={() => { setEditingEvent(null); setEventFormTitle(''); setEventFormSlug(''); setEventFormDesc(''); setIsEventModalOpen(true); }}
+                className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black shadow-lg shadow-emerald-600/20 flex items-center gap-2"
               >
                 <Plus className="w-4 h-4" />
-                <span>Create New Event Type</span>
+                <span>Create Event Type</span>
               </button>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {eventTypes.map(evt => (
-                <div key={evt.id} className="bg-white border border-slate-200 rounded-2xl p-6 space-y-5 shadow-xl hover:border-purple-500/50 transition-all flex flex-col justify-between">
+                <div key={evt.id} className="bg-white border border-slate-200 rounded-2xl p-6 space-y-4 shadow-sm hover:border-emerald-400 transition-all flex flex-col justify-between">
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="w-3 h-3 rounded-full" style={{ backgroundColor: evt.color }} />
-                      <span className="text-xs font-mono font-bold text-slate-600">{evt.durationMinutes} Mins Duration</span>
+                      <span className="text-[10px] uppercase font-mono font-black px-2.5 py-1 rounded bg-emerald-50 text-emerald-800 border border-emerald-200">
+                        {evt.durationMinutes} MINS • {evt.locationType.toUpperCase()}
+                      </span>
+                      <span className="font-black text-sm text-emerald-700 font-mono">
+                        {evt.priceAmount > 0 ? `$${evt.priceAmount}` : 'FREE'}
+                      </span>
                     </div>
 
-                    <h4 className="text-lg font-bold text-slate-900">{evt.title}</h4>
-                    <p className="text-xs text-slate-600">{evt.description}</p>
-                  </div>
+                    <h4 className="text-base font-black text-slate-900">{evt.title}</h4>
+                    <p className="text-xs text-slate-500 leading-relaxed">{evt.description}</p>
 
-                  <div className="bg-white p-4 rounded-xl border border-slate-200/80 space-y-2.5 text-xs">
-                    <div className="flex items-center justify-between">
-                      <span className="text-slate-600 font-medium">Location:</span>
-                      <span className="font-bold text-indigo-400 font-mono">{evt.locationDetails}</span>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <span className="text-slate-600 font-medium">Pricing:</span>
-                      <span className="font-bold text-emerald-400 font-mono">{evt.priceAmount > 0 ? `$${evt.priceAmount} Paid Call` : 'Free Strategy Call'}</span>
-                    </div>
-
-                    <div className="flex items-center justify-between border-t border-slate-200 pt-2">
-                      <span className="text-slate-600 font-medium">Buffer Times:</span>
-                      <span className="font-bold text-slate-700 font-mono">+{evt.bufferBeforeMinutes}m / +{evt.bufferAfterMinutes}m</span>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <span className="text-slate-600 font-medium">Notice Window:</span>
-                      <span className="font-bold text-amber-300 font-mono">{evt.minNoticeHours}h Min Notice</span>
+                    <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2 text-xs">
+                      <div className="flex items-center justify-between text-slate-600">
+                        <span>Buffer Before/After:</span>
+                        <span className="font-mono font-bold text-slate-800">{evt.bufferBeforeMinutes}m / {evt.bufferAfterMinutes}m</span>
+                      </div>
+                      <div className="flex items-center justify-between text-slate-600">
+                        <span>Assigned Hosts:</span>
+                        <span className="font-bold text-emerald-700">{evt.assignedHostIds.length} Reps</span>
+                      </div>
+                      <div className="flex items-center justify-between text-slate-600">
+                        <span>Custom Intake Form:</span>
+                        <span className="font-bold text-slate-800">{evt.customQuestions.length} Questions</span>
+                      </div>
                     </div>
                   </div>
 
                   <div className="pt-2 flex items-center gap-2">
                     <button 
-                      onClick={() => handleCopy(`https://growthlabs.launchengine.io/book/${evt.slug}`, evt.id)}
-                      className="w-full py-2 bg-slate-50 hover:bg-slate-100 text-slate-800 rounded-xl text-xs font-bold border border-slate-300 flex items-center justify-center gap-1.5"
+                      onClick={() => handleOpenEditEvent(evt)}
+                      className="flex-1 py-2 bg-slate-50 hover:bg-slate-100 text-slate-800 rounded-xl text-xs font-bold border border-slate-200 flex items-center justify-center gap-1.5"
                     >
-                      {copiedId === evt.id ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                      <span>{copiedId === evt.id ? 'Copied Link!' : 'Copy Direct Booking URL'}</span>
+                      <Edit3 className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>Edit Rules</span>
+                    </button>
+
+                    <button 
+                      onClick={() => handleDeleteEvent(evt.id)}
+                      className="p-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-xl border border-rose-200 text-xs"
+                      title="Delete Event"
+                    >
+                      <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
@@ -689,18 +869,18 @@ export const ChronoChimpAppointmentManager: React.FC = () => {
           </div>
         )}
 
-        {/* TAB 4: TEAM HOSTS */}
+        {/* ── TAB 4: TEAM HOSTS ── */}
         {activeTab === 'hosts' && (
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-xl font-black text-slate-900">Team Hosts & Round-Robin Assignments</h3>
-                <p className="text-xs text-slate-600">Manage hosts, personal Zoom links, availability toggles and round-robin weights.</p>
+                <h3 className="text-xl font-black text-slate-900">Team Hosts & Sales Reps</h3>
+                <p className="text-xs text-slate-500">Manage meeting hosts, personal Zoom meeting rooms, and active availability.</p>
               </div>
 
               <button 
-                onClick={() => setIsHostModalOpen(true)}
-                className="px-4 py-2.5 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-extrabold shadow-lg shadow-purple-600/30 flex items-center gap-2"
+                onClick={() => { setEditingHost(null); setHostFormName(''); setHostFormEmail(''); setHostFormRole(''); setIsHostModalOpen(true); }}
+                className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black shadow-lg shadow-emerald-600/20 flex items-center gap-2"
               >
                 <UserPlus className="w-4 h-4" />
                 <span>Add Team Host</span>
@@ -709,46 +889,43 @@ export const ChronoChimpAppointmentManager: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {hosts.map(host => (
-                <div key={host.id} className="bg-white border border-slate-200 rounded-2xl p-6 space-y-4 shadow-xl flex flex-col justify-between">
+                <div key={host.id} className="bg-white border border-slate-200 rounded-2xl p-6 space-y-4 shadow-sm hover:border-emerald-300 transition-all flex flex-col justify-between">
                   <div className="space-y-3">
-                    <div className="flex items-center gap-4">
-                      <img src={host.avatar} alt={host.name} className="w-14 h-14 rounded-2xl object-cover border-2 border-purple-500" />
-                      <div>
-                        <h4 className="text-base font-bold text-slate-900">{host.name}</h4>
-                        <p className="text-xs text-purple-400 font-mono">{host.role}</p>
+                    <div className="flex items-center justify-between">
+                      <img src={host.avatar} alt={host.name} className="w-14 h-14 rounded-2xl object-cover border-2 border-emerald-500 shadow-md" />
+                      <button 
+                        onClick={() => handleToggleHostAvailability(host.id)}
+                        className={`px-3 py-1 rounded-full text-[10px] font-mono font-black border transition-all ${host.isAvailable ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : 'bg-slate-100 text-slate-500 border-slate-300'}`}
+                      >
+                        {host.isAvailable ? '● AVAILABLE' : '○ OUT OF OFFICE'}
+                      </button>
+                    </div>
+
+                    <div>
+                      <h4 className="text-base font-black text-slate-900">{host.name}</h4>
+                      <p className="text-xs text-emerald-700 font-bold">{host.role}</p>
+                      <p className="text-xs text-slate-500 mt-1">{host.bio}</p>
+                    </div>
+
+                    <div className="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1.5 text-xs">
+                      <div className="flex items-center gap-2 text-slate-600">
+                        <Mail className="w-3.5 h-3.5 text-emerald-600" />
+                        <span className="font-mono">{host.email}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-slate-600">
+                        <Video className="w-3.5 h-3.5 text-teal-600" />
+                        <span className="font-mono truncate">{host.zoomUrl}</span>
                       </div>
                     </div>
-
-                    <p className="text-xs text-slate-700">{host.bio}</p>
                   </div>
 
-                  <div className="bg-white p-4 rounded-xl border border-slate-200 space-y-2 text-xs font-mono">
-                    <div className="flex items-center justify-between">
-                      <span className="text-slate-600">Personal Zoom:</span>
-                      <span className="text-indigo-400 truncate max-w-[140px]">{host.zoomUrl}</span>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <span className="text-slate-600">Direct Phone:</span>
-                      <span className="text-slate-800">{host.phone}</span>
-                    </div>
-
-                    <div className="flex items-center justify-between border-t border-slate-200 pt-2">
-                      <span className="text-slate-600">Host Rating:</span>
-                      <span className="text-amber-400 font-bold">★ {host.rating} / 5.0</span>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between pt-2">
-                    <span className="text-xs text-slate-600 font-bold">Call Availability:</span>
+                  <div className="pt-2 flex items-center gap-2">
                     <button 
-                      onClick={() => {
-                        const updated = hosts.map(h => h.id === host.id ? { ...h, isAvailable: !h.isAvailable } : h);
-                        setHosts(updated);
-                      }}
-                      className={`px-3 py-1 rounded-full text-[11px] font-bold ${host.isAvailable ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : 'bg-white text-slate-500 border border-slate-200'}`}
+                      onClick={() => handleOpenEditHost(host)}
+                      className="w-full py-2 bg-slate-50 hover:bg-slate-100 text-slate-800 rounded-xl text-xs font-bold border border-slate-200 flex items-center justify-center gap-1.5"
                     >
-                      {host.isAvailable ? 'AVAILABLE' : 'OFFLINE'}
+                      <Edit3 className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>Edit Host Details</span>
                     </button>
                   </div>
                 </div>
@@ -757,125 +934,513 @@ export const ChronoChimpAppointmentManager: React.FC = () => {
           </div>
         )}
 
-        {/* TAB 5: REMINDERS & AUTOMATIONS */}
+        {/* ── TAB 5: SMS & REMINDERS ── */}
         {activeTab === 'reminders' && (
           <div className="space-y-6 max-w-4xl">
             <div>
-              <h3 className="text-xl font-black text-slate-900">SMS Text & Email Reminder Sequences</h3>
-              <p className="text-xs text-slate-600">Twilio SMS integration and calendar notifications to ensure 90%+ show-up rates.</p>
+              <h3 className="text-xl font-black text-slate-900">Automated SMS & Email Reminders</h3>
+              <p className="text-xs text-slate-500">Keep attendance above 90% with multi-stage automated text reminders and calendar invites.</p>
             </div>
 
-            <div className="bg-white border border-slate-200 rounded-2xl p-6 space-y-6 shadow-xl">
-              <div className="p-4 bg-purple-950/20 border border-purple-500/30 rounded-xl flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <MessageSquare className="w-6 h-6 text-purple-400 shrink-0" />
-                  <div>
-                    <h4 className="text-xs font-bold text-purple-200">Twilio SMS Reminder Engine</h4>
-                    <p className="text-[11px] text-purple-300/80">Sends text messages directly to client phones prior to call start time.</p>
+            <div className="bg-white border border-slate-200 rounded-2xl p-6 space-y-6 shadow-sm">
+              <div className="space-y-4">
+                <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-xs text-emerald-800">1. Instant Booking Confirmation SMS (Sent Immediately)</span>
+                    <span className="text-[10px] font-mono bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">AUTOMATED</span>
                   </div>
+                  <p className="text-xs font-mono text-slate-800 bg-white p-3 rounded-lg border border-slate-200">
+                    "Hey {`{CUSTOMER_NAME}`}, your {`{EVENT_TITLE}`} call with {`{HOST_NAME}`} is confirmed for {`{DATE}`} at {`{TIME}`}. Join Zoom: {`{MEETING_LINK}`}"
+                  </p>
                 </div>
-                <span className="px-2.5 py-1 bg-purple-500/20 text-purple-300 border border-purple-500/40 rounded text-[10px] font-mono font-bold">ACTIVE</span>
+
+                <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-xs text-emerald-800">2. 24-Hour Pre-Call Strategy Prep (Sent 24h Before)</span>
+                    <span className="text-[10px] font-mono bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">AUTOMATED</span>
+                  </div>
+                  <p className="text-xs font-mono text-slate-800 bg-white p-3 rounded-lg border border-slate-200">
+                    "Reminder: Tomorrow at {`{TIME}`} is your 1-on-1 session with {`{HOST_NAME}`}. Please be on a laptop with camera ready!"
+                  </p>
+                </div>
+
+                <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-xs text-emerald-800">3. 10-Minute Urgent Alert (Sent 10m Before)</span>
+                    <span className="text-[10px] font-mono bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">AUTOMATED</span>
+                  </div>
+                  <p className="text-xs font-mono text-slate-800 bg-white p-3 rounded-lg border border-slate-200">
+                    "Starting now! {`{HOST_NAME}`} is waiting inside the meeting room: {`{MEETING_LINK}`}"
+                  </p>
+                </div>
               </div>
 
-              <div className="space-y-4">
-                <div className="p-4 bg-white rounded-xl border border-slate-200 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-slate-800">⚡ 24 Hours Before Call (SMS & Email)</span>
-                    <span className="text-[10px] text-emerald-400 font-mono">ENABLED</span>
-                  </div>
-                  <p className="text-xs text-slate-600 font-mono">"Hey {`{CLIENT_NAME}`}, your strategy call with {`{HOST_NAME}`} is tomorrow at {`{TIME_SLOT}`}. Join link: {`{ZOOM_LINK}`}"</p>
-                </div>
-
-                <div className="p-4 bg-white rounded-xl border border-slate-200 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-slate-800">🔥 1 Hour Before Call (SMS Alert)</span>
-                    <span className="text-[10px] text-emerald-400 font-mono">ENABLED</span>
-                  </div>
-                  <p className="text-xs text-slate-600 font-mono">"Starting in 60 mins! Grab your laptop and join us here: {`{ZOOM_LINK}`}"</p>
-                </div>
+              <div className="border-t border-slate-100 pt-4 flex items-center justify-between">
+                <span className="text-xs text-slate-500 font-bold">Twilio SMS Gateway: <strong className="text-emerald-700">Connected</strong></span>
+                <button 
+                  onClick={() => setActiveTab('simulations')}
+                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black shadow-sm"
+                >
+                  Test SMS Simulation →
+                </button>
               </div>
             </div>
           </div>
         )}
 
-        {/* TAB 6: EMBED WIDGET */}
+        {/* ── TAB 6: EMBED WIDGET & FUNNEL INTEGRATION ── */}
         {activeTab === 'embed' && (
           <div className="space-y-6 max-w-4xl">
             <div>
-              <h3 className="text-xl font-black text-slate-900">Funnel & Website Embed Generator</h3>
-              <p className="text-xs text-slate-600">Embed ChronoChimp directly into any sales page or opt-in step in your funnel builder.</p>
+              <h3 className="text-xl font-black text-slate-900">Funnel Builder & Embed Code Integration</h3>
+              <p className="text-xs text-slate-500">Insert ChronoChimp interactive calendars directly into any FunnelLegends visual canvas page.</p>
             </div>
 
-            <div className="bg-white border border-slate-200 rounded-2xl p-6 space-y-6 shadow-xl">
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-slate-700 block">Select Event Type to Embed</label>
-                <select className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 font-medium">
-                  {eventTypes.map(e => (
-                    <option key={e.id} value={e.id}>{e.title} ({e.durationMinutes} mins)</option>
-                  ))}
-                </select>
+            <div className="bg-white border border-slate-200 rounded-2xl p-6 space-y-6 shadow-sm">
+              <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                <h4 className="text-sm font-black text-slate-900 flex items-center gap-2">
+                  <Layers className="w-4 h-4 text-emerald-600" />
+                  Method 1: Native Visual Canvas Drag-and-Drop (Recommended)
+                </h4>
+                <p className="text-xs text-slate-600">
+                  Open the <strong>Visual Builder</strong>, expand the Interactive catalog, and drag the <strong>ChronoChimp Interactive Booking Widget</strong> onto any section of your page. It automatically loads your active event types!
+                </p>
               </div>
 
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-slate-700 block">HTML Embed Code (iFrame Container)</label>
-                <div className="p-4 bg-white rounded-xl border border-slate-200 font-mono text-xs text-emerald-400 relative">
-                  <pre className="whitespace-pre-wrap">{`<iframe src="https://growthlabs.launchengine.io/book/15min-discovery?embed=true" width="100%" height="700" frameborder="0"></iframe>`}</pre>
+              <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-sm font-black text-slate-900 flex items-center gap-2">
+                    <Globe className="w-4 h-4 text-teal-600" />
+                    Method 2: Standalone HTML / iFrame Embed Code
+                  </h4>
+                  <button 
+                    onClick={() => handleCopy(`<iframe src="https://growthlabs.launchengine.io/book/${eventTypes[0]?.slug}" width="100%" height="700" frameborder="0"></iframe>`, 'embed_code')}
+                    className="px-3 py-1 bg-white border border-slate-200 text-slate-800 hover:text-emerald-700 rounded-lg text-xs font-bold flex items-center gap-1.5"
+                  >
+                    {copiedId === 'embed_code' ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                    <span>{copiedId === 'embed_code' ? 'Copied Code!' : 'Copy iFrame Code'}</span>
+                  </button>
+                </div>
+                <pre className="text-xs font-mono bg-white p-3 rounded-lg border border-slate-200 text-slate-800 overflow-x-auto">
+                  {`<iframe src="https://growthlabs.launchengine.io/book/${eventTypes[0]?.slug}" width="100%" height="700" frameborder="0"></iframe>`}
+                </pre>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ── TAB 7: FUN SIMULATIONS & WORKFLOWS ENGINE ── */}
+        {activeTab === 'simulations' && (
+          <div className="space-y-8">
+            <div className="bg-gradient-to-r from-emerald-900 via-teal-900 to-slate-900 text-white rounded-3xl p-6 sm:p-8 space-y-3 shadow-xl relative overflow-hidden">
+              <div className="flex items-center gap-2">
+                <span className="px-3 py-1 bg-amber-400 text-slate-950 rounded-full text-xs font-black font-mono flex items-center gap-1.5 shadow-sm">
+                  <Zap className="w-4 h-4 fill-slate-950" /> CHRONOCHIMP SANDBOX
+                </span>
+              </div>
+              <h3 className="text-2xl sm:text-3xl font-black tracking-tight" style={{ fontFamily: 'Outfit, Inter, sans-serif' }}>
+                ChronoChimp Interactive Booking & Workflow Simulations
+              </h3>
+              <p className="text-xs sm:text-sm text-emerald-100 max-w-3xl leading-relaxed">
+                Experience full real-time call booking, automatic Zoom room generation, multi-stage SMS sequence dispatch, round-robin team distribution, and status transitions.
+              </p>
+            </div>
+
+            {/* SIMULATION 1: LIVE BOOKING SIMULATOR */}
+            <div className="bg-white border-2 border-emerald-300 rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-black">
+                    <CalendarCheck className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-base font-black text-slate-900">Simulation 1: Live Interactive 1-on-1 Booking Simulator</h4>
+                    <p className="text-xs text-slate-500">Simulate a client selecting an appointment, submitting qualification answers & generating a Zoom room.</p>
+                  </div>
+                </div>
+                <span className="text-xs font-mono font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
+                  REAL-TIME DB SYNC
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <div>
+                  <label className="text-xs font-bold text-slate-700 block mb-1">Select Event Type</label>
+                  <select 
+                    value={simSelectedEventId}
+                    onChange={(e) => setSimSelectedEventId(e.target.value)}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-slate-900 font-bold"
+                  >
+                    {eventTypes.map(e => (
+                      <option key={e.id} value={e.id}>{e.title} ({e.durationMinutes}m • {e.priceAmount > 0 ? `$${e.priceAmount}` : 'FREE'})</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="text-xs font-bold text-slate-700 block mb-1">Assigned Team Host</label>
+                  <select 
+                    value={simSelectedHostId}
+                    onChange={(e) => setSimSelectedHostId(e.target.value)}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-slate-900 font-bold"
+                  >
+                    {hosts.map(h => (
+                      <option key={h.id} value={h.id}>{h.name} ({h.role})</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="text-xs font-bold text-slate-700 block mb-1">Date</label>
+                    <input 
+                      type="date"
+                      value={simDate}
+                      onChange={(e) => setSimDate(e.target.value)}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 font-mono font-bold"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs font-bold text-slate-700 block mb-1">Slot</label>
+                    <select 
+                      value={simSlot}
+                      onChange={(e) => setSimSlot(e.target.value)}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 font-mono font-bold"
+                    >
+                      <option value="09:00">09:00 AM</option>
+                      <option value="11:30">11:30 AM</option>
+                      <option value="14:00">02:00 PM</option>
+                      <option value="16:30">04:30 PM</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <div>
+                  <label className="text-xs font-bold text-slate-700 block mb-1">Client Full Name</label>
+                  <input 
+                    type="text"
+                    value={simClientName}
+                    onChange={(e) => setSimClientName(e.target.value)}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 font-bold"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-xs font-bold text-slate-700 block mb-1">Client Email</label>
+                  <input 
+                    type="email"
+                    value={simClientEmail}
+                    onChange={(e) => setSimClientEmail(e.target.value)}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-xs font-bold text-slate-700 block mb-1">Client Phone (SMS Alerts)</label>
+                  <input 
+                    type="text"
+                    value={simClientPhone}
+                    onChange={(e) => setSimClientPhone(e.target.value)}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900"
+                  />
                 </div>
               </div>
 
               <button 
-                onClick={() => handleCopy(`<iframe src="https://growthlabs.launchengine.io/book/15min-discovery?embed=true" width="100%" height="700" frameborder="0"></iframe>`, 'embed_code')}
-                className="w-full py-3 bg-purple-600 hover:bg-purple-500 text-white font-extrabold text-xs rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-purple-600/30"
+                onClick={handleSimulateLiveBooking}
+                disabled={isSimulatingBooking}
+                className="w-full py-4 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 hover:brightness-110 text-white rounded-2xl text-sm font-black shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 transition-all hover:scale-[1.01]"
               >
-                {copiedId === 'embed_code' ? <Check className="w-4 h-4 text-slate-900" /> : <Copy className="w-4 h-4" />}
-                <span>{copiedId === 'embed_code' ? 'Copied Embed Code!' : 'Copy iFrame Embed Snippet'}</span>
+                {isSimulatingBooking ? (
+                  <span className="flex items-center gap-2">
+                    <Activity className="w-5 h-5 animate-spin" />
+                    Generating Zoom Link & Triggering Calendar Sync...
+                  </span>
+                ) : (
+                  <>
+                    <Zap className="w-5 h-5 fill-white" />
+                    <span>SIMULATE LIVE BOOKING & GENERATE ZOOM MEETING ROOM →</span>
+                  </>
+                )}
               </button>
+
+              {simBookingReceipt && (
+                <div className="p-4 bg-emerald-50 border border-emerald-300 rounded-2xl space-y-2 animate-fade-in text-xs">
+                  <div className="flex items-center justify-between">
+                    <span className="font-black text-emerald-950">✓ Appointment Generated: {simBookingReceipt.eventTitle}</span>
+                    <span className="font-mono text-emerald-700 font-bold">{simBookingReceipt.id}</span>
+                  </div>
+                  <p className="text-slate-700">
+                    Host: <strong>{simBookingReceipt.hostName}</strong> • Date: <strong>{simBookingReceipt.date} at {simBookingReceipt.timeSlot}</strong> • Zoom URL: <a href={simBookingReceipt.meetingLink} target="_blank" rel="noreferrer" className="text-emerald-700 underline font-mono">{simBookingReceipt.meetingLink}</a>
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* SIMULATION 2: SMS HANDSET SIMULATION */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="bg-white border border-slate-200 rounded-3xl p-6 space-y-4 shadow-sm">
+                <div className="flex items-center gap-2.5">
+                  <Smartphone className="w-5 h-5 text-emerald-600" />
+                  <h4 className="text-base font-black text-slate-900">Simulation 2: SMS Handset Simulator</h4>
+                </div>
+                <p className="text-xs text-slate-500">Live preview of the SMS messages dispatched to {simClientPhone}.</p>
+
+                <div className="bg-slate-950 p-4 rounded-2xl space-y-3 font-mono text-xs text-white">
+                  <div className="p-3 bg-emerald-950/80 border border-emerald-500/40 rounded-xl space-y-1">
+                    <span className="text-[10px] text-emerald-300 font-bold">ChronoChimp SMS • Just Now</span>
+                    <p className="text-emerald-100">
+                      Hi {simClientName}! Your strategy call with {hosts[0]?.name} is confirmed for {simDate} at {simSlot}. Zoom: https://zoom.us/j/9981248019
+                    </p>
+                  </div>
+
+                  <div className="p-3 bg-slate-900 border border-slate-700 rounded-xl space-y-1">
+                    <span className="text-[10px] text-slate-400 font-bold">Scheduled • 24h Before Call</span>
+                    <p className="text-slate-300">
+                      Quick reminder: Tomorrow is your 1-on-1 consultation! Reply YES to confirm attendance.
+                    </p>
+                  </div>
+                </div>
+
+                <button 
+                  onClick={handleSimulateSmsSequence}
+                  className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black shadow-sm flex items-center justify-center gap-1.5"
+                >
+                  <Send className="w-3.5 h-3.5" />
+                  <span>{simSmsDispatched ? '✓ SMS Dispatched to Handset!' : 'Test Fire Instant SMS Reminder'}</span>
+                </button>
+              </div>
+
+              {/* SIMULATION 3: ATTENDANCE STATUS SIMULATION */}
+              <div className="bg-white border border-slate-200 rounded-3xl p-6 space-y-4 shadow-sm">
+                <div className="flex items-center gap-2.5">
+                  <CheckCircle2 className="w-5 h-5 text-teal-600" />
+                  <h4 className="text-base font-black text-slate-900">Simulation 3: Meeting Attendance Engine</h4>
+                </div>
+                <p className="text-xs text-slate-500">Simulate post-meeting attendance marking and automatic CRM status synchronization.</p>
+
+                <div className="space-y-3 text-xs">
+                  <div>
+                    <label className="font-bold text-slate-700 block mb-1">Select Target Appointment</label>
+                    <select 
+                      value={selectedStatusSimApptId}
+                      onChange={(e) => setSelectedStatusSimApptId(e.target.value)}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 font-bold"
+                    >
+                      {appointments.map(a => (
+                        <option key={a.id} value={a.id}>{a.customerName} - {a.eventTitle} ({a.date}) [{a.status}]</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2 pt-1">
+                    <button 
+                      onClick={() => handleSimulateStatusChange('Completed')}
+                      className="py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-sm"
+                    >
+                      ✓ Completed
+                    </button>
+                    <button 
+                      onClick={() => handleSimulateStatusChange('Rescheduled')}
+                      className="py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl shadow-sm"
+                    >
+                      ↻ Rescheduled
+                    </button>
+                    <button 
+                      onClick={() => handleSimulateStatusChange('Cancelled')}
+                      className="py-2.5 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl shadow-sm"
+                    >
+                      ✕ Cancelled
+                    </button>
+                    <button 
+                      onClick={() => handleSimulateStatusChange('NoShow')}
+                      className="py-2.5 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl shadow-sm"
+                    >
+                      ⊘ No-Show
+                    </button>
+                  </div>
+
+                  {statusSimFeedback && (
+                    <div className="p-3 bg-emerald-50 border border-emerald-300 rounded-xl text-emerald-950 font-bold animate-fade-in">
+                      {statusSimFeedback}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* VISUAL PIPELINE DIAGRAM */}
+            <div className="bg-slate-900 text-white rounded-3xl p-6 sm:p-8 space-y-6 shadow-xl">
+              <div className="flex items-center gap-3">
+                <Radio className="w-6 h-6 text-emerald-400 animate-pulse" />
+                <div>
+                  <h4 className="text-lg font-black text-white" style={{ fontFamily: 'Outfit, Inter, sans-serif' }}>
+                    ChronoChimp Automated Lifecycle Pipeline Architecture
+                  </h4>
+                  <p className="text-xs text-slate-400">Automated end-to-end flow from visual canvas page booking to live video call execution.</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 text-center text-xs">
+                <div className="bg-white/10 p-4 rounded-2xl border border-white/10 space-y-2">
+                  <span className="w-6 h-6 rounded-full bg-emerald-500 text-slate-950 font-black text-xs mx-auto flex items-center justify-center">1</span>
+                  <h5 className="font-bold text-emerald-300">Canvas Page</h5>
+                  <p className="text-[11px] text-slate-300">Visitor views ChronoChimp booking element on sales funnel</p>
+                </div>
+
+                <div className="bg-white/10 p-4 rounded-2xl border border-white/10 space-y-2">
+                  <span className="w-6 h-6 rounded-full bg-emerald-500 text-slate-950 font-black text-xs mx-auto flex items-center justify-center">2</span>
+                  <h5 className="font-bold text-emerald-300">Date/Time Slot</h5>
+                  <p className="text-[11px] text-slate-300">Real-time availability check across assigned team hosts</p>
+                </div>
+
+                <div className="bg-white/10 p-4 rounded-2xl border border-white/10 space-y-2">
+                  <span className="w-6 h-6 rounded-full bg-emerald-500 text-slate-950 font-black text-xs mx-auto flex items-center justify-center">3</span>
+                  <h5 className="font-bold text-emerald-300">Intake Form</h5>
+                  <p className="text-[11px] text-slate-300">Prospect answers qualification questions & goal targets</p>
+                </div>
+
+                <div className="bg-white/10 p-4 rounded-2xl border border-white/10 space-y-2">
+                  <span className="w-6 h-6 rounded-full bg-teal-400 text-slate-950 font-black text-xs mx-auto flex items-center justify-center">4</span>
+                  <h5 className="font-bold text-teal-300">Zoom Created</h5>
+                  <p className="text-[11px] text-slate-300">HD Zoom link generated and attached to appointment</p>
+                </div>
+
+                <div className="bg-white/10 p-4 rounded-2xl border border-white/10 space-y-2">
+                  <span className="w-6 h-6 rounded-full bg-amber-400 text-slate-950 font-black text-xs mx-auto flex items-center justify-center">5</span>
+                  <h5 className="font-bold text-amber-300">SMS Reminders</h5>
+                  <p className="text-[11px] text-slate-300">Multi-stage 24h & 10min SMS dispatched via Twilio</p>
+                </div>
+
+                <div className="bg-white/10 p-4 rounded-2xl border border-white/10 space-y-2">
+                  <span className="w-6 h-6 rounded-full bg-green-400 text-slate-950 font-black text-xs mx-auto flex items-center justify-center">6</span>
+                  <h5 className="font-bold text-green-300">CRM Tag Sync</h5>
+                  <p className="text-[11px] text-slate-300">Lead tagged in CRM Pipeline as Call_Booked</p>
+                </div>
+              </div>
             </div>
           </div>
         )}
 
-        {/* TAB 7: SETTINGS */}
+        {/* ── TAB 8: DATABASE & SCHEMA ── */}
+        {activeTab === 'database' && (
+          <div className="space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h3 className="text-xl font-black text-slate-900">Supabase SQL Database & Schema Inspector</h3>
+                <p className="text-xs text-slate-500">Inspect database tables, sync state, and copy production SQL migration script.</p>
+              </div>
+
+              <button 
+                onClick={handleTriggerSupabaseSync}
+                disabled={isSyncingDb}
+                className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black shadow-lg shadow-emerald-600/20 flex items-center gap-2"
+              >
+                <RefreshCw className={`w-4 h-4 ${isSyncingDb ? 'animate-spin' : ''}`} />
+                <span>{isSyncingDb ? 'Syncing to Supabase...' : 'Sync to Supabase Now'}</span>
+              </button>
+            </div>
+
+            {dbSyncStatus && (
+              <div className={`p-4 rounded-2xl border text-xs font-bold flex items-center justify-between ${dbSyncStatus.success ? 'bg-emerald-50 text-emerald-900 border-emerald-300' : 'bg-amber-50 text-amber-900 border-amber-300'}`}>
+                <div className="flex items-center gap-2">
+                  <CheckCheck className="w-4 h-4 text-emerald-600" />
+                  <span>{dbSyncStatus.message}</span>
+                </div>
+                <span className="font-mono text-[10px] text-slate-500">{dbSyncStatus.timestamp}</span>
+              </div>
+            )}
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-1">
+                <span className="text-[10px] uppercase font-mono font-bold text-slate-500">Hosts Table</span>
+                <div className="text-xl font-black text-slate-900">{hosts.length} Records</div>
+              </div>
+              <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-1">
+                <span className="text-[10px] uppercase font-mono font-bold text-slate-500">Event Types</span>
+                <div className="text-xl font-black text-emerald-700">{eventTypes.length} Records</div>
+              </div>
+              <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-1">
+                <span className="text-[10px] uppercase font-mono font-bold text-slate-500">Appointments</span>
+                <div className="text-xl font-black text-teal-700">{appointments.length} Records</div>
+              </div>
+              <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-1">
+                <span className="text-[10px] uppercase font-mono font-bold text-slate-500">Settings</span>
+                <div className="text-xl font-black text-green-700">1 Row (Active)</div>
+              </div>
+            </div>
+
+            <div className="bg-white border border-slate-200 rounded-3xl p-6 space-y-4 shadow-sm">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Database className="w-5 h-5 text-emerald-600" />
+                  <h4 className="text-base font-black text-slate-900">PostgreSQL / Supabase DDL Migration Script</h4>
+                </div>
+
+                <button 
+                  onClick={() => {
+                    navigator.clipboard.writeText(CHRONOCHIMP_SQL_SCHEMA);
+                    setCopiedSchema(true);
+                    setTimeout(() => setCopiedSchema(false), 2000);
+                  }}
+                  className="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold flex items-center gap-1.5"
+                >
+                  {copiedSchema ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                  <span>{copiedSchema ? 'Copied SQL Script!' : 'Copy SQL Script'}</span>
+                </button>
+              </div>
+
+              <div className="bg-slate-950 text-emerald-400 p-4 rounded-2xl font-mono text-xs max-h-96 overflow-y-auto">
+                <pre>{CHRONOCHIMP_SQL_SCHEMA}</pre>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ── TAB 9: SETTINGS ── */}
         {activeTab === 'settings' && (
           <div className="space-y-6 max-w-3xl">
             <div>
               <h3 className="text-xl font-black text-slate-900">ChronoChimp Global Settings</h3>
-              <p className="text-xs text-slate-600">Configure timezone auto-detection, brand styling and calendar 2-way sync.</p>
+              <p className="text-xs text-slate-500">Configure default timezone, calendar sync & auto-confirmation rules.</p>
             </div>
 
-            <div className="bg-white border border-slate-200 rounded-2xl p-6 space-y-6 shadow-xl">
-              <div className="space-y-2 border-b border-slate-200 pb-4">
-                <label className="text-xs font-bold text-slate-700 block">System Timezone</label>
+            <div className="bg-white border border-slate-200 rounded-2xl p-6 space-y-6 shadow-sm">
+              <div className="space-y-2 border-b border-slate-100 pb-4">
+                <label className="text-xs font-bold text-slate-700 block">Default Organization Timezone</label>
                 <input 
-                  type="text" 
+                  type="text"
                   value={chronoSettings.timezone}
                   onChange={(e) => setChronoSettings({ ...chronoSettings, timezone: e.target.value })}
-                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 font-mono"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 font-mono font-bold"
                 />
               </div>
 
-              <div className="flex items-center justify-between border-b border-slate-200 pb-4">
-                <div>
-                  <h4 className="text-sm font-bold text-slate-900">Auto-Confirm Bookings</h4>
-                  <p className="text-xs text-slate-600">Instantly generate Zoom link and calendar invite upon client submit.</p>
-                </div>
-                <input 
-                  type="checkbox"
-                  checked={chronoSettings.autoConfirmBooking}
-                  onChange={(e) => setChronoSettings({ ...chronoSettings, autoConfirmBooking: e.target.checked })}
-                  className="w-5 h-5 rounded border-slate-300 text-purple-600 focus:ring-0 cursor-pointer"
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <div>
                   <h4 className="text-sm font-bold text-slate-900">Google Calendar 2-Way Sync</h4>
-                  <p className="text-xs text-slate-600">Automatically block out personal events from Google Calendar.</p>
+                  <p className="text-xs text-slate-500">Block slots automatically when hosts are busy on Google Calendar.</p>
                 </div>
                 <input 
                   type="checkbox"
                   checked={chronoSettings.googleCalendarSync}
                   onChange={(e) => setChronoSettings({ ...chronoSettings, googleCalendarSync: e.target.checked })}
-                  className="w-5 h-5 rounded border-slate-300 text-purple-600 focus:ring-0 cursor-pointer"
+                  className="w-5 h-5 rounded border-slate-300 text-emerald-600 focus:ring-0 cursor-pointer accent-emerald-600"
+                />
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="text-sm font-bold text-slate-900">Auto-Confirm Booking Requests</h4>
+                  <p className="text-xs text-slate-500">Automatically confirm meetings without manual admin approval.</p>
+                </div>
+                <input 
+                  type="checkbox"
+                  checked={chronoSettings.autoConfirmBooking}
+                  onChange={(e) => setChronoSettings({ ...chronoSettings, autoConfirmBooking: e.target.checked })}
+                  className="w-5 h-5 rounded border-slate-300 text-emerald-600 focus:ring-0 cursor-pointer accent-emerald-600"
                 />
               </div>
             </div>
@@ -884,292 +1449,224 @@ export const ChronoChimpAppointmentManager: React.FC = () => {
 
       </div>
 
-      {/* MODAL 1: VIEW APPOINTMENT DETAILS */}
+      {/* ── MODAL 1: APPOINTMENT DETAILS & ANSWERS ── */}
       {isApptDetailsOpen && selectedAppt && (
-        <div className="fixed inset-0 bg-white/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white border border-slate-200 rounded-3xl max-w-xl w-full p-6 space-y-6 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-slate-200 pb-4">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
               <div>
-                <h3 className="text-base font-bold text-slate-900">{selectedAppt.eventTitle}</h3>
-                <p className="text-xs text-purple-400 font-mono">{selectedAppt.date} at {selectedAppt.timeSlot} (EST)</p>
+                <h3 className="text-base font-black text-slate-900">{selectedAppt.customerName} Meeting</h3>
+                <p className="text-xs text-slate-500">{selectedAppt.eventTitle}</p>
               </div>
-              <button onClick={() => setIsApptDetailsOpen(false)} className="text-slate-600 hover:text-slate-900">
+              <button onClick={() => setIsApptDetailsOpen(false)} className="text-slate-400 hover:text-slate-700">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <div className="space-y-4 text-xs">
-              <div className="bg-white p-4 rounded-xl border border-slate-200 space-y-2">
-                <span className="font-bold text-indigo-400">Client Details:</span>
-                <p className="text-slate-800 font-bold">{selectedAppt.customerName}</p>
-                <p className="text-slate-600 font-mono">{selectedAppt.customerEmail} • {selectedAppt.customerPhone}</p>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                  <span className="text-slate-500 font-bold">Date & Time:</span>
+                  <p className="font-mono font-bold text-slate-900">{selectedAppt.date} at {selectedAppt.timeSlot}</p>
+                </div>
+                <div className="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                  <span className="text-slate-500 font-bold">Assigned Host:</span>
+                  <p className="font-bold text-emerald-800">{selectedAppt.hostName}</p>
+                </div>
               </div>
 
-              <div className="bg-white p-4 rounded-xl border border-slate-200 space-y-2">
-                <span className="font-bold text-indigo-400">Host & Zoom Video Link:</span>
-                <p className="text-slate-800 font-bold">{selectedAppt.hostName}</p>
-                <a href={selectedAppt.meetingLink} target="_blank" rel="noreferrer" className="text-indigo-400 font-mono hover:underline block break-all">
+              <div className="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1">
+                <span className="text-slate-500 font-bold">Zoom Meeting Room:</span>
+                <a href={selectedAppt.meetingLink} target="_blank" rel="noreferrer" className="text-emerald-700 font-mono block underline">
                   {selectedAppt.meetingLink}
                 </a>
               </div>
 
               {selectedAppt.answers && Object.keys(selectedAppt.answers).length > 0 && (
-                <div className="bg-white p-4 rounded-xl border border-slate-200 space-y-2">
-                  <span className="font-bold text-indigo-400">Client Intake Answers:</span>
-                  {Object.entries(selectedAppt.answers).map(([key, ans]) => (
-                    <div key={key} className="text-slate-700">
-                      <span className="text-slate-500 font-mono">{key}: </span>
-                      <span className="font-medium text-slate-900">{ans}</span>
+                <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2">
+                  <span className="font-bold text-emerald-800 uppercase font-mono text-[10px]">Client Qualification Answers:</span>
+                  {Object.entries(selectedAppt.answers).map(([key, val]) => (
+                    <div key={key} className="text-xs">
+                      <span className="font-bold text-slate-700">{key}: </span>
+                      <span className="text-slate-900">{val}</span>
                     </div>
                   ))}
                 </div>
               )}
             </div>
 
-            <div className="flex items-center justify-end gap-3 border-t border-slate-200 pt-4">
-              <button 
-                onClick={() => setIsApptDetailsOpen(false)}
-                className="px-4 py-2 bg-slate-50 text-slate-800 rounded-xl text-xs font-bold"
-              >
-                Close
-              </button>
+            <div className="flex items-center justify-between border-t border-slate-100 pt-4">
+              <span className="text-xs font-bold text-slate-500">Status: <strong className="text-emerald-700">{selectedAppt.status}</strong></span>
+              <div className="flex items-center gap-2">
+                <button 
+                  onClick={() => {
+                    handleUpdateApptStatus(selectedAppt.id, 'Completed');
+                    setIsApptDetailsOpen(false);
+                  }}
+                  className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black shadow-sm"
+                >
+                  Mark Completed
+                </button>
+              </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* MODAL 2: CREATE EVENT TYPE */}
+      {/* ── MODAL 2: CREATE / EDIT EVENT TYPE ── */}
       {isEventModalOpen && (
-        <div className="fixed inset-0 bg-white/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white border border-slate-200 rounded-3xl max-w-md w-full p-6 space-y-5 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-slate-200 pb-4">
-              <h3 className="text-base font-bold text-slate-900">Create New Event Type</h3>
-              <button onClick={() => setIsEventModalOpen(false)} className="text-slate-600 hover:text-slate-900">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+              <h3 className="text-base font-black text-slate-900">{editingEvent ? 'Edit Event Type' : 'Create New Event Type'}</h3>
+              <button onClick={() => setIsEventModalOpen(false)} className="text-slate-400 hover:text-slate-700">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-4 text-xs">
               <div>
-                <label className="text-xs font-bold text-slate-700 block mb-1">Event Title</label>
+                <label className="font-bold text-slate-700 block mb-1">Event Title</label>
                 <input 
-                  type="text" 
-                  placeholder="e.g. 30-Minute VIP Discovery Call" 
-                  value={newEventTitle}
-                  onChange={(e) => setNewEventTitle(e.target.value)}
-                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800" 
+                  type="text"
+                  placeholder="e.g. 30-Minute VIP Consultation"
+                  value={eventFormTitle}
+                  onChange={(e) => setEventFormTitle(e.target.value)}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 font-bold"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-bold text-slate-700 block mb-1">URL Slug</label>
+                <label className="font-bold text-slate-700 block mb-1">Description</label>
                 <input 
-                  type="text" 
-                  placeholder="30min-vip-discovery" 
-                  value={newEventSlug}
-                  onChange={(e) => setNewEventSlug(e.target.value)}
-                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 font-mono" 
+                  type="text"
+                  placeholder="Brief description of the call"
+                  value={eventFormDesc}
+                  onChange={(e) => setEventFormDesc(e.target.value)}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">Duration (Mins)</label>
-                  <select 
-                    value={newEventDuration}
-                    onChange={(e) => setNewEventDuration(e.target.value)}
-                    className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800"
-                  >
-                    <option value="15">15 Minutes</option>
-                    <option value="30">30 Minutes</option>
-                    <option value="45">45 Minutes</option>
-                    <option value="60">60 Minutes</option>
-                  </select>
+                  <label className="font-bold text-slate-700 block mb-1">Duration (Mins)</label>
+                  <input 
+                    type="number"
+                    value={eventFormDuration}
+                    onChange={(e) => setEventFormDuration(e.target.value)}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 font-mono font-bold"
+                  />
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">Price ($0 if Free)</label>
+                  <label className="font-bold text-slate-700 block mb-1">Price ($ Amount)</label>
                   <input 
-                    type="number" 
-                    placeholder="0" 
-                    value={newEventPrice}
-                    onChange={(e) => setNewEventPrice(e.target.value)}
-                    className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 font-mono" 
+                    type="number"
+                    value={eventFormPrice}
+                    onChange={(e) => setEventFormPrice(e.target.value)}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 font-mono font-bold"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="font-bold text-slate-700 block mb-1">Buffer Before (Mins)</label>
+                  <input 
+                    type="number"
+                    value={eventFormBufferBefore}
+                    onChange={(e) => setEventFormBufferBefore(e.target.value)}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 font-mono"
+                  />
+                </div>
+
+                <div>
+                  <label className="font-bold text-slate-700 block mb-1">Buffer After (Mins)</label>
+                  <input 
+                    type="number"
+                    value={eventFormBufferAfter}
+                    onChange={(e) => setEventFormBufferAfter(e.target.value)}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 font-mono"
                   />
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-2 border-t border-slate-200 pt-4">
+            <div className="flex items-center justify-end gap-2 border-t border-slate-100 pt-4">
               <button 
-                onClick={handleCreateEventType}
-                className="w-full py-2.5 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-extrabold shadow-lg shadow-purple-600/30"
+                onClick={handleSaveEventType}
+                className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black shadow-md shadow-emerald-600/20"
               >
-                Publish Event Type
+                {editingEvent ? 'Update Event Type' : 'Save Event Type'}
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* MODAL 3: ADD HOST */}
+      {/* ── MODAL 3: CREATE / EDIT HOST ── */}
       {isHostModalOpen && (
-        <div className="fixed inset-0 bg-white/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white border border-slate-200 rounded-3xl max-w-md w-full p-6 space-y-5 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-slate-200 pb-4">
-              <h3 className="text-base font-bold text-slate-900">Add Team Host</h3>
-              <button onClick={() => setIsHostModalOpen(false)} className="text-slate-600 hover:text-slate-900">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+              <h3 className="text-base font-black text-slate-900">{editingHost ? 'Edit Team Host' : 'Add New Team Host'}</h3>
+              <button onClick={() => setIsHostModalOpen(false)} className="text-slate-400 hover:text-slate-700">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-4 text-xs">
               <div>
-                <label className="text-xs font-bold text-slate-700 block mb-1">Host Name</label>
+                <label className="font-bold text-slate-700 block mb-1">Host Name</label>
                 <input 
-                  type="text" 
-                  placeholder="e.g. Sarah Jenkins" 
-                  value={newHostName}
-                  onChange={(e) => setNewHostName(e.target.value)}
-                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800" 
+                  type="text"
+                  placeholder="e.g. Stephen Tofield"
+                  value={hostFormName}
+                  onChange={(e) => setHostFormName(e.target.value)}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 font-bold"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-bold text-slate-700 block mb-1">Host Email</label>
+                <label className="font-bold text-slate-700 block mb-1">Email Address</label>
                 <input 
-                  type="email" 
-                  placeholder="sarah@growthlabs.demo" 
-                  value={newHostEmail}
-                  onChange={(e) => setNewHostEmail(e.target.value)}
-                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800" 
+                  type="email"
+                  placeholder="stephen@agency.demo"
+                  value={hostFormEmail}
+                  onChange={(e) => setHostFormEmail(e.target.value)}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 font-bold"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-bold text-slate-700 block mb-1">Role Title</label>
+                <label className="font-bold text-slate-700 block mb-1">Role / Specialization</label>
                 <input 
-                  type="text" 
-                  placeholder="Senior Sales Advisor" 
-                  value={newHostRole}
-                  onChange={(e) => setNewHostRole(e.target.value)}
-                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800" 
+                  type="text"
+                  placeholder="e.g. Senior Funnel Strategist"
+                  value={hostFormRole}
+                  onChange={(e) => setHostFormRole(e.target.value)}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900"
+                />
+              </div>
+
+              <div>
+                <label className="font-bold text-slate-700 block mb-1">Zoom Personal Meeting Link</label>
+                <input 
+                  type="text"
+                  placeholder="https://zoom.us/j/1234567890"
+                  value={hostFormZoomUrl}
+                  onChange={(e) => setHostFormZoomUrl(e.target.value)}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 font-mono"
                 />
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-2 border-t border-slate-200 pt-4">
+            <div className="flex items-center justify-end gap-2 border-t border-slate-100 pt-4">
               <button 
-                onClick={handleCreateHost}
-                className="w-full py-2.5 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-extrabold shadow-lg shadow-purple-600/30"
+                onClick={handleSaveHost}
+                className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black shadow-md shadow-emerald-600/20"
               >
-                Save Team Host
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* MODAL 4: TEST LIVE BOOKING EXPERIENCE */}
-      {isBookingDemoOpen && (
-        <div className="fixed inset-0 bg-white/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white border border-slate-200 rounded-3xl max-w-2xl w-full p-6 sm:p-8 space-y-6 shadow-2xl relative">
-            <button onClick={() => setIsBookingDemoOpen(false)} className="text-slate-600 hover:text-slate-900 absolute right-6 top-6">
-              <X className="w-5 h-5" />
-            </button>
-
-            <div className="border-b border-slate-200 pb-4">
-              <span className="text-[10px] uppercase font-mono font-bold px-2.5 py-1 rounded bg-purple-950 text-purple-300 border border-purple-800">
-                CHRONOCHIMP LIVE EMBED ENGINE
-              </span>
-              <h3 className="text-xl font-black text-slate-900 mt-2">Schedule Your Strategy Call</h3>
-              <p className="text-xs text-slate-600">Select a date and time slot to book your 1-on-1 session.</p>
-            </div>
-
-            {/* Event Picker */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {eventTypes.map(evt => (
-                <button 
-                  key={evt.id}
-                  onClick={() => setDemoSelectedEventId(evt.id)}
-                  className={`p-3 rounded-xl border text-xs text-left transition-all ${demoSelectedEventId === evt.id ? 'bg-purple-600 text-white border-purple-500 shadow-lg' : 'bg-white text-slate-600 border-slate-200'}`}
-                >
-                  <div className="font-bold text-slate-900">{evt.title}</div>
-                  <div className="text-[10px] opacity-80 mt-1">{evt.durationMinutes} mins • {evt.priceAmount > 0 ? `$${evt.priceAmount}` : 'FREE'}</div>
-                </button>
-              ))}
-            </div>
-
-            {/* Time Slot Picker Grid */}
-            <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-3">
-              <div className="flex items-center justify-between text-xs">
-                <span className="font-bold text-slate-800">Select Date:</span>
-                <input 
-                  type="date" 
-                  value={demoSelectedDate}
-                  onChange={(e) => setDemoSelectedDate(e.target.value)}
-                  className="bg-white border border-slate-200 rounded-lg px-2.5 py-1 text-slate-900 font-mono"
-                />
-              </div>
-
-              <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 pt-2">
-                {['09:00', '10:30', '11:00', '13:30', '15:00', '16:30'].map(slot => (
-                  <button 
-                    key={slot}
-                    onClick={() => setDemoSelectedSlot(slot)}
-                    className={`py-2 rounded-xl text-xs font-mono font-bold transition-all ${demoSelectedSlot === slot ? 'bg-indigo-600 text-white shadow-md' : 'bg-white text-slate-700 hover:bg-slate-50 border border-slate-200'}`}
-                  >
-                    {slot}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Contact Details Input */}
-            <div className="space-y-3">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">Your Full Name</label>
-                  <input 
-                    type="text" 
-                    placeholder="Jonathan Hayes"
-                    value={demoName}
-                    onChange={(e) => setDemoName(e.target.value)}
-                    className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900" 
-                  />
-                </div>
-
-                <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">Your Email</label>
-                  <input 
-                    type="email" 
-                    placeholder="jhayes@techcorp.demo"
-                    value={demoEmail}
-                    onChange={(e) => setDemoEmail(e.target.value)}
-                    className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900" 
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="text-xs font-bold text-slate-700 block mb-1">Phone (For Instant Twilio SMS Reminder)</label>
-                <input 
-                  type="tel" 
-                  placeholder="+1 (555) 492-1082"
-                  value={demoPhone}
-                  onChange={(e) => setDemoPhone(e.target.value)}
-                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 font-mono" 
-                />
-              </div>
-            </div>
-
-            <div className="pt-2">
-              <button 
-                onClick={handleExecuteDemoBooking}
-                className="w-full py-3.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white rounded-xl text-xs font-extrabold shadow-lg shadow-purple-600/30 flex items-center justify-center gap-2"
-              >
-                <span>CONFIRM APPOINTMENT & GENERATE ZOOM LINK</span>
-                <ArrowRight className="w-4 h-4" />
+                {editingHost ? 'Update Host' : 'Add Team Host'}
               </button>
             </div>
           </div>

@@ -44,38 +44,38 @@ export const GlobalSettingsModal: React.FC<GlobalSettingsModalProps> = ({ isOpen
         {/* Content Area */}
         <div className="flex flex-1 overflow-hidden">
           {/* Sidebar Tabs */}
-          <div className="w-64 border-r border-slate-200 p-4 space-y-2 shrink-0 bg-white/30">
+          <div className="w-64 border-r border-slate-200 p-4 space-y-2 shrink-0 bg-slate-50/50">
             <button 
               onClick={() => setActiveTab('general')}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-colors ${activeTab === 'general' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${activeTab === 'general' ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/20' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'}`}
             >
               <Settings className="w-4 h-4" />
               General Config
             </button>
             <button 
               onClick={() => setActiveTab('domains')}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-colors ${activeTab === 'domains' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${activeTab === 'domains' ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/20' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'}`}
             >
               <Globe className="w-4 h-4" />
               Custom Domains
             </button>
             <button 
               onClick={() => setActiveTab('integrations')}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-colors ${activeTab === 'integrations' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${activeTab === 'integrations' ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/20' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'}`}
             >
               <Link2 className="w-4 h-4" />
               API Integrations
             </button>
             <button 
               onClick={() => setActiveTab('scripts')}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-colors ${activeTab === 'scripts' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${activeTab === 'scripts' ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/20' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'}`}
             >
               <Code2 className="w-4 h-4" />
               Global Scripts
             </button>
             <button 
               onClick={() => setActiveTab('diagnostics')}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-colors ${activeTab === 'diagnostics' ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg shadow-emerald-600/20' : 'text-emerald-400 hover:bg-slate-50 hover:text-emerald-300'}`}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${activeTab === 'diagnostics' ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg shadow-emerald-600/20' : 'text-emerald-700 hover:bg-slate-100'}`}
             >
               <Activity className="w-4 h-4" />
               Diagnostics & Purge

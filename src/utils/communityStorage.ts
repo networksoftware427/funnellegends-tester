@@ -52,7 +52,8 @@ export const initialCommunityPosts: CommunityPost[] = [
 export const initialCommunityMembers: CommunityMember[] = [
   { id: 'm_1', name: 'Alex Hormozi', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80', level: 9, badge: '👑 VIP FOUNDER', points: 14250, bio: 'Scaling high ticket sales funnels & mastermind academies.' },
   { id: 'm_2', name: 'Sarah Connor', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80', level: 6, badge: '🔥 TOP CONTRIBUTOR', points: 6820, bio: 'Building 7-figure SaaS funnels & community ecosystems.' },
-  { id: 'm_3', name: 'David Sterling', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80', level: 4, badge: '⚡ FUNNEL ARCHITECT', points: 3410, bio: 'Copywriter & ChronoChimp appointment booking strategist.' }
+  { id: 'm_3', name: 'David Sterling', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80', level: 4, badge: '⚡ FUNNEL ARCHITECT', points: 3410, bio: 'Copywriter & ChronoChimp appointment booking strategist.' },
+  { id: 'm_4', name: 'Marcus Vance', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80', level: 3, badge: '🚀 STRATEGY PRO', points: 2150, bio: 'High-converting VSL architecture & round-robin booking.' }
 ];
 
 const KEYS = {
@@ -94,5 +95,36 @@ export const saveStoredSpaces = (spaces: CommunitySpace[]) => {
     localStorage.setItem(KEYS.SPACES, JSON.stringify(spaces));
   } catch (e) {
     console.error('Error saving community spaces', e);
+  }
+};
+
+export const loadStoredMembers = (): CommunityMember[] => {
+  try {
+    const raw = localStorage.getItem(KEYS.MEMBERS);
+    if (raw) return JSON.parse(raw);
+  } catch (e) {
+    console.error('Error loading community members', e);
+  }
+  return initialCommunityMembers;
+};
+
+export const saveStoredMembers = (members: CommunityMember[]) => {
+  try {
+    localStorage.setItem(KEYS.MEMBERS, JSON.stringify(members));
+  } catch (e) {
+    console.error('Error saving community members', e);
+  }
+};
+
+/**
+ * Resets all TribeNexus data back to default demo state
+ */
+export const resetTribeNexusStorageToDefaults = () => {
+  try {
+    localStorage.setItem(KEYS.POSTS, JSON.stringify(initialCommunityPosts));
+    localStorage.setItem(KEYS.SPACES, JSON.stringify(initialCommunitySpaces));
+    localStorage.setItem(KEYS.MEMBERS, JSON.stringify(initialCommunityMembers));
+  } catch (e) {
+    console.error('Error resetting TribeNexus storage', e);
   }
 };

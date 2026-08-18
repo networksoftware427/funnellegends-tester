@@ -83,3 +83,17 @@ export const saveStoredChronoSettings = (settings: ChronoChimpSettings) => {
     console.error('Error saving chrono settings', e);
   }
 };
+
+/**
+ * Resets all ChronoChimp data back to demo state
+ */
+export const resetChronoChimpStorageToDefaults = () => {
+  try {
+    localStorage.setItem(KEYS.HOSTS, JSON.stringify(initialMeetingHosts));
+    localStorage.setItem(KEYS.EVENTS, JSON.stringify(initialEventTypes));
+    localStorage.setItem(KEYS.APPOINTMENTS, JSON.stringify(initialBookedAppointments));
+    localStorage.setItem(KEYS.SETTINGS, JSON.stringify(initialChronoSettings));
+  } catch (e) {
+    console.error('Error resetting ChronoChimp storage', e);
+  }
+};

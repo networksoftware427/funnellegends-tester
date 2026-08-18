@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { CourseData, ModuleData, LessonData } from '../../types/builder';
-import { loadStoredCourse, saveStoredCourse } from '../../utils/storage';
+import { loadStoredCourse, saveStoredCourse, resetCourseStorageToDefaults } from '../../utils/storage';
+import { syncCourseToSupabase, COURSE_ENGINE_SQL_SCHEMA } from '../../utils/courseDbSync';
 import { 
   GraduationCap, Plus, Clock, Play, CheckCircle, Lock, BookOpen, Layers, 
   UserCheck, ShieldCheck, ChevronRight, Edit3, Trash2, Video, Check,
   Award, Sparkles, Download, Eye, FileText, Star, Calendar, RefreshCw,
-  Image as ImageIcon, Volume2, HelpCircle, Type, List, AlertCircle, CheckSquare
+  Image as ImageIcon, Volume2, HelpCircle, Type, List, AlertCircle, CheckSquare,
+  Zap, Database, Terminal, Copy, CheckCheck, Activity, Flame, Sliders, X, CheckCircle2
 } from 'lucide-react';
 import { CertificateBuilder } from './CertificateBuilder';
 import { CustomCertificateRenderer } from './CustomCertificateRenderer';
@@ -835,7 +837,7 @@ export const getModulesForTemplate = (templateId: string): ModuleData[] => {
 
 export const MembershipManager: React.FC = () => {
   const [course, setCourse] = useState<CourseData>(loadStoredCourse());
-  const [activeTab, setActiveTab] = useState<'curriculum' | 'course_templates' | 'certificates' | 'drip_rules' | 'student_portal'>('curriculum');
+  const [activeTab, setActiveTab] = useState<'curriculum' | 'simulations' | 'course_templates' | 'certificates' | 'drip_rules' | 'student_portal' | 'database'>('curriculum');
   const [selectedLesson, setSelectedLesson] = useState<LessonData>(course.modules[0]?.lessons[0] || { id: 'les_1', title: 'Lesson 1.1', order: 1 });
   const [studentEnrollmentDays, setStudentEnrollmentDays] = useState<number>(0);
 
@@ -856,6 +858,57 @@ export const MembershipManager: React.FC = () => {
   const [certIssuedToast, setCertIssuedToast] = useState<string | null>(null);
   const [activeCourseTemplate, setActiveCourseTemplate] = useState<CourseTemplate>(courseTemplates[0]);
   const [appliedToast, setAppliedToast] = useState<string | null>(null);
+
+  // Supabase Database Sync State
+  const [dbSyncStatus, setDbSyncStatus] = useState<{ success: boolean; message: string; timestamp: string } | null>(null);
+  const [isSyncingDb, setIsSyncingDb] = useState(false);
+  const [copiedSchema, setCopiedSchema] = useState(false);
+
+  // ── SIMULATIONS & WORKFLOWS STATE ──
+  const [simStudentProfile, setSimStudentProfile] = useState({ name: 'Elena Rostova', email: 'elena@scalevault.demo' });
+  const [simEnrollmentDayOffset, setSimEnrollmentDayOffset] = useState<number>(7);
+  const [simProgressPercent, setSimProgressPercent] = useState<number>(65);
+  const [isSimulatingComplete, setIsSimulatingComplete] = useState(false);
+  const [simCertResult, setSimCertResult] = useState<{ certId: string; issueDate: string; student: string } | null>(null);
+
+  // Trigger Supabase Sync
+  const handleTriggerSupabaseSync = async () => {
+    setIsSyncingDb(true);
+    const res = await syncCourseToSupabase(course);
+    setDbSyncStatus(res);
+    setIsSyncingDb(false);
+  };
+
+  // Reset to default demo course
+  const handleResetCourse = () => {
+    if (confirm('Reset LMS Course to default demo state?')) {
+      const reset = resetCourseStorageToDefaults();
+      setCourse(reset);
+      setSelectedLesson(reset.modules[0]?.lessons[0]);
+      setAppliedToast('✓ Reset Course & LMS to default demo state!');
+      setTimeout(() => setAppliedToast(null), 3000);
+    }
+  };
+
+  // Run 100% Course Completion Simulation
+  const handleSimulate100PercentComplete = () => {
+    setIsSimulatingComplete(true);
+    setTimeout(() => {
+      // Mark all lessons complete in current course state
+      const updatedMods = course.modules.map(m => ({
+        ...m,
+        lessons: m.lessons.map(l => ({ ...l, isCompleted: true }))
+      }));
+      setCourse({ ...course, modules: updatedMods });
+      setSimProgressPercent(100);
+      setSimCertResult({
+        certId: `CERT-2026-X${Math.floor(1000 + Math.random() * 9000)}`,
+        issueDate: new Date().toISOString().split('T')[0],
+        student: simStudentProfile.name
+      });
+      setIsSimulatingComplete(false);
+    }, 600);
+  };
 
   // Save to persistence
   useEffect(() => {
@@ -997,50 +1050,106 @@ export const MembershipManager: React.FC = () => {
   const progressPercent = allLessons.length > 0 ? Math.round((completedCount / allLessons.length) * 100) : 0;
 
   return (
-    <div className="flex-1 bg-gray-50 text-gray-900 flex flex-col overflow-y-auto">
-      {/* Top Header */}
-      <div className="bg-green-600 backdrop-blur-md border-b border-green-700 px-6 py-4 flex flex-col md:flex-row md:items-center justify-between gap-4 sticky top-0 z-20 shrink-0">
-        <div>
-          <div className="flex items-center gap-2 text-slate-900 font-extrabold text-xs tracking-wider uppercase mb-1">
-            <GraduationCap className="w-4 h-4 text-slate-900" />
-            <span className="bg-white/20 text-slate-900 border border-white/30 px-2 py-0.5 rounded-full">ACADEMY LMS & COURSE ENGINE</span>
+    <div className="flex-1 bg-slate-50 text-slate-900 flex flex-col overflow-y-auto font-sans">
+      {/* ── TOP HEADER ── */}
+      <div 
+        className="px-6 py-4 flex flex-col md:flex-row md:items-center justify-between gap-4 sticky top-0 z-20 shrink-0 border-b border-emerald-700/40 shadow-lg"
+        style={{ background: 'linear-gradient(135deg, #065f46 0%, #047857 50%, #0d9488 100%)' }}
+      >
+        <div className="flex items-center gap-3.5">
+          <div className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md border border-white/30 flex items-center justify-center text-white shadow-xl shadow-emerald-950/30">
+            <GraduationCap className="w-6 h-6 text-emerald-300 animate-pulse" />
           </div>
-          <h1 className="text-2xl font-black text-slate-900" style={{ color: '#ffffff' }}>{course.title}</h1>
-          <p className="text-xs text-green-100 mt-0.5 max-w-2xl" style={{ color: '#dcfce7' }}>{course.description}</p>
+          <div>
+            <div className="flex items-center gap-2.5">
+              <h2 className="text-xl font-black tracking-tight text-white flex items-center gap-2" style={{ fontFamily: 'Outfit, Inter, sans-serif' }}>
+                {course.title}
+              </h2>
+              <span className="text-[10px] uppercase font-mono font-extrabold bg-emerald-400/20 text-emerald-100 border border-emerald-300/30 px-2.5 py-0.5 rounded-full flex items-center gap-1.5 shadow-sm">
+                <ShieldCheck className="w-3 h-3 text-emerald-300" />
+                LMS Engine Active
+              </span>
+            </div>
+            <p className="text-xs text-emerald-100/90 font-medium">{course.description}</p>
+          </div>
         </div>
 
-        <div className="flex items-center gap-1.5 flex-wrap">
+        <div className="flex items-center gap-2 flex-wrap">
           <button 
-            onClick={() => setActiveTab('curriculum')}
-            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${activeTab === 'curriculum' ? 'bg-white text-green-700 shadow-lg' : 'bg-green-700 text-green-100 hover:text-slate-900 border border-green-500'}`}
+            onClick={handleResetCourse}
+            className="px-3.5 py-2 bg-white/10 hover:bg-white/20 text-white border border-white/20 rounded-xl text-xs font-bold transition-all shadow-sm"
+            title="Reset LMS course curriculum to default demo state"
           >
-            Curriculum Builder
+            Reset Demo Course
           </button>
           <button 
-            onClick={() => setActiveTab('course_templates')}
-            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${activeTab === 'course_templates' ? 'bg-white text-green-700 shadow-lg' : 'bg-green-700 text-green-100 hover:text-slate-900 border border-green-500'}`}
+            onClick={handleTriggerSupabaseSync}
+            disabled={isSyncingDb}
+            className="px-4 py-2 bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-xl text-xs font-black flex items-center gap-1.5 transition-all shadow-sm"
           >
-            Course Templates (10)
-          </button>
-          <button 
-            onClick={() => setActiveTab('certificates')}
-            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${activeTab === 'certificates' ? 'bg-white text-green-700 shadow-lg' : 'bg-green-700 text-green-100 hover:text-slate-900 border border-green-500'}`}
-          >
-            Automated Certificates (10)
-          </button>
-          <button 
-            onClick={() => setActiveTab('drip_rules')}
-            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${activeTab === 'drip_rules' ? 'bg-white text-green-700 shadow-lg' : 'bg-green-700 text-green-100 hover:text-slate-900 border border-green-500'}`}
-          >
-            Drip Scheduler
-          </button>
-          <button 
-            onClick={() => setActiveTab('student_portal')}
-            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${activeTab === 'student_portal' ? 'bg-white text-green-700 shadow-lg' : 'bg-green-700 text-green-100 hover:text-slate-900 border border-green-500'}`}
-          >
-            Student Portal ({progressPercent}%)
+            <RefreshCw className={`w-4 h-4 text-emerald-600 ${isSyncingDb ? 'animate-spin' : ''}`} />
+            <span>{isSyncingDb ? 'Syncing...' : 'Sync Supabase'}</span>
           </button>
         </div>
+      </div>
+
+      {/* ── SUB-NAV BAR ── */}
+      <div className="bg-white border-b border-slate-200 px-6 py-2 flex items-center gap-1.5 overflow-x-auto no-scrollbar shrink-0 shadow-sm">
+        <button 
+          onClick={() => setActiveTab('curriculum')}
+          className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${activeTab === 'curriculum' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/25 font-black' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'}`}
+        >
+          <BookOpen className="w-4 h-4" />
+          <span>Curriculum Builder</span>
+        </button>
+
+        <button 
+          onClick={() => setActiveTab('simulations')}
+          className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${activeTab === 'simulations' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/25 font-black' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'}`}
+        >
+          <Zap className="w-4 h-4" />
+          <span>⚡ Simulations & Workflows</span>
+        </button>
+
+        <button 
+          onClick={() => setActiveTab('course_templates')}
+          className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${activeTab === 'course_templates' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/25 font-black' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'}`}
+        >
+          <Layers className="w-4 h-4" />
+          <span>Course Templates (10)</span>
+        </button>
+
+        <button 
+          onClick={() => setActiveTab('certificates')}
+          className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${activeTab === 'certificates' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/25 font-black' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'}`}
+        >
+          <Award className="w-4 h-4" />
+          <span>Automated Certificates (10)</span>
+        </button>
+
+        <button 
+          onClick={() => setActiveTab('drip_rules')}
+          className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${activeTab === 'drip_rules' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/25 font-black' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'}`}
+        >
+          <Clock className="w-4 h-4" />
+          <span>Drip Scheduler</span>
+        </button>
+
+        <button 
+          onClick={() => setActiveTab('student_portal')}
+          className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${activeTab === 'student_portal' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/25 font-black' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'}`}
+        >
+          <GraduationCap className="w-4 h-4" />
+          <span>Student Portal ({progressPercent}%)</span>
+        </button>
+
+        <button 
+          onClick={() => setActiveTab('database')}
+          className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${activeTab === 'database' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/25 font-black' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'}`}
+        >
+          <Database className="w-4 h-4" />
+          <span>Database & Schema</span>
+        </button>
       </div>
 
       <div className="p-6 flex-1 w-full max-w-[1600px] mx-auto">
@@ -1992,6 +2101,229 @@ export const MembershipManager: React.FC = () => {
                 courseTitle={course.title} 
               />
             )}
+          </div>
+        </div>
+      )}
+
+      {/* ── VIEW 6: SIMULATIONS & WORKFLOWS ── */}
+      {activeTab === 'simulations' && (
+        <div className="space-y-6">
+          <div className="bg-white border border-slate-200 rounded-3xl p-6 space-y-6 shadow-sm">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-black">
+                  <Zap className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-black text-slate-900">Student Progression & Automated Drip Sandbox</h3>
+                  <p className="text-xs text-slate-500">Test student enrollment timelines, drip lock/unlock rules, and instant certificate issuance.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">Simulated Student</label>
+                <select 
+                  value={simStudentProfile.name}
+                  onChange={(e) => {
+                    const name = e.target.value;
+                    const email = name === 'Elena Rostova' ? 'elena@scalevault.demo' : name === 'David Sterling' ? 'david@apexscale.demo' : 'sarah.connor@apex.io';
+                    setSimStudentProfile({ name, email });
+                    setStudentCertName(name);
+                  }}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 focus:outline-none"
+                >
+                  <option value="Elena Rostova">Elena Rostova (elena@scalevault.demo)</option>
+                  <option value="David Sterling">David Sterling (david@apexscale.demo)</option>
+                  <option value="Sarah Connor">Sarah Connor (sarah.connor@apex.io)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">Simulated Days Since Enrollment: ({simEnrollmentDayOffset} Days)</label>
+                <input 
+                  type="range"
+                  min={0}
+                  max={30}
+                  value={simEnrollmentDayOffset}
+                  onChange={(e) => setSimEnrollmentDayOffset(parseInt(e.target.value))}
+                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-600 mt-2"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">Active Curriculum Status</label>
+                <div className="p-2 bg-emerald-50 border border-emerald-200 rounded-xl text-xs font-bold text-emerald-900 flex items-center justify-between">
+                  <span>{course.modules.length} Modules • {allLessons.length} Lessons</span>
+                  <span>{progressPercent}% Complete</span>
+                </div>
+              </div>
+            </div>
+
+            {/* DRIP STATUS PREVIEW */}
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-3">
+              <div className="text-xs font-bold text-slate-800 uppercase font-mono text-[10px]">
+                ⚡ Drip Release Status for Day {simEnrollmentDayOffset}:
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-xs">
+                {course.modules.map((mod, i) => {
+                  const requiredDay = i * 7;
+                  const isUnlocked = simEnrollmentDayOffset >= requiredDay;
+                  return (
+                    <div key={mod.id} className={`p-3.5 rounded-xl border flex items-center justify-between ${isUnlocked ? 'bg-emerald-50 border-emerald-300 text-emerald-950 font-bold' : 'bg-white border-slate-200 text-slate-500'}`}>
+                      <div>
+                        <div>{mod.title}</div>
+                        <div className="text-[10px] opacity-75">{isUnlocked ? '✓ Unlocked & Accessible' : `🔒 Locked (Unlocks Day ${requiredDay})`}</div>
+                      </div>
+                      <span className="text-lg">{isUnlocked ? '🔓' : '🔒'}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* SIMULATE 100% COMPLETION & ISSUE CERTIFICATE */}
+            <div className="pt-2">
+              <button 
+                onClick={handleSimulate100PercentComplete}
+                disabled={isSimulatingComplete}
+                className="w-full py-3.5 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 hover:brightness-110 text-white rounded-xl text-xs font-black shadow-md shadow-emerald-600/30 flex items-center justify-center gap-2"
+              >
+                {isSimulatingComplete ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Award className="w-4 h-4" />}
+                <span>{isSimulatingComplete ? 'Simulating 100% Completion & Issuing Certificate...' : 'SIMULATE 100% CURRICULUM COMPLETION & ISSUE CERTIFICATE →'}</span>
+              </button>
+            </div>
+
+            {simCertResult && (
+              <div className="p-5 bg-emerald-50 border-2 border-emerald-300 rounded-2xl space-y-3 animate-fade-in">
+                <div className="flex items-center justify-between">
+                  <div className="font-black text-emerald-950 text-sm flex items-center gap-2">
+                    <Award className="w-5 h-5 text-amber-500" />
+                    <span>✓ Verified Completion Certificate Issued for {simCertResult.student}!</span>
+                  </div>
+                  <span className="font-mono text-emerald-800 text-xs font-bold">{simCertResult.certId}</span>
+                </div>
+                <p className="text-xs text-slate-700">
+                  Student completed all {allLessons.length} lessons. Official accreditation badge and PDF download link have been dispatched via automated email notification.
+                </p>
+                <div className="flex gap-2">
+                  <button 
+                    onClick={() => setActiveTab('certificates')}
+                    className="px-3.5 py-1.5 bg-emerald-600 text-white rounded-xl text-xs font-bold hover:bg-emerald-500 shadow-sm"
+                  >
+                    View in Certificate Studio →
+                  </button>
+                  <button 
+                    onClick={() => setActiveTab('student_portal')}
+                    className="px-3.5 py-1.5 bg-white border border-emerald-300 text-emerald-800 rounded-xl text-xs font-bold hover:bg-emerald-50"
+                  >
+                    Open Student Portal View →
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* 6-STAGE VISUAL ARCHITECTURE */}
+          <div className="bg-white border border-slate-200 rounded-3xl p-6 space-y-4 shadow-sm">
+            <h3 className="text-sm font-black text-slate-900 flex items-center gap-2">
+              <GraduationCap className="w-4 h-4 text-emerald-600" />
+              FunnelLegends Academy & LMS Learning Pipeline Architecture
+            </h3>
+            <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
+              {[
+                { step: '1', title: 'Checkout Gate', desc: 'Funnel Buyer Instant Enrollment' },
+                { step: '2', title: 'Magic Login', desc: 'Credential Dispatch via SMS/Email' },
+                { step: '3', title: 'Drip Timeline', desc: 'Automated Module Release' },
+                { step: '4', title: 'HD Lesson VSL', desc: 'Interactive Video + Quizzes' },
+                { step: '5', title: '100% Complete', desc: 'Progress Milestone Tracking' },
+                { step: '6', title: 'Official Diploma', desc: 'Verified PDF Certificate' }
+              ].map((st) => (
+                <div key={st.step} className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-center space-y-1">
+                  <span className="w-6 h-6 rounded-full bg-emerald-600 text-white text-xs font-black flex items-center justify-center mx-auto">
+                    {st.step}
+                  </span>
+                  <div className="text-xs font-bold text-slate-900">{st.title}</div>
+                  <div className="text-[10px] text-slate-500 leading-tight">{st.desc}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── VIEW 7: DATABASE & SCHEMA ── */}
+      {activeTab === 'database' && (
+        <div className="space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h3 className="text-xl font-black text-slate-900">Supabase SQL Database & Schema Inspector</h3>
+              <p className="text-xs text-slate-500">Inspect database tables, sync state, and copy production SQL migration script.</p>
+            </div>
+
+            <button 
+              onClick={handleTriggerSupabaseSync}
+              disabled={isSyncingDb}
+              className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black shadow-lg shadow-emerald-600/20 flex items-center gap-2"
+            >
+              <RefreshCw className={`w-4 h-4 ${isSyncingDb ? 'animate-spin' : ''}`} />
+              <span>{isSyncingDb ? 'Syncing to Supabase...' : 'Sync to Supabase Now'}</span>
+            </button>
+          </div>
+
+          {dbSyncStatus && (
+            <div className={`p-4 rounded-2xl border text-xs font-bold flex items-center justify-between ${dbSyncStatus.success ? 'bg-emerald-50 text-emerald-900 border-emerald-300' : 'bg-amber-50 text-amber-900 border-amber-300'}`}>
+              <div className="flex items-center gap-2">
+                <CheckCheck className="w-4 h-4 text-emerald-600" />
+                <span>{dbSyncStatus.message}</span>
+              </div>
+              <span className="font-mono text-[10px] text-slate-500">{dbSyncStatus.timestamp}</span>
+            </div>
+          )}
+
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-1 shadow-sm">
+              <span className="text-[10px] uppercase font-mono font-bold text-slate-500">Active Courses</span>
+              <div className="text-xl font-black text-slate-900">1 Published</div>
+            </div>
+            <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-1 shadow-sm">
+              <span className="text-[10px] uppercase font-mono font-bold text-slate-500">Curriculum Modules</span>
+              <div className="text-xl font-black text-emerald-700">{course.modules.length} Modules</div>
+            </div>
+            <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-1 shadow-sm">
+              <span className="text-[10px] uppercase font-mono font-bold text-slate-500">Total Lessons</span>
+              <div className="text-xl font-black text-teal-700">{allLessons.length} Lessons</div>
+            </div>
+            <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-1 shadow-sm">
+              <span className="text-[10px] uppercase font-mono font-bold text-slate-500">Certificate Templates</span>
+              <div className="text-xl font-black text-green-700">{certificateTemplates.length} Templates</div>
+            </div>
+          </div>
+
+          <div className="bg-white border border-slate-200 rounded-3xl p-6 space-y-4 shadow-sm">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Database className="w-5 h-5 text-emerald-600" />
+                <h4 className="text-base font-black text-slate-900">PostgreSQL / Supabase DDL Migration Script</h4>
+              </div>
+
+              <button 
+                onClick={() => {
+                  navigator.clipboard.writeText(COURSE_ENGINE_SQL_SCHEMA);
+                  setCopiedSchema(true);
+                  setTimeout(() => setCopiedSchema(false), 2000);
+                }}
+                className="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold flex items-center gap-1.5"
+              >
+                {copiedSchema ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                <span>{copiedSchema ? 'Copied SQL Script!' : 'Copy SQL Script'}</span>
+              </button>
+            </div>
+
+            <div className="bg-slate-950 text-emerald-400 p-4 rounded-2xl font-mono text-xs max-h-96 overflow-y-auto">
+              <pre>{COURSE_ENGINE_SQL_SCHEMA}</pre>
+            </div>
           </div>
         </div>
       )}

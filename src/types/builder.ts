@@ -138,6 +138,11 @@ export type ElementType =
   | 'feature_comparison_widget'
   | 'search_bar_widget'
   | 'community_feed_widget'
+  // Course & Membership LMS Widgets
+  | 'course_curriculum_widget'
+  | 'lesson_video_player'
+  | 'certificate_badge_widget'
+  | 'drip_schedule_widget'
   // Universal
   | 'universal_header'
   | 'universal_footer'

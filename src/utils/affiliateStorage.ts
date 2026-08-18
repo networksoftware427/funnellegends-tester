@@ -100,7 +100,6 @@ export const loadStoredContests = (): AffiliateContest[] => {
 
 export const saveStoredContests = (contests: AffiliateContest[]) => {
   try {
-    localStorage.getItem(KEYS.CONTESTS);
     localStorage.setItem(KEYS.CONTESTS, JSON.stringify(contests));
   } catch (e) {
     console.error('Error saving contests', e);
@@ -122,5 +121,21 @@ export const saveStoredSettings = (settings: BountyPackSettings) => {
     localStorage.setItem(KEYS.SETTINGS, JSON.stringify(settings));
   } catch (e) {
     console.error('Error saving settings', e);
+  }
+};
+
+/**
+ * Resets all BountyPack data back to demo state
+ */
+export const resetBountyPackStorageToDefaults = () => {
+  try {
+    localStorage.setItem(KEYS.PLANS, JSON.stringify(initialCommissionPlans));
+    localStorage.setItem(KEYS.AFFILIATES, JSON.stringify(initialAffiliates));
+    localStorage.setItem(KEYS.TRANSACTIONS, JSON.stringify(initialTransactions));
+    localStorage.setItem(KEYS.PROMO, JSON.stringify(initialPromoMaterials));
+    localStorage.setItem(KEYS.CONTESTS, JSON.stringify(initialContests));
+    localStorage.setItem(KEYS.SETTINGS, JSON.stringify(initialSettings));
+  } catch (e) {
+    console.error('Error resetting BountyPack storage', e);
   }
 };

@@ -213,7 +213,7 @@ export const HomePageVSL: React.FC<HomePageVSLProps> = ({ onOpenOrderModal, onNa
                 </div>
 
                 {isOpen && (
-                  <div className="px-6 pb-6 pt-2 text-xs sm:text-sm text-slate-700 leading-relaxed border-t border-emerald-500/20 space-y-2 animate-fade-in pl-18">
+                  <div className="px-6 pb-6 pt-2 text-xs sm:text-sm text-slate-300 leading-relaxed border-t border-emerald-500/20 space-y-2 animate-fade-in pl-18">
                     <p>{faq.a}</p>
                   </div>
                 )}

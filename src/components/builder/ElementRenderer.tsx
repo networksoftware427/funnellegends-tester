@@ -13,6 +13,7 @@ import {
   loadStoredHosts as loadChronoHosts, loadStoredEventTypes as loadChronoEventTypes, 
   loadStoredAppointments as loadChronoAppointments, saveStoredAppointments as saveChronoAppointments 
 } from '../../utils/appointmentStorage';
+import { loadStoredCourse } from '../../utils/storage';
 import { 
   Play, Pause, Star, CheckCircle, Clock, ShieldCheck, ArrowRight, Lock, 
   HelpCircle, ChevronDown, ChevronRight, Upload, Calendar, ShoppingCart, 
@@ -20,7 +21,7 @@ import {
   Maximize2, X, Users, DollarSign, TrendingUp, Link2, Copy, BarChart3, PieChart, Workflow, Key,
   Search, BookOpen, User, LockKeyhole, Menu, CalendarCheck, Radio, Code2, Mail, QrCode, Tag, MousePointerClick,
   MessageCircle, MapPin, MessageSquare, Share2, Gift, Zap, List, Grid, Headphones, Sliders, Globe, ChevronLeft,
-  Facebook, Twitter, Instagram, Linkedin
+  Facebook, Twitter, Instagram, Linkedin, GraduationCap
 } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
 
@@ -2772,10 +2773,10 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
       };
 
       return (
-        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 sm:p-8 bg-white border border-purple-500/40 shadow-2xl space-y-6 rounded-3xl ${isSelected ? 'is-selected' : ''}`}>
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 sm:p-8 bg-white border-2 border-emerald-500/40 shadow-2xl space-y-6 rounded-3xl ${isSelected ? 'is-selected' : ''}`}>
           <div className="flex items-center justify-between border-b border-slate-200 pb-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center">
                 <CalendarCheck className="w-5 h-5 animate-pulse" />
               </div>
               <div>
@@ -2783,7 +2784,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
                 <p className="text-xs text-slate-600">ChronoChimp Automated Calendar & Appointment Engine</p>
               </div>
             </div>
-            <span className="text-xs font-mono text-purple-300 font-bold bg-purple-950/60 px-3 py-1 border border-purple-800 rounded-full">
+            <span className="text-xs font-mono text-emerald-800 font-bold bg-emerald-50 px-3 py-1 border border-emerald-200 rounded-full">
               {activeEvt.durationMinutes} MINS CALL
             </span>
           </div>
@@ -2795,22 +2796,22 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
                   <button 
                     key={evt.id}
                     onClick={() => setElemSelectedEvtId(evt.id)}
-                    className={`p-3 rounded-xl border text-xs text-left transition-all ${elemSelectedEvtId === evt.id ? 'bg-purple-600 text-white border-purple-500 shadow-md font-bold' : 'bg-white text-slate-600 border-slate-200'}`}
+                    className={`p-3 rounded-xl border text-xs text-left transition-all ${elemSelectedEvtId === evt.id ? 'bg-emerald-600 text-white border-emerald-500 shadow-md font-bold' : 'bg-white text-slate-700 border-slate-200 hover:border-emerald-300'}`}
                   >
-                    <div className="text-slate-900">{evt.title}</div>
-                    <div className="text-[10px] opacity-75 mt-0.5">{evt.durationMinutes} mins • {evt.priceAmount > 0 ? `$${evt.priceAmount}` : 'FREE'}</div>
+                    <div className="font-bold">{evt.title}</div>
+                    <div className="text-[10px] opacity-80 mt-0.5">{evt.durationMinutes} mins • {evt.priceAmount > 0 ? `$${evt.priceAmount}` : 'FREE'}</div>
                   </button>
                 ))}
               </div>
 
-              <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-3">
+              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
                 <div className="flex items-center justify-between text-xs">
                   <span className="font-bold text-slate-800">Select Date:</span>
                   <input 
                     type="date" 
                     value={elemSelectedDate}
                     onChange={(e) => setElemSelectedDate(e.target.value)}
-                    className="bg-white border border-slate-200 rounded-lg px-3 py-1 text-slate-900 font-mono"
+                    className="bg-white border border-slate-200 rounded-lg px-3 py-1 text-slate-900 font-mono font-bold"
                   />
                 </div>
 
@@ -2819,7 +2820,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
                     <button 
                       key={slot}
                       onClick={() => setElemSelectedSlot(slot)}
-                      className={`py-2 rounded-xl text-xs font-mono font-bold transition-all ${elemSelectedSlot === slot ? 'bg-indigo-600 text-white shadow-md' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'}`}
+                      className={`py-2 rounded-xl text-xs font-mono font-bold transition-all ${elemSelectedSlot === slot ? 'bg-emerald-600 text-white shadow-md' : 'bg-white text-slate-700 border border-slate-200 hover:bg-emerald-50'}`}
                     >
                       {slot}
                     </button>
@@ -2836,7 +2837,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
                       placeholder="Jonathan Hayes"
                       value={elemClientName}
                       onChange={(e) => setElemClientName(e.target.value)}
-                      className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900" 
+                      className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 font-medium" 
                     />
                   </div>
 
@@ -2847,7 +2848,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
                       placeholder="jhayes@techcorp.demo"
                       value={elemClientEmail}
                       onChange={(e) => setElemClientEmail(e.target.value)}
-                      className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900" 
+                      className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 font-medium" 
                     />
                   </div>
                 </div>
@@ -2866,7 +2867,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
               <button 
                 onClick={handleConfirmElemBooking}
-                className="w-full py-3.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white rounded-xl text-xs font-extrabold shadow-lg shadow-purple-600/30 flex items-center justify-center gap-2"
+                className="w-full py-3.5 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 hover:brightness-110 text-white rounded-xl text-xs font-extrabold shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 transition-all"
               >
                 <span>CONFIRM APPOINTMENT & GENERATE ZOOM MEETING</span>
                 <ArrowRight className="w-4 h-4" />
@@ -2874,14 +2875,14 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
             </div>
           ) : (
             <div className="bg-white p-6 rounded-2xl border border-emerald-500/40 text-center space-y-4 animate-fade-in">
-              <div className="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
+              <div className="w-12 h-12 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto">
                 <CheckCircle className="w-6 h-6" />
               </div>
               <h4 className="text-lg font-black text-slate-900">Your Call is Confirmed!</h4>
               <p className="text-xs text-slate-700 max-w-md mx-auto">
-                Scheduled for <strong className="text-purple-300 font-mono">{elemConfirmedAppt?.date} at {elemConfirmedAppt?.timeSlot} (EST)</strong> with <strong className="text-indigo-400">{elemConfirmedAppt?.hostName}</strong>.
+                Scheduled for <strong className="text-emerald-800 font-mono">{elemConfirmedAppt?.date} at {elemConfirmedAppt?.timeSlot} (EST)</strong> with <strong className="text-teal-700">{elemConfirmedAppt?.hostName}</strong>.
               </p>
-              <div className="p-3 bg-white rounded-xl border border-slate-200 inline-block font-mono text-xs text-emerald-400">
+              <div className="p-3 bg-emerald-50 rounded-xl border border-emerald-200 inline-block font-mono text-xs text-emerald-800 font-bold">
                 Zoom HD Meeting Link: {elemConfirmedAppt?.meetingLink}
               </div>
               <div>
@@ -2889,7 +2890,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
                   onClick={() => setElemBookingDone(false)}
                   className="px-4 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-xl text-xs font-bold border border-slate-300"
                 >
-                  Book Another Session
+                  Book Another Call
                 </button>
               </div>
             </div>
@@ -2908,7 +2909,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
             <select 
               value={selectedHostPickerId}
               onChange={(e) => setSelectedHostPickerId(e.target.value)}
-              className="bg-white border border-slate-200 text-indigo-300 text-xs rounded-lg px-2 py-0.5 font-bold focus:outline-none"
+              className="bg-white border border-slate-200 text-emerald-800 text-xs rounded-lg px-2 py-0.5 font-bold focus:outline-none"
             >
               {chronoHosts.map(h => (
                 <option key={h.id} value={h.id}>{h.name}</option>
@@ -2917,11 +2918,11 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
           </div>
 
           <div className="flex items-center gap-4">
-            <img src={activeHost.avatar} alt={activeHost.name} className="w-14 h-14 rounded-2xl object-cover border-2 border-purple-500 shrink-0" />
+            <img src={activeHost.avatar} alt={activeHost.name} className="w-14 h-14 rounded-2xl object-cover border-2 border-emerald-500 shrink-0" />
             <div>
               <h4 className="text-base font-bold text-slate-900">{activeHost.name}</h4>
-              <p className="text-xs text-purple-400 font-mono">{activeHost.role}</p>
-              <div className="text-xs text-amber-400 font-bold mt-0.5">★ {activeHost.rating} / 5.0 Rating</div>
+              <p className="text-xs text-emerald-700 font-mono font-bold">{activeHost.role}</p>
+              <div className="text-xs text-amber-600 font-bold mt-0.5">★ {activeHost.rating} / 5.0 Rating</div>
             </div>
           </div>
 
@@ -2929,7 +2930,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
 
           <button 
             onClick={() => alert(`Selected host ${activeHost.name} for round-robin appointment!`)}
-            className="w-full py-2.5 bg-purple-600 hover:bg-purple-500 text-white text-xs font-extrabold rounded-xl flex items-center justify-center gap-2 shadow"
+            className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-extrabold rounded-xl flex items-center justify-center gap-2 shadow"
           >
             <CalendarCheck className="w-4 h-4" />
             <span>Book 1-on-1 Call with {activeHost.name.split(' ')[0]}</span>
@@ -2951,11 +2952,11 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
       return (
         <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-white border border-emerald-500/40 shadow-2xl space-y-4 rounded-2xl ${isSelected ? 'is-selected' : ''}`}>
           <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-            <div className="flex items-center gap-2 text-xs font-bold text-emerald-400">
-              <CheckCircle className="w-4 h-4" />
+            <div className="flex items-center gap-2 text-xs font-bold text-emerald-700">
+              <CheckCircle className="w-4 h-4 text-emerald-600" />
               <span>Appointment Booking Receipt</span>
             </div>
-            <span className="text-[10px] text-emerald-300 font-mono bg-emerald-950/60 px-2 py-0.5 border border-emerald-800 rounded font-bold">
+            <span className="text-[10px] text-emerald-800 font-mono bg-emerald-50 px-2 py-0.5 border border-emerald-200 rounded font-bold">
               CONFIRMED
             </span>
           </div>
@@ -2967,21 +2968,21 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
             </div>
             <div className="flex items-center justify-between text-slate-700">
               <span>Session Type:</span>
-              <span className="font-bold text-purple-300">{latestAppt.eventTitle}</span>
+              <span className="font-bold text-emerald-800">{latestAppt.eventTitle}</span>
             </div>
             <div className="flex items-center justify-between text-slate-700">
               <span>Scheduled Date & Time:</span>
-              <span className="font-bold text-amber-300 font-mono">{latestAppt.date} at {latestAppt.timeSlot} (EST)</span>
+              <span className="font-bold text-amber-700 font-mono">{latestAppt.date} at {latestAppt.timeSlot} (EST)</span>
             </div>
             <div className="flex items-center justify-between text-slate-700">
               <span>Meeting Host:</span>
-              <span className="font-bold text-indigo-400">{latestAppt.hostName}</span>
+              <span className="font-bold text-teal-800">{latestAppt.hostName}</span>
             </div>
           </div>
 
-          <div className="p-3 bg-white border border-slate-200 rounded-xl text-center">
+          <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-center">
             <span className="text-[11px] text-slate-600 block mb-1">Zoom Meeting Link:</span>
-            <a href={latestAppt.meetingLink} target="_blank" rel="noreferrer" className="text-xs font-mono font-bold text-indigo-400 hover:underline">
+            <a href={latestAppt.meetingLink} target="_blank" rel="noreferrer" className="text-xs font-mono font-bold text-emerald-700 hover:underline">
               {latestAppt.meetingLink}
             </a>
           </div>
@@ -2990,7 +2991,7 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
             onClick={() => alert('iCal Calendar (.ics) file generated and downloaded!')}
             className="w-full py-2.5 bg-slate-50 hover:bg-slate-100 text-slate-800 text-xs font-bold rounded-xl border border-slate-300 flex items-center justify-center gap-2"
           >
-            <Calendar className="w-4 h-4 text-purple-400" />
+            <Calendar className="w-4 h-4 text-emerald-600" />
             <span>Add Event to Google / iCal Calendar</span>
           </button>
         </div>
@@ -3024,6 +3025,141 @@ const ElementRendererContent: React.FC<ElementRendererProps> = ({
                 >
                   Select Host
                 </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // ==========================================
+    // MEMBERSHIP & COURSE ENGINE ELEMENTS
+    // ==========================================
+
+    case 'course_curriculum_widget': {
+      const activeCourse = loadStoredCourse();
+      return (
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-white border border-slate-200 shadow-xl space-y-4 rounded-2xl ${isSelected ? 'is-selected' : ''}`}>
+          <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+            <div className="flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold border border-emerald-200">
+                <GraduationCap className="w-5 h-5 text-emerald-600" />
+              </div>
+              <div>
+                <h4 className="text-sm font-black text-slate-900">{props.title || activeCourse.title}</h4>
+                <p className="text-[11px] text-slate-500 font-medium">Academy Curriculum Syllabus ({activeCourse.modules.length} Modules)</p>
+              </div>
+            </div>
+            <span className="text-[10px] uppercase font-mono font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-1 rounded-full">
+              LMS SYLLABUS
+            </span>
+          </div>
+
+          <div className="space-y-3">
+            {activeCourse.modules.map((mod, mIdx) => (
+              <div key={mod.id} className="bg-slate-50 border border-slate-200 rounded-xl p-3.5 space-y-2">
+                <div className="flex items-center justify-between text-xs font-bold text-slate-800">
+                  <span>{mod.title}</span>
+                  <span className="text-[10px] text-slate-500 font-mono">{mod.lessons.length} Lessons</span>
+                </div>
+                <div className="space-y-1 pl-2 border-l-2 border-emerald-500/40">
+                  {mod.lessons.map((les) => (
+                    <div key={les.id} className="flex items-center justify-between text-[11px] py-1 text-slate-700">
+                      <div className="flex items-center gap-1.5">
+                        <Play className="w-3 h-3 text-emerald-600 fill-emerald-600" />
+                        <span>{les.title}</span>
+                      </div>
+                      <span className="text-[10px] text-slate-500 font-mono">{les.duration || '15 mins'}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    case 'lesson_video_player': {
+      const activeCourse = loadStoredCourse();
+      const firstLesson = activeCourse.modules[0]?.lessons[0] || { title: 'Welcome Masterclass', videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4' };
+
+      return (
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-white border border-slate-200 shadow-xl space-y-4 rounded-2xl ${isSelected ? 'is-selected' : ''}`}>
+          <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+            <div className="flex items-center gap-2">
+              <Video className="w-4 h-4 text-emerald-600" />
+              <span className="text-xs font-bold text-slate-900">{props.title || firstLesson.title}</span>
+            </div>
+            <span className="text-[10px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-bold">
+              HD VIDEO LESSON
+            </span>
+          </div>
+
+          <div className="relative rounded-2xl overflow-hidden aspect-video bg-slate-950 border border-slate-800 shadow-inner flex items-center justify-center group">
+            <video 
+              src={props.videoUrl || firstLesson.videoUrl} 
+              controls={isInteractiveMode}
+              className="w-full h-full object-cover"
+            />
+            {!isInteractiveMode && (
+              <div className="absolute inset-0 bg-slate-950/40 flex items-center justify-center">
+                <div className="w-14 h-14 rounded-full bg-emerald-600/90 text-white flex items-center justify-center shadow-xl shadow-emerald-950/50">
+                  <Play className="w-6 h-6 fill-white ml-0.5" />
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    case 'certificate_badge_widget': {
+      return (
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-gradient-to-br from-slate-950 via-slate-900 to-amber-950/60 border-2 border-amber-500/80 ring-4 ring-amber-500/20 rounded-3xl text-center space-y-4 shadow-2xl text-white ${isSelected ? 'is-selected' : ''}`}>
+          <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-amber-500 to-yellow-300 mx-auto flex items-center justify-center text-slate-950 text-2xl font-black shadow-lg shadow-amber-500/40">
+            👑
+          </div>
+          <div className="space-y-1">
+            <div className="text-[10px] font-mono uppercase font-bold text-amber-400 tracking-widest">OFFICIAL ACCREDITATION</div>
+            <h4 className="text-base font-black text-white font-serif">{props.title || "Royal Diploma of Distinction"}</h4>
+          </div>
+          <p className="text-xs text-amber-100/80 max-w-sm mx-auto">
+            {props.subtitle || "Awarded upon 100% curriculum completion with verified certificate serial number."}
+          </p>
+          <div className="pt-2 border-t border-amber-500/30 text-[10px] font-mono text-amber-400 font-bold">
+            VERIFICATION ID: CERT-2026-X948
+          </div>
+        </div>
+      );
+    }
+
+    case 'drip_schedule_widget': {
+      const activeCourse = loadStoredCourse();
+      return (
+        <div style={containerStyle} onClick={onSelect} className={`element-node relative ${isInteractiveMode ? 'preview-element-clean' : ''} p-6 bg-white border border-slate-200 shadow-xl space-y-4 rounded-2xl ${isSelected ? 'is-selected' : ''}`}>
+          <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+            <div className="flex items-center gap-2">
+              <Clock className="w-4 h-4 text-teal-600" />
+              <span className="text-xs font-bold text-slate-900">Automated Content Drip Schedule</span>
+            </div>
+            <span className="text-[10px] font-mono text-teal-800 bg-teal-50 px-2 py-0.5 rounded border border-teal-200 font-bold">
+              PROGRESSION ENGINE
+            </span>
+          </div>
+
+          <div className="space-y-2.5">
+            {activeCourse.modules.map((mod, idx) => (
+              <div key={mod.id} className="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between text-xs">
+                <div className="flex items-center gap-2">
+                  <span className="w-5 h-5 rounded-full bg-emerald-600 text-white text-[10px] font-bold flex items-center justify-center">
+                    {idx + 1}
+                  </span>
+                  <span className="font-bold text-slate-800">{mod.title}</span>
+                </div>
+                <span className="text-[10px] font-mono font-bold text-teal-700 bg-teal-50 px-2 py-0.5 rounded border border-teal-200">
+                  {idx === 0 ? 'Instant Day 0' : `Drip Day ${idx * 7}`}
+                </span>
               </div>
             ))}
           </div>
