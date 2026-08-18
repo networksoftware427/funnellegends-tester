@@ -47,8 +47,8 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onOpenOrderModal }) 
     },
     {
       icon: <Database className="w-6 h-6 text-teal-400" />,
-      title: "Supabase Cloud Database Sync",
-      desc: "All leads, orders, funnel states, and workspace settings are synced to your PostgreSQL database in real-time."
+      title: "Real-Time Cloud Database Sync",
+      desc: "All leads, orders, funnel states, and workspace settings are backed up and synced to high-speed cloud databases in real-time."
     },
     {
       icon: <Sparkles className="w-6 h-6 text-indigo-400" />,

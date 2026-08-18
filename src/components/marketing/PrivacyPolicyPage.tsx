@@ -65,7 +65,7 @@ export const PrivacyPolicyPage: React.FC<LegalPageProps> = ({ onNavigate }) => {
           {
             title: '3. How We Share Your Information',
             content: [
-              `<strong>Service Providers:</strong> We share data with trusted third-party vendors who assist in operating our platform (e.g., Supabase for database, Vercel for hosting, Stripe for payments, and email service providers). These parties are contractually obligated to keep your data secure.`,
+              `<strong>Service Providers:</strong> We share data with trusted third-party vendors who assist in operating our platform (e.g., cloud database providers, edge hosting infrastructure, Stripe for payments, and email service providers). These parties are contractually obligated to keep your data secure.`,
               `<strong>Legal Requirements:</strong> We may disclose information if required by law, subpoena, or legal process.`,
               `<strong>Business Transfers:</strong> If FunnelLegends is acquired or merges with another company, your data may be transferred as part of that transaction.`,
               `<strong>We do not sell your personal data to third parties.</strong>`,
@@ -98,7 +98,7 @@ export const PrivacyPolicyPage: React.FC<LegalPageProps> = ({ onNavigate }) => {
           {
             title: '7. Security',
             content: [
-              `We implement industry-standard security measures including 256-bit SSL encryption, secure data centres via Supabase and Vercel, role-based access controls, and routine security audits. However, no system is 100% secure and we cannot guarantee absolute security.`,
+              `We implement industry-standard security measures including 256-bit SSL encryption, secure Tier-4 edge data centres, role-based access controls, and routine security audits. However, no system is 100% secure and we cannot guarantee absolute security.`,
             ]
           },
           {

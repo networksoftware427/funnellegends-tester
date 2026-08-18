@@ -34,7 +34,7 @@ export const BountyPackAffiliateManager: React.FC = () => {
 
   // Active Main Sub-Tab
   const [activeTab, setActiveTab] = useState<
-    'overview' | 'roster' | 'plans' | 'ledger' | 'payouts' | 'promo_assets' | 'contests' | 'portal' | 'simulations' | 'database' | 'settings'
+    'overview' | 'roster' | 'plans' | 'ledger' | 'payouts' | 'promo_assets' | 'contests' | 'portal' | 'simulations' | 'settings'
   >('overview');
 
   // Roster Filter & Search
@@ -674,14 +674,6 @@ export const BountyPackAffiliateManager: React.FC = () => {
         >
           <Zap className="w-4 h-4 fill-amber-500" />
           <span>Simulations & Workflows</span>
-        </button>
-
-        <button 
-          onClick={() => setActiveTab('database')}
-          className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${activeTab === 'database' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/25 font-black' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'}`}
-        >
-          <Database className="w-4 h-4" />
-          <span>Database & Schema</span>
         </button>
 
         <button 
@@ -2073,95 +2065,7 @@ export const BountyPackAffiliateManager: React.FC = () => {
           </div>
         )}
 
-        {/* ── TAB 10: DATABASE & SCHEMA ── */}
-        {activeTab === 'database' && (
-          <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div>
-                <h3 className="text-xl font-black text-slate-900">Supabase SQL Database & Schema Inspector</h3>
-                <p className="text-xs text-slate-500">Review database schema, sync state, and copy production SQL migration scripts.</p>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <button 
-                  onClick={handleTriggerSupabaseSync}
-                  disabled={isSyncingDb}
-                  className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black shadow-lg shadow-emerald-600/20 flex items-center gap-2"
-                >
-                  <RefreshCw className={`w-4 h-4 ${isSyncingDb ? 'animate-spin' : ''}`} />
-                  <span>{isSyncingDb ? 'Syncing to Supabase...' : 'Sync to Supabase Now'}</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Sync Feedback Alert */}
-            {dbSyncStatus && (
-              <div className={`p-4 rounded-2xl border text-xs font-bold flex items-center justify-between ${dbSyncStatus.success ? 'bg-emerald-50 text-emerald-900 border-emerald-300' : 'bg-amber-50 text-amber-900 border-amber-300'}`}>
-                <div className="flex items-center gap-2">
-                  <CheckCheck className="w-4 h-4 text-emerald-600" />
-                  <span>{dbSyncStatus.message}</span>
-                </div>
-                <span className="font-mono text-[10px] text-slate-500">{dbSyncStatus.timestamp}</span>
-              </div>
-            )}
-
-            {/* Table Stats Summary */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-              <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-1">
-                <span className="text-[10px] uppercase font-mono font-bold text-slate-500">Plans Table</span>
-                <div className="text-xl font-black text-slate-900">{plans.length} Records</div>
-              </div>
-              <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-1">
-                <span className="text-[10px] uppercase font-mono font-bold text-slate-500">Affiliates Table</span>
-                <div className="text-xl font-black text-emerald-700">{affiliates.length} Records</div>
-              </div>
-              <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-1">
-                <span className="text-[10px] uppercase font-mono font-bold text-slate-500">Ledger Table</span>
-                <div className="text-xl font-black text-teal-700">{transactions.length} Records</div>
-              </div>
-              <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-1">
-                <span className="text-[10px] uppercase font-mono font-bold text-slate-500">Promo Assets</span>
-                <div className="text-xl font-black text-slate-900">{promoMaterials.length} Records</div>
-              </div>
-              <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-1">
-                <span className="text-[10px] uppercase font-mono font-bold text-slate-500">Contests Table</span>
-                <div className="text-xl font-black text-amber-600">{contests.length} Records</div>
-              </div>
-              <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-1">
-                <span className="text-[10px] uppercase font-mono font-bold text-slate-500">Settings Table</span>
-                <div className="text-xl font-black text-green-700">1 Row (Active)</div>
-              </div>
-            </div>
-
-            {/* SQL Migration Script Box */}
-            <div className="bg-white border border-slate-200 rounded-3xl p-6 space-y-4 shadow-sm">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Server className="w-5 h-5 text-emerald-600" />
-                  <h4 className="text-base font-black text-slate-900">PostgreSQL / Supabase DDL Migration Script</h4>
-                </div>
-
-                <button 
-                  onClick={() => {
-                    navigator.clipboard.writeText(BOUNTYPACK_SQL_SCHEMA);
-                    setCopiedSchema(true);
-                    setTimeout(() => setCopiedSchema(false), 2000);
-                  }}
-                  className="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold flex items-center gap-1.5"
-                >
-                  {copiedSchema ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
-                  <span>{copiedSchema ? 'Copied SQL Script!' : 'Copy SQL Script'}</span>
-                </button>
-              </div>
-
-              <div className="bg-slate-950 text-emerald-400 p-4 rounded-2xl font-mono text-xs max-h-96 overflow-y-auto">
-                <pre>{BOUNTYPACK_SQL_SCHEMA}</pre>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ── TAB 11: SETTINGS ── */}
+        {/* ── TAB 10: SETTINGS ── */}
         {activeTab === 'settings' && (
           <div className="space-y-6 max-w-3xl">
             <div>

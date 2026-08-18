@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { FunnelData, FunnelStepData, PageStatus } from '../../types/builder';
-import { FUNNEL_ENGINE_SQL_SCHEMA, syncFunnelsToSupabase } from '../../utils/dbSync';
 import { 
   Globe, ShieldCheck, Split, History, CheckCircle, Clock, Archive, 
   ExternalLink, Copy, Check, Sparkles, Layers, Sliders, Server,
-  Database, RefreshCw, Zap, Radio, Terminal, ArrowRight, Activity, CheckCheck
+  RefreshCw, Zap, Radio, Terminal, ArrowRight, Activity, CheckCheck
 } from 'lucide-react';
 
 interface PublishingManagerProps {
@@ -20,15 +19,14 @@ export const PublishingManager: React.FC<PublishingManagerProps> = ({
   onUpdateStepStatus,
   onUpdateStepAbTest,
 }) => {
-  const [subdomain, setSubdomain] = useState('growthlabs');
-  const [customDomain, setCustomDomain] = useState('funnel.growthlabs.io');
+  const [subdomain, setSubdomain] = useState('mygrowth');
+  const [customDomain, setCustomDomain] = useState('funnel.mybrand.com');
   const [isCopied, setIsCopied] = useState(false);
   const [copiedDns, setCopiedDns] = useState<string | null>(null);
-  const [copiedSchema, setCopiedSchema] = useState(false);
   const [trafficSplit, setTrafficSplit] = useState(activeStep.trafficSplitPercent || 50);
 
-  // Active Sub-Tab
-  const [activeTab, setActiveTab] = useState<'routing' | 'ab_split' | 'database'>('routing');
+  // Active Sub-Tab: routing & ab_split
+  const [activeTab, setActiveTab] = useState<'routing' | 'ab_split'>('routing');
 
   // A/B Traffic Simulation state
   const [simVisitorCount, setSimVisitorCount] = useState(250);
@@ -39,29 +37,31 @@ export const PublishingManager: React.FC<PublishingManagerProps> = ({
   } | null>(null);
   const [isSimulatingAb, setIsSimulatingAb] = useState(false);
 
-  // Supabase sync
-  const [dbSyncStatus, setDbSyncStatus] = useState<{ success: boolean; message: string; timestamp: string } | null>(null);
-  const [isSyncingDb, setIsSyncingDb] = useState(false);
-
-  const fullUrl = `https://${customDomain || `${subdomain}.launchengine.io`}/${funnel.slug}/${activeStep.slug}`;
+  // Dynamic Live URL calculation
+  const currentOrigin = typeof window !== 'undefined' && window.location.origin 
+    ? window.location.origin 
+    : 'https://funnellegends.com';
+  
+  // The actual working live preview/published URL for this funnel and step
+  const liveStepUrl = `${currentOrigin}/?funnel=${encodeURIComponent(funnel.slug)}&step=${encodeURIComponent(activeStep.slug)}`;
+  
+  // The production custom domain representation
+  const productionDomainUrl = `https://${customDomain || `${subdomain}.funnellegends.com`}/${funnel.slug}/${activeStep.slug}`;
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(fullUrl);
+    navigator.clipboard.writeText(liveStepUrl);
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), 2500);
+  };
+
+  const handleOpenLivePage = () => {
+    window.open(liveStepUrl, '_blank');
   };
 
   const handleCopyDnsRecord = (val: string, key: string) => {
     navigator.clipboard.writeText(val);
     setCopiedDns(key);
     setTimeout(() => setCopiedDns(null), 2500);
-  };
-
-  const handleTriggerSupabaseSync = async () => {
-    setIsSyncingDb(true);
-    const res = await syncFunnelsToSupabase([funnel]);
-    setDbSyncStatus(res);
-    setIsSyncingDb(false);
   };
 
   const handleRunAbTrafficSimulation = () => {
@@ -114,11 +114,19 @@ export const PublishingManager: React.FC<PublishingManagerProps> = ({
                 Edge SSL Active
               </span>
             </div>
-            <p className="text-xs text-emerald-100/90 font-medium">Custom CNAME resolution, edge A/B split routing, lifecycle state machine & database sync.</p>
+            <p className="text-xs text-emerald-100/90 font-medium">Custom CNAME resolution, edge A/B split routing, and lifecycle state management.</p>
           </div>
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
+          <button 
+            onClick={handleOpenLivePage}
+            className="px-3.5 py-2 bg-emerald-700 hover:bg-emerald-600 text-white border border-emerald-500/50 rounded-xl text-xs font-black flex items-center gap-1.5 transition-all shadow-sm"
+          >
+            <ExternalLink className="w-4 h-4" />
+            <span>Open in New Tab</span>
+          </button>
+
           <button 
             onClick={handleCopyLink}
             className="px-3.5 py-2 bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-xl text-xs font-black flex items-center gap-1.5 transition-all shadow-sm"
@@ -146,14 +154,6 @@ export const PublishingManager: React.FC<PublishingManagerProps> = ({
           <Split className="w-4 h-4" />
           <span>A/B Split Test Engine</span>
         </button>
-
-        <button 
-          onClick={() => setActiveTab('database')}
-          className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${activeTab === 'database' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/25 font-black' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'}`}
-        >
-          <Database className="w-4 h-4" />
-          <span>Database & Schema</span>
-        </button>
       </div>
 
       {/* ── MAIN CONTENT DISPLAY ── */}
@@ -162,7 +162,44 @@ export const PublishingManager: React.FC<PublishingManagerProps> = ({
         {/* ── TAB 1: DOMAIN & ROUTING ── */}
         {activeTab === 'routing' && (
           <div className="space-y-6">
-            {/* SECTION 1: LIFECYCLE STATE MACHINE */}
+            
+            {/* SECTION 1: RESOLVED LIVE URL CARD */}
+            <div className="p-5 bg-gradient-to-br from-emerald-50 via-teal-50/50 to-white border-2 border-emerald-300 rounded-3xl space-y-3 shadow-sm">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-emerald-200/60 pb-3">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span className="text-xs font-black text-emerald-950 uppercase tracking-wider">ACTUAL WORKING LIVE STEP URL</span>
+                </div>
+                <span className="text-[11px] font-mono text-emerald-800 font-bold bg-emerald-100/70 px-2.5 py-0.5 rounded-full">
+                  Status: {activeStep.status || 'Published'}
+                </span>
+              </div>
+
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-3.5 rounded-2xl border border-emerald-200">
+                <div className="min-w-0 flex-1">
+                  <div className="text-xs text-slate-500 font-medium">Click to open or copy this URL to view your live interactive page:</div>
+                  <div className="text-sm font-mono text-emerald-900 font-bold break-all mt-0.5 select-all">{liveStepUrl}</div>
+                </div>
+                <div className="flex items-center gap-2 shrink-0">
+                  <button
+                    onClick={handleOpenLivePage}
+                    className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black flex items-center gap-1.5 shadow-sm transition-all"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5" />
+                    <span>Open Live Page</span>
+                  </button>
+                  <button 
+                    onClick={handleCopyLink}
+                    className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all"
+                  >
+                    {isCopied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                    <span>{isCopied ? 'Copied!' : 'Copy'}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* SECTION 2: LIFECYCLE STATE MACHINE */}
             <div className="bg-white border border-slate-200 rounded-3xl p-6 space-y-4 shadow-sm">
               <h3 className="text-sm font-black text-slate-900 flex items-center gap-2">
                 <Clock className="w-4 h-4 text-emerald-600" />
@@ -187,22 +224,22 @@ export const PublishingManager: React.FC<PublishingManagerProps> = ({
               </div>
             </div>
 
-            {/* SECTION 2: DOMAIN & SLUG ROUTING */}
+            {/* SECTION 3: DOMAIN & SLUG ROUTING */}
             <div className="bg-white border border-slate-200 rounded-3xl p-6 space-y-6 shadow-sm">
               <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                 <h3 className="text-sm font-black text-slate-900 flex items-center gap-2">
                   <Globe className="w-4 h-4 text-teal-600" />
-                  Domain Mapping & Edge SSL Resolution
+                  Custom Domain Mapping & Production DNS
                 </h3>
                 <span className="flex items-center gap-1 text-xs text-emerald-800 font-black bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
                   <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                  <span>SSL Provisioned & Active</span>
+                  <span>Edge SSL Provisioned</span>
                 </span>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Multi-Tenant Subdomain</label>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Subdomain Alias</label>
                   <div className="flex items-center bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-700">
                     <input 
                       type="text" 
@@ -210,12 +247,12 @@ export const PublishingManager: React.FC<PublishingManagerProps> = ({
                       onChange={(e) => setSubdomain(e.target.value)}
                       className="bg-transparent font-mono font-bold text-slate-900 focus:outline-none w-full"
                     />
-                    <span className="text-slate-500 font-mono font-bold">.launchengine.io</span>
+                    <span className="text-slate-500 font-mono font-bold">.funnellegends.com</span>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Custom Domain Alias</label>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Custom Root / Sub-Domain</label>
                   <input 
                     type="text" 
                     value={customDomain}
@@ -230,16 +267,16 @@ export const PublishingManager: React.FC<PublishingManagerProps> = ({
               <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
                 <div className="flex items-center gap-2 text-xs font-bold text-slate-700">
                   <Server className="w-4 h-4 text-emerald-600" />
-                  <span>DNS Provider Configuration Instructions (Cloudflare / GoDaddy / Namecheap):</span>
+                  <span>DNS Provider Configuration (Cloudflare / GoDaddy / Namecheap):</span>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
                   <div className="p-3 bg-white rounded-xl border border-slate-200 flex items-center justify-between">
                     <div>
                       <div className="text-[10px] text-slate-500 font-mono font-bold">CNAME RECORD</div>
-                      <div className="font-mono text-emerald-700 font-bold">cname.launchengine.io</div>
+                      <div className="font-mono text-emerald-700 font-bold">cname.funnellegends.com</div>
                     </div>
                     <button 
-                      onClick={() => handleCopyDnsRecord('cname.launchengine.io', 'cname')}
+                      onClick={() => handleCopyDnsRecord('cname.funnellegends.com', 'cname')}
                       className="px-2.5 py-1 bg-slate-50 hover:bg-slate-100 rounded-lg text-[11px] font-bold text-slate-700 border border-slate-200"
                     >
                       {copiedDns === 'cname' ? 'Copied ✓' : 'Copy CNAME'}
@@ -248,7 +285,7 @@ export const PublishingManager: React.FC<PublishingManagerProps> = ({
 
                   <div className="p-3 bg-white rounded-xl border border-slate-200 flex items-center justify-between">
                     <div>
-                      <div className="text-[10px] text-slate-500 font-mono font-bold">A RECORD (ANYCAST IP)</div>
+                      <div className="text-[10px] text-slate-500 font-mono font-bold">A RECORD (ANYCAST EDGE IP)</div>
                       <div className="font-mono text-emerald-700 font-bold">76.76.21.21</div>
                     </div>
                     <button 
@@ -261,21 +298,15 @@ export const PublishingManager: React.FC<PublishingManagerProps> = ({
                 </div>
               </div>
 
-              {/* Resolved Live URL Card */}
-              <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-center justify-between">
+              {/* Production Domain Preview */}
+              <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex items-center justify-between">
                 <div>
-                  <div className="text-[10px] font-black text-emerald-800 uppercase tracking-wider">RESOLVED LIVE STEP URL</div>
-                  <div className="text-sm font-mono text-emerald-950 font-bold mt-0.5">{fullUrl}</div>
+                  <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">PRODUCTION CUSTOM DOMAIN ALIAS</div>
+                  <div className="text-xs font-mono text-slate-900 font-bold mt-0.5">{productionDomainUrl}</div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <button 
-                    onClick={handleCopyLink}
-                    className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black shadow-sm flex items-center gap-1.5"
-                  >
-                    {isCopied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                    <span>{isCopied ? 'Copied!' : 'Copy URL'}</span>
-                  </button>
-                </div>
+                <span className="text-[10px] font-bold px-2.5 py-1 bg-emerald-100 text-emerald-800 rounded-lg">
+                  DNS Active
+                </span>
               </div>
             </div>
           </div>
@@ -381,81 +412,6 @@ export const PublishingManager: React.FC<PublishingManagerProps> = ({
                   </button>
                 </div>
               )}
-            </div>
-          </div>
-        )}
-
-        {/* ── TAB 3: DATABASE & SCHEMA ── */}
-        {activeTab === 'database' && (
-          <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div>
-                <h3 className="text-xl font-black text-slate-900">Supabase SQL Database & Schema Inspector</h3>
-                <p className="text-xs text-slate-500">Inspect database tables, sync state, and copy production SQL migration script.</p>
-              </div>
-
-              <button 
-                onClick={handleTriggerSupabaseSync}
-                disabled={isSyncingDb}
-                className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black shadow-lg shadow-emerald-600/20 flex items-center gap-2"
-              >
-                <RefreshCw className={`w-4 h-4 ${isSyncingDb ? 'animate-spin' : ''}`} />
-                <span>{isSyncingDb ? 'Syncing to Supabase...' : 'Sync to Supabase Now'}</span>
-              </button>
-            </div>
-
-            {dbSyncStatus && (
-              <div className={`p-4 rounded-2xl border text-xs font-bold flex items-center justify-between ${dbSyncStatus.success ? 'bg-emerald-50 text-emerald-900 border-emerald-300' : 'bg-amber-50 text-amber-900 border-amber-300'}`}>
-                <div className="flex items-center gap-2">
-                  <CheckCheck className="w-4 h-4 text-emerald-600" />
-                  <span>{dbSyncStatus.message}</span>
-                </div>
-                <span className="font-mono text-[10px] text-slate-500">{dbSyncStatus.timestamp}</span>
-              </div>
-            )}
-
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-1 shadow-sm">
-                <span className="text-[10px] uppercase font-mono font-bold text-slate-500">Funnel Workspaces</span>
-                <div className="text-xl font-black text-slate-900">1 Active</div>
-              </div>
-              <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-1 shadow-sm">
-                <span className="text-[10px] uppercase font-mono font-bold text-slate-500">Funnel Steps</span>
-                <div className="text-xl font-black text-emerald-700">{funnel.steps.length} Steps</div>
-              </div>
-              <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-1 shadow-sm">
-                <span className="text-[10px] uppercase font-mono font-bold text-slate-500">Canvas Pages</span>
-                <div className="text-xl font-black text-teal-700">{funnel.steps.length} Pages</div>
-              </div>
-              <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-1 shadow-sm">
-                <span className="text-[10px] uppercase font-mono font-bold text-slate-500">Leads Captured</span>
-                <div className="text-xl font-black text-green-700">12 Leads</div>
-              </div>
-            </div>
-
-            <div className="bg-white border border-slate-200 rounded-3xl p-6 space-y-4 shadow-sm">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Database className="w-5 h-5 text-emerald-600" />
-                  <h4 className="text-base font-black text-slate-900">PostgreSQL / Supabase DDL Migration Script</h4>
-                </div>
-
-                <button 
-                  onClick={() => {
-                    navigator.clipboard.writeText(FUNNEL_ENGINE_SQL_SCHEMA);
-                    setCopiedSchema(true);
-                    setTimeout(() => setCopiedSchema(false), 2000);
-                  }}
-                  className="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold flex items-center gap-1.5"
-                >
-                  {copiedSchema ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
-                  <span>{copiedSchema ? 'Copied SQL Script!' : 'Copy SQL Script'}</span>
-                </button>
-              </div>
-
-              <div className="bg-slate-950 text-emerald-400 p-4 rounded-2xl font-mono text-xs max-h-96 overflow-y-auto">
-                <pre>{FUNNEL_ENGINE_SQL_SCHEMA}</pre>
-              </div>
             </div>
           </div>
         )}

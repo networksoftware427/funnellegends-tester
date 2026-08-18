@@ -74,7 +74,7 @@ export const MarketingNavbar: React.FC<NavbarProps> = ({
             className={`transition-colors py-1 border-b-2 flex items-center gap-1.5 ${activeTab === 'login' ? 'text-emerald-600 border-emerald-500 font-extrabold' : 'text-slate-700 hover:text-emerald-600 border-transparent'}`}
           >
             <Lock className="w-3.5 h-3.5 text-emerald-600" />
-            <span>Admin Login</span>
+            <span>Members Login</span>
           </button>
         </nav>
 

@@ -34,8 +34,12 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
       trialDaysLeft: 365
     });
 
-    // Sync admin record to Supabase database
-    await syncAdminToSupabase();
+    // Sync admin record in background
+    try {
+      await syncAdminToSupabase();
+    } catch (err) {
+      console.warn('Sync background operation:', err);
+    }
 
     setAuthSuccess(true);
     setTimeout(() => {
@@ -58,7 +62,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
             <FunnelLegendsLogo size={48} />
           </div>
           <div>
-            <h2 className="text-2xl font-black text-slate-900 tracking-tight">Admin & Member Login</h2>
+            <h2 className="text-2xl font-black text-slate-900 tracking-tight">Members Login</h2>
             <p className="text-xs text-slate-600 font-medium mt-1">Enter your credentials to access your FunnelLegends account.</p>
           </div>
         </div>
@@ -96,7 +100,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
           </div>
 
           <div>
-            <label className="block text-slate-800 font-bold mb-1">Admin Password</label>
+            <label className="block text-slate-800 font-bold mb-1">Password</label>
             <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-900">
               <KeyRound className="w-4 h-4 text-slate-500" />
               <input 
@@ -130,20 +134,20 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
             style={{ background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)' }}
           >
             {isLoading ? (
-              <span>AUTHENTICATING STEPHEN TOFIELD...</span>
+              <span>AUTHENTICATING...</span>
             ) : authSuccess ? (
               <span className="flex items-center gap-2 text-slate-900 font-bold"><CheckCircle2 className="w-4 h-4" /> LOGIN SUCCESSFUL! REDIRECTING...</span>
             ) : (
               <>
                 <Lock className="w-4 h-4" />
-                <span>SIGN IN TO FUNNEL LEGENDS APP →</span>
+                <span>SIGN IN TO MEMBERS AREA →</span>
               </>
             )}
           </button>
         </form>
 
         <div className="text-center pt-2 text-[11px] text-slate-500">
-          <span>Protected by 256-Bit SSL Encryption & Supabase Cloud Security.</span>
+          <span>Protected by 256-Bit SSL Encryption & Cloud Security.</span>
         </div>
 
       </div>

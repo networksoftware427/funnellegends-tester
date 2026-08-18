@@ -66,13 +66,13 @@ export const MarketingFooter: React.FC<FooterProps> = ({ onNavigate, onOpenOrder
               <li><button onClick={() => onNavigate('home')} className="hover:text-emerald-600 transition-colors">37 Cookbook Funnel Recipes</button></li>
               <li><button onClick={() => onNavigate('pricing')} className="hover:text-emerald-600 transition-colors">30-Day VIP Free Trial</button></li>
               <li><button onClick={() => onNavigate('pricing')} className="hover:text-emerald-600 transition-colors">2-Step Order Form Templates</button></li>
-              <li><button onClick={() => onNavigate('login')} className="hover:text-emerald-600 transition-colors">Admin Portal Login</button></li>
+              <li><button onClick={() => onNavigate('login')} className="hover:text-emerald-600 transition-colors">Members Login</button></li>
             </ul>
           </div>
 
           <div>
             <h4 className="text-slate-900 text-xs font-black uppercase tracking-wider mb-4">Enterprise Compliance</h4>
-            <p className="text-xs leading-relaxed mb-4 text-slate-600 font-medium">Powered by Supabase PostgreSQL Database and Vercel Cloud Infrastructure.</p>
+            <p className="text-xs leading-relaxed mb-4 text-slate-600 font-medium">Powered by High-Speed Cloud Infrastructure & 256-Bit SSL Encryption.</p>
             <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-[11px] font-mono text-emerald-800 font-bold flex items-center gap-2">
               <Lock className="w-3.5 h-3.5 text-emerald-600" />
               <span>Status: All Systems Operational (100% Uptime)</span>

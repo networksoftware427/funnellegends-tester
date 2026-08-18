@@ -130,9 +130,23 @@ export const LivePreviewModal: React.FC<LivePreviewModalProps> = ({
           </button>
         </div>
 
-        <button onClick={onClose} className="p-1.5 hover:bg-slate-50 rounded-lg text-slate-600 hover:text-slate-900">
-          <X className="w-5 h-5" />
-        </button>
+        <div className="flex items-center gap-2">
+          <button 
+            onClick={() => {
+              const origin = typeof window !== 'undefined' && window.location.origin ? window.location.origin : '';
+              window.open(`${origin}/?step=${encodeURIComponent(activeStep.slug)}&live=true`, '_blank');
+            }}
+            className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all"
+            title="Open Live Published Page in a Full Browser Tab"
+          >
+            <ExternalLink className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Open in New Tab</span>
+          </button>
+
+          <button onClick={onClose} className="p-1.5 hover:bg-slate-50 rounded-lg text-slate-600 hover:text-slate-900" title="Close Preview">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
       </header>
 
       {/* Main Preview Scrollable Container Area */}

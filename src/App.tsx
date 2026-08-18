@@ -6,12 +6,16 @@ import { TemplateLibraryModal } from './components/templates/TemplateLibraryModa
 import { MembershipManager } from './components/membership/MembershipManager';
 import { PublishingManager } from './components/publishing/PublishingManager';
 import { LivePreviewModal } from './components/preview/LivePreviewModal';
+import { LivePublishedPageRenderer } from './components/preview/LivePublishedPageRenderer';
 import { AutomationWorkflowBuilder } from './components/automation/AutomationWorkflowBuilder';
 import { CrmPipeline } from './components/crm/CrmPipeline';
 import { BountyPackAffiliateManager } from './components/affiliate/BountyPackAffiliateManager';
 import { ChronoChimpAppointmentManager } from './components/appointment/ChronoChimpAppointmentManager';
 import { TribeNexusCommunity } from './components/community/TribeNexusCommunity';
 import { PingPandaMessageHub } from './components/messageHub/PingPandaMessageHub';
+import { SupportPage } from './components/support/SupportPage';
+import { ContactPage } from './components/contact/ContactPage';
+import { GuidesPage } from './components/guides/GuidesPage';
 import { AiAssistantModal } from './components/ai/AiAssistantModal';
 import { CodeInspector } from './components/builder/CodeInspector';
 import { DashboardOverview } from './components/dashboard/DashboardOverview';
@@ -22,7 +26,8 @@ import { WebsitesManager } from './components/websites/WebsitesManager';
 import { 
   Rocket, Layers, Sparkles, GraduationCap, Globe, GitBranch, Users, 
   Settings, Plus, ChevronRight, Download, Eye, ExternalLink, Play, Trash2, 
-  Gift, CalendarCheck, MessageSquare, LayoutDashboard, Menu, ArrowLeft
+  Gift, CalendarCheck, MessageSquare, LayoutDashboard, Menu, ArrowLeft,
+  BookOpen, LifeBuoy, Headphones, Mail
 } from 'lucide-react';
 
 // FunnelLegends inline SVG Logo
@@ -67,8 +72,47 @@ export function App() {
   // Main App View Mode: 'marketing' (Public Site) vs 'platform' (Builder App)
   const [viewMode, setViewMode] = useState<'marketing' | 'platform'>('marketing');
 
+  // Check for standalone live published page URL parameters (?funnel=...&step=... or ?step=...)
+  const [livePublishedStep, setLivePublishedStep] = useState<{ step: FunnelStepData; funnel: FunnelData } | null>(() => {
+    try {
+      if (typeof window !== 'undefined') {
+        const searchParams = new URLSearchParams(window.location.search);
+        const funnelSlug = searchParams.get('funnel');
+        const stepSlug = searchParams.get('step');
+        const live = searchParams.get('live');
+
+        if (funnelSlug || stepSlug || live) {
+          const allFunnels = loadStoredFunnels();
+          let targetFunnel = allFunnels.find(f => f.slug === funnelSlug) || allFunnels[0];
+          let targetStep = targetFunnel?.steps.find(s => s.slug === stepSlug) || targetFunnel?.steps[0];
+          
+          if (!targetStep && stepSlug) {
+            for (const f of allFunnels) {
+              const s = f.steps.find(st => st.slug === stepSlug);
+              if (s) {
+                targetFunnel = f;
+                targetStep = s;
+                break;
+              }
+            }
+          }
+          if (targetStep && targetFunnel) {
+            return { step: targetStep, funnel: targetFunnel };
+          }
+        }
+      }
+    } catch (e) {
+      console.error('Error resolving live published page parameter:', e);
+    }
+    return null;
+  });
+
   // Platform View state
-  const [currentTab, setCurrentTab] = useState<'dashboard' | 'builder' | 'funnels' | 'websites' | 'membership' | 'publishing' | 'automations' | 'crm' | 'affiliate' | 'appointments' | 'community' | 'messagehub' | 'settings'>('dashboard');
+  const [currentTab, setCurrentTab] = useState<
+    'dashboard' | 'builder' | 'funnels' | 'websites' | 'membership' | 
+    'publishing' | 'automations' | 'crm' | 'affiliate' | 'appointments' | 
+    'community' | 'messagehub' | 'guides' | 'support' | 'contact' | 'settings'
+  >('dashboard');
 
   const [tabHistory, setTabHistory] = useState<string[]>(['dashboard']);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -217,6 +261,22 @@ export function App() {
         : 'text-gray-500 hover:text-gray-800 hover:bg-green-50'
     }`;
 
+  // If URL points to a standalone live published step, render clean public page
+  if (livePublishedStep) {
+    return (
+      <LivePublishedPageRenderer
+        funnel={livePublishedStep.funnel}
+        step={livePublishedStep.step}
+        onExitToPlatform={() => {
+          // Clear query params and show platform
+          window.history.pushState({}, document.title, window.location.pathname);
+          setLivePublishedStep(null);
+          setViewMode('platform');
+        }}
+      />
+    );
+  }
+
   if (viewMode === 'marketing') {
     return (
       <MarketingWebsiteContainer 
@@ -342,6 +402,33 @@ export function App() {
               </>
             )}
           </button>
+
+          {/* Divider */}
+          <div className="my-2 border-t border-green-100"></div>
+
+          {/* Tool Guides Manual */}
+          <button onClick={() => navigateToTab('guides')} className={navBtn('guides')}>
+            <BookOpen className="w-4 h-4 shrink-0" style={{ color: currentTab === 'guides' ? '#fff' : '#0d9488' }} />
+            {!isSidebarCollapsed && (
+              <>
+                <span className="flex-1 text-left font-bold">Tool Guides</span>
+                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-teal-100 text-teal-800 font-bold">12</span>
+              </>
+            )}
+          </button>
+
+          {/* Support Helpdesk */}
+          <button onClick={() => navigateToTab('support')} className={navBtn('support')}>
+            <LifeBuoy className="w-4 h-4 shrink-0" style={{ color: currentTab === 'support' ? '#fff' : '#16a34a' }} />
+            {!isSidebarCollapsed && <span>Support Desk</span>}
+          </button>
+
+          {/* Contact Us */}
+          <button onClick={() => navigateToTab('contact')} className={navBtn('contact')}>
+            <Mail className="w-4 h-4 shrink-0" style={{ color: currentTab === 'contact' ? '#fff' : '#22c55e' }} />
+            {!isSidebarCollapsed && <span>Contact Us</span>}
+          </button>
+
         </nav>
 
         {/* ── GLOBAL SETTINGS ── */}
@@ -395,11 +482,27 @@ export function App() {
             </span>
           </div>
 
-          {/* Right: Marketing Site + Templates + AI Copilot */}
+          {/* Right: Marketing Site + Guides + Templates + AI Copilot */}
           <div className="flex items-center gap-2">
             <button
+              onClick={() => navigateToTab('guides')}
+              className="px-3 py-1.5 bg-teal-50 hover:bg-teal-100 text-teal-800 rounded-xl text-xs font-bold flex items-center gap-1.5 border border-teal-200 transition-colors"
+            >
+              <BookOpen className="w-4 h-4 text-teal-600" />
+              <span className="hidden sm:inline">Guides</span>
+            </button>
+
+            <button
+              onClick={() => navigateToTab('support')}
+              className="px-3 py-1.5 bg-green-50 hover:bg-green-100 text-green-800 rounded-xl text-xs font-bold flex items-center gap-1.5 border border-green-200 transition-colors"
+            >
+              <LifeBuoy className="w-4 h-4 text-green-600" />
+              <span className="hidden sm:inline">Support</span>
+            </button>
+
+            <button
               onClick={() => setViewMode('marketing')}
-              className="px-3 py-1.5 bg-green-50 hover:bg-green-100 text-green-800 hover:text-green-950 rounded-xl text-xs font-bold flex items-center gap-1.5 border border-green-300 transition-colors"
+              className="px-3 py-1.5 bg-white hover:bg-green-50 text-green-800 hover:text-green-950 rounded-xl text-xs font-bold flex items-center gap-1.5 border border-green-300 transition-colors"
             >
               <Globe className="w-4 h-4 text-green-600" />
               <span>Marketing Site</span>
@@ -410,7 +513,7 @@ export function App() {
               className="px-3 py-1.5 bg-white hover:bg-green-50 text-gray-700 hover:text-gray-900 rounded-xl text-xs font-bold flex items-center gap-1.5 border border-green-200 transition-colors"
             >
               <Download className="w-4 h-4 text-green-600" />
-              <span>Templates</span>
+              <span className="hidden md:inline">Templates</span>
             </button>
 
             <button
@@ -572,7 +675,33 @@ export function App() {
             <PingPandaMessageHub />
           )}
 
-          {/* TAB 11: GLOBAL PLATFORM SETTINGS */}
+          {/* TAB 11: TOOL GUIDES */}
+          {currentTab === 'guides' && (
+            <GuidesPage
+              onNavigateToTab={(tab: string) => setCurrentTab(tab as any)}
+              onNavigateToSupport={() => setCurrentTab('support')}
+              onNavigateToContact={() => setCurrentTab('contact')}
+            />
+          )}
+
+          {/* TAB 12: SUPPORT HELPDESK */}
+          {currentTab === 'support' && (
+            <SupportPage
+              onNavigateToGuides={() => setCurrentTab('guides')}
+              onNavigateToContact={() => setCurrentTab('contact')}
+            />
+          )}
+
+          {/* TAB 13: CONTACT US */}
+          {currentTab === 'contact' && (
+            <ContactPage
+              onNavigateToSupport={() => setCurrentTab('support')}
+              onNavigateToGuides={() => setCurrentTab('guides')}
+              onNavigateToAppointments={() => setCurrentTab('appointments')}
+            />
+          )}
+
+          {/* TAB 14: GLOBAL PLATFORM SETTINGS */}
           {currentTab === 'settings' && (
             <GlobalSettingsManager />
           )}

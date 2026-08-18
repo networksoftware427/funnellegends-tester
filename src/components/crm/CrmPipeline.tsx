@@ -17,7 +17,7 @@ import {
 export const CrmPipeline: React.FC = () => {
   const [deals, setDeals] = useState<DealData[]>(loadStoredDeals());
   const [contacts, setContacts] = useState<ContactData[]>(loadStoredContacts());
-  const [activeTab, setActiveTab] = useState<'kanban' | 'simulations' | 'contacts' | 'integrations' | 'database'>('kanban');
+  const [activeTab, setActiveTab] = useState<'kanban' | 'simulations' | 'contacts' | 'integrations'>('kanban');
   const [selectedContact, setSelectedContact] = useState<ContactData | null>(contacts[0] || null);
   const [contactSearchQuery, setContactSearchQuery] = useState('');
 
@@ -302,15 +302,6 @@ export const CrmPipeline: React.FC = () => {
             <Plus className="w-4 h-4" />
             <span>Add Lead</span>
           </button>
-
-          <button 
-            onClick={handleTriggerSupabaseSync}
-            disabled={isSyncingDb}
-            className="px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-emerald-400 border border-emerald-500/30 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm"
-          >
-            <RefreshCw className={`w-4 h-4 ${isSyncingDb ? 'animate-spin' : ''}`} />
-            <span>{isSyncingDb ? 'Syncing...' : 'Sync Supabase'}</span>
-          </button>
         </div>
       </div>
 
@@ -346,14 +337,6 @@ export const CrmPipeline: React.FC = () => {
         >
           <Globe className="w-4 h-4" />
           <span>🔌 3rd Party Integrations ({integrations.length})</span>
-        </button>
-
-        <button 
-          onClick={() => setActiveTab('database')}
-          className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${activeTab === 'database' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/25 font-black' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'}`}
-        >
-          <Database className="w-4 h-4" />
-          <span>Database & Schema</span>
         </button>
       </div>
 
@@ -773,80 +756,6 @@ export const CrmPipeline: React.FC = () => {
           </div>
         )}
 
-        {/* ── VIEW 5: DATABASE & SCHEMA ── */}
-        {activeTab === 'database' && (
-          <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div>
-                <h3 className="text-xl font-black text-slate-900">Supabase SQL Database & Schema Inspector</h3>
-                <p className="text-xs text-slate-500">Inspect CRM tables, sync state, and copy production PostgreSQL schema script.</p>
-              </div>
-
-              <button 
-                onClick={handleTriggerSupabaseSync}
-                disabled={isSyncingDb}
-                className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black shadow-lg shadow-emerald-600/20 flex items-center gap-2"
-              >
-                <RefreshCw className={`w-4 h-4 ${isSyncingDb ? 'animate-spin' : ''}`} />
-                <span>{isSyncingDb ? 'Syncing to Supabase...' : 'Sync to Supabase Now'}</span>
-              </button>
-            </div>
-
-            {dbSyncStatus && (
-              <div className={`p-4 rounded-2xl border text-xs font-bold flex items-center justify-between ${dbSyncStatus.success ? 'bg-emerald-50 text-emerald-900 border-emerald-300' : 'bg-amber-50 text-amber-900 border-amber-300'}`}>
-                <div className="flex items-center gap-2">
-                  <CheckCheck className="w-4 h-4 text-emerald-600" />
-                  <span>{dbSyncStatus.message}</span>
-                </div>
-                <span className="font-mono text-[10px] text-slate-500">{dbSyncStatus.timestamp}</span>
-              </div>
-            )}
-
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-1 shadow-sm">
-                <span className="text-[10px] uppercase font-mono font-bold text-slate-500">Total Leads</span>
-                <div className="text-xl font-black text-slate-900">{contacts.length} Leads</div>
-              </div>
-              <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-1 shadow-sm">
-                <span className="text-[10px] uppercase font-mono font-bold text-slate-500">Active Deals</span>
-                <div className="text-xl font-black text-emerald-700">{deals.length} Deals</div>
-              </div>
-              <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-1 shadow-sm">
-                <span className="text-[10px] uppercase font-mono font-bold text-slate-500">Pipeline Total</span>
-                <div className="text-xl font-black text-teal-700">${totalPipelineValue.toLocaleString()}</div>
-              </div>
-              <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-1 shadow-sm">
-                <span className="text-[10px] uppercase font-mono font-bold text-slate-500">Integrations</span>
-                <div className="text-xl font-black text-green-700">{integrations.length} Connected</div>
-              </div>
-            </div>
-
-            <div className="bg-white border border-slate-200 rounded-3xl p-6 space-y-4 shadow-sm">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Database className="w-5 h-5 text-emerald-600" />
-                  <h4 className="text-base font-black text-slate-900">PostgreSQL / Supabase DDL Migration Script</h4>
-                </div>
-
-                <button 
-                  onClick={() => {
-                    navigator.clipboard.writeText(CRM_ENGINE_SQL_SCHEMA);
-                    setCopiedSchema(true);
-                    setTimeout(() => setCopiedSchema(false), 2000);
-                  }}
-                  className="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold flex items-center gap-1.5"
-                >
-                  {copiedSchema ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
-                  <span>{copiedSchema ? 'Copied SQL Script!' : 'Copy SQL Script'}</span>
-                </button>
-              </div>
-
-              <div className="bg-slate-950 text-emerald-400 p-4 rounded-2xl font-mono text-xs max-h-96 overflow-y-auto">
-                <pre>{CRM_ENGINE_SQL_SCHEMA}</pre>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
 
       {/* ── CREATE DEAL MODAL ── */}
